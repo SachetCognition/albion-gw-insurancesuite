@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity xmlns="http://guidewire.com/datamodel" entity="SchemeBordereauxLine_Ext" table="schemebordereauxli" type="retireable" desc="Delegated authority bordereaux ingest line"
+        exportable="true" extendable="true" platform="false">
+  <column name="SchemeCode" type="varchar" desc="" nullok="true"/>
+  <column name="BrokerRef" type="varchar" desc="" nullok="true"/>
+  <column name="GrossPremium" type="decimal" desc="" nullok="true"/>
+  <column name="Commission" type="decimal" desc="" nullok="true"/>
+  <column name="LineStatus" type="varchar" desc="LOADED/QUERIED/WRITTEN_BACK" nullok="true"/>
+
+  <index name="SchemeBordIdx1" desc="Added in prod first, backfilled to source later (DEF-11651)">
+    <indexcol keyposition="1" column="SchemeCode"/>
+  </index>
+</entity>

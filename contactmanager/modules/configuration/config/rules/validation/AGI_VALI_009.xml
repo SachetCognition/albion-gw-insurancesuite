@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- AGI_VALI_009 | Exported from RuleSet editor 09-Jan-2019 by vraghu; hand-edited since (editor corrupts CDATA, GWCC-37470) -->
+<rule name="AGI_VALI_009" entity="ABContact" priority="475" enabled="true">
+  <description>validation rule #9 - purpose partially documented in DEF-34300</description>
+  <conditions logic="AND">
+    <condition lhs="ABContact.SourceSystem_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="ABContact.BrandCode_Ext" op="equals" rhs="PENDING"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      abcontact.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(abcontact, "review_agi_vali_009", "validation rule #9 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

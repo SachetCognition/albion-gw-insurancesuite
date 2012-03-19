@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- AGI_VALI_007 | Exported from RuleSet editor 04-Sep-2017 by kmbeki; hand-edited since (editor corrupts CDATA, CHG-37762) -->
+<rule name="AGI_VALI_007" entity="ABContact" priority="168" enabled="true">
+  <description>validation rule #7 - purpose partially documented in GWCC-32750</description>
+  <conditions logic="AND">
+    <condition lhs="ABContact.FeedStatus_Ext" op="equals" rhs="ALBBRK"/>
+    <condition lhs="ABContact.FeedStatus_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="ABContact.FeedStatus_Ext" op="notEquals" rhs="HERIT"/>
+    <condition lhs="ABContact.BrandCode_Ext" op="notEquals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      abcontact.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(abcontact, "review_agi_vali_007", "validation rule #7 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

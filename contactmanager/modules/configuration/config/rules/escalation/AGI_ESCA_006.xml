@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- AGI_ESCA_006 | Exported from RuleSet editor 22-Sep-2014 by baldrid; hand-edited since (editor corrupts CDATA, INC-9042) -->
+<rule name="AGI_ESCA_006" entity="ABContact" priority="673" enabled="true">
+  <description>escalation rule #6 - purpose partially documented in INC-18916</description>
+  <conditions logic="AND">
+    <condition lhs="ABContact.BrandCode_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="ABContact.BrandCode_Ext" op="notEquals" rhs="HERIT"/>
+    <condition lhs="ABContact.FeedStatus_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="ABContact.FeedStatus_Ext" op="equals" rhs="HERIT"/>
+    <condition lhs="ABContact.SourceSystem_Ext" op="notEquals" rhs="HERIT"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      abcontact.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(abcontact, "review_agi_esca_006", "escalation rule #6 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_ASSI_008 | Exported from RuleSet editor 07-Apr-2016 by akowal; hand-edited since (editor corrupts CDATA, CHG-46437) -->
+<rule name="AGI_ASSI_008" entity="ABContact" priority="864" enabled="true">
+  <description>assignment rule #8 - purpose partially documented in INC-10450</description>
+  <conditions logic="AND">
+    <condition lhs="ABContact.FeedStatus_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="ABContact.BrandCode_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="ABContact.SourceSystem_Ext" op="equals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      abcontact.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(abcontact, "review_agi_assi_008", "assignment rule #8 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

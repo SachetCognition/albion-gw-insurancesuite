@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity xmlns="http://guidewire.com/datamodel" entity="OICPortalCase_Ext" table="oicportalcase_ext" type="retireable" desc="Official Injury Claim portal tracking"
+        exportable="true" extendable="true" platform="false">
+  <column name="PortalRef" type="varchar" desc="" nullok="true"/>
+  <column name="Track" type="varchar" desc="OIC/MOJ/EXITED" nullok="true"/>
+  <column name="TariffBand" type="varchar" desc="whiplash tariff" nullok="true"/>
+  <column name="ExitReason" type="varchar" desc="" nullok="true"/>
+
+  <index name="OICPortalCIdx1" desc="Added in prod first, backfilled to source later (INC-14921)">
+    <indexcol keyposition="1" column="PortalRef"/>
+  </index>
+</entity>

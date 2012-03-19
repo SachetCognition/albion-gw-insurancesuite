@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ClaimSegment_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (CM-778) -->
+<typelist xmlns="http://guidewire.com/typelists" name="ClaimSegment_Ext" desc="Claims segmentation model (Mercury op model)">
+  <typecode code="FASTTRACK" name="Fast Track" desc="Straight-through, <2k, single peril"/>
+  <typecode code="STANDARD" name="Standard" desc="Adjuster desk"/>
+  <typecode code="COMPLEX" name="Complex" desc="Large loss / BI / multi-party"/>
+  <typecode code="SIU" name="SIU Referral" desc="Fraud investigation"/>
+  <typecode code="TPPD_HUB" name="TP PD Hub" desc="Third party intervention unit"/>
+  <typecode code="SUBSDESK" name="Subsidence Desk" desc="Long-tail subsidence handling"/>
+  <typecode code="LITIGATED" name="Litigated" desc="Panel solicitor instructed"/>
+  <typecode code="MOJPORTAL" name="MOJ/OIC Portal" desc="Whiplash portal track"/>
+  <typecode code="HERITAGE" name="Heritage Manual" desc="POLARIS-era claims, paper file may exist in Norwich archive"/>
+</typelist>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="ABPerson">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (GWCC-21318) -->
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="BordereauxRef_Ext" type="varchar" desc="added 05-Mar-2023 for CHG-37521; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxCode_Ext" type="varchar" desc="added 13-Oct-2017 for GWBC-34559; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignRef_Ext" type="varchar" desc="added 16-Apr-2021 for CHG-33038; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

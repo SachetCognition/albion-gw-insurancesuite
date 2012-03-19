@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PaymentMethod_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (HERIT-11801) -->
+<typelist xmlns="http://guidewire.com/typelists" name="PaymentMethod_Ext" desc="Collection method">
+  <typecode code="DDM" name="Direct Debit Monthly" desc="Instalments via premium finance - APR disclosed"/>
+  <typecode code="DDA" name="Direct Debit Annual" desc=""/>
+  <typecode code="CARD" name="Card" desc="Worldpay legacy MOTO + new PSP - two gateways live"/>
+  <typecode code="CHQ" name="Cheque" desc="Heritage only. Yes, still."/>
+  <typecode code="BACS" name="BACS" desc="Broker accounts"/>
+  <typecode code="AGGWALLET" name="Aggregator Wallet" desc="CTM promo mechanism 2015 - dead but referenced"/>
+</typelist>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_ESCA_010 | Exported from RuleSet editor 14-Nov-2016 by nchen; hand-edited since (editor corrupts CDATA, PRB-24537) -->
+<rule name="AGI_ESCA_010" entity="ABContact" priority="158" enabled="true">
+  <description>escalation rule #10 - purpose partially documented in GWPC-31730</description>
+  <conditions logic="AND">
+    <condition lhs="ABContact.SourceSystem_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="ABContact.FeedStatus_Ext" op="notEquals" rhs="PENDING"/>
+    <condition lhs="ABContact.SourceSystem_Ext" op="equals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      abcontact.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(abcontact, "review_agi_esca_010", "escalation rule #10 - purpose partially ")
+    ]]></gosu>
+  </action>
+</rule>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="ABContactNote">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (CM-30279) -->
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
+  <column name="ChannelRef_Ext" type="varchar" desc="added 20-Aug-2017 for REG-8418; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignRef_Ext" type="varchar" desc="added 08-May-2011 for HERIT-36179; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageCode_Ext" type="varchar" desc="added 12-Nov-2020 for CM-41519; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="SchemeRef_Ext" type="varchar" desc="added 01-Jul-2011 for CM-11564; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageCode_Ext" type="varchar" desc="added 07-Dec-2018 for GWCC-46023; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

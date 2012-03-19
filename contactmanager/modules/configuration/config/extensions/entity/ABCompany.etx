@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="ABCompany">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (HERIT-24168) -->
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
+  <column name="CampaignFlag_Ext" type="varchar" desc="added 10-Aug-2016 for AGI-36919; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignCode_Ext" type="varchar" desc="added 15-Apr-2019 for PRB-14781; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignCode_Ext" type="varchar" desc="added 09-Apr-2020 for CM-23374; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

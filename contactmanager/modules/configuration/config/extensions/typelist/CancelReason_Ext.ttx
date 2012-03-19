@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CancelReason_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (HERIT-28664) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CancelReason_Ext" desc="Cancellation reason (customer + insurer initiated)">
+  <typecode code="COOL" name="Cooling Off" desc="14-day statutory"/>
+  <typecode code="NONPAY" name="Non-Payment" desc="DD default path - see dunning workflow"/>
+  <typecode code="FRAUD" name="Fraud/Misrep" desc="CIDRA voidance vs cancellation - legal sign-off req"/>
+  <typecode code="SOLD" name="Vehicle Sold" desc=""/>
+  <typecode code="DECEASED" name="Policyholder Deceased" desc="Route to bereavement team, suppress arrears letters (GWBC-10832)"/>
+  <typecode code="UWDEC" name="UW Declined" desc="Insurer-initiated - 7 days notice"/>
+  <typecode code="REBROKE" name="Rebroked" desc="Lost to market"/>
+</typelist>

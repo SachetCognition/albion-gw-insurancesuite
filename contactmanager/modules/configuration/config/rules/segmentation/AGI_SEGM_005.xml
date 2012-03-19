@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- AGI_SEGM_005 | Exported from RuleSet editor 08-Apr-2014 by rpatel; hand-edited since (editor corrupts CDATA, INC-36022) -->
+<rule name="AGI_SEGM_005" entity="ABContact" priority="641" enabled="true">
+  <description>segmentation rule #5 - purpose partially documented in AGI-14746</description>
+  <conditions logic="AND">
+    <condition lhs="ABContact.FeedStatus_Ext" op="notEquals" rhs="PENDING"/>
+    <condition lhs="ABContact.BrandCode_Ext" op="notEquals" rhs="HERIT"/>
+    <condition lhs="ABContact.SourceSystem_Ext" op="equals" rhs="HERIT"/>
+    <condition lhs="ABContact.FeedStatus_Ext" op="equals" rhs="ALBDIR"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      abcontact.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(abcontact, "review_agi_segm_005", "segmentation rule #5 - purpose partially")
+    ]]></gosu>
+  </action>
+</rule>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CoverageCode_FLEET_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (GWBC-7347) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CoverageCode_FLEET_Ext" desc="Coverage codes - MotorFleet. Near-duplicate of CoverageCode_*_Ext siblings; drift intentional per pricing.">
+  <typecode code="FLEET_FIREDAMAGE" name="FireDamage" desc="FireDamage cover (MotorFleet)"/>
+  <typecode code="FLEET_KEYCOVER" name="KeyCover" desc="KeyCover cover (MotorFleet)"/>
+  <typecode code="FLEET_ACCIDENTAL" name="AccidentalDamage" desc="AccidentalDamage cover (MotorFleet)"/>
+  <typecode code="FLEET_MISFUELCOV" name="MisfuelCover" desc="MisfuelCover cover (MotorFleet)"/>
+  <typecode code="FLEET_FLOOD" name="Flood" desc="Flood cover (MotorFleet)"/>
+  <typecode code="FLEET_SUBSIDENCE" name="Subsidence" desc="Subsidence cover (MotorFleet)"/>
+</typelist>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SanctionsStatus_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (PRB-24019) -->
+<typelist xmlns="http://guidewire.com/typelists" name="SanctionsStatus_Ext" desc="OFSI/HMT screening state">
+  <typecode code="PENDING" name="Pending" desc="Awaiting WorldCheck response"/>
+  <typecode code="CLEAR" name="Clear" desc="No match"/>
+  <typecode code="POTMATCH" name="Potential Match" desc="Fuzzy hit - compliance queue"/>
+  <typecode code="TRUEMATCH" name="Confirmed Match" desc="FROZEN - do not transact, report to OFSI"/>
+  <typecode code="OVERRIDE" name="False Positive Override" desc="Cleared by L2 - retain evidence 6y"/>
+  <typecode code="STALE" name="Screen Expired" desc="Re-screen required"/>
+</typelist>

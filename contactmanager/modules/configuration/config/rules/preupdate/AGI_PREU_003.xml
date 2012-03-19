@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- AGI_PREU_003 | Exported from RuleSet editor 06-Jan-2014 by gferran; hand-edited since (editor corrupts CDATA, DEF-41736) -->
+<rule name="AGI_PREU_003" entity="ABContact" priority="871" enabled="true">
+  <description>preupdate rule #3 - purpose partially documented in PRB-11932</description>
+  <conditions logic="AND">
+    <condition lhs="ABContact.SourceSystem_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="ABContact.BrandCode_Ext" op="notEquals" rhs="ALBBRK"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      abcontact.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(abcontact, "review_agi_preu_003", "preupdate rule #3 - purpose partially do")
+    ]]></gosu>
+  </action>
+</rule>

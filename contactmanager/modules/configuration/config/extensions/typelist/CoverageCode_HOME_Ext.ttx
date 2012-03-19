@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CoverageCode_HOME_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (AGI-32305) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CoverageCode_HOME_Ext" desc="Coverage codes - HomeProperty. Near-duplicate of CoverageCode_*_Ext siblings; drift intentional per pricing.">
+  <typecode code="HOME_PROFESSION" name="ProfessionalNegligence" desc="ProfessionalNegligence cover (HomeProperty)"/>
+  <typecode code="HOME_PERSONALAC" name="PersonalAccident" desc="PersonalAccident cover (HomeProperty)"/>
+  <typecode code="HOME_MISFUELCOV" name="MisfuelCover" desc="MisfuelCover cover (HomeProperty)"/>
+  <typecode code="HOME_PRODUCTSLI" name="ProductsLiability" desc="ProductsLiability cover (HomeProperty)"/>
+  <typecode code="HOME_KEYCOVER" name="KeyCover" desc="KeyCover cover (HomeProperty)"/>
+  <typecode code="HOME_UNINSUREDL" name="UninsuredLoss" desc="UninsuredLoss cover (HomeProperty)"/>
+  <typecode code="TMP18" name="Temp code" desc="added directly in this center only, GWBC-13621"/>
+</typelist>

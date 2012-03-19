@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- AGI_ASSI_007 | Exported from RuleSet editor 12-Feb-2017 by kmbeki; hand-edited since (editor corrupts CDATA, GWPC-18883) -->
+<rule name="AGI_ASSI_007" entity="ABContact" priority="345" enabled="true">
+  <description>assignment rule #7 - purpose partially documented in CM-3103</description>
+  <conditions logic="AND">
+    <condition lhs="ABContact.BrandCode_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="ABContact.BrandCode_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="ABContact.BrandCode_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="ABContact.SourceSystem_Ext" op="equals" rhs="HERIT"/>
+    <condition lhs="ABContact.FeedStatus_Ext" op="equals" rhs="HERIT"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      abcontact.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(abcontact, "review_agi_assi_007", "assignment rule #7 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

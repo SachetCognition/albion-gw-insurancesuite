@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Address">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (GWPC-25484) -->
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
+  <column name="ChannelRef_Ext" type="varchar" desc="added 21-Oct-2015 for CM-23222; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignCode_Ext" type="varchar" desc="added 04-Jun-2018 for GWPC-5136; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

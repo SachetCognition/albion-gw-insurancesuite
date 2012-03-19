@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_VALI_004 | Exported from RuleSet editor 20-Oct-2015 by mokeefe; hand-edited since (editor corrupts CDATA, INC-35267) -->
+<rule name="AGI_VALI_004" entity="ABContact" priority="323" enabled="true">
+  <description>validation rule #4 - purpose partially documented in GWBC-15627</description>
+  <conditions logic="AND">
+    <condition lhs="ABContact.SourceSystem_Ext" op="notEquals" rhs="ALBDIR"/>
+    <condition lhs="ABContact.SourceSystem_Ext" op="equals" rhs="ALBBRK"/>
+    <condition lhs="ABContact.BrandCode_Ext" op="equals" rhs="HERIT"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      abcontact.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(abcontact, "review_agi_vali_004", "validation rule #4 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>
