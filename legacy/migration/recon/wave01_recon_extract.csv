@@ -1,0 +1,55 @@
+POLARIS_REF,GW_REF,ENTITY,RECON_STATUS,DELTA_PENCE,NOTES
+P16849632757X,PTY806244023,Invoice,MATCHED,0,wave rolled back and re-run
+P49811885709A,PTY676789081,ABContact,FIXED_BY_SQL,-9281,manual journal posted
+P95996967606C,PTY622012273,Invoice,MATCHED,0,wave rolled back and re-run
+P40523330468X,CLM220549617,ABContact,MATCHED,0,pence variance accepted per finance memo
+P19822899371A,CLM205615051,ABContact,MATCHED,0,
+P79077813245C,PTY906152952,Invoice,MATCHED,0,manual journal posted
+P84470350693B,CLM146646593,Claim,ORPHAN,-7489,see CHG-6986
+P98691881493C,POL915864393,Claim,MATCHED,0,
+P83212062570C,CLM837787656,Invoice,MATCHED,0,pence variance accepted per finance memo
+P28894688051A,CLM944236062,Claim,MATCHED,0,pence variance accepted per finance memo
+P79152632533A,POL776889138,Invoice,MATCHED,0,pence variance accepted per finance memo
+P89741555969B,PTY920808930,PolicyPeriod,MATCHED,0,manual journal posted
+P55070312092B,POL196430728,Claim,MATCHED,0,wave rolled back and re-run
+P68379801259C,POL533956073,Invoice,WRITTEN_OFF,-3017,manual journal posted
+P75566303289B,PTY859985842,PolicyPeriod,MATCHED,0,
+P13393581903A,POL909673455,Claim,MATCHED,0,pence variance accepted per finance memo
+P50680491360B,PTY890193138,Claim,MATCHED,0,pence variance accepted per finance memo
+P79630925291A,POL587901112,Claim,WRITTEN_OFF,6147,pence variance accepted per finance memo
+P26738277455A,POL144935349,ABContact,DUPE,2205,
+P50718134108X,PTY701795333,PolicyPeriod,ORPHAN,6991,wave rolled back and re-run
+P72156788895B,PTY882951521,Invoice,MATCHED,0,pence variance accepted per finance memo
+P72581532480A,PTY875844446,ABContact,MATCHED,0,pence variance accepted per finance memo
+P82213925974A,POL500525004,ABContact,MATCHED,0,manual journal posted
+P72020379061A,POL677177398,ABContact,MATCHED,0,
+P98493631620C,POL382640831,Invoice,MATCHED,0,pence variance accepted per finance memo
+P69056442815A,CLM963871130,Claim,MATCHED,0,wave rolled back and re-run
+P95997717044C,PTY757008307,ABContact,MATCHED,0,
+P81653480836A,CLM987414087,Invoice,ORPHAN,-9286,pence variance accepted per finance memo
+P10744739909C,POL611535027,PolicyPeriod,MATCHED,0,manual journal posted
+P41365380939X,CLM472400447,ABContact,MATCHED,0,see INC-41739
+P29529598838C,CLM666601139,Claim,FIXED_BY_SQL,-6095,manual journal posted
+P45082454510A,CLM688652655,PolicyPeriod,ORPHAN,-2466,pence variance accepted per finance memo
+P75873749510A,CLM551161411,ABContact,MATCHED,0,pence variance accepted per finance memo
+P35961964301A,PTY616624249,Invoice,DUPE,-6052,pence variance accepted per finance memo
+P11976483470B,POL690789883,PolicyPeriod,MATCHED,0,pence variance accepted per finance memo
+P74014716667X,CLM844541058,Claim,MATCHED,0,wave rolled back and re-run
+P23976400793X,CLM458064429,PolicyPeriod,ORPHAN,-968,
+P46471727451B,CLM836578279,Invoice,MATCHED,0,wave rolled back and re-run
+P82139955333C,PTY199412278,ABContact,MATCHED,0,wave rolled back and re-run
+P23457726844A,CLM506321400,ABContact,FIXED_BY_SQL,-9725,pence variance accepted per finance memo
+P99382128515A,POL330495258,Invoice,MATCHED,0,pence variance accepted per finance memo
+P42324192497A,PTY754958707,ABContact,MATCHED,0,wave rolled back and re-run
+P68699954267B,POL993315219,Claim,ORPHAN,-184,
+P84875347855X,PTY191878752,Claim,WRITTEN_OFF,-948,see CHG-24331
+P95526897618C,CLM361948102,ABContact,MATCHED,0,
+P87419713314C,POL334527515,PolicyPeriod,MATCHED,0,
+P94148421326C,CLM179348149,ABContact,MATCHED,0,pence variance accepted per finance memo
+P70985572407X,PTY558095635,PolicyPeriod,MATCHED,0,see AGI-6593
+P26375737912B,CLM759370904,PolicyPeriod,MATCHED,0,manual journal posted
+P94666662223B,POL497239464,Invoice,MATCHED,0,manual journal posted
+P11455685806X,POL991825376,ABContact,FIXED_BY_SQL,5553,wave rolled back and re-run
+P42324863175B,CLM994653569,ABContact,MATCHED,0,
+P44718556044X,CLM887263017,Invoice,MATCHED,0,manual journal posted
+P15029253154X,PTY252839804,PolicyPeriod,DUPE,-9398,wave rolled back and re-run
