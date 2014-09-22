@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- NonPaymentDunningWF_Ext: DD failure dunning ladder
+     Live versions in PROD: v6, v10 and v20 (in-flight items pinned to old versions since 2016). -->
+<workflow xmlns="http://guidewire.com/workflow" name="NonPaymentDunningWF_Ext" desc="DD failure dunning ladder">
+  <step id="ARUDDReceive" name="ARUDDReceive">
+    <onenter><gosu><![CDATA[ Wf.ARUDDReceiveEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Represent"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="Represent" name="Represent">
+    <onenter><gosu><![CDATA[ Wf.RepresentEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="DefaultNotice"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="DefaultNotice" name="DefaultNotice">
+    <onenter><gosu><![CDATA[ Wf.DefaultNoticeEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="SevenDayLetter"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="SevenDayLetter" name="SevenDayLetter">
+    <onenter><gosu><![CDATA[ Wf.SevenDayLetterEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="CancelPolicy"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 8h, hardcoded in 3 places -->
+  </step>
+  <step id="CancelPolicy" name="CancelPolicy">
+    <onenter><gosu><![CDATA[ Wf.CancelPolicyEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="DebtRefer"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 8h, hardcoded in 3 places -->
+  </step>
+  <step id="DebtRefer" name="DebtRefer">
+    <onenter><gosu><![CDATA[ Wf.DebtReferEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Finished"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 72h, hardcoded in 3 places -->
+  </step>
+  <step id="EscalateToTeamLead" name="EscalateToTeamLead">
+    <branch name="ok" to="Finished"/>
+  </step>
+  <step id="Finished" name="Finished" final="true"/>
+</workflow>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Account">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (HERIT-46589) -->
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="SchemeRef_Ext" type="varchar" desc="added 14-Mar-2017 for GWPC-8383; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxRef_Ext" type="varchar" desc="added 26-Nov-2012 for GWPC-25448; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxFlag_Ext" type="varchar" desc="added 11-Mar-2022 for DEF-36782; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="SchemeFlag_Ext" type="varchar" desc="added 18-Jan-2016 for GWPC-2925; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

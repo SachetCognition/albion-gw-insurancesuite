@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- ProfessionalIndemnity offering for Albion Broker. Near-duplicate of sibling brand files; diffs are commercially deliberate and completely undocumented. -->
+<offering product="ProfessionalIndemnity" brand="ALBBRK" version="11">
+    <coverage code="PI_PROFESSION" name="ProfessionalNegligence">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="ALBBRK" from="2012-01-01" to=""/>
+    </coverage>
+</offering>

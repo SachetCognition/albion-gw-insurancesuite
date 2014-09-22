@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- BereavementWF_Ext: Bereavement handling - suppresses dunning (mostly) (pinned old version - live items attached)
+     Live versions in PROD: v8, v12 and v19 (in-flight items pinned to old versions since 2016). -->
+<workflow xmlns="http://guidewire.com/workflow" name="BereavementWF_Ext" desc="Bereavement handling - suppresses dunning (mostly) (pinned old version - live items attached)">
+  <step id="Flag" name="Flag">
+    <onenter><gosu><![CDATA[ Wf.FlagEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="SuppressComms"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 72h, hardcoded in 3 places -->
+  </step>
+  <step id="SuppressComms" name="SuppressComms">
+    <onenter><gosu><![CDATA[ Wf.SuppressCommsEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="ExecutorVerify"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="ExecutorVerify" name="ExecutorVerify">
+    <onenter><gosu><![CDATA[ Wf.ExecutorVerifyEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="PolicyDecision"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="PolicyDecision" name="PolicyDecision">
+    <onenter><gosu><![CDATA[ Wf.PolicyDecisionEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Finished"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="EscalateToTeamLead" name="EscalateToTeamLead">
+    <branch name="ok" to="Finished"/>
+  </step>
+  <step id="Finished" name="Finished" final="true"/>
+</workflow>

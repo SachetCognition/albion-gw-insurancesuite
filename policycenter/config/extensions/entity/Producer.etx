@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Producer">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (AGI-13864) -->
+  <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
+  <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="BordereauxRef_Ext" type="varchar" desc="added 18-Feb-2023 for REG-28907; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignRef_Ext" type="varchar" desc="added 02-Sep-2016 for REG-14896; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxCode_Ext" type="varchar" desc="added 26-Sep-2017 for CM-37348; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxCode_Ext" type="varchar" desc="added 23-Oct-2017 for PRB-35348; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxFlag_Ext" type="varchar" desc="added 16-Nov-2017 for INC-45847; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

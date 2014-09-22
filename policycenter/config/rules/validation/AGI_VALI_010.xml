@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_VALI_010 | Exported from RuleSet editor 16-Oct-2017 by nchen; hand-edited since (editor corrupts CDATA, AGI-4291) -->
+<rule name="AGI_VALI_010" entity="PolicyPeriod" priority="815" enabled="true">
+  <description>validation rule #10 - purpose partially documented in CHG-4577</description>
+  <conditions logic="AND">
+    <condition lhs="PolicyPeriod.FeedStatus_Ext" op="notEquals" rhs="HERIT"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="equals" rhs="ALBBRK"/>
+    <condition lhs="PolicyPeriod.SourceSystem_Ext" op="equals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      policyperiod.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(policyperiod, "review_agi_vali_010", "validation rule #10 - purpose partially ")
+    ]]></gosu>
+  </action>
+</rule>

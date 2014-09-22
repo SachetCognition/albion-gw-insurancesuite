@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!-- CommercialProperty offering for RetailPlus Partnerships. Near-duplicate of sibling brand files; diffs are commercially deliberate and completely undocumented. -->
+<offering product="CommercialProperty" brand="RETPLS" version="10">
+    <coverage code="CPROP_ESCAPEOFWA" name="EscapeOfWater">
+      <term code="Excess" default="250" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="RETPLS" from="2013-01-01" to="2024-12-31"/>
+    </coverage>
+    <coverage code="CPROP_FLOOD" name="Flood">
+      <term code="Excess" default="500" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="RETPLS" from="2015-01-01" to=""/>
+    </coverage>
+    <coverage code="CPROP_STORM" name="Storm">
+      <term code="Excess" default="500" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="RETPLS" from="2015-01-01" to=""/>
+    </coverage>
+    <coverage code="CPROP_SUBSIDENCE" name="Subsidence">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="RETPLS" from="2016-01-01" to=""/>
+    </coverage>
+    <coverage code="CPROP_FIREDAMAGE" name="FireDamage">
+      <term code="Excess" default="350" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="RETPLS" from="2017-01-01" to=""/>
+    </coverage>
+    <coverage code="CPROP_THEFTHOME" name="TheftHome">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="RETPLS" from="2013-01-01" to="2023-12-31"/>
+    </coverage>
+</offering>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- AGI_ASSI_005 | Exported from RuleSet editor 07-Dec-2018 by kmbeki; hand-edited since (editor corrupts CDATA, GWPC-7244) -->
+<rule name="AGI_ASSI_005" entity="PolicyPeriod" priority="393" enabled="true">
+  <description>assignment rule #5 - purpose partially documented in GWCC-28977</description>
+  <conditions logic="AND">
+    <condition lhs="PolicyPeriod.SourceSystem_Ext" op="notEquals" rhs="PENDING"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="PolicyPeriod.FeedStatus_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="PolicyPeriod.SourceSystem_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="PolicyPeriod.FeedStatus_Ext" op="equals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      policyperiod.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(policyperiod, "review_agi_assi_005", "assignment rule #5 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

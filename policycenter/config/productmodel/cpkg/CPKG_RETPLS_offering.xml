@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- CommercialPackage offering for RetailPlus Partnerships. Near-duplicate of sibling brand files; diffs are commercially deliberate and completely undocumented. -->
+<offering product="CommercialPackage" brand="RETPLS" version="12">
+    <coverage code="CPKG_ESCAPEOFWA" name="EscapeOfWater">
+      <term code="Excess" default="100" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="RETPLS" from="2011-01-01" to=""/>
+    </coverage>
+    <coverage code="CPKG_FLOOD" name="Flood">
+      <term code="Excess" default="250" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="RETPLS" from="2016-01-01" to="2022-12-31"/>
+    </coverage>
+    <coverage code="CPKG_STORM" name="Storm">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="RETPLS" from="2014-01-01" to="2019-12-31"/>
+    </coverage>
+    <coverage code="CPKG_SUBSIDENCE" name="Subsidence">
+      <term code="Excess" default="350" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="RETPLS" from="2011-01-01" to="2020-12-31"/>
+    </coverage>
+    <coverage code="CPKG_FIREDAMAGE" name="FireDamage">
+      <term code="Excess" default="350" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="RETPLS" from="2015-01-01" to=""/>
+    </coverage>
+    <coverage code="CPKG_EMPLOYERSL" name="EmployersLiability">
+      <term code="Excess" default="100" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="50000"/>
+      <availability brand="RETPLS" from="2018-01-01" to=""/>
+    </coverage>
+    <coverage code="CPKG_PUBLICLIAB" name="PublicLiability">
+      <term code="Excess" default="250" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="RETPLS" from="2014-01-01" to=""/>
+    </coverage>
+</offering>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CoverageCode_PMOT_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (GWCC-19625) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CoverageCode_PMOT_Ext" desc="Coverage codes - PersonalMotor. Near-duplicate of CoverageCode_*_Ext siblings; drift intentional per pricing.">
+  <typecode code="PMOT_THIRDPARTY" name="ThirdPartyPD" desc="ThirdPartyPD cover (PersonalMotor)"/>
+  <typecode code="PMOT_FIREDAMAGE" name="FireDamage" desc="FireDamage cover (PersonalMotor)"/>
+  <typecode code="PMOT_STORM" name="Storm" desc="Storm cover (PersonalMotor)"/>
+  <typecode code="PMOT_PROFESSION" name="ProfessionalNegligence" desc="ProfessionalNegligence cover (PersonalMotor)"/>
+  <typecode code="PMOT_PERSONALAC" name="PersonalAccident" desc="PersonalAccident cover (PersonalMotor)"/>
+  <typecode code="PMOT_FLOOD" name="Flood" desc="Flood cover (PersonalMotor)"/>
+</typelist>

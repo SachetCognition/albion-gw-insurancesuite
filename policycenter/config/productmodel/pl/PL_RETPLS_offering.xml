@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- PublicLiability offering for RetailPlus Partnerships. Near-duplicate of sibling brand files; diffs are commercially deliberate and completely undocumented. -->
+<offering product="PublicLiability" brand="RETPLS" version="11">
+    <coverage code="PL_PUBLICLIAB" name="PublicLiability">
+      <term code="Excess" default="100" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="RETPLS" from="2012-01-01" to=""/>
+    </coverage>
+    <coverage code="PL_PRODUCTSLI" name="ProductsLiability">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="RETPLS" from="2013-01-01" to=""/>
+    </coverage>
+</offering>

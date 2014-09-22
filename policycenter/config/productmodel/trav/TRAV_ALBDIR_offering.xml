@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!-- Travel offering for Albion Direct. Near-duplicate of sibling brand files; diffs are commercially deliberate and completely undocumented. -->
+<offering product="Travel" brand="ALBDIR" version="10">
+    <coverage code="TRAV_MEDICALEXP" name="MedicalExpenses">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="ALBDIR" from="2017-01-01" to=""/>
+    </coverage>
+    <coverage code="TRAV_CANCELLATI" name="Cancellation">
+      <term code="Excess" default="350" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="50000"/>
+      <availability brand="ALBDIR" from="2012-01-01" to=""/>
+    </coverage>
+    <coverage code="TRAV_BAGGAGELOS" name="BaggageLoss">
+      <term code="Excess" default="100" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="ALBDIR" from="2019-01-01" to=""/>
+    </coverage>
+    <coverage code="TRAV_PERSONALAC" name="PersonalAccident">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="ALBDIR" from="2015-01-01" to=""/>
+    </coverage>
+</offering>

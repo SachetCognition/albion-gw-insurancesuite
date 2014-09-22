@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="PolicyContactRole">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (CM-671) -->
+  <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="HeritageRef_Ext" type="varchar" desc="added 05-May-2016 for INC-28680; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="ChannelCode_Ext" type="varchar" desc="added 22-Oct-2023 for REG-31881; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageCode_Ext" type="varchar" desc="added 22-Mar-2022 for HERIT-41523; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageCode_Ext" type="varchar" desc="added 20-Nov-2019 for PRB-10952; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

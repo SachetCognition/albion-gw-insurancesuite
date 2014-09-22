@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- AGI_PREU_004 | Exported from RuleSet editor 16-Nov-2013 by nchen; hand-edited since (editor corrupts CDATA, CM-8284) -->
+<rule name="AGI_PREU_004" entity="PolicyPeriod" priority="664" enabled="true">
+  <description>preupdate rule #4 - purpose partially documented in HERIT-8042</description>
+  <conditions logic="AND">
+    <condition lhs="PolicyPeriod.SourceSystem_Ext" op="equals" rhs="HERIT"/>
+    <condition lhs="PolicyPeriod.FeedStatus_Ext" op="notEquals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      policyperiod.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(policyperiod, "review_agi_preu_004", "preupdate rule #4 - purpose partially do")
+    ]]></gosu>
+  </action>
+</rule>

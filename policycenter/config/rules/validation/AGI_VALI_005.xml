@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- AGI_VALI_005 | Exported from RuleSet editor 26-Sep-2013 by gferran; hand-edited since (editor corrupts CDATA, AGI-13312) -->
+<rule name="AGI_VALI_005" entity="PolicyPeriod" priority="670" enabled="true">
+  <description>validation rule #5 - purpose partially documented in REG-17006</description>
+  <conditions logic="AND">
+    <condition lhs="PolicyPeriod.FeedStatus_Ext" op="notEquals" rhs="PENDING"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="PolicyPeriod.FeedStatus_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="PolicyPeriod.SourceSystem_Ext" op="equals" rhs="ALBBRK"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      policyperiod.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(policyperiod, "review_agi_vali_005", "validation rule #5 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

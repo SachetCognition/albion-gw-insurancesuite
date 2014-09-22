@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="PolicyPeriod">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (GWBC-35424) -->
+  <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="SchemeFlag_Ext" type="varchar" desc="added 27-Oct-2022 for CM-13058; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="SchemeRef_Ext" type="varchar" desc="added 03-Dec-2023 for CM-43311; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

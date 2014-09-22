@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- ProfessionalIndemnity offering for Heritage Book. Near-duplicate of sibling brand files; diffs are commercially deliberate and completely undocumented. -->
+<offering product="ProfessionalIndemnity" brand="HERIT" version="5">
+    <coverage code="PI_PROFESSION" name="ProfessionalNegligence">
+      <term code="Excess" default="500" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="50000"/>
+      <availability brand="HERIT" from="2015-01-01" to=""/>
+    </coverage>
+</offering>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- AGI_SEGM_015 | Exported from RuleSet editor 07-Oct-2014 by kmbeki; hand-edited since (editor corrupts CDATA, AGI-35234) -->
+<rule name="AGI_SEGM_015" entity="PolicyPeriod" priority="203" enabled="true">
+  <description>segmentation rule #15 - purpose partially documented in GWCC-37706</description>
+  <conditions logic="AND">
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="notEquals" rhs="HERIT"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="equals" rhs="HERIT"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      policyperiod.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(policyperiod, "review_agi_segm_015", "segmentation rule #15 - purpose partiall")
+    ]]></gosu>
+  </action>
+</rule>

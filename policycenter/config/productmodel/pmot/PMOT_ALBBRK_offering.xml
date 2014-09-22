@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- PersonalMotor offering for Albion Broker. Near-duplicate of sibling brand files; diffs are commercially deliberate and completely undocumented. -->
+<offering product="PersonalMotor" brand="ALBBRK" version="6">
+    <coverage code="PMOT_ACCIDENTAL" name="AccidentalDamage">
+      <term code="Excess" default="350" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="ALBBRK" from="2019-01-01" to=""/>
+    </coverage>
+    <coverage code="PMOT_FIRE" name="Fire">
+      <term code="Excess" default="350" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="100000"/>
+      <availability brand="ALBBRK" from="2012-01-01" to=""/>
+    </coverage>
+    <coverage code="PMOT_THEFT" name="Theft">
+      <term code="Excess" default="350" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="100000"/>
+      <availability brand="ALBBRK" from="2014-01-01" to=""/>
+    </coverage>
+    <coverage code="PMOT_WINDSCREEN" name="Windscreen">
+      <term code="Excess" default="350" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="50000"/>
+      <availability brand="ALBBRK" from="2019-01-01" to=""/>
+    </coverage>
+    <coverage code="PMOT_THIRDPARTY" name="ThirdPartyPD">
+      <term code="Excess" default="250" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="ALBBRK" from="2018-01-01" to="2020-12-31"/>
+    </coverage>
+    <coverage code="PMOT_THIRDPARTY" name="ThirdPartyBI">
+      <term code="Excess" default="500" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="ALBBRK" from="2017-01-01" to=""/>
+    </coverage>
+    <coverage code="PMOT_UNINSUREDL" name="UninsuredLoss">
+      <term code="Excess" default="350" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="ALBBRK" from="2011-01-01" to="2020-12-31"/>
+    </coverage>
+</offering>

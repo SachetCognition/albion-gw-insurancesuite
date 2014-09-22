@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- AGI_PREU_011 | Exported from RuleSet editor 15-Oct-2013 by tlindq; hand-edited since (editor corrupts CDATA, REG-24905) -->
+<rule name="AGI_PREU_011" entity="PolicyPeriod" priority="130" enabled="true">
+  <description>preupdate rule #11 - purpose partially documented in INC-20485</description>
+  <conditions logic="AND">
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="notEquals" rhs="ALBBRK"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      policyperiod.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(policyperiod, "review_agi_preu_011", "preupdate rule #11 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_ASSI_001 | Exported from RuleSet editor 05-Mar-2019 by rpatel; hand-edited since (editor corrupts CDATA, CM-26471) -->
+<rule name="AGI_ASSI_001" entity="PolicyPeriod" priority="222" enabled="true">
+  <description>assignment rule #1 - purpose partially documented in HERIT-8663</description>
+  <conditions logic="AND">
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="notEquals" rhs="ALBDIR"/>
+    <condition lhs="PolicyPeriod.FeedStatus_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="notEquals" rhs="ALBBRK"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      policyperiod.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(policyperiod, "review_agi_assi_001", "assignment rule #1 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

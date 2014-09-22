@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="PolicyLine">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (HERIT-8177) -->
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="HeritageFlag_Ext" type="varchar" desc="added 19-Aug-2018 for PRB-29070; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="ChannelFlag_Ext" type="varchar" desc="added 07-Dec-2022 for DEF-42117; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignRef_Ext" type="varchar" desc="added 10-Oct-2020 for HERIT-30598; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="ChannelCode_Ext" type="varchar" desc="added 27-Jan-2017 for GWBC-41057; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="SchemeCode_Ext" type="varchar" desc="added 06-Nov-2024 for PRB-5491; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

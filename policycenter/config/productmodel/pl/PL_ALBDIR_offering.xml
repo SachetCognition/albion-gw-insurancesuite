@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- PublicLiability offering for Albion Direct. Near-duplicate of sibling brand files; diffs are commercially deliberate and completely undocumented. -->
+<offering product="PublicLiability" brand="ALBDIR" version="14">
+    <coverage code="PL_PUBLICLIAB" name="PublicLiability">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="100000"/>
+      <availability brand="ALBDIR" from="2019-01-01" to="2024-12-31"/>
+    </coverage>
+    <coverage code="PL_PRODUCTSLI" name="ProductsLiability">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="ALBDIR" from="2018-01-01" to="2022-12-31"/>
+    </coverage>
+</offering>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!-- PetInsurance offering for RetailPlus Partnerships. Near-duplicate of sibling brand files; diffs are commercially deliberate and completely undocumented. -->
+<offering product="PetInsurance" brand="RETPLS" version="14">
+    <coverage code="PET_VETFEES" name="VetFees">
+      <term code="Excess" default="350" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="100000"/>
+      <availability brand="RETPLS" from="2011-01-01" to=""/>
+    </coverage>
+    <coverage code="PET_THIRDPARTY" name="ThirdPartyLiabilityPet">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="1000000"/>
+      <availability brand="RETPLS" from="2015-01-01" to=""/>
+    </coverage>
+    <coverage code="PET_DEATHOFPET" name="DeathOfPet">
+      <term code="Excess" default="100" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="50000"/>
+      <availability brand="RETPLS" from="2019-01-01" to="2022-12-31"/>
+    </coverage>
+    <coverage code="PET_ADVERTISIN" name="Advertising">
+      <term code="Excess" default="500" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="100000"/>
+      <availability brand="RETPLS" from="2017-01-01" to=""/>
+    </coverage>
+</offering>

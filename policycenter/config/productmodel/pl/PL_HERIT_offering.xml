@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- PublicLiability offering for Heritage Book. Near-duplicate of sibling brand files; diffs are commercially deliberate and completely undocumented. -->
+<offering product="PublicLiability" brand="HERIT" version="8">
+    <coverage code="PL_PUBLICLIAB" name="PublicLiability">
+      <term code="Excess" default="500" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="100000"/>
+      <availability brand="HERIT" from="2019-01-01" to=""/>
+    </coverage>
+    <coverage code="PL_PRODUCTSLI" name="ProductsLiability">
+      <term code="Excess" default="1000" options="100,250,350,500,750,1000"/>
+      <term code="Limit" default="5000000"/>
+      <availability brand="HERIT" from="2016-01-01" to=""/>
+    </coverage>
+</offering>

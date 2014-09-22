@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ProductLine_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (GWCC-46966) -->
+<typelist xmlns="http://guidewire.com/typelists" name="ProductLine_Ext" desc="AGI product line">
+  <typecode code="PMOT" name="PersonalMotor" desc="Private Car Comprehensive & TPFT"/>
+  <typecode code="HOME" name="HomeProperty" desc="Buildings & Contents inc. Flood Re ceded risks"/>
+  <typecode code="VAN" name="LightVan" desc="Commercial vehicle <3.5t sold via direct channel"/>
+  <typecode code="TRAV" name="Travel" desc="Single trip & annual multi-trip"/>
+  <typecode code="PET" name="PetInsurance" desc="Dog & cat, lifetime cover"/>
+  <typecode code="CPKG" name="CommercialPackage" desc="SME shop / office / surgery package"/>
+  <typecode code="CPROP" name="CommercialProperty" desc="Mid-market property owners"/>
+  <typecode code="FLEET" name="MotorFleet" desc="10-500 vehicle fleets"/>
+  <typecode code="EL" name="EmployersLiability" desc="Compulsory EL with ELTO reporting"/>
+  <typecode code="PL" name="PublicLiability" desc="PL / Products combined"/>
+  <typecode code="PI" name="ProfessionalIndemnity" desc="SME PI, run-off books"/>
+  <typecode code="TMP54" name="Temp code" desc="added directly in this center only, GWCC-9862"/>
+</typelist>

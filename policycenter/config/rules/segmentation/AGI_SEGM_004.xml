@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_SEGM_004 | Exported from RuleSet editor 22-Feb-2018 by mokeefe; hand-edited since (editor corrupts CDATA, AGI-10971) -->
+<rule name="AGI_SEGM_004" entity="PolicyPeriod" priority="310" enabled="true">
+  <description>segmentation rule #4 - purpose partially documented in INC-29461</description>
+  <conditions logic="AND">
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="PolicyPeriod.SourceSystem_Ext" op="equals" rhs="POLARIS"/>
+    <condition lhs="PolicyPeriod.FeedStatus_Ext" op="notEquals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      policyperiod.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(policyperiod, "review_agi_segm_004", "segmentation rule #4 - purpose partially")
+    ]]></gosu>
+  </action>
+</rule>

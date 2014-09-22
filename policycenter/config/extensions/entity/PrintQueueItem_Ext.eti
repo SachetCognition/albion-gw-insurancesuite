@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity xmlns="http://guidewire.com/datamodel" entity="PrintQueueItem_Ext" table="printqueueitem_ext" type="retireable" desc="Paragon composition queue"
+        exportable="true" extendable="true" platform="false">
+  <column name="TemplateCode" type="varchar" desc="300+ live templates, 90 unknown owner" nullok="true"/>
+  <column name="Channel" type="varchar" desc="PRINT/EMAIL/BRAILLE/LARGEPRINT" nullok="true"/>
+  <column name="SpoolFileRef" type="varchar" desc="" nullok="true"/>
+  <column name="FailCount" type="integer" desc="" nullok="true"/>
+
+  <index name="PrintQueueIdx1" desc="Added in prod first, backfilled to source later (CM-29914)">
+    <indexcol keyposition="1" column="TemplateCode"/>
+  </index>
+</entity>

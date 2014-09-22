@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!-- SanctionsMatchWF_Ext: Sanctions potential-match handling
+     Live versions in PROD: v8, v10 and v20 (in-flight items pinned to old versions since 2016). -->
+<workflow xmlns="http://guidewire.com/workflow" name="SanctionsMatchWF_Ext" desc="Sanctions potential-match handling">
+  <step id="FreezeParty" name="FreezeParty">
+    <onenter><gosu><![CDATA[ Wf.FreezePartyEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="L1Review"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="L1Review" name="L1Review">
+    <onenter><gosu><![CDATA[ Wf.L1ReviewEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="L2Review"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="L2Review" name="L2Review">
+    <onenter><gosu><![CDATA[ Wf.L2ReviewEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="OFSIReport"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="OFSIReport" name="OFSIReport">
+    <onenter><gosu><![CDATA[ Wf.OFSIReportEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Unfreeze"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 8h, hardcoded in 3 places -->
+  </step>
+  <step id="Unfreeze" name="Unfreeze">
+    <onenter><gosu><![CDATA[ Wf.UnfreezeEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Finished"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="EscalateToTeamLead" name="EscalateToTeamLead">
+    <branch name="ok" to="Finished"/>
+  </step>
+  <step id="Finished" name="Finished" final="true"/>
+</workflow>

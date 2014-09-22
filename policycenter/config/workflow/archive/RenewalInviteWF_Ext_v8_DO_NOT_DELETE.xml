@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- RenewalInviteWF_Ext: Renewal invite incl. PS21/5 gate (pinned old version - live items attached)
+     Live versions in PROD: v6, v10 and v15 (in-flight items pinned to old versions since 2016). -->
+<workflow xmlns="http://guidewire.com/workflow" name="RenewalInviteWF_Ext" desc="Renewal invite incl. PS21/5 gate (pinned old version - live items attached)">
+  <step id="PriceWalkCheck" name="PriceWalkCheck">
+    <onenter><gosu><![CDATA[ Wf.PriceWalkCheckEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="GenerateInvite"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 8h, hardcoded in 3 places -->
+  </step>
+  <step id="GenerateInvite" name="GenerateInvite">
+    <onenter><gosu><![CDATA[ Wf.GenerateInviteEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="ParagonSpool"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="ParagonSpool" name="ParagonSpool">
+    <onenter><gosu><![CDATA[ Wf.ParagonSpoolEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="AutoRenewWindow"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 72h, hardcoded in 3 places -->
+  </step>
+  <step id="AutoRenewWindow" name="AutoRenewWindow">
+    <onenter><gosu><![CDATA[ Wf.AutoRenewWindowEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Finished"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 72h, hardcoded in 3 places -->
+  </step>
+  <step id="EscalateToTeamLead" name="EscalateToTeamLead">
+    <branch name="ok" to="Finished"/>
+  </step>
+  <step id="Finished" name="Finished" final="true"/>
+</workflow>

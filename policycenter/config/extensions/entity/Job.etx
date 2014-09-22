@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Job">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (GWPC-31056) -->
+  <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
+  <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="CampaignRef_Ext" type="varchar" desc="added 20-Nov-2021 for REG-19537; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="SchemeCode_Ext" type="varchar" desc="added 07-May-2024 for GWPC-35194; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignRef_Ext" type="varchar" desc="added 16-Oct-2012 for GWBC-24556; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

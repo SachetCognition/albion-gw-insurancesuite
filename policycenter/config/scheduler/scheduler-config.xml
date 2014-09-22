@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!-- scheduler-config: HALF of these are disabled because Control-M runs them. Which half differs by environment. -->
+<scheduler-config xmlns="http://guidewire.com/scheduler">
+  <process-schedule process="AlbionScreeningFeedBatch" cron="0 33 5 * * ?" disabled="false"/>
+  <process-schedule process="AlbionCatFeedBatch" cron="0 16 1 * * ?" disabled="true"/>
+  <process-schedule process="AlbionSegmentationFeedBatch" cron="0 8 5 * * ?" disabled="false"/>
+  <process-schedule process="AlbionRenewalFeedBatch" cron="0 14 1 * * ?" disabled="false"/>
+  <process-schedule process="AlbionCollectionsEscalationBatch" cron="0 12 0 * * ?" disabled="true"/>
+  <process-schedule process="AlbionCollectionsSweepBatch" cron="0 28 2 * * ?" disabled="true"/>
+  <process-schedule process="AlbionCatFeedBatch" cron="0 53 4 * * ?" disabled="true"/>
+  <process-schedule process="AlbionRecoveriesSweepBatch" cron="0 54 1 * * ?" disabled="true"/>
+  <process-schedule process="AlbionSegmentationSweepBatch" cron="0 33 2 * * ?" disabled="true"/>
+  <process-schedule process="AlbionCollectionsFeedBatch" cron="0 27 5 * * ?" disabled="false"/>
+  <process-schedule process="AlbionScreeningEscalationBatch" cron="0 22 4 * * ?" disabled="true"/>
+  <process-schedule process="AlbionSegmentationFeedBatch" cron="0 46 4 * * ?" disabled="true"/>
+  <process-schedule process="AlbionRecoveriesHousekeepingBatch" cron="0 51 4 * * ?" disabled="false"/>
+  <process-schedule process="AlbionMtaFeedBatch" cron="0 50 1 * * ?" disabled="false"/>
+  <process-schedule process="AlbionRenewalFeedBatch" cron="0 5 5 * * ?" disabled="true"/>
+  <process-schedule process="AlbionRenewalFeedBatch" cron="0 30 4 * * ?" disabled="true"/>
+  <process-schedule process="AlbionCollectionsFeedBatch" cron="0 49 4 * * ?" disabled="true"/>
+  <process-schedule process="AlbionRenewalSweepBatch" cron="0 2 2 * * ?" disabled="true"/>
+  <process-schedule process="AlbionRenewalSweepBatch" cron="0 28 5 * * ?" disabled="false"/>
+  <process-schedule process="AlbionCollectionsFeedBatch" cron="0 16 0 * * ?" disabled="false"/>
+  <process-schedule process="AlbionRecoveriesEscalationBatch" cron="0 19 0 * * ?" disabled="true"/>
+  <process-schedule process="AlbionCatFeedBatch" cron="0 2 5 * * ?" disabled="true"/>
+  <process-schedule process="AlbionFnolSweepBatch" cron="0 14 4 * * ?" disabled="false"/>
+  <process-schedule process="AlbionRecoveriesEscalationBatch" cron="0 8 2 * * ?" disabled="true"/>
+  <process-schedule process="AlbionRenewalFeedBatch" cron="0 21 0 * * ?" disabled="false"/>
+  <process-schedule process="AlbionSegmentationHousekeepingBatch" cron="0 55 1 * * ?" disabled="false"/>
+  <process-schedule process="AlbionCatFeedBatch" cron="0 30 1 * * ?" disabled="true"/>
+  <process-schedule process="AlbionRenewalEscalationBatch" cron="0 10 2 * * ?" disabled="false"/>
+  <process-schedule process="AlbionScreeningEscalationBatch" cron="0 6 1 * * ?" disabled="true"/>
+  <process-schedule process="AlbionCollectionsFeedBatch" cron="0 30 3 * * ?" disabled="false"/>
+</scheduler-config>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity xmlns="http://guidewire.com/datamodel" entity="MIDSubmission_Ext" table="midsubmission_ext" type="retireable" desc="Motor Insurance Database submission log"
+        exportable="true" extendable="true" platform="false">
+  <column name="VRM" type="varchar" desc="normalised - see 3 different normalisers" nullok="true"/>
+  <column name="SubmissionType" type="varchar" desc="NEW/AMEND/DELETE" nullok="true"/>
+  <column name="MIBResponseCode" type="varchar" desc="" nullok="true"/>
+  <column name="AttemptCount" type="integer" desc="goes to 14 before anyone looks" nullok="true"/>
+
+  <index name="MIDSubmissIdx1" desc="Added in prod first, backfilled to source later (AGI-45126)">
+    <indexcol keyposition="1" column="VRM"/>
+  </index>
+</entity>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- AGI_PREU_005 | Exported from RuleSet editor 12-Jul-2018 by pnair; hand-edited since (editor corrupts CDATA, DEF-19206) -->
+<rule name="AGI_PREU_005" entity="PolicyPeriod" priority="92" enabled="true">
+  <description>preupdate rule #5 - purpose partially documented in GWBC-21946</description>
+  <conditions logic="AND">
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="PolicyPeriod.SourceSystem_Ext" op="notEquals" rhs="ALBDIR"/>
+    <condition lhs="PolicyPeriod.SourceSystem_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="equals" rhs="ALBBRK"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="notEquals" rhs="HERIT"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      policyperiod.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(policyperiod, "review_agi_preu_005", "preupdate rule #5 - purpose partially do")
+    ]]></gosu>
+  </action>
+</rule>

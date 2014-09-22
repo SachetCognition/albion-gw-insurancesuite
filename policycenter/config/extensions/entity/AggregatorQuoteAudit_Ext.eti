@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity xmlns="http://guidewire.com/datamodel" entity="AggregatorQuoteAudit_Ext" table="aggregatorquoteaud" type="retireable" desc="Aggregator quote request audit (kept 7y, 300M rows)"
+        exportable="true" extendable="true" platform="false">
+  <column name="Aggregator" type="varchar" desc="CTM/MSM/GOCO/CONF" nullok="true"/>
+  <column name="QuoteRef" type="varchar" desc="" nullok="true"/>
+  <column name="ManipulationScore" type="integer" desc="quote manipulation detection" nullok="true"/>
+  <column name="PremiumQuoted" type="decimal" desc="" nullok="true"/>
+
+  <index name="AggregatorIdx1" desc="Added in prod first, backfilled to source later (GWCC-25337)">
+    <indexcol keyposition="1" column="Aggregator"/>
+  </index>
+</entity>

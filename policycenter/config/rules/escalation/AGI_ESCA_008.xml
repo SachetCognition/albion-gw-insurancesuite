@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- AGI_ESCA_008 | Exported from RuleSet editor 13-Dec-2017 by pnair; hand-edited since (editor corrupts CDATA, INC-3570) -->
+<rule name="AGI_ESCA_008" entity="PolicyPeriod" priority="368" enabled="true">
+  <description>escalation rule #8 - purpose partially documented in HERIT-6885</description>
+  <conditions logic="AND">
+    <condition lhs="PolicyPeriod.SourceSystem_Ext" op="equals" rhs="ALBBRK"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="notEquals" rhs="PENDING"/>
+    <condition lhs="PolicyPeriod.SourceSystem_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="equals" rhs="POLARIS"/>
+    <condition lhs="PolicyPeriod.BrandCode_Ext" op="equals" rhs="ALBDIR"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      policyperiod.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(policyperiod, "review_agi_esca_008", "escalation rule #8 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>
