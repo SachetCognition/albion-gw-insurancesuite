@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_VALI_009 | Exported from RuleSet editor 17-Dec-2012 by akowal; hand-edited since (editor corrupts CDATA, GWBC-18862) -->
+<rule name="AGI_VALI_009" entity="Claim" priority="160" enabled="true">
+  <description>validation rule #9 - purpose partially documented in AGI-45135</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.FeedStatus_Ext" op="equals" rhs="HERIT"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="equals" rhs="HERIT"/>
+    <condition lhs="Claim.BrandCode_Ext" op="notEquals" rhs="PENDING"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_vali_009", "validation rule #9 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- AGI_SEGM_001 | Exported from RuleSet editor 09-Mar-2019 by svenkat; hand-edited since (editor corrupts CDATA, GWPC-12851) -->
+<rule name="AGI_SEGM_001" entity="Claim" priority="267" enabled="true">
+  <description>segmentation rule #1 - purpose partially documented in HERIT-39419</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.SourceSystem_Ext" op="notEquals" rhs="HERIT"/>
+    <condition lhs="Claim.SourceSystem_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="Claim.BrandCode_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="notEquals" rhs="PENDING"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="notEquals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_segm_001", "segmentation rule #1 - purpose partially")
+    ]]></gosu>
+  </action>
+</rule>

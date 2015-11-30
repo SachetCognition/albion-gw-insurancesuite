@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CoverageCode_EL_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (DEF-39867) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CoverageCode_EL_Ext" desc="Coverage codes - EmployersLiability. Near-duplicate of CoverageCode_*_Ext siblings; drift intentional per pricing.">
+  <typecode code="EL_FLOOD" name="Flood" desc="Flood cover (EmployersLiability)"/>
+  <typecode code="EL_ACCIDENTAL" name="AccidentalDamageHome" desc="AccidentalDamageHome cover (EmployersLiability)"/>
+  <typecode code="EL_ACCIDENTAL" name="AccidentalDamage" desc="AccidentalDamage cover (EmployersLiability)"/>
+  <typecode code="EL_KEYCOVER" name="KeyCover" desc="KeyCover cover (EmployersLiability)"/>
+  <typecode code="EL_THIRDPARTY" name="ThirdPartyBI" desc="ThirdPartyBI cover (EmployersLiability)"/>
+  <typecode code="EL_THEFT" name="Theft" desc="Theft cover (EmployersLiability)"/>
+</typelist>

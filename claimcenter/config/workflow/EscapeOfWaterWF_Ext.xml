@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- EscapeOfWaterWF_Ext: EOW property journey with drying network
+     Live versions in PROD: v7, v10 and v17 (in-flight items pinned to old versions since 2016). -->
+<workflow xmlns="http://guidewire.com/workflow" name="EscapeOfWaterWF_Ext" desc="EOW property journey with drying network">
+  <step id="Notify" name="Notify">
+    <onenter><gosu><![CDATA[ Wf.NotifyEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="SurveyorTriage"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="SurveyorTriage" name="SurveyorTriage">
+    <onenter><gosu><![CDATA[ Wf.SurveyorTriageEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="DryingDeploy"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="DryingDeploy" name="DryingDeploy">
+    <onenter><gosu><![CDATA[ Wf.DryingDeployEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="AltAccomAssess"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="AltAccomAssess" name="AltAccomAssess">
+    <onenter><gosu><![CDATA[ Wf.AltAccomAssessEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="ScopeAgree"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 8h, hardcoded in 3 places -->
+  </step>
+  <step id="ScopeAgree" name="ScopeAgree">
+    <onenter><gosu><![CDATA[ Wf.ScopeAgreeEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Settle"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 72h, hardcoded in 3 places -->
+  </step>
+  <step id="Settle" name="Settle">
+    <onenter><gosu><![CDATA[ Wf.SettleEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Finished"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 8h, hardcoded in 3 places -->
+  </step>
+  <step id="EscalateToTeamLead" name="EscalateToTeamLead">
+    <branch name="ok" to="Finished"/>
+  </step>
+  <step id="Finished" name="Finished" final="true"/>
+</workflow>

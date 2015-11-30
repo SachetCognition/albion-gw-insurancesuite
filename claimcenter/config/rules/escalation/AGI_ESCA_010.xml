@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_ESCA_010 | Exported from RuleSet editor 07-Apr-2013 by nchen; hand-edited since (editor corrupts CDATA, DEF-5631) -->
+<rule name="AGI_ESCA_010" entity="Claim" priority="255" enabled="true">
+  <description>escalation rule #10 - purpose partially documented in AGI-42387</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.BrandCode_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="equals" rhs="ALBBRK"/>
+    <condition lhs="Claim.BrandCode_Ext" op="equals" rhs="ALBDIR"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_esca_010", "escalation rule #10 - purpose partially ")
+    ]]></gosu>
+  </action>
+</rule>

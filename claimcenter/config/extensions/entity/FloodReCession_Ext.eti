@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity xmlns="http://guidewire.com/datamodel" entity="FloodReCession_Ext" table="floodrecession_ext" type="retireable" desc="Flood Re ceded risk register"
+        exportable="true" extendable="true" platform="false">
+  <column name="CessionRef" type="varchar" desc="" nullok="true"/>
+  <column name="CededPremium" type="decimal" desc="scheme premium band" nullok="true"/>
+  <column name="CouncilTaxBand" type="varchar" desc="A-H" nullok="true"/>
+  <column name="UPRN" type="varchar" desc="property UPRN" nullok="true"/>
+  <column name="BordereauxPeriod" type="varchar" desc="YYYYMM" nullok="true"/>
+
+  <index name="FloodReCesIdx1" desc="Added in prod first, backfilled to source later (CM-20178)">
+    <indexcol keyposition="1" column="CessionRef"/>
+  </index>
+</entity>

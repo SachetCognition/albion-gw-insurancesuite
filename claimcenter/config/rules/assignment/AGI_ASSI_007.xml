@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- AGI_ASSI_007 | Exported from RuleSet editor 24-Aug-2012 by cdoyle; hand-edited since (editor corrupts CDATA, AGI-13249) -->
+<rule name="AGI_ASSI_007" entity="Claim" priority="643" enabled="true">
+  <description>assignment rule #7 - purpose partially documented in GWPC-41428</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.SourceSystem_Ext" op="equals" rhs="ALBBRK"/>
+    <condition lhs="Claim.BrandCode_Ext" op="notEquals" rhs="PENDING"/>
+    <condition lhs="Claim.SourceSystem_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="Claim.BrandCode_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="Claim.SourceSystem_Ext" op="equals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_assi_007", "assignment rule #7 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

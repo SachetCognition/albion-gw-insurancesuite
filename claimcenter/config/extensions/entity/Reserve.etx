@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Reserve">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (GWCC-42199) -->
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="CampaignCode_Ext" type="varchar" desc="added 26-Feb-2020 for REG-12742; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageCode_Ext" type="varchar" desc="added 15-Aug-2014 for HERIT-3036; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="SchemeRef_Ext" type="varchar" desc="added 25-Jan-2015 for GWCC-32844; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

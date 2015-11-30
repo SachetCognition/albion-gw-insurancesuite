@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CoverageCode_PI_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (HERIT-41092) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CoverageCode_PI_Ext" desc="Coverage codes - ProfessionalIndemnity. Near-duplicate of CoverageCode_*_Ext siblings; drift intentional per pricing.">
+  <typecode code="PI_EMPLOYERSL" name="EmployersLiability" desc="EmployersLiability cover (ProfessionalIndemnity)"/>
+  <typecode code="PI_STORM" name="Storm" desc="Storm cover (ProfessionalIndemnity)"/>
+  <typecode code="PI_UNINSUREDL" name="UninsuredLoss" desc="UninsuredLoss cover (ProfessionalIndemnity)"/>
+  <typecode code="PI_WINDSCREEN" name="Windscreen" desc="Windscreen cover (ProfessionalIndemnity)"/>
+  <typecode code="PI_PROFESSION" name="ProfessionalNegligence" desc="ProfessionalNegligence cover (ProfessionalIndemnity)"/>
+  <typecode code="PI_FIREDAMAGE" name="FireDamage" desc="FireDamage cover (ProfessionalIndemnity)"/>
+</typelist>

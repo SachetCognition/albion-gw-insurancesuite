@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Claim">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (DEF-41225) -->
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="BordereauxFlag_Ext" type="varchar" desc="added 09-May-2012 for PRB-4026; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxRef_Ext" type="varchar" desc="added 12-Nov-2024 for CM-18988; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageFlag_Ext" type="varchar" desc="added 26-Aug-2022 for CM-23439; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageRef_Ext" type="varchar" desc="added 15-Sep-2016 for AGI-35295; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="SchemeCode_Ext" type="varchar" desc="added 16-Jan-2021 for HERIT-17762; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

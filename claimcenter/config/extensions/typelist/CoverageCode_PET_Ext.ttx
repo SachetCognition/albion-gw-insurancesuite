@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CoverageCode_PET_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (INC-25083) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CoverageCode_PET_Ext" desc="Coverage codes - PetInsurance. Near-duplicate of CoverageCode_*_Ext siblings; drift intentional per pricing.">
+  <typecode code="PET_THEFTHOME" name="TheftHome" desc="TheftHome cover (PetInsurance)"/>
+  <typecode code="PET_WINDSCREEN" name="Windscreen" desc="Windscreen cover (PetInsurance)"/>
+  <typecode code="PET_PERSONALAC" name="PersonalAccident" desc="PersonalAccident cover (PetInsurance)"/>
+  <typecode code="PET_LEGALEXPEN" name="LegalExpenses" desc="LegalExpenses cover (PetInsurance)"/>
+  <typecode code="PET_FIREDAMAGE" name="FireDamage" desc="FireDamage cover (PetInsurance)"/>
+  <typecode code="PET_ACCIDENTAL" name="AccidentalDamageHome" desc="AccidentalDamageHome cover (PetInsurance)"/>
+  <typecode code="TMP34" name="Temp code" desc="added directly in this center only, GWPC-33641"/>
+</typelist>

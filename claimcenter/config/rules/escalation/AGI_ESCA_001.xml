@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- AGI_ESCA_001 | Exported from RuleSet editor 03-Mar-2017 by tlindq; hand-edited since (editor corrupts CDATA, HERIT-23979) -->
+<rule name="AGI_ESCA_001" entity="Claim" priority="562" enabled="true">
+  <description>escalation rule #1 - purpose partially documented in GWCC-31037</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.SourceSystem_Ext" op="equals" rhs="POLARIS"/>
+    <condition lhs="Claim.SourceSystem_Ext" op="notEquals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_esca_001", "escalation rule #1 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

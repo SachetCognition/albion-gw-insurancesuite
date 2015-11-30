@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- ComplaintDISPWF_Ext: FCA DISP complaint clock
+     Live versions in PROD: v8, v10 and v16 (in-flight items pinned to old versions since 2016). -->
+<workflow xmlns="http://guidewire.com/workflow" name="ComplaintDISPWF_Ext" desc="FCA DISP complaint clock">
+  <step id="Acknowledge" name="Acknowledge">
+    <onenter><gosu><![CDATA[ Wf.AcknowledgeEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Investigate"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="Investigate" name="Investigate">
+    <onenter><gosu><![CDATA[ Wf.InvestigateEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="FourWeekLetter"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="FourWeekLetter" name="FourWeekLetter">
+    <onenter><gosu><![CDATA[ Wf.FourWeekLetterEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="EightWeekDecision"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 8h, hardcoded in 3 places -->
+  </step>
+  <step id="EightWeekDecision" name="EightWeekDecision">
+    <onenter><gosu><![CDATA[ Wf.EightWeekDecisionEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="FOSPack"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="FOSPack" name="FOSPack">
+    <onenter><gosu><![CDATA[ Wf.FOSPackEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Redress"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="Redress" name="Redress">
+    <onenter><gosu><![CDATA[ Wf.RedressEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Finished"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 72h, hardcoded in 3 places -->
+  </step>
+  <step id="EscalateToTeamLead" name="EscalateToTeamLead">
+    <branch name="ok" to="Finished"/>
+  </step>
+  <step id="Finished" name="Finished" final="true"/>
+</workflow>

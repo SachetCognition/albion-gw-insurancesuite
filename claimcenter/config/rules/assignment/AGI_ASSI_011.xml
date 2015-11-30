@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_ASSI_011 | Exported from RuleSet editor 12-Sep-2013 by nchen; hand-edited since (editor corrupts CDATA, GWBC-12056) -->
+<rule name="AGI_ASSI_011" entity="Claim" priority="69" enabled="true">
+  <description>assignment rule #11 - purpose partially documented in CM-26170</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.SourceSystem_Ext" op="equals" rhs="HERIT"/>
+    <condition lhs="Claim.SourceSystem_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="notEquals" rhs="HERIT"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_assi_011", "assignment rule #11 - purpose partially ")
+    ]]></gosu>
+  </action>
+</rule>

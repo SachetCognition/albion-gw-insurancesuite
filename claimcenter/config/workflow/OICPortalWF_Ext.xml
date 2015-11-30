@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- OICPortalWF_Ext: OIC whiplash portal
+     Live versions in PROD: v4, v10 and v19 (in-flight items pinned to old versions since 2016). -->
+<workflow xmlns="http://guidewire.com/workflow" name="OICPortalWF_Ext" desc="OIC whiplash portal">
+  <step id="PortalReceive" name="PortalReceive">
+    <onenter><gosu><![CDATA[ Wf.PortalReceiveEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="LiabilityDecision"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="LiabilityDecision" name="LiabilityDecision">
+    <onenter><gosu><![CDATA[ Wf.LiabilityDecisionEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="TariffOffer"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="TariffOffer" name="TariffOffer">
+    <onenter><gosu><![CDATA[ Wf.TariffOfferEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Negotiate"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="Negotiate" name="Negotiate">
+    <onenter><gosu><![CDATA[ Wf.NegotiateEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="ExitCheck"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="ExitCheck" name="ExitCheck">
+    <onenter><gosu><![CDATA[ Wf.ExitCheckEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Settle"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="Settle" name="Settle">
+    <onenter><gosu><![CDATA[ Wf.SettleEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Finished"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="EscalateToTeamLead" name="EscalateToTeamLead">
+    <branch name="ok" to="Finished"/>
+  </step>
+  <step id="Finished" name="Finished" final="true"/>
+</workflow>

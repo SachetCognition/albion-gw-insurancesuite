@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ExcessType_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (AGI-571) -->
+<typelist xmlns="http://guidewire.com/typelists" name="ExcessType_Ext" desc="Excess structure">
+  <typecode code="COMP" name="Compulsory" desc="Policy compulsory excess"/>
+  <typecode code="VOL" name="Voluntary" desc="Chosen at quote"/>
+  <typecode code="YOUNG" name="Young Driver" desc="Under-25 additional"/>
+  <typecode code="SUBS" name="Subsidence" desc="£1000 standard subsidence excess"/>
+  <typecode code="EOW" name="Escape of Water" desc="EOW-specific excess post-2018 repricing"/>
+  <typecode code="FLOOD" name="Flood" desc="Waived when Flood Re ceded"/>
+  <typecode code="TMP60" name="Temp code" desc="added directly in this center only, CM-35387"/>
+</typelist>

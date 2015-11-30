@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CoverageCode_TRAV_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (CHG-23175) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CoverageCode_TRAV_Ext" desc="Coverage codes - Travel. Near-duplicate of CoverageCode_*_Ext siblings; drift intentional per pricing.">
+  <typecode code="TRAV_FIREDAMAGE" name="FireDamage" desc="FireDamage cover (Travel)"/>
+  <typecode code="TRAV_PERSONALAC" name="PersonalAccident" desc="PersonalAccident cover (Travel)"/>
+  <typecode code="TRAV_PROFESSION" name="ProfessionalNegligence" desc="ProfessionalNegligence cover (Travel)"/>
+  <typecode code="TRAV_ESCAPEOFWA" name="EscapeOfWater" desc="EscapeOfWater cover (Travel)"/>
+  <typecode code="TRAV_SUBSIDENCE" name="Subsidence" desc="Subsidence cover (Travel)"/>
+  <typecode code="TRAV_THIRDPARTY" name="ThirdPartyBI" desc="ThirdPartyBI cover (Travel)"/>
+  <typecode code="TMP67" name="Temp code" desc="added directly in this center only, CM-30873"/>
+</typelist>

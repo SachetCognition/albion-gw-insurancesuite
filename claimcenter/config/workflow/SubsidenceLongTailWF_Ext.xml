@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- SubsidenceLongTailWF_Ext: Subsidence - items live in this WF for 3+ years
+     Live versions in PROD: v8, v14 and v16 (in-flight items pinned to old versions since 2016). -->
+<workflow xmlns="http://guidewire.com/workflow" name="SubsidenceLongTailWF_Ext" desc="Subsidence - items live in this WF for 3+ years">
+  <step id="Notify" name="Notify">
+    <onenter><gosu><![CDATA[ Wf.NotifyEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="ArboristReport"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 72h, hardcoded in 3 places -->
+  </step>
+  <step id="ArboristReport" name="ArboristReport">
+    <onenter><gosu><![CDATA[ Wf.ArboristReportEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Monitoring12M"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="Monitoring12M" name="Monitoring12M">
+    <onenter><gosu><![CDATA[ Wf.Monitoring12MEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Underpin"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="Underpin" name="Underpin">
+    <onenter><gosu><![CDATA[ Wf.UnderpinEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Reinstate"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="Reinstate" name="Reinstate">
+    <onenter><gosu><![CDATA[ Wf.ReinstateEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Review"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="Review" name="Review">
+    <onenter><gosu><![CDATA[ Wf.ReviewEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Finished"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="EscalateToTeamLead" name="EscalateToTeamLead">
+    <branch name="ok" to="Finished"/>
+  </step>
+  <step id="Finished" name="Finished" final="true"/>
+</workflow>

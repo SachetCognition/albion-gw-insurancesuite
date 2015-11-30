@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity xmlns="http://guidewire.com/datamodel" entity="ComplaintCase_Ext" table="complaintcase_ext" type="retireable" desc="FCA DISP complaint wrapper"
+        exportable="true" extendable="true" platform="false">
+  <column name="Category" type="varchar" desc="ComplaintCategory_Ext" nullok="true"/>
+  <column name="EightWeekDeadline" type="datetime" desc="the clock" nullok="true"/>
+  <column name="FOSRef" type="varchar" desc="" nullok="true"/>
+  <column name="RedressAmount" type="decimal" desc="" nullok="true"/>
+  <column name="RootCauseNotes" type="varchar" desc="" nullok="true"/>
+
+  <index name="ComplaintCIdx1" desc="Added in prod first, backfilled to source later (GWBC-25341)">
+    <indexcol keyposition="1" column="Category"/>
+  </index>
+</entity>

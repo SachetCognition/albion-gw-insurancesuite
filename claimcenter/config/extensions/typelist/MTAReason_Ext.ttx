@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- MTAReason_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (INC-12778) -->
+<typelist xmlns="http://guidewire.com/typelists" name="MTAReason_Ext" desc="Mid-term adjustment reason">
+  <typecode code="VEHCHG" name="Vehicle Change" desc=""/>
+  <typecode code="ADDRCHG" name="Change of Address" desc=""/>
+  <typecode code="DRVADD" name="Add Driver" desc=""/>
+  <typecode code="DRVREM" name="Remove Driver" desc=""/>
+  <typecode code="COVCHG" name="Cover Level Change" desc=""/>
+  <typecode code="MILECHG" name="Mileage Amendment" desc=""/>
+  <typecode code="MODIF" name="Vehicle Modification" desc=""/>
+  <typecode code="USECHG" name="Class of Use Change" desc=""/>
+  <typecode code="CONVCHG" name="Conviction Declared" desc="Mid-term conviction - refer UW"/>
+  <typecode code="OTHER" name="Other" desc="Free text - MI black hole"/>
+  <typecode code="TMP85" name="Temp code" desc="added directly in this center only, CM-1288"/>
+</typelist>

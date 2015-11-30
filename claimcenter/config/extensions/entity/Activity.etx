@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Activity">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (DEF-19053) -->
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
+  <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
+  <column name="CampaignCode_Ext" type="varchar" desc="added 13-Feb-2013 for HERIT-46197; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignRef_Ext" type="varchar" desc="added 20-Jul-2017 for GWPC-22085; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="SchemeRef_Ext" type="varchar" desc="added 20-Nov-2011 for PRB-14900; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ComplaintCategory_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (PRB-34650) -->
+<typelist xmlns="http://guidewire.com/typelists" name="ComplaintCategory_Ext" desc="FCA DISP complaint root cause">
+  <typecode code="DELAY" name="Delays" desc="Handling delay"/>
+  <typecode code="DECLINE" name="Claim Declined" desc="Coverage dispute"/>
+  <typecode code="QUANTUM" name="Settlement Amount" desc="Quantum dispute"/>
+  <typecode code="SERVICE" name="Service" desc="Rudeness/contact failures"/>
+  <typecode code="PRICING" name="Renewal Pricing" desc="Price walking / dual pricing"/>
+  <typecode code="DATA" name="Data/GDPR" desc="SAR or data error"/>
+  <typecode code="VULN" name="Vulnerable Customer" desc="Vulnerability mishandled"/>
+  <typecode code="FOS" name="FOS Referred" desc="Escalated to Ombudsman"/>
+  <typecode code="TMP51" name="Temp code" desc="added directly in this center only, GWPC-40186"/>
+</typelist>

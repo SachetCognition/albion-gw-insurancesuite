@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- AGI_VALI_013 | Exported from RuleSet editor 10-Dec-2018 by tlindq; hand-edited since (editor corrupts CDATA, INC-43545) -->
+<rule name="AGI_VALI_013" entity="Claim" priority="384" enabled="true">
+  <description>validation rule #13 - purpose partially documented in DEF-15320</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.BrandCode_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="Claim.BrandCode_Ext" op="notEquals" rhs="ALBBRK"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_vali_013", "validation rule #13 - purpose partially ")
+    ]]></gosu>
+  </action>
+</rule>

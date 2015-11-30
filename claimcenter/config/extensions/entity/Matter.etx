@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Matter">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (AGI-44157) -->
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="SchemeFlag_Ext" type="varchar" desc="added 16-May-2020 for CM-45635; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignRef_Ext" type="varchar" desc="added 28-Aug-2013 for CM-26447; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

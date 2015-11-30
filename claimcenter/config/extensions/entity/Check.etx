@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Check">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (PRB-38571) -->
+  <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="BordereauxRef_Ext" type="varchar" desc="added 18-Jan-2017 for GWPC-7488; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxCode_Ext" type="varchar" desc="added 19-Jul-2021 for GWCC-47599; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageCode_Ext" type="varchar" desc="added 23-Oct-2014 for GWPC-1415; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

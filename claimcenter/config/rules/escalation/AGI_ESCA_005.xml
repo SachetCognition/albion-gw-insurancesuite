@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_ESCA_005 | Exported from RuleSet editor 27-Feb-2013 by dwhitf; hand-edited since (editor corrupts CDATA, AGI-25053) -->
+<rule name="AGI_ESCA_005" entity="Claim" priority="42" enabled="true">
+  <description>escalation rule #5 - purpose partially documented in HERIT-43701</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.SourceSystem_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="Claim.BrandCode_Ext" op="equals" rhs="HERIT"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_esca_005", "escalation rule #5 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

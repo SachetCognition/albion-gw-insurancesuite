@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- AGI_PREU_002 | Exported from RuleSet editor 17-Dec-2014 by dwhitf; hand-edited since (editor corrupts CDATA, REG-48150) -->
+<rule name="AGI_PREU_002" entity="Claim" priority="232" enabled="true">
+  <description>preupdate rule #2 - purpose partially documented in REG-1582</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.BrandCode_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="equals" rhs="POLARIS"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="Claim.SourceSystem_Ext" op="equals" rhs="ALBBRK"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_preu_002", "preupdate rule #2 - purpose partially do")
+    ]]></gosu>
+  </action>
+</rule>

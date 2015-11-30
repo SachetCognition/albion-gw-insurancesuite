@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Exposure">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (GWPC-39341) -->
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
+  <column name="SchemeFlag_Ext" type="varchar" desc="added 10-Jul-2015 for GWCC-27945; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageRef_Ext" type="varchar" desc="added 03-Apr-2013 for CHG-42478; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageFlag_Ext" type="varchar" desc="added 28-Jul-2023 for DEF-43327; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxRef_Ext" type="varchar" desc="added 24-Apr-2023 for CM-39494; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

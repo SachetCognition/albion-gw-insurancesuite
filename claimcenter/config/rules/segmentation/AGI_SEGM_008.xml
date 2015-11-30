@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_SEGM_008 | Exported from RuleSet editor 26-Apr-2018 by gwoffsh2; hand-edited since (editor corrupts CDATA, REG-47827) -->
+<rule name="AGI_SEGM_008" entity="Claim" priority="300" enabled="true">
+  <description>segmentation rule #8 - purpose partially documented in PRB-6300</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.SourceSystem_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="notEquals" rhs="ALBDIR"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_segm_008", "segmentation rule #8 - purpose partially")
+    ]]></gosu>
+  </action>
+</rule>

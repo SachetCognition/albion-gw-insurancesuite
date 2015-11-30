@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity xmlns="http://guidewire.com/datamodel" entity="LegacyPolicySnapshot_Ext" table="legacypolicysnapsh" type="retireable" desc="POLARIS migration snapshot - 41M rows in prod, 'temporary' since 2015"
+        exportable="true" extendable="true" platform="false">
+  <column name="PolarisRef" type="varchar" desc="" nullok="true"/>
+  <column name="ModuleCode" type="varchar" desc="POLARIS module P100-P999" nullok="true"/>
+  <column name="RawRecord" type="varchar" desc="the entire 600-byte record, as-is" nullok="true"/>
+  <column name="MigrationWave" type="varchar" desc="W1-W14" nullok="true"/>
+  <column name="ReconStatus" type="varchar" desc="MATCHED/ORPHAN/DUPE/FIXED_BY_SQL" nullok="true"/>
+
+  <index name="LegacyPoliIdx1" desc="Added in prod first, backfilled to source later (AGI-6658)">
+    <indexcol keyposition="1" column="PolarisRef"/>
+  </index>
+</entity>

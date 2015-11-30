@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- AGI_VALI_011 | Exported from RuleSet editor 12-Sep-2014 by gwoffsh2; hand-edited since (editor corrupts CDATA, DEF-24090) -->
+<rule name="AGI_VALI_011" entity="Claim" priority="543" enabled="true">
+  <description>validation rule #11 - purpose partially documented in INC-29929</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.SourceSystem_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="Claim.SourceSystem_Ext" op="equals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_vali_011", "validation rule #11 - purpose partially ")
+    ]]></gosu>
+  </action>
+</rule>

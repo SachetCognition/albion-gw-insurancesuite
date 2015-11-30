@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!-- MotorFNOLIntakeWF_Ext: Motor FNOL intake incl. CUE + fraud scoring (pinned old version - live items attached)
+     Live versions in PROD: v3, v14 and v18 (in-flight items pinned to old versions since 2016). -->
+<workflow xmlns="http://guidewire.com/workflow" name="MotorFNOLIntakeWF_Ext" desc="Motor FNOL intake incl. CUE + fraud scoring (pinned old version - live items attached)">
+  <step id="CaptureFNOL" name="CaptureFNOL">
+    <onenter><gosu><![CDATA[ Wf.CaptureFNOLEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="CUECheck"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="CUECheck" name="CUECheck">
+    <onenter><gosu><![CDATA[ Wf.CUECheckEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="FraudScore"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="FraudScore" name="FraudScore">
+    <onenter><gosu><![CDATA[ Wf.FraudScoreEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Segment"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 48h, hardcoded in 3 places -->
+  </step>
+  <step id="Segment" name="Segment">
+    <onenter><gosu><![CDATA[ Wf.SegmentEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="AssignHandler"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 72h, hardcoded in 3 places -->
+  </step>
+  <step id="AssignHandler" name="AssignHandler">
+    <onenter><gosu><![CDATA[ Wf.AssignHandlerEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Finished"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 24h, hardcoded in 3 places -->
+  </step>
+  <step id="EscalateToTeamLead" name="EscalateToTeamLead">
+    <branch name="ok" to="Finished"/>
+  </step>
+  <step id="Finished" name="Finished" final="true"/>
+</workflow>

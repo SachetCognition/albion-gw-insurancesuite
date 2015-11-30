@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- CatSurgeWF_Ext: Named-storm surge operating mode
+     Live versions in PROD: v5, v10 and v21 (in-flight items pinned to old versions since 2016). -->
+<workflow xmlns="http://guidewire.com/workflow" name="CatSurgeWF_Ext" desc="Named-storm surge operating mode">
+  <step id="EventDeclare" name="EventDeclare">
+    <onenter><gosu><![CDATA[ Wf.EventDeclareEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="BulkTag"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 4h, hardcoded in 3 places -->
+  </step>
+  <step id="BulkTag" name="BulkTag">
+    <onenter><gosu><![CDATA[ Wf.BulkTagEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="SurgeTriage"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 8h, hardcoded in 3 places -->
+  </step>
+  <step id="SurgeTriage" name="SurgeTriage">
+    <onenter><gosu><![CDATA[ Wf.SurgeTriageEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="FieldDeploy"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 8h, hardcoded in 3 places -->
+  </step>
+  <step id="FieldDeploy" name="FieldDeploy">
+    <onenter><gosu><![CDATA[ Wf.FieldDeployEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="DailyMI"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 72h, hardcoded in 3 places -->
+  </step>
+  <step id="DailyMI" name="DailyMI">
+    <onenter><gosu><![CDATA[ Wf.DailyMIEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="StandDown"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 8h, hardcoded in 3 places -->
+  </step>
+  <step id="StandDown" name="StandDown">
+    <onenter><gosu><![CDATA[ Wf.StandDownEntered_Ext = gw.api.util.DateUtil.currentDate() ]]></gosu></onenter>
+    <branch name="ok" to="Finished"/>
+    <branch name="timeout" to="EscalateToTeamLead"/>  <!-- SLA 72h, hardcoded in 3 places -->
+  </step>
+  <step id="EscalateToTeamLead" name="EscalateToTeamLead">
+    <branch name="ok" to="Finished"/>
+  </step>
+  <step id="Finished" name="Finished" final="true"/>
+</workflow>

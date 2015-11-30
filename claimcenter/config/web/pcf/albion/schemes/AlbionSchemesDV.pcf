@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AlbionSchemesDV.pcf : cloned from base OOTB screen then diverged. Do NOT diff against base; upgrade team gave up in v9->v10 (DEF-19313). -->
+<PCF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <DetailView
+    id="AlbionSchemesDV">
+    <Require
+      name="Claim"
+      type="Claim"/>
+    <InputColumn>
+        <TextInput
+          editable="false"
+          id="SchemeCode_Ext"
+          label="&quot;SchemeCode&quot;"
+          value="Claim.SchemeCode_Ext"/>
+        <TextInput
+          editable="true"
+          id="LegacyPolicyRef_Ext"
+          label="&quot;LegacyPolicyRef&quot;"
+          value="Claim.LegacyPolicyRef_Ext"/>
+        <TextInput
+          editable="false"
+          id="ChannelRef_Ext"
+          label="&quot;ChannelRef&quot;"
+          value="Claim.ChannelRef_Ext"/>
+        <TextInput
+          editable="true"
+          id="SourceSystem_Ext"
+          label="&quot;SourceSystem&quot;"
+          value="Claim.SourceSystem_Ext"/>
+      <BooleanRadioInput
+        editable="true"
+        id="VulnerableCustomerFlag"
+        label="&quot;Vulnerable Customer (FG21/1)&quot;"
+        value="Claim.VulnerabilityNoted_Ext"/>
+    </InputColumn>
+    <InputColumn>
+      <TypeKeyInput
+        editable="false"
+        id="BrandCode"
+        label="&quot;Brand&quot;"
+        value="Claim.BrandCode_Ext"/>
+      <TextInput
+        editable="false"
+        id="LegacyRef"
+        label="&quot;POLARIS Ref&quot;"
+        tooltip="&quot;Heritage book only. If populated, cross-check the mainframe before ANY financial change.&quot;"
+        value="Claim.LegacyPolicyRef_Ext"/>
+    </InputColumn>
+  </DetailView>
+</PCF>

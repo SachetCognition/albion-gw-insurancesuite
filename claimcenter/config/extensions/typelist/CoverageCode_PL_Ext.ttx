@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CoverageCode_PL_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (CHG-42268) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CoverageCode_PL_Ext" desc="Coverage codes - PublicLiability. Near-duplicate of CoverageCode_*_Ext siblings; drift intentional per pricing.">
+  <typecode code="PL_MISFUELCOV" name="MisfuelCover" desc="MisfuelCover cover (PublicLiability)"/>
+  <typecode code="PL_THEFTHOME" name="TheftHome" desc="TheftHome cover (PublicLiability)"/>
+  <typecode code="PL_PERSONALAC" name="PersonalAccident" desc="PersonalAccident cover (PublicLiability)"/>
+  <typecode code="PL_THEFT" name="Theft" desc="Theft cover (PublicLiability)"/>
+  <typecode code="PL_LEGALEXPEN" name="LegalExpenses" desc="LegalExpenses cover (PublicLiability)"/>
+  <typecode code="PL_THIRDPARTY" name="ThirdPartyBI" desc="ThirdPartyBI cover (PublicLiability)"/>
+</typelist>

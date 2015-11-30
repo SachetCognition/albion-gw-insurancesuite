@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_PREU_007 | Exported from RuleSet editor 17-Feb-2017 by cdoyle; hand-edited since (editor corrupts CDATA, GWPC-34960) -->
+<rule name="AGI_PREU_007" entity="Claim" priority="363" enabled="true">
+  <description>preupdate rule #7 - purpose partially documented in GWCC-15095</description>
+  <conditions logic="AND">
+    <condition lhs="Claim.BrandCode_Ext" op="notEquals" rhs="ALBBRK"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="equals" rhs="ALBBRK"/>
+    <condition lhs="Claim.FeedStatus_Ext" op="notEquals" rhs="ALBBRK"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      claim.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_preu_007", "preupdate rule #7 - purpose partially do")
+    ]]></gosu>
+  </action>
+</rule>
