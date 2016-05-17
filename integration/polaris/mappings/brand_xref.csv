@@ -1,0 +1,8 @@
+POLARIS_CODE,GW_TYPECODE,DESCRIPTION,NOTES
+01AD00,ALBDIR,Albion Direct,
+02BK00,ALBBRK,Albion Broker,
+07RP00,RETPLS,RetailPlus (Novabank),RETIRED do not reuse
+07RP01,RETPLS,RetailPlus,
+00XX99,HERIT,Heritage,
+03DL00,ALBBRK,Broker (delegated),mapping disputed with MI since 2018
+999999,,UNKNOWN,ops grep target
