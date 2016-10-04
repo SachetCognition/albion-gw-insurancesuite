@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- AGI_ESCA_007 | Exported from RuleSet editor 20-Feb-2017 by hyamam; hand-edited since (editor corrupts CDATA, CHG-5146) -->
+<rule name="AGI_ESCA_007" entity="Invoice" priority="459" enabled="true">
+  <description>escalation rule #7 - purpose partially documented in CHG-22982</description>
+  <conditions logic="AND">
+    <condition lhs="Invoice.BrandCode_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="Invoice.SourceSystem_Ext" op="equals" rhs="POLARIS"/>
+    <condition lhs="Invoice.BrandCode_Ext" op="notEquals" rhs="HERIT"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      invoice.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(invoice, "review_agi_esca_007", "escalation rule #7 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity xmlns="http://guidewire.com/datamodel" entity="SanctionsScreenResult_Ext" table="sanctionsscreenres" type="retireable" desc="WorldCheck screening outcome per party per screen run"
+        exportable="true" extendable="true" platform="false">
+  <column name="MatchScore" type="integer" desc="0-100 fuzzy score" nullok="true"/>
+  <column name="ListName" type="varchar" desc="HMT/OFAC/EU/UN" nullok="true"/>
+  <column name="ScreenRef" type="varchar" desc="vendor ref" nullok="true"/>
+  <column name="Disposition" type="varchar" desc="see SanctionsStatus_Ext" nullok="true"/>
+  <column name="EvidenceBlobRef" type="varchar" desc="points at doc mgmt; half are dead links pre-2018" nullok="true"/>
+  <foreignkey name="ABContact" fkentity="ABContact" desc="screened party" nullok="true"/>
+  <index name="SanctionsSIdx1" desc="Added in prod first, backfilled to source later (REG-24528)">
+    <indexcol keyposition="1" column="MatchScore"/>
+  </index>
+</entity>

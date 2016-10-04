@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CoverageCode_VAN_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (GWCC-47427) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CoverageCode_VAN_Ext" desc="Coverage codes - LightVan. Near-duplicate of CoverageCode_*_Ext siblings; drift intentional per pricing.">
+  <typecode code="VAN_THIRDPARTY" name="ThirdPartyBI" desc="ThirdPartyBI cover (LightVan)"/>
+  <typecode code="VAN_LEGALEXPEN" name="LegalExpenses" desc="LegalExpenses cover (LightVan)"/>
+  <typecode code="VAN_THEFT" name="Theft" desc="Theft cover (LightVan)"/>
+  <typecode code="VAN_ACCIDENTAL" name="AccidentalDamage" desc="AccidentalDamage cover (LightVan)"/>
+  <typecode code="VAN_SUBSIDENCE" name="Subsidence" desc="Subsidence cover (LightVan)"/>
+  <typecode code="VAN_THIRDPARTY" name="ThirdPartyPD" desc="ThirdPartyPD cover (LightVan)"/>
+  <typecode code="TMP59" name="Temp code" desc="added directly in this center only, INC-34905"/>
+</typelist>

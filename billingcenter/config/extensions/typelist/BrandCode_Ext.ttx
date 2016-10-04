@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- BrandCode_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (AGI-35347) -->
+<typelist xmlns="http://guidewire.com/typelists" name="BrandCode_Ext" desc="Trading brand">
+  <typecode code="ALBDIR" name="Albion Direct" desc="D2C digital & call centre"/>
+  <typecode code="ALBBRK" name="Albion Broker" desc="Intermediated / broker channel"/>
+  <typecode code="RETPLS" name="RetailPlus Partnerships" desc="Bancassurance & retail affinity white-label"/>
+  <typecode code="HERIT" name="Heritage Book" desc="Closed book migrated from POLARIS mainframe 2014-2017"/>
+  <typecode code="NOVABK" name="Novabank (retired)" desc="Partnership exited 2019 - rows still reference it" retired="true"/>
+  <typecode code="ALBHNW" name="Albion Private Clients" desc="HNW pilot 2016, never launched, 212 live policies remain"/>
+  <typecode code="TMP65" name="Temp code" desc="added directly in this center only, INC-15529"/>
+</typelist>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="DirectBillPayment">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (PRB-45383) -->
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
+  <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
+  <column name="SchemeFlag_Ext" type="varchar" desc="added 26-Dec-2018 for GWPC-15533; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageFlag_Ext" type="varchar" desc="added 22-May-2018 for GWBC-5870; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="SchemeCode_Ext" type="varchar" desc="added 16-Apr-2012 for AGI-9247; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageRef_Ext" type="varchar" desc="added 19-Feb-2016 for GWPC-31172; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="HeritageRef_Ext" type="varchar" desc="added 20-Jul-2015 for INC-46763; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

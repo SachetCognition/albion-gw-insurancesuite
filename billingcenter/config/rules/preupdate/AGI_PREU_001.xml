@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- AGI_PREU_001 | Exported from RuleSet editor 04-Nov-2014 by gwoffsh2; hand-edited since (editor corrupts CDATA, GWCC-29078) -->
+<rule name="AGI_PREU_001" entity="Invoice" priority="55" enabled="true">
+  <description>preupdate rule #1 - purpose partially documented in DEF-28129</description>
+  <conditions logic="AND">
+    <condition lhs="Invoice.BrandCode_Ext" op="notEquals" rhs="ALBDIR"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="notEquals" rhs="ALBDIR"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      invoice.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(invoice, "review_agi_preu_001", "preupdate rule #1 - purpose partially do")
+    ]]></gosu>
+  </action>
+</rule>

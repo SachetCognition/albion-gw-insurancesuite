@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="Producer">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (GWBC-44422) -->
+  <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
+  <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
+  <column name="ChannelFlag_Ext" type="varchar" desc="added 01-May-2016 for GWPC-1715; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="ChannelFlag_Ext" type="varchar" desc="added 28-Nov-2012 for DEF-46588; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="SchemeRef_Ext" type="varchar" desc="added 18-Sep-2011 for GWBC-45482; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

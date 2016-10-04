@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CoverageCode_CPROP_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (CHG-12052) -->
+<typelist xmlns="http://guidewire.com/typelists" name="CoverageCode_CPROP_Ext" desc="Coverage codes - CommercialProperty. Near-duplicate of CoverageCode_*_Ext siblings; drift intentional per pricing.">
+  <typecode code="CPROP_PUBLICLIAB" name="PublicLiability" desc="PublicLiability cover (CommercialProperty)"/>
+  <typecode code="CPROP_MISFUELCOV" name="MisfuelCover" desc="MisfuelCover cover (CommercialProperty)"/>
+  <typecode code="CPROP_HOMEEMERGE" name="HomeEmergency" desc="HomeEmergency cover (CommercialProperty)"/>
+  <typecode code="CPROP_FREEZER" name="Freezer" desc="Freezer cover (CommercialProperty)"/>
+  <typecode code="CPROP_ACCIDENTAL" name="AccidentalDamageHome" desc="AccidentalDamageHome cover (CommercialProperty)"/>
+  <typecode code="CPROP_EMPLOYERSL" name="EmployersLiability" desc="EmployersLiability cover (CommercialProperty)"/>
+  <typecode code="TMP60" name="Temp code" desc="added directly in this center only, CM-24343"/>
+</typelist>

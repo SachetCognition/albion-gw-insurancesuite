@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- NCDLevel_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (AGI-37010) -->
+<typelist xmlns="http://guidewire.com/typelists" name="NCDLevel_Ext" desc="No Claims Discount steps (motor)">
+  <typecode code="NCD0" name="0 Years" desc="0 years NCD"/>
+  <typecode code="NCD1" name="1 Year" desc="1 years NCD"/>
+  <typecode code="NCD2" name="2 Years" desc="2 years NCD"/>
+  <typecode code="NCD3" name="3 Years" desc="3 years NCD"/>
+  <typecode code="NCD4" name="4 Years" desc="4 years NCD"/>
+  <typecode code="NCD5" name="5 Years" desc="5 years NCD"/>
+  <typecode code="NCD6" name="6 Years" desc="6 years NCD"/>
+  <typecode code="NCD7" name="7 Years" desc="7 years NCD"/>
+  <typecode code="NCD8" name="8 Years" desc="8 years NCD"/>
+  <typecode code="NCD9" name="9 Years" desc="9 years NCD"/>
+  <typecode code="NCDPROT" name="Protected" desc="Protected NCD - step-back table B applies"/>
+</typelist>

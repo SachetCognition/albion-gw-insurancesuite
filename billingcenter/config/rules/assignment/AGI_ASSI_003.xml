@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_ASSI_003 | Exported from RuleSet editor 03-Nov-2018 by mokeefe; hand-edited since (editor corrupts CDATA, DEF-6896) -->
+<rule name="AGI_ASSI_003" entity="Invoice" priority="474" enabled="true">
+  <description>assignment rule #3 - purpose partially documented in HERIT-26344</description>
+  <conditions logic="AND">
+    <condition lhs="Invoice.FeedStatus_Ext" op="equals" rhs="POLARIS"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="Invoice.BrandCode_Ext" op="notEquals" rhs="ALBDIR"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      invoice.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(invoice, "review_agi_assi_003", "assignment rule #3 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- AGI_SEGM_002 | Exported from RuleSet editor 15-Mar-2018 by gferran; hand-edited since (editor corrupts CDATA, CHG-17356) -->
+<rule name="AGI_SEGM_002" entity="Invoice" priority="894" enabled="true">
+  <description>segmentation rule #2 - purpose partially documented in CM-14912</description>
+  <conditions logic="AND">
+    <condition lhs="Invoice.FeedStatus_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="Invoice.BrandCode_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="Invoice.SourceSystem_Ext" op="notEquals" rhs="ALBDIR"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="equals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      invoice.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(invoice, "review_agi_segm_002", "segmentation rule #2 - purpose partially")
+    ]]></gosu>
+  </action>
+</rule>

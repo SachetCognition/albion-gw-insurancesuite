@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- AGI_VALI_003 | Exported from RuleSet editor 19-Feb-2015 by gwoffshore; hand-edited since (editor corrupts CDATA, CM-1116) -->
+<rule name="AGI_VALI_003" entity="Invoice" priority="557" enabled="true">
+  <description>validation rule #3 - purpose partially documented in GWBC-24149</description>
+  <conditions logic="AND">
+    <condition lhs="Invoice.BrandCode_Ext" op="equals" rhs="ALBBRK"/>
+    <condition lhs="Invoice.BrandCode_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="Invoice.SourceSystem_Ext" op="notEquals" rhs="HERIT"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="notEquals" rhs="HERIT"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      invoice.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(invoice, "review_agi_vali_003", "validation rule #3 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

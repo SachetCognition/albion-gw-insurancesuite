@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PerilCode_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (GWBC-7603) -->
+<typelist xmlns="http://guidewire.com/typelists" name="PerilCode_Ext" desc="Peril taxonomy (v3 - v1/v2 codes retained for heritage claims)">
+  <typecode code="ACCIDENTALDA" name="AccidentalDamage" desc="AccidentalDamage peril"/>
+  <typecode code="FIRE" name="Fire" desc="Fire peril"/>
+  <typecode code="THEFT" name="Theft" desc="Theft peril"/>
+  <typecode code="WINDSCREEN" name="Windscreen" desc="Windscreen peril"/>
+  <typecode code="THIRDPARTYPD" name="ThirdPartyPD" desc="ThirdPartyPD peril"/>
+  <typecode code="THIRDPARTYBI" name="ThirdPartyBI" desc="ThirdPartyBI peril"/>
+  <typecode code="UNINSUREDLOS" name="UninsuredLoss" desc="UninsuredLoss peril"/>
+  <typecode code="PERSONALACCI" name="PersonalAccident" desc="PersonalAccident peril"/>
+  <typecode code="KEYCOVER" name="KeyCover" desc="KeyCover peril"/>
+  <typecode code="MISFUELCOVER" name="MisfuelCover" desc="MisfuelCover peril"/>
+  <typecode code="ESCAPEOFWATE" name="EscapeOfWater" desc="EscapeOfWater peril"/>
+  <typecode code="FLOOD" name="Flood" desc="Flood peril"/>
+  <typecode code="STORM" name="Storm" desc="Storm peril"/>
+  <typecode code="SUBSIDENCE" name="Subsidence" desc="Subsidence peril"/>
+  <typecode code="FIREDAMAGE" name="FireDamage" desc="FireDamage peril"/>
+  <typecode code="THEFTHOME" name="TheftHome" desc="TheftHome peril"/>
+  <typecode code="ACCIDENTALDA" name="AccidentalDamageHome" desc="AccidentalDamageHome peril"/>
+  <typecode code="FREEZER" name="Freezer" desc="Freezer peril"/>
+  <typecode code="LEGALEXPENSE" name="LegalExpenses" desc="LegalExpenses peril"/>
+  <typecode code="HOMEEMERGENC" name="HomeEmergency" desc="HomeEmergency peril"/>
+  <typecode code="EMPLOYERSLIA" name="EmployersLiability" desc="EmployersLiability peril"/>
+  <typecode code="PUBLICLIABIL" name="PublicLiability" desc="PublicLiability peril"/>
+  <typecode code="PRODUCTSLIAB" name="ProductsLiability" desc="ProductsLiability peril"/>
+  <typecode code="PROFESSIONAL" name="ProfessionalNegligence" desc="ProfessionalNegligence peril"/>
+  <typecode code="EOW_OLD" name="EscapeOfWater (v1)" desc="pre-2014 code, ~400k claims" retired="true"/>
+  <typecode code="STORM_OLD" name="Storm (v1)" desc="pre-2014 code" retired="true"/>
+  <typecode code="TMP84" name="Temp code" desc="added directly in this center only, GWCC-11447"/>
+</typelist>

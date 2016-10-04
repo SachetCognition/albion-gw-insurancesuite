@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://guidewire.com/datamodel" entityName="AccountPayment">
+  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (HERIT-15030) -->
+  <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
+  <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
+  <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
+  <column name="HeritageCode_Ext" type="varchar" desc="added 26-Aug-2024 for DEF-35212; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="ChannelFlag_Ext" type="varchar" desc="added 01-Apr-2017 for REG-21066; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="CampaignCode_Ext" type="varchar" desc="added 23-Oct-2011 for DEF-22457; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxRef_Ext" type="varchar" desc="added 07-Jan-2019 for AGI-22076; meaning disputed between MI and Finance" nullok="true"/>
+</extension>

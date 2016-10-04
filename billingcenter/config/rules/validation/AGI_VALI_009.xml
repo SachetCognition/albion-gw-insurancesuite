@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_VALI_009 | Exported from RuleSet editor 16-Feb-2014 by rpatel; hand-edited since (editor corrupts CDATA, GWCC-18813) -->
+<rule name="AGI_VALI_009" entity="Invoice" priority="798" enabled="true">
+  <description>validation rule #9 - purpose partially documented in DEF-44897</description>
+  <conditions logic="AND">
+    <condition lhs="Invoice.BrandCode_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="equals" rhs="PENDING"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="equals" rhs="ALBDIR"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      invoice.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(invoice, "review_agi_vali_009", "validation rule #9 - purpose partially d")
+    ]]></gosu>
+  </action>
+</rule>

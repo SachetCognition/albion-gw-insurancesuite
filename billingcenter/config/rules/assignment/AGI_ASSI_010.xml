@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- AGI_ASSI_010 | Exported from RuleSet editor 05-Nov-2015 by dwhitf; hand-edited since (editor corrupts CDATA, CM-13559) -->
+<rule name="AGI_ASSI_010" entity="Invoice" priority="386" enabled="true">
+  <description>assignment rule #10 - purpose partially documented in DEF-24882</description>
+  <conditions logic="AND">
+    <condition lhs="Invoice.SourceSystem_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="notEquals" rhs="POLARIS"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="notEquals" rhs="PENDING"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      invoice.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(invoice, "review_agi_assi_010", "assignment rule #10 - purpose partially ")
+    ]]></gosu>
+  </action>
+</rule>

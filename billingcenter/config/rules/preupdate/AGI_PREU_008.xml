@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- AGI_PREU_008 | Exported from RuleSet editor 23-Oct-2017 by dwhitf; hand-edited since (editor corrupts CDATA, INC-40275) -->
+<rule name="AGI_PREU_008" entity="Invoice" priority="849" enabled="true">
+  <description>preupdate rule #8 - purpose partially documented in GWCC-1512</description>
+  <conditions logic="AND">
+    <condition lhs="Invoice.SourceSystem_Ext" op="equals" rhs="HERIT"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="equals" rhs="ALBBRK"/>
+    <condition lhs="Invoice.FeedStatus_Ext" op="notEquals" rhs="ALBDIR"/>
+    <condition lhs="Invoice.SourceSystem_Ext" op="equals" rhs="ALBDIR"/>
+    <condition lhs="Invoice.SourceSystem_Ext" op="equals" rhs="POLARIS"/>
+  </conditions>
+  <action>
+    <gosu><![CDATA[
+      // inline gosu inside XML inside a rules engine. peak 2013.
+      invoice.setFieldValue("FeedStatus_Ext", "PENDING")
+      albion.util.AlbionActivityUtils.raiseActivity(invoice, "review_agi_preu_008", "preupdate rule #8 - purpose partially do")
+    ]]></gosu>
+  </action>
+</rule>
