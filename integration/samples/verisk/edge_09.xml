@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from SIT 06-Mar-2021 -->
+<VERISKMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-27382</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P352108048C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</VERISKMessage>

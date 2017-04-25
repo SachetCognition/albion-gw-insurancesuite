@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 08-Oct-2020 -->
+<MIDMessage>
+  <Header><Sender>AGI</Sender><Ref>CHG-4376</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>HH53636916B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</MIDMessage>

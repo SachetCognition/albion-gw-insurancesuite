@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 28-Oct-2016 -->
+<PAYHUBMessage>
+  <Header><Sender>AGI</Sender><Ref>GWBC-40518</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>HH58871879A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</PAYHUBMessage>

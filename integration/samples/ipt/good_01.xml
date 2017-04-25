@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 17-Oct-2022 -->
+<IPTMessage>
+  <Header><Sender>AGI</Sender><Ref>DEF-20556</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P320430358A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</IPTMessage>

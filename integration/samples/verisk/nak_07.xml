@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from UAT 07-Dec-2025 -->
+<VERISKMessage>
+  <Header><Sender>AGI</Sender><Ref>AGI-22627</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>AD89107224A</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E541</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</VERISKMessage>

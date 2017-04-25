@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from PROD (scrubbed... mostly) 09-Apr-2022 -->
+<PRINTVMessage>
+  <Header><Sender>AGI</Sender><Ref>DEF-41187</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>AD83000179X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</PRINTVMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from UAT 02-Jan-2024 -->
+<DVLAMessage>
+  <Header><Sender>AGI</Sender><Ref>HERIT-37330</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>AD20213666X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</DVLAMessage>

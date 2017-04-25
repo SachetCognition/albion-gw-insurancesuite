@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from PROD (scrubbed... mostly) 07-Mar-2022 -->
+<CIFASMessage>
+  <Header><Sender>AGI</Sender><Ref>REG-7770</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>HH76222109B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CIFASMessage>

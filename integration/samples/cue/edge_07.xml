@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from SIT 16-Sep-2025 -->
+<CUEMessage>
+  <Header><Sender>AGI</Sender><Ref>DEF-44497</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>HH66117015C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CUEMessage>

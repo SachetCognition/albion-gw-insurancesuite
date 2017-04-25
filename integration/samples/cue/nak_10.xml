@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from UAT 25-Apr-2020 -->
+<CUEMessage>
+  <Header><Sender>AGI</Sender><Ref>GWBC-32529</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P382682297C</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E354</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</CUEMessage>

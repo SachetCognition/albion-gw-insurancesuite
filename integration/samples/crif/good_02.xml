@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 13-Sep-2022 -->
+<CRIFMessage>
+  <Header><Sender>AGI</Sender><Ref>PRB-47333</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH14524509B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CRIFMessage>

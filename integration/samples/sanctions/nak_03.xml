@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from SIT 23-Jul-2021 -->
+<SANCTIONSMessage>
+  <Header><Sender>AGI</Sender><Ref>REG-1336</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>AD85301631X</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E794</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</SANCTIONSMessage>

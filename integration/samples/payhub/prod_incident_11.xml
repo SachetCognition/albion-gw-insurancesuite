@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from UAT 15-Nov-2017 -->
+<PAYHUBMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-3829</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>HH27556554B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</PAYHUBMessage>

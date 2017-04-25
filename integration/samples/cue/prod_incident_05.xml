@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from SIT 22-Dec-2018 -->
+<CUEMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-35564</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH70353435C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CUEMessage>

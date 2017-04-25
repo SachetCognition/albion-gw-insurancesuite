@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 20-Jan-2023 -->
+<VERISKMessage>
+  <Header><Sender>AGI</Sender><Ref>CHG-48114</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P313148579X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</VERISKMessage>

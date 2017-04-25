@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from SIT 23-Apr-2020 -->
+<CIFASMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-36189</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P330339309A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CIFASMessage>

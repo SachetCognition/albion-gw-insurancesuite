@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from UAT 09-Oct-2020 -->
+<CRIFMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-46343</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P331061246B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CRIFMessage>

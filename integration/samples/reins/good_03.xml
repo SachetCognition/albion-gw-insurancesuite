@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 27-Sep-2016 -->
+<REINSMessage>
+  <Header><Sender>AGI</Sender><Ref>GWPC-25666</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>AD89632541C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</REINSMessage>

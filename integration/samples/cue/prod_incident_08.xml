@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from PROD (scrubbed... mostly) 07-Jun-2021 -->
+<CUEMessage>
+  <Header><Sender>AGI</Sender><Ref>REG-21234</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P378922226X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CUEMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from UAT 04-Mar-2022 -->
+<DWHMessage>
+  <Header><Sender>AGI</Sender><Ref>GWBC-17922</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>HH26196433X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</DWHMessage>

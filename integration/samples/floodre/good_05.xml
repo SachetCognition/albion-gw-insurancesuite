@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 18-Sep-2016 -->
+<FLOODREMessage>
+  <Header><Sender>AGI</Sender><Ref>GWBC-13684</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P397225128B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</FLOODREMessage>

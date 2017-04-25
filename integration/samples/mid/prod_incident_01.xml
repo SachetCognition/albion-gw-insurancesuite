@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from PROD (scrubbed... mostly) 23-Apr-2025 -->
+<MIDMessage>
+  <Header><Sender>AGI</Sender><Ref>CHG-26378</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>AD62250414B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</MIDMessage>

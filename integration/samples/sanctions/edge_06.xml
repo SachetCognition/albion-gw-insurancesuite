@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from SIT 03-Aug-2021 -->
+<SANCTIONSMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-7345</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P341336699B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</SANCTIONSMessage>

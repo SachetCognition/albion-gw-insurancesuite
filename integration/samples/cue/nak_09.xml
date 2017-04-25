@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from PROD (scrubbed... mostly) 23-Aug-2020 -->
+<CUEMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-37096</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>AD41901467C</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E822</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</CUEMessage>

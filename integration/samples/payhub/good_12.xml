@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 14-Sep-2022 -->
+<PAYHUBMessage>
+  <Header><Sender>AGI</Sender><Ref>INC-37888</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH16997177A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</PAYHUBMessage>

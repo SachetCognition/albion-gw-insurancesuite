@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from SIT 22-Mar-2020 -->
+<POLARIS_MFMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-11880</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P359983410A</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E738</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</POLARIS_MFMessage>

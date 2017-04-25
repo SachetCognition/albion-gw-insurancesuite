@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from SIT 16-Aug-2023 -->
+<ELTOMessage>
+  <Header><Sender>AGI</Sender><Ref>GWPC-22855</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH15108739C</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E840</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</ELTOMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from SIT 14-Dec-2019 -->
+<CIFASMessage>
+  <Header><Sender>AGI</Sender><Ref>DEF-8315</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH96679551X</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E327</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</CIFASMessage>

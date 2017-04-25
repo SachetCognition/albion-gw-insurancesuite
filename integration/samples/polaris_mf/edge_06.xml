@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from UAT 25-Jun-2018 -->
+<POLARIS_MFMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-25873</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P315254666A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</POLARIS_MFMessage>

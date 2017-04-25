@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from UAT 20-Dec-2024 -->
+<POLARIS_MFMessage>
+  <Header><Sender>AGI</Sender><Ref>GWPC-13292</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P365613684X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</POLARIS_MFMessage>

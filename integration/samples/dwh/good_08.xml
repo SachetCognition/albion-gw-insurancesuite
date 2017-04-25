@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 04-Sep-2024 -->
+<DWHMessage>
+  <Header><Sender>AGI</Sender><Ref>GWPC-25989</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P328075230A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</DWHMessage>

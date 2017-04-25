@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from UAT 24-Apr-2024 -->
+<PRINTVMessage>
+  <Header><Sender>AGI</Sender><Ref>PRB-20767</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>AD94132280B</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E342</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</PRINTVMessage>

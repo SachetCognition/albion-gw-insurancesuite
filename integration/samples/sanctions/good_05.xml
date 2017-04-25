@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 15-Sep-2017 -->
+<SANCTIONSMessage>
+  <Header><Sender>AGI</Sender><Ref>REG-25459</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P363678049A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</SANCTIONSMessage>

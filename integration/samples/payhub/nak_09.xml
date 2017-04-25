@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from PROD (scrubbed... mostly) 04-Dec-2020 -->
+<PAYHUBMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-22184</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>AD64571868X</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E694</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</PAYHUBMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from UAT 01-Nov-2020 -->
+<POLARIS_MFMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-397</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P359743173B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</POLARIS_MFMessage>

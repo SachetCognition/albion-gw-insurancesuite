@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 13-Sep-2017 -->
+<DVLAMessage>
+  <Header><Sender>AGI</Sender><Ref>AGI-17018</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P371399738C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</DVLAMessage>

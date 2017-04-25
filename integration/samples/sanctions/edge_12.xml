@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from UAT 18-Mar-2020 -->
+<SANCTIONSMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-41483</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH51120112X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</SANCTIONSMessage>

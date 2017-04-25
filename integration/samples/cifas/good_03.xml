@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 03-Jun-2019 -->
+<CIFASMessage>
+  <Header><Sender>AGI</Sender><Ref>AGI-24155</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P319285976A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CIFASMessage>

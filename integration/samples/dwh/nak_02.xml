@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from UAT 06-Aug-2019 -->
+<DWHMessage>
+  <Header><Sender>AGI</Sender><Ref>PRB-25485</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH17731419B</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E896</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</DWHMessage>

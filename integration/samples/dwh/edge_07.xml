@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from PROD (scrubbed... mostly) 02-Jul-2023 -->
+<DWHMessage>
+  <Header><Sender>AGI</Sender><Ref>REG-20254</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P341237761A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</DWHMessage>

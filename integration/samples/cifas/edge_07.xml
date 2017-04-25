@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from UAT 18-Dec-2018 -->
+<CIFASMessage>
+  <Header><Sender>AGI</Sender><Ref>HERIT-5380</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>AD26507612B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CIFASMessage>

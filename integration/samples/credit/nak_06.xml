@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from PROD (scrubbed... mostly) 25-Feb-2021 -->
+<CREDITMessage>
+  <Header><Sender>AGI</Sender><Ref>GWBC-36817</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>HH99796436A</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E187</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</CREDITMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 08-Nov-2022 -->
+<SANCTIONSMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-25904</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P338236852B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</SANCTIONSMessage>

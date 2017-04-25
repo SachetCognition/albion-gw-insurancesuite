@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from PROD (scrubbed... mostly) 06-Oct-2021 -->
+<CREDITMessage>
+  <Header><Sender>AGI</Sender><Ref>REG-5634</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH50150134X</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E741</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</CREDITMessage>

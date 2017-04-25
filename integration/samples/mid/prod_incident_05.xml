@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from PROD (scrubbed... mostly) 11-May-2016 -->
+<MIDMessage>
+  <Header><Sender>AGI</Sender><Ref>CHG-34161</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>HH98735659B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</MIDMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from UAT 15-Jul-2023 -->
+<CRIFMessage>
+  <Header><Sender>AGI</Sender><Ref>HERIT-41719</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P314474503X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CRIFMessage>

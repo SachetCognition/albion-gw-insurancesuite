@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from UAT 26-Sep-2024 -->
+<CRIFMessage>
+  <Header><Sender>AGI</Sender><Ref>DEF-42641</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P324702501X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CRIFMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from UAT 03-Sep-2018 -->
+<CUEMessage>
+  <Header><Sender>AGI</Sender><Ref>PRB-32036</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>AD18716035C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CUEMessage>

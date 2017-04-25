@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from PROD (scrubbed... mostly) 15-Aug-2017 -->
+<CRIFMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-6233</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>AD89195281C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CRIFMessage>

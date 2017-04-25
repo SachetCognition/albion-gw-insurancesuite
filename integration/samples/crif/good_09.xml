@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 17-Feb-2024 -->
+<CRIFMessage>
+  <Header><Sender>AGI</Sender><Ref>CHG-11838</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>AD14780539B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CRIFMessage>

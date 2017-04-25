@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from UAT 08-Jan-2022 -->
+<FLOODREMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-40292</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P353069207A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</FLOODREMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from SIT 06-Mar-2023 -->
+<CIFASMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-27531</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P319788000C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CIFASMessage>

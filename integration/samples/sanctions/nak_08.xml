@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from SIT 16-May-2016 -->
+<SANCTIONSMessage>
+  <Header><Sender>AGI</Sender><Ref>GWPC-16010</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>AD74899844X</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E673</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</SANCTIONSMessage>

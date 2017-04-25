@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from SIT 03-Nov-2019 -->
+<MIDMessage>
+  <Header><Sender>AGI</Sender><Ref>AGI-3529</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P387143596C</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E701</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</MIDMessage>

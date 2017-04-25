@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from UAT 06-Feb-2018 -->
+<DVLAMessage>
+  <Header><Sender>AGI</Sender><Ref>DEF-35405</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>HH50504864C</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E471</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</DVLAMessage>

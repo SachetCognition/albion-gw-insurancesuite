@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from PROD (scrubbed... mostly) 04-Oct-2020 -->
+<CUEMessage>
+  <Header><Sender>AGI</Sender><Ref>GWBC-992</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH60601783B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CUEMessage>

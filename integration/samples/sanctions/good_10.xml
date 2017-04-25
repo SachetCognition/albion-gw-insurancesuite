@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 12-Nov-2025 -->
+<SANCTIONSMessage>
+  <Header><Sender>AGI</Sender><Ref>PRB-7012</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>AD77754259X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</SANCTIONSMessage>

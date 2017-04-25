@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from UAT 13-Mar-2016 -->
+<PAYHUBMessage>
+  <Header><Sender>AGI</Sender><Ref>GWBC-14871</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>AD58643333B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</PAYHUBMessage>

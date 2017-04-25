@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from SIT 09-Jan-2017 -->
+<DVLAMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-44256</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P345903866A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</DVLAMessage>

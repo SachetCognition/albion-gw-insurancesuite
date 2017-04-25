@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 09-Feb-2024 -->
+<CREDITMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-25522</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>AD99160161X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CREDITMessage>

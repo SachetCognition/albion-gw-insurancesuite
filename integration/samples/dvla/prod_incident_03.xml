@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from PROD (scrubbed... mostly) 26-Jul-2025 -->
+<DVLAMessage>
+  <Header><Sender>AGI</Sender><Ref>HERIT-9073</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>AD36683640A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</DVLAMessage>

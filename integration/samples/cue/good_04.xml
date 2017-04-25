@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 21-Feb-2017 -->
+<CUEMessage>
+  <Header><Sender>AGI</Sender><Ref>AGI-29640</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P332460495A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CUEMessage>

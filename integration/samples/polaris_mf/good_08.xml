@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 17-Jun-2019 -->
+<POLARIS_MFMessage>
+  <Header><Sender>AGI</Sender><Ref>GWPC-449</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>HH92613126A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</POLARIS_MFMessage>

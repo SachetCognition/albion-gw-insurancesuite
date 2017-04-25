@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from UAT 05-Jan-2023 -->
+<CREDITMessage>
+  <Header><Sender>AGI</Sender><Ref>CHG-2564</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P379083335A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CREDITMessage>

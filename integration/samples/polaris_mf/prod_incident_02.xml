@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from SIT 28-May-2019 -->
+<POLARIS_MFMessage>
+  <Header><Sender>AGI</Sender><Ref>HERIT-605</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>HH56015617A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</POLARIS_MFMessage>

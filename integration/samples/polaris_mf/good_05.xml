@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from UAT 22-Apr-2018 -->
+<POLARIS_MFMessage>
+  <Header><Sender>AGI</Sender><Ref>INC-32140</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH59177990A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</POLARIS_MFMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from UAT 17-Nov-2022 -->
+<FLOODREMessage>
+  <Header><Sender>AGI</Sender><Ref>HERIT-6739</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>P360764125X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</FLOODREMessage>

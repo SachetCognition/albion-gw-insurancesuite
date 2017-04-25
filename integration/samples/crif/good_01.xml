@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 26-Apr-2018 -->
+<CRIFMessage>
+  <Header><Sender>AGI</Sender><Ref>GWPC-9684</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>AD86839051A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CRIFMessage>

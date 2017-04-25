@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from SIT 20-Jan-2017 -->
+<DVLAMessage>
+  <Header><Sender>AGI</Sender><Ref>CHG-8361</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>AD72735748A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</DVLAMessage>

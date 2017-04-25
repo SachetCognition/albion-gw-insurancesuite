@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from UAT 14-Jan-2019 -->
+<VERISKMessage>
+  <Header><Sender>AGI</Sender><Ref>GWPC-25317</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P340892642X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</VERISKMessage>

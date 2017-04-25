@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 04-Feb-2016 -->
+<MIDMessage>
+  <Header><Sender>AGI</Sender><Ref>CHG-11781</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>AD90893699A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</MIDMessage>

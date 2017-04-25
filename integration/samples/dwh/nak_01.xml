@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from PROD (scrubbed... mostly) 27-Oct-2022 -->
+<DWHMessage>
+  <Header><Sender>AGI</Sender><Ref>REG-2450</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P369546576C</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E446</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</DWHMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from UAT 11-Feb-2021 -->
+<IPTMessage>
+  <Header><Sender>AGI</Sender><Ref>HERIT-678</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>P351657774X</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E806</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</IPTMessage>

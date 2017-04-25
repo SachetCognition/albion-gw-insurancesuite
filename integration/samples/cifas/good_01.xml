@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 04-Jan-2025 -->
+<CIFASMessage>
+  <Header><Sender>AGI</Sender><Ref>GWBC-8267</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P360124981B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CIFASMessage>

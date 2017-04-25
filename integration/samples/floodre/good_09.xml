@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from UAT 01-Nov-2019 -->
+<FLOODREMessage>
+  <Header><Sender>AGI</Sender><Ref>INC-34303</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>AD90548591C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</FLOODREMessage>

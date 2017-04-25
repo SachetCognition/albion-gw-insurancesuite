@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from SIT 08-May-2021 -->
+<VERISKMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-18538</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>AD89619948C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</VERISKMessage>

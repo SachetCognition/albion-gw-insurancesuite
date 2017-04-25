@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 08-Oct-2023 -->
+<PAYHUBMessage>
+  <Header><Sender>AGI</Sender><Ref>INC-47690</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>HH16214784C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</PAYHUBMessage>

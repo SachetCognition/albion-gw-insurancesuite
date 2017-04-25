@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from SIT 02-May-2019 -->
+<SANCTIONSMessage>
+  <Header><Sender>AGI</Sender><Ref>DEF-27011</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P322114041B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</SANCTIONSMessage>

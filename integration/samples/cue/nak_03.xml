@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from SIT 27-Nov-2021 -->
+<CUEMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-36190</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P331701870X</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E114</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</CUEMessage>

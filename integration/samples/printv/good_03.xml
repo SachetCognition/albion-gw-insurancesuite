@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 22-Dec-2020 -->
+<PRINTVMessage>
+  <Header><Sender>AGI</Sender><Ref>INC-4811</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>P393799400B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</PRINTVMessage>

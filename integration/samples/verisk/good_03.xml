@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from SIT 22-Nov-2020 -->
+<VERISKMessage>
+  <Header><Sender>AGI</Sender><Ref>PRB-44001</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>HH14529934X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</VERISKMessage>

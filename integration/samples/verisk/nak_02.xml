@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from PROD (scrubbed... mostly) 03-May-2016 -->
+<VERISKMessage>
+  <Header><Sender>AGI</Sender><Ref>PRB-36539</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>P335184484X</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E469</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</VERISKMessage>

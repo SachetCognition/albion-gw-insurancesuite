@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from UAT 15-Jan-2024 -->
+<PAYHUBMessage>
+  <Header><Sender>AGI</Sender><Ref>GWPC-5181</Ref><Brand>ALBDIR</Brand></Header>
+  <Body>
+    <PolicyRef>AD58625156B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</PAYHUBMessage>

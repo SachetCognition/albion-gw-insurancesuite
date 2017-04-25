@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from PROD (scrubbed... mostly) 01-Oct-2024 -->
+<MIDMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-14008</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH58136919A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</MIDMessage>

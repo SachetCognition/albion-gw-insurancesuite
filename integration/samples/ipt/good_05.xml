@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from UAT 07-Sep-2021 -->
+<IPTMessage>
+  <Header><Sender>AGI</Sender><Ref>DEF-19163</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>HH88295663A</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</IPTMessage>

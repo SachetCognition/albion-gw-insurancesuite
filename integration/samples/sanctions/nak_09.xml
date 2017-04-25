@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from PROD (scrubbed... mostly) 17-Aug-2023 -->
+<SANCTIONSMessage>
+  <Header><Sender>AGI</Sender><Ref>DEF-24129</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>AD78274798C</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E922</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</SANCTIONSMessage>

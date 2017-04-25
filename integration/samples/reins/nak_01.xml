@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from SIT 23-Jun-2019 -->
+<REINSMessage>
+  <Header><Sender>AGI</Sender><Ref>INC-6440</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>P361496423A</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E264</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</REINSMessage>

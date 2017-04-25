@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from UAT 21-Jul-2025 -->
+<CUEMessage>
+  <Header><Sender>AGI</Sender><Ref>GWBC-3232</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>HH39736970X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CUEMessage>

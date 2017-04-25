@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from SIT 23-Dec-2018 -->
+<CREDITMessage>
+  <Header><Sender>AGI</Sender><Ref>CM-3422</Ref><Brand>HERIT</Brand></Header>
+  <Body>
+    <PolicyRef>P392598302B</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</CREDITMessage>

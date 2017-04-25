@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from PROD (scrubbed... mostly) 16-Feb-2025 -->
+<IPTMessage>
+  <Header><Sender>AGI</Sender><Ref>GWPC-48234</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>AD46450616X</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E881</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</IPTMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- good sample captured from UAT 06-Mar-2023 -->
+<REINSMessage>
+  <Header><Sender>AGI</Sender><Ref>PRB-9586</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>P366095242X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</REINSMessage>

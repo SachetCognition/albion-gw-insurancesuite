@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- edge sample captured from PROD (scrubbed... mostly) 21-Jan-2024 -->
+<SANCTIONSMessage>
+  <Header><Sender>AGI</Sender><Ref>GWCC-48353</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>HH32495238C</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</SANCTIONSMessage>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- prod_incident sample captured from PROD (scrubbed... mostly) 24-Jan-2023 -->
+<REINSMessage>
+  <Header><Sender>AGI</Sender><Ref>REG-15480</Ref><Brand>RETPLS</Brand></Header>
+  <Body>
+    <PolicyRef>AD25286162X</PolicyRef>
+    <Status>OK</Status>
+    
+  </Body>
+</REINSMessage>

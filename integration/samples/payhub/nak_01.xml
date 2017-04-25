@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- nak sample captured from UAT 26-Sep-2018 -->
+<PAYHUBMessage>
+  <Header><Sender>AGI</Sender><Ref>PRB-14336</Ref><Brand>ALBBRK</Brand></Header>
+  <Body>
+    <PolicyRef>HH75837437X</PolicyRef>
+    <Status>NAK</Status>
+    <ErrorCode>E184</ErrorCode><ErrorDesc>Vendor manual says see appendix; appendix does not exist</ErrorDesc>
+  </Body>
+</PAYHUBMessage>
