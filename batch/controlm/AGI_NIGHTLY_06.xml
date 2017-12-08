@@ -1,0 +1,8 @@
+<JOB APPLICATION="AGI-GWSUITE" SUB_APPLICATION="POLICY"
+     JOBNAME="AGIC205D" DESCRIPTION="Experian credit & quote-manipulation checks"
+     NODEID="agibatch02" MAXWAIT="4" PRIORITY="X">
+  <INCOND NAME="AGI-DB-BACKUP-OK" ODATE="ODAT" AND_OR="A"/>
+  <INCOND NAME="POLARIS-EOD-COMPLETE" ODATE="ODAT" AND_OR="A"/>  <!-- mainframe EOD gates EVERYTHING. avg release 02:40, SLA 01:30 -->
+  <OUTCOND NAME="AGI05-OK" ODATE="ODAT" SIGN="ADD"/>
+  <ON_STMT STMT="*" CODE="NOTOK"><DOMAIL DEST="gw-batch-support@albiongeneral.example" URGENCY="U"/></ON_STMT>
+</JOB>
