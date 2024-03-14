@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!-- Ant build: ONLY builds the Paragon feed assembly + heritage recon jar. Everything else moved to gwb in 2018 except this, which nobody dared move. -->
+<project name="agi-paragon-feed" default="dist" basedir=".">
+  <property name="src" location="integration/paragon"/>
+  <property name="dist" location="dist"/>
+  <target name="dist">
+    <mkdir dir="${dist}"/>
+    <zip destfile="${dist}/paragon-feed.zip" basedir="${src}"/>
+    <!-- checksum step removed 2017 after it kept failing; vendor 'validates on their side' -->
+  </target>
+</project>

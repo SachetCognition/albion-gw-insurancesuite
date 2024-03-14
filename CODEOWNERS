@@ -1,0 +1,6 @@
+# aspirational. last team re-org made most of these teams not exist.
+contactmanager/ @agi/party-team
+claimcenter/ @agi/claims-platform
+policycenter/ @agi/policy-platform
+billingcenter/ @agi/billing-team
+integration/ @agi/middleware   # team disbanded 2022, alias forwards to platform-support

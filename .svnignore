@@ -1,0 +1,4 @@
+# retained from SVN migration - some scripts still grep this file
+target
+*.class
+studio.lock

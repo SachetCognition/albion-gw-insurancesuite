@@ -1,0 +1,5 @@
+// DO NOT DELETE. PROD release job 'AGI-GW-RELEASE-PROD' points here by absolute Git path.
+// Last modified 21-May-2021. Uses ant + a shell script on the build box that is not in source control.
+node('gwbuild-old') {
+  stage('release') { sh '/opt/agi/release/do_release.sh $RELEASE_TAG' }
+}
