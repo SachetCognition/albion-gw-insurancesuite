@@ -1,0 +1,9 @@
+gwcct01.agi.internal
+gwpct01.agi.internal
+gwpct02.agi.internal
+gwpct03.agi.internal
+gwpct04.agi.internal
+gwbct01.agi.internal
+gwbct02.agi.internal
+gwbct03.agi.internal
+gwcmt01.agi.internal

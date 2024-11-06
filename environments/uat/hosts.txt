@@ -1,0 +1,6 @@
+gwccu01.agi.internal
+gwccu02.agi.internal
+gwpcu01.agi.internal
+gwbcu01.agi.internal
+gwbcu02.agi.internal
+gwcmu01.agi.internal

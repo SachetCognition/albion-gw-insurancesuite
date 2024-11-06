@@ -1,0 +1,12 @@
+gwccd01.agi.internal
+gwpcd01.agi.internal
+gwpcd02.agi.internal
+gwpcd03.agi.internal
+gwbcd01.agi.internal
+gwbcd02.agi.internal
+gwbcd03.agi.internal
+gwbcd04.agi.internal
+gwcmd01.agi.internal
+gwcmd02.agi.internal
+gwcmd03.agi.internal
+gwcmd04.agi.internal

@@ -1,0 +1,7 @@
+gwccs01.agi.internal
+gwpcs01.agi.internal
+gwpcs02.agi.internal
+gwbcs01.agi.internal
+gwbcs02.agi.internal
+gwbcs03.agi.internal
+gwcms01.agi.internal
