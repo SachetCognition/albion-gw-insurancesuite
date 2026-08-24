@@ -9,8 +9,12 @@ stages, because it catches the failure modes a test run cannot:
   3. a fixture no longer describes a 512-byte record;
   4. the Phase 1 shadow flags are switched on in a committed environment file - the scaffold
      must ship dormant in every environment, production included;
-  5. a test invocation in either Jenkinsfile has been re-wrapped in a failure-swallowing
-     shell construct such as the `|| true` removed in this change.
+  5. a fixture has been deleted, reducing committed coverage silently;
+  6. a test invocation in either Jenkinsfile, or in run-golden-master.sh itself, has been
+     re-wrapped in a failure-swallowing construct - shell (`|| true`, `set +e`) or Jenkins
+     (`catchError`, `returnStatus: true`);
+  7. a pipeline no longer actually invokes run-golden-master.sh (checked against executable
+     lines only: a prose mention of the stage in a comment does not count).
 
 Exits non-zero with a specific message on the first failing check.
 """
@@ -35,12 +39,24 @@ FIXTURE_DIRS = {
         "contactmanager/modules/configuration/gtest/albion/integration/polaris_mf/PolarisMfRecordBuilderGoldenMasterTest.gs",
 }
 
+# Minimum committed fixture count per directory. Adding fixtures is welcome; losing them is not,
+# so raise these numbers with the fixtures and never lower them without an explicit decision.
+MIN_FIXTURES = {
+    "claimcenter/config/gtest/albion/integration/ipt/goldenmaster": 6,
+    "contactmanager/modules/configuration/gtest/albion/integration/polaris_mf/goldenmaster": 10,
+}
+
+RUNNER = "tools/ci/run-golden-master.sh"
+
 SWALLOW_PATTERNS = [
     r"\|\|\s*true",
     r"\|\|\s*:",
     r"set\s+\+e",
     r"--continue",
     r"exit\s+0\s*'",
+    r"catchError",
+    r"returnStatus\s*:\s*true",
+    r"ignoreFailure",
 ]
 
 failures = []
@@ -111,10 +127,26 @@ def check_fixtures():
                      % (fixture_dir, name))
             if int(fixture.get("expected.length", "0")) != RECORD_LENGTH:
                 fail("%s/%s: expected.length must be %d" % (fixture_dir, name, RECORD_LENGTH))
-            if '"%s"' % prefix not in test_source:
+            position = test_source.find('"%s"' % prefix)
+            if position < 0:
                 fail("%s/%s: expected.recordPrefix is not asserted in %s - fixture and test have drifted"
                      % (fixture_dir, name, test_file))
+            else:
+                # The inputs must be asserted alongside the expected record, otherwise a fixture's
+                # input could be edited while its expected output silently keeps passing.
+                call = test_source[max(0, position - 400):position]
+                for key, value in sorted(fixture.items()):
+                    if not key.startswith("input.") or value == "":
+                        continue
+                    if '"%s"' % value not in call:
+                        fail("%s/%s: %s=%s is not asserted with the expected record in %s - "
+                             "fixture and test have drifted" % (fixture_dir, name, key, value, test_file))
             total += 1
+        minimum = MIN_FIXTURES.get(fixture_dir)
+        if minimum is not None and len(names) < minimum:
+            fail("%s holds %d .golden fixtures but at least %d are required - committed "
+                 "golden-master coverage may not be reduced silently"
+                 % (fixture_dir, len(names), minimum))
     print("checked %d golden-master fixtures against their characterization tests" % total)
 
 
@@ -139,20 +171,32 @@ def check_scaffold_is_dormant():
     print("checked %d committed shadow-flag entries; all dormant" % checked)
 
 
+def code_lines(path, comment_markers):
+    """(line number, code) pairs with comments stripped, so prose never satisfies a check."""
+    lines = []
+    for number, line in enumerate(open(path, encoding="utf-8").read().split("\n"), start=1):
+        code = line
+        for marker in comment_markers:
+            code = code.split(marker)[0]
+        if code.strip():
+            lines.append((number, code))
+    return lines
+
+
 def check_pipelines_do_not_swallow_failures():
-    for pipeline in ("Jenkinsfile", "Jenkinsfile.legacy"):
-        path = os.path.join(REPO, pipeline)
-        source = open(path, encoding="utf-8").read()
-        for number, line in enumerate(source.split("\n"), start=1):
-            code = line.split("//")[0]
+    sources = [("Jenkinsfile", ("//",)), ("Jenkinsfile.legacy", ("//",)), (RUNNER, ("#",))]
+    for name, markers in sources:
+        lines = code_lines(os.path.join(REPO, name), markers)
+        for number, code in lines:
             if "gwb" not in code and "golden" not in code:
                 continue
             for pattern in SWALLOW_PATTERNS:
                 if re.search(pattern, code):
-                    fail("%s:%d: test invocation swallows failures (%r)" % (pipeline, number, pattern))
-        if "golden-master" not in source:
-            fail("%s: no blocking golden-master stage found" % pipeline)
-    print("checked both pipelines for failure-swallowing test invocations")
+                    fail("%s:%d: test invocation swallows failures (%r)" % (name, number, pattern))
+        if name != RUNNER and not any(re.search(r"run-golden-master\.sh", code) for _n, code in lines):
+            fail("%s: no executable invocation of %s - the blocking golden-master stage is gone "
+                 "(a comment mentioning it does not count)" % (name, RUNNER))
+    print("checked both pipelines and %s for failure-swallowing or missing test invocations" % RUNNER)
 
 
 def main():
