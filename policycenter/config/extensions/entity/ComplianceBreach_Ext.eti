@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity xmlns="http://guidewire.com/datamodel" entity="ComplianceBreach_Ext" table="compliancebreach_ext" type="retireable" desc="Persisted FCA compliance breach record (PS21/5 price-walk etc). Replaces the print-only logComplianceBreach stub - AGI-GRC-114 requires a durable audit trail, stdout is not one."
+        exportable="true" extendable="true" platform="false">
+  <column name="RuleCode" type="varchar" desc="e.g. PS215" nullok="true"/>
+  <column name="BrandCode" type="varchar" desc="GW brand typecode at breach time (null = heritage row)" nullok="true"/>
+  <column name="SourceEngine" type="varchar" desc="which rating engine raised the breach" nullok="true"/>
+  <column name="BeanRef" type="varchar" desc="string reference of the offending bean" nullok="true"/>
+  <column name="ActualAmount" type="decimal" desc="renewal price offered" nullok="true"/>
+  <column name="AllowedAmount" type="decimal" desc="equivalent new business price" nullok="true"/>
+  <column name="BreachAt" type="datetime" desc="when the breach was evaluated" nullok="true"/>
+
+  <index name="CompBreachIdx1" desc="reporting: breaches by rule and time">
+    <indexcol keyposition="1" column="RuleCode"/>
+    <indexcol keyposition="2" column="BreachAt"/>
+  </index>
+</entity>
