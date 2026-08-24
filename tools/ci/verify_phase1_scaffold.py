@@ -337,6 +337,107 @@ def check_brand_xref_pinned():
     print("checked %d brand_xref.csv rows against all four BrandDirectoryCandidate copies" % len(csv_rows))
 
 
+# Phase 3 cut-over gate: a committed cutover flag may be true ONLY when the matching
+# component+brand row in tools/ci/reconciliation-status.csv is GREEN, and only in the
+# environment promotion order dev/sit -> uat/preprod -> prod (a later environment may not
+# be enabled before every earlier one).
+GATE_CSV = "tools/ci/reconciliation-status.csv"
+BRAND_ORDER = ["ALBDIR", "ALBBRK", "RETPLS", "HERIT"]
+ENV_PROMOTION_ORDER = [("dev", "sit"), ("uat", "preprod"), ("prod",)]
+
+
+def load_gate():
+    green = set()
+    rows = 0
+    for line in open(os.path.join(REPO, GATE_CSV), encoding="utf-8"):
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = line.split(",")
+        if len(parts) < 4:
+            fail("%s: malformed row %r" % (GATE_CSV, line))
+            continue
+        feature, centre, brand, status = parts[0], parts[1], parts[2], parts[3]
+        rows += 1
+        if status == "GREEN":
+            if len(parts) < 5 or not parts[4].strip():
+                fail("%s: %s/%s/%s is GREEN without evidence - a green gate row must cite "
+                     "its shadow-window evidence" % (GATE_CSV, feature, centre, brand))
+            green.add((feature, centre, brand))
+    return green, rows
+
+
+def cutover_flags_by_env():
+    """{env: [(file, line no, key, value)]} for every *.feature.cutover.* entry."""
+    flags = {}
+    environments = os.path.join(REPO, "environments")
+    for env_name in sorted(os.listdir(environments)):
+        env_dir = os.path.join(environments, env_name)
+        if not os.path.isdir(env_dir):
+            continue
+        for name in sorted(os.listdir(env_dir)):
+            if not name.endswith(".properties"):
+                continue
+            path = os.path.join(env_dir, name)
+            for number, line in enumerate(open(path, encoding="utf-8"), start=1):
+                stripped = line.strip()
+                if not stripped or stripped.startswith("#") or ".feature.cutover." not in stripped:
+                    continue
+                key, _, value = stripped.partition("=")
+                value = value.split("#")[0].strip()
+                flags.setdefault(env_name, []).append((os.path.relpath(path, REPO), number, key.strip(), value))
+    return flags
+
+
+def check_cutover_gate():
+    green, rows = load_gate()
+    if rows == 0:
+        fail("%s holds no gate rows - the Phase 3 gate would be unenforceable" % GATE_CSV)
+    flags = cutover_flags_by_env()
+    enabled = {}  # (feature, centre, brand) -> set of envs
+    for env_name, entries in flags.items():
+        for path, number, key, value in entries:
+            parts = key.split(".")
+            centre_prefix = parts[0]
+            centre = {"cl": "cc", "po": "pc", "bi": "bc", "co": "cm"}.get(centre_prefix)
+            if centre is None:
+                fail("%s:%d: unknown centre prefix in %s" % (path, number, key))
+                continue
+            feature = "cutover." + key.split(".feature.cutover.", 1)[1].split(".brand")[0].split(".enabled")[0].split(".brands")[0]
+            if key.endswith(".brands"):
+                brands = [b.strip() for b in value.split(",") if b.strip()]
+            elif ".brand." in key:
+                if value.lower() != "true":
+                    continue
+                brands = [key.split(".brand.")[1].split(".")[0]]
+            else:
+                if value.lower() != "true":
+                    continue
+                brands = list(BRAND_ORDER)
+            for brand in brands:
+                if (feature, centre, brand) not in green:
+                    fail("%s:%d: %s enables %s/%s/%s but its %s row is not GREEN - the Phase 2 "
+                         "shadow window gate is not met" % (path, number, key, feature, centre, brand, GATE_CSV))
+                enabled.setdefault((feature, centre, brand), set()).add(env_name)
+    # environment promotion order: a later stage may not be enabled before every earlier stage
+    for target, envs in sorted(enabled.items()):
+        reached = False
+        for stage_index in range(len(ENV_PROMOTION_ORDER) - 1, -1, -1):
+            stage = ENV_PROMOTION_ORDER[stage_index]
+            if any(e in envs for e in stage):
+                reached = True
+            elif reached:
+                continue
+            if reached:
+                for earlier in ENV_PROMOTION_ORDER[:stage_index]:
+                    if not any(e in envs for e in earlier):
+                        fail("cutover %s/%s/%s is enabled in a later environment without %s - "
+                             "promotion order is dev/sit -> uat/preprod -> prod"
+                             % (target[0], target[1], target[2], "/".join(earlier)))
+                break
+    print("checked %d cut-over gate rows; %d component/brand cut-overs enabled" % (rows, len(enabled)))
+
+
 def main():
     check_suite_classes()
     check_fixtures()
@@ -344,6 +445,7 @@ def main():
     check_pipelines_do_not_swallow_failures()
     check_rating_flag_environments()
     check_brand_xref_pinned()
+    check_cutover_gate()
     if failures:
         print("\nPhase 1 scaffold verification FAILED:")
         for message in failures:
