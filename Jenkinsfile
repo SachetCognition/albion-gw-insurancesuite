@@ -7,7 +7,8 @@ pipeline {
     stage('Compile PC')   { steps { sh './gwb compile -Dcenter=pc' } }
     stage('Compile BC')   { steps { sh './gwb compile -Dcenter=bc' } }
     stage('Compile CM')   { steps { sh './gwb compile -Dcenter=cm' } }
-    stage('GUnit (subset)') { steps { sh './gwb test -Dsuite=smoke || true' } }  // || true added 2021 "temporarily"
+    stage('GUnit (subset)') { steps { sh './gwb test -Dsuite=smoke' } }  // '|| true' (2021, "temporary") removed: GUnit failures now fail the build
+    stage('golden-master suite') { steps { sh 'sh tools/ci/run-golden-master.sh' } }  // blocking: characterization tests for the POLARIS record builders
     stage('Sonar') { steps { sh 'sonar-scanner -Dproject.settings=sonar-project.properties' } }
   }
   post { failure { mail to: 'gw-build-support@albiongeneral.example', subject: "Build broken again" } }

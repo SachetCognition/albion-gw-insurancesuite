@@ -1,0 +1,13 @@
+# Golden-master fixture: IPT
+# Produced by albion.integration.ipt.IptRecordBuilder.buildRecord (current PROD behaviour, Phase 1 baseline).
+# Input captured from integration/samples/ipt/edge_06.xml (SIT 23-Aug-2025).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ERNRef_Ext=INC-26415
+input.PolicyNumber_Ext=AD10382081A
+input.NINumber_Ext=
+input.VehicleVRM_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=512
+expected.trailingFiller=433
+expected.recordPrefix=IP89INC-26415           AD10382081A                   000000000000000000007RP01
+expected.record=IP89INC-26415           AD10382081A                   000000000000000000007RP01                                                                                                                                                                                                                                                                                                                                                                                                                                                 

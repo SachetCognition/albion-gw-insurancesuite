@@ -1,0 +1,13 @@
+# Golden-master fixture: POLARIS_MF
+# Produced by albion.integration.polaris_mf.PolarisMfRecordBuilder.buildRecord (current PROD behaviour, Phase 1 baseline).
+# Input captured from integration/samples/polaris_mf/nak_03.xml (PROD (scrubbed) 14-Jul-2022).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.InsuredSurname_Ext=REG-13322
+input.VehicleVRM_Ext=P324048208C
+input.ClaimNumber_Ext=
+input.InceptionDate_Ext=
+input.BrandCode_Ext=HERIT
+expected.length=512
+expected.trailingFiller=437
+expected.recordPrefix=PO99REG-13322   P324048208C                   0000000000000000000000000XX99
+expected.record=PO99REG-13322   P324048208C                   0000000000000000000000000XX99                                                                                                                                                                                                                                                                                                                                                                                                                                                     

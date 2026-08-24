@@ -1,0 +1,33 @@
+# Golden-master / characterization suite (Phase 0 + Phase 1).
+#
+# One fully-qualified GUnit class per line, prefixed with the centre selector that ./gwb
+# uses for compilation (cc/pc/bc/cm). Blank lines and #-comments are ignored.
+#
+# These classes pin CURRENT PRODUCTION BEHAVIOUR of the POLARIS record builders and the
+# dormant Phase 1 scaffold. They are blocking in BOTH pipelines (Jenkinsfile and
+# Jenkinsfile.legacy). A failure here means production bytes or the dormancy guarantee
+# changed - it is never a reason to weaken or exclude a test.
+#
+# Adding a builder to this list is how a Phase-1 pilot becomes release-gating.
+
+cc albion.integration.ipt.IptRecordBuilderTest
+cc albion.integration.ipt.IptRecordBuilderGoldenMasterTest
+cc albion.integration.ipt.IptRecordBuilderShadowTest
+cc albion.util.AlbionFeatureFlagsTest
+cc albion.integration.shadow.ShadowRunnerTest
+cc albion.integration.shadow.ShadowToleranceTest
+
+cm albion.integration.polaris_mf.PolarisMfRecordBuilderTest
+cm albion.integration.polaris_mf.PolarisMfRecordBuilderGoldenMasterTest
+cm albion.integration.polaris_mf.PolarisMfRecordBuilderShadowTest
+cm albion.util.AlbionFeatureFlagsTest
+cm albion.integration.shadow.ShadowRunnerTest
+cm albion.integration.shadow.ShadowToleranceTest
+
+pc albion.util.AlbionFeatureFlagsTest
+pc albion.integration.shadow.ShadowRunnerTest
+pc albion.integration.shadow.ShadowToleranceTest
+
+bc albion.util.AlbionFeatureFlagsTest
+bc albion.integration.shadow.ShadowRunnerTest
+bc albion.integration.shadow.ShadowToleranceTest
