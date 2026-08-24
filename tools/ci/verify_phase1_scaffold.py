@@ -33,17 +33,104 @@ GTEST_ROOTS = {
 }
 
 FIXTURE_DIRS = {
+    "billingcenter/config/gtest/albion/integration/credit/goldenmaster":
+        "billingcenter/config/gtest/albion/integration/credit/CreditRecordBuilderGoldenMasterTest.gs",
+    "billingcenter/config/gtest/albion/integration/floodre/goldenmaster":
+        "billingcenter/config/gtest/albion/integration/floodre/FloodreRecordBuilderGoldenMasterTest.gs",
+    "billingcenter/config/gtest/albion/integration/mid/goldenmaster":
+        "billingcenter/config/gtest/albion/integration/mid/MidRecordBuilderGoldenMasterTest.gs",
+    "billingcenter/config/gtest/albion/integration/polaris/goldenmaster":
+        "billingcenter/config/gtest/albion/integration/polaris/PolarisPartyRecordBuilderGoldenMasterTest.gs",
+    "claimcenter/config/gtest/albion/integration/aggr/goldenmaster":
+        "claimcenter/config/gtest/albion/integration/aggr/AggrRecordBuilderGoldenMasterTest.gs",
+    "claimcenter/config/gtest/albion/integration/elto/goldenmaster":
+        "claimcenter/config/gtest/albion/integration/elto/EltoRecordBuilderGoldenMasterTest.gs",
     "claimcenter/config/gtest/albion/integration/ipt/goldenmaster":
         "claimcenter/config/gtest/albion/integration/ipt/IptRecordBuilderGoldenMasterTest.gs",
+    "claimcenter/config/gtest/albion/integration/polaris/goldenmaster":
+        "claimcenter/config/gtest/albion/integration/polaris/PolarisPartyRecordBuilderGoldenMasterTest.gs",
+    "claimcenter/config/gtest/albion/integration/reins/goldenmaster":
+        "claimcenter/config/gtest/albion/integration/reins/ReinsRecordBuilderGoldenMasterTest.gs",
+    "claimcenter/config/gtest/albion/integration/sanctions/goldenmaster":
+        "claimcenter/config/gtest/albion/integration/sanctions/SanctionsRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/cifas/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/cifas/CifasRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/cue/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/cue/CueRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/dvla/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/dvla/DvlaRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/payhub/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/payhub/PayhubRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/polaris/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/polaris/PolarisPartyRecordBuilderGoldenMasterTest.gs",
     "contactmanager/modules/configuration/gtest/albion/integration/polaris_mf/goldenmaster":
         "contactmanager/modules/configuration/gtest/albion/integration/polaris_mf/PolarisMfRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/printv/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/printv/PrintvRecordBuilderGoldenMasterTest.gs",
+    "policycenter/config/gtest/albion/integration/crif/goldenmaster":
+        "policycenter/config/gtest/albion/integration/crif/CrifRecordBuilderGoldenMasterTest.gs",
+    "policycenter/config/gtest/albion/integration/dwh/goldenmaster":
+        "policycenter/config/gtest/albion/integration/dwh/DwhRecordBuilderGoldenMasterTest.gs",
+    "policycenter/config/gtest/albion/integration/polaris/goldenmaster":
+        "policycenter/config/gtest/albion/integration/polaris/PolarisPartyRecordBuilderGoldenMasterTest.gs",
+    "policycenter/config/gtest/albion/integration/ssp/goldenmaster":
+        "policycenter/config/gtest/albion/integration/ssp/SspRecordBuilderGoldenMasterTest.gs",
+    "policycenter/config/gtest/albion/integration/verisk/goldenmaster":
+        "policycenter/config/gtest/albion/integration/verisk/VeriskRecordBuilderGoldenMasterTest.gs",
 }
 
 # Minimum committed fixture count per directory. Adding fixtures is welcome; losing them is not,
 # so raise these numbers with the fixtures and never lower them without an explicit decision.
 MIN_FIXTURES = {
+    "billingcenter/config/gtest/albion/integration/credit/goldenmaster": 12,
+    "billingcenter/config/gtest/albion/integration/floodre/goldenmaster": 9,
+    "billingcenter/config/gtest/albion/integration/mid/goldenmaster": 12,
+    "billingcenter/config/gtest/albion/integration/polaris/goldenmaster": 6,
+    "claimcenter/config/gtest/albion/integration/aggr/goldenmaster": 8,
+    "claimcenter/config/gtest/albion/integration/elto/goldenmaster": 4,
     "claimcenter/config/gtest/albion/integration/ipt/goldenmaster": 6,
+    "claimcenter/config/gtest/albion/integration/polaris/goldenmaster": 6,
+    "claimcenter/config/gtest/albion/integration/reins/goldenmaster": 6,
+    "claimcenter/config/gtest/albion/integration/sanctions/goldenmaster": 12,
+    "contactmanager/modules/configuration/gtest/albion/integration/cifas/goldenmaster": 11,
+    "contactmanager/modules/configuration/gtest/albion/integration/cue/goldenmaster": 12,
+    "contactmanager/modules/configuration/gtest/albion/integration/dvla/goldenmaster": 9,
+    "contactmanager/modules/configuration/gtest/albion/integration/payhub/goldenmaster": 12,
+    "contactmanager/modules/configuration/gtest/albion/integration/polaris/goldenmaster": 6,
     "contactmanager/modules/configuration/gtest/albion/integration/polaris_mf/goldenmaster": 10,
+    "contactmanager/modules/configuration/gtest/albion/integration/printv/goldenmaster": 7,
+    "policycenter/config/gtest/albion/integration/crif/goldenmaster": 11,
+    "policycenter/config/gtest/albion/integration/dwh/goldenmaster": 10,
+    "policycenter/config/gtest/albion/integration/polaris/goldenmaster": 6,
+    "policycenter/config/gtest/albion/integration/ssp/goldenmaster": 10,
+    "policycenter/config/gtest/albion/integration/verisk/goldenmaster": 9,
+}
+
+# Fixed record length per feed, pinned from each production builder's padTo(...) call.
+# Changing one of these is a change to production bytes and needs an explicit decision.
+RECORD_LENGTHS = {
+    "billingcenter/config/gtest/albion/integration/credit/goldenmaster": 300,
+    "billingcenter/config/gtest/albion/integration/floodre/goldenmaster": 600,
+    "billingcenter/config/gtest/albion/integration/mid/goldenmaster": 600,
+    "billingcenter/config/gtest/albion/integration/polaris/goldenmaster": 750,
+    "claimcenter/config/gtest/albion/integration/aggr/goldenmaster": 512,
+    "claimcenter/config/gtest/albion/integration/elto/goldenmaster": 400,
+    "claimcenter/config/gtest/albion/integration/ipt/goldenmaster": 512,
+    "claimcenter/config/gtest/albion/integration/polaris/goldenmaster": 300,
+    "claimcenter/config/gtest/albion/integration/reins/goldenmaster": 600,
+    "claimcenter/config/gtest/albion/integration/sanctions/goldenmaster": 250,
+    "contactmanager/modules/configuration/gtest/albion/integration/cifas/goldenmaster": 750,
+    "contactmanager/modules/configuration/gtest/albion/integration/cue/goldenmaster": 400,
+    "contactmanager/modules/configuration/gtest/albion/integration/dvla/goldenmaster": 400,
+    "contactmanager/modules/configuration/gtest/albion/integration/payhub/goldenmaster": 750,
+    "contactmanager/modules/configuration/gtest/albion/integration/polaris/goldenmaster": 400,
+    "contactmanager/modules/configuration/gtest/albion/integration/polaris_mf/goldenmaster": 512,
+    "contactmanager/modules/configuration/gtest/albion/integration/printv/goldenmaster": 250,
+    "policycenter/config/gtest/albion/integration/crif/goldenmaster": 750,
+    "policycenter/config/gtest/albion/integration/dwh/goldenmaster": 300,
+    "policycenter/config/gtest/albion/integration/polaris/goldenmaster": 300,
+    "policycenter/config/gtest/albion/integration/ssp/goldenmaster": 750,
+    "policycenter/config/gtest/albion/integration/verisk/goldenmaster": 400,
 }
 
 RUNNER = "tools/ci/run-golden-master.sh"
@@ -109,6 +196,7 @@ def check_fixtures():
             fail("missing fixture directory %s" % fixture_dir)
             continue
         test_source = open(os.path.join(REPO, test_file), encoding="utf-8").read()
+        record_length = RECORD_LENGTHS.get(fixture_dir, RECORD_LENGTH)
         names = sorted(n for n in os.listdir(directory) if n.endswith(".golden"))
         if not names:
             fail("no .golden fixtures committed under %s" % fixture_dir)
@@ -119,14 +207,14 @@ def check_fixtures():
             if record is None or prefix is None:
                 fail("%s/%s: missing expected.record or expected.recordPrefix" % (fixture_dir, name))
                 continue
-            if len(record) != RECORD_LENGTH:
+            if len(record) != record_length:
                 fail("%s/%s: expected.record is %d bytes, not %d"
-                     % (fixture_dir, name, len(record), RECORD_LENGTH))
-            if record != prefix + " " * (RECORD_LENGTH - len(prefix)):
+                     % (fixture_dir, name, len(record), record_length))
+            if record != prefix + " " * (record_length - len(prefix)):
                 fail("%s/%s: expected.record is not expected.recordPrefix padded with filler"
                      % (fixture_dir, name))
-            if int(fixture.get("expected.length", "0")) != RECORD_LENGTH:
-                fail("%s/%s: expected.length must be %d" % (fixture_dir, name, RECORD_LENGTH))
+            if int(fixture.get("expected.length", "0")) != record_length:
+                fail("%s/%s: expected.length must be %d" % (fixture_dir, name, record_length))
             position = test_source.find('"%s"' % prefix)
             if position < 0:
                 fail("%s/%s: expected.recordPrefix is not asserted in %s - fixture and test have drifted"
@@ -160,13 +248,15 @@ def check_scaffold_is_dormant():
             path = os.path.join(root, name)
             for number, line in enumerate(open(path, encoding="utf-8"), start=1):
                 stripped = line.strip()
-                if not stripped or stripped.startswith("#") or ".feature.shadow." not in stripped:
+                if not stripped or stripped.startswith("#"):
+                    continue
+                if ".feature.shadow." not in stripped and ".feature.cutover." not in stripped:
                     continue
                 checked += 1
                 key, _, value = stripped.partition("=")
                 value = value.split("#")[0].strip().lower()
                 if value != "false":
-                    fail("%s:%d: %s=%s - the Phase 1 shadow scaffold must be dormant in every "
+                    fail("%s:%d: %s=%s - the shadow/cutover scaffold must be dormant in every "
                          "committed environment file" % (os.path.relpath(path, REPO), number, key.strip(), value))
     print("checked %d committed shadow-flag entries; all dormant" % checked)
 
@@ -199,11 +289,61 @@ def check_pipelines_do_not_swallow_failures():
     print("checked both pipelines and %s for failure-swallowing or missing test invocations" % RUNNER)
 
 
+# The pre-existing per-environment rating key (read by RatingEngineShadow since Phase 2).
+# Shadowing may only ever run where it was ALREADY true (dev/dev2/sit); production and every
+# other committed environment must stay false until a Phase 3C decision flips it explicitly.
+RATING_KEY = "po.feature.newratingengine.enabled"
+RATING_KEY_ALLOWED_TRUE = {"dev", "dev2", "sit"}
+
+
+def check_rating_flag_environments():
+    environments = os.path.join(REPO, "environments")
+    checked = 0
+    for env_name in sorted(os.listdir(environments)):
+        path = os.path.join(environments, env_name, "policycenter.properties")
+        if not os.path.isfile(path):
+            continue
+        for number, line in enumerate(open(path, encoding="utf-8"), start=1):
+            stripped = line.strip()
+            if not stripped.startswith(RATING_KEY):
+                continue
+            checked += 1
+            value = stripped.partition("=")[2].split("#")[0].strip().lower()
+            if value == "true" and env_name not in RATING_KEY_ALLOWED_TRUE:
+                fail("%s:%d: %s=true - the rating shadow may only run in %s until Phase 3C"
+                     % (os.path.relpath(path, REPO), number, RATING_KEY,
+                        "/".join(sorted(RATING_KEY_ALLOWED_TRUE))))
+    print("checked %s in %d environment files" % (RATING_KEY, checked))
+
+
+def check_brand_xref_pinned():
+    """brand_xref.csv rows must equal the rows pinned in BrandDirectoryCandidate.XREF_ROWS
+    (all four centre copies). Drift between the csv and the candidate is a Stream 2B breach
+    that must surface here, not silently in a shadow window."""
+    csv_path = os.path.join(REPO, "integration/polaris/mappings/brand_xref.csv")
+    csv_rows = [line.strip() for line in open(csv_path, encoding="utf-8").read().split("\n")[1:] if line.strip()]
+    candidates = [
+        "claimcenter/config/gsrc/albion/util/BrandDirectoryCandidate.gs",
+        "policycenter/config/gsrc/albion/util/BrandDirectoryCandidate.gs",
+        "billingcenter/config/gsrc/albion/util/BrandDirectoryCandidate.gs",
+        "contactmanager/modules/configuration/gsrc/albion/util/BrandDirectoryCandidate.gs",
+    ]
+    for rel in candidates:
+        source = open(os.path.join(REPO, rel), encoding="utf-8").read()
+        for row in csv_rows:
+            if '"%s"' % row not in source:
+                fail("%s: brand_xref.csv row %r is not pinned in XREF_ROWS - csv and candidate "
+                     "have drifted (AGI-5452 / AGI-30921)" % (rel, row))
+    print("checked %d brand_xref.csv rows against all four BrandDirectoryCandidate copies" % len(csv_rows))
+
+
 def main():
     check_suite_classes()
     check_fixtures()
     check_scaffold_is_dormant()
     check_pipelines_do_not_swallow_failures()
+    check_rating_flag_environments()
+    check_brand_xref_pinned()
     if failures:
         print("\nPhase 1 scaffold verification FAILED:")
         for message in failures:
