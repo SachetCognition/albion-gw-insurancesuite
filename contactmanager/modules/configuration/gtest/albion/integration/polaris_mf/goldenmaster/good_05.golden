@@ -1,0 +1,13 @@
+# Golden-master fixture: POLARIS_MF
+# Produced by albion.integration.polaris_mf.PolarisMfRecordBuilder.buildRecord (current PROD behaviour, Phase 1 baseline).
+# Input captured from integration/samples/polaris_mf/good_05.xml (UAT 22-Apr-2018).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.InsuredSurname_Ext=INC-32140
+input.VehicleVRM_Ext=HH59177990A
+input.ClaimNumber_Ext=
+input.InceptionDate_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=512
+expected.trailingFiller=437
+expected.recordPrefix=PO99INC-32140   HH59177990A                   0000000000000000000000007RP01
+expected.record=PO99INC-32140   HH59177990A                   0000000000000000000000007RP01                                                                                                                                                                                                                                                                                                                                                                                                                                                     

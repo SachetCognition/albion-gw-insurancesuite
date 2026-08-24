@@ -1,0 +1,13 @@
+# Golden-master fixture: IPT
+# Produced by albion.integration.ipt.IptRecordBuilder.buildRecord (current PROD behaviour, Phase 1 baseline).
+# Input captured from integration/samples/ipt/good_04.xml (UAT 28-Jan-2018).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ERNRef_Ext=HERIT-7253
+input.PolicyNumber_Ext=P355088892C
+input.NINumber_Ext=
+input.VehicleVRM_Ext=
+input.BrandCode_Ext=ALBBRK
+expected.length=512
+expected.trailingFiller=433
+expected.recordPrefix=IP89HERIT-7253          P355088892C                   000000000000000000002BK00
+expected.record=IP89HERIT-7253          P355088892C                   000000000000000000002BK00                                                                                                                                                                                                                                                                                                                                                                                                                                                 

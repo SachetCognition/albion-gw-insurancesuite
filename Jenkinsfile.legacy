@@ -1,5 +1,18 @@
 // DO NOT DELETE. PROD release job 'AGI-GW-RELEASE-PROD' points here by absolute Git path.
 // Last modified 21-May-2021. Uses ant + a shell script on the build box that is not in source control.
+//
+// CHANGE OF PROD RELEASE GATING - RELEASE OWNERS MUST READ (Phase 1).
+// Audit finding: this pipeline had no compile step and no test invocation of any kind, so
+// nothing in this repository could prove what validation a production release received.
+// (There was no `|| true` to remove here - there was nothing to swallow.)
+// A blocking 'golden-master suite' stage now runs BEFORE do_release.sh. It executes the
+// characterization tests listed in tools/ci/golden-master-suite.txt, which pin current
+// production behaviour of the POLARIS record builders byte-for-byte.
+// Consequence: a release whose golden-master tests fail no longer reaches do_release.sh.
+// That is deliberate - see docs/architecture/CONTROLS-AND-TOLERANCES.md - and it is the only
+// change to the release path. do_release.sh itself is untouched and still not in source control.
 node('gwbuild-old') {
+  stage('checkout') { checkout scm }
+  stage('golden-master suite') { sh 'sh tools/ci/run-golden-master.sh' }
   stage('release') { sh '/opt/agi/release/do_release.sh $RELEASE_TAG' }
 }
