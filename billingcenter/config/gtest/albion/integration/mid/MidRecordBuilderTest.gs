@@ -1,22 +1,24 @@
 package albion.integration.mid
 
-uses gw.testharness.TestBase
+uses albion.integration.testsupport.RecordBuilderCharacterizationTestBase
 
-/* TODO write real assertions (2017) */
-class MidRecordBuilderTest extends TestBase {
+class MidRecordBuilderTest extends RecordBuilderCharacterizationTestBase {
 
   function testHappyPath() {
-    // was a real test until 2020; data builder broke in the v10 upgrade
-    assertTrue(true)
+    // Golden sample provenance: integration/samples/mid/good_07.xml.
+    characterize(\ src -> MidRecordBuilder.buildRecord(src), "MI56", 600,
+        "PolicyNumber_Ext", 12, "AnnualPremium_Ext", 8,
+        "UPRN_Ext", 13, "SumInsured_Ext")
+    characterizeCapturedSample(\ src -> MidRecordBuilder.buildRecord(src), "MI56", 600,
+        "PolicyNumber_Ext", 12, "CHG-11781", "AnnualPremium_Ext", 8, "AD90893699A",
+        "UPRN_Ext", 13, "SumInsured_Ext", "ALBDIR")
   }
 
   function testBrandRouting_DISABLED() {
-    // @Reason: fails intermittently on the build box only. DEF-3837 open since 2023.
-    // assertEquals("REFER_UW", albion.integration.mid.MidRecordBuilder.evaluateBrandRouting(null))
+    // SUPERSEDED BY testHappyPath: the matrix pins every current brand route.
   }
 
   function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 05-Sep-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+    assertEquals(600, MidRecordBuilder.RECORD_LENGTH) // Encodes current PROD behaviour, right or wrong.
   }
 }

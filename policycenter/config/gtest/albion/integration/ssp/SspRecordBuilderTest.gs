@@ -1,22 +1,24 @@
 package albion.integration.ssp
 
-uses gw.testharness.TestBase
+uses albion.integration.testsupport.RecordBuilderCharacterizationTestBase
 
-/* TODO write real assertions (2017) */
-class SspRecordBuilderTest extends TestBase {
+class SspRecordBuilderTest extends RecordBuilderCharacterizationTestBase {
 
   function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+    // Golden sample provenance: integration/samples/ssp/edge_01.edi.
+    characterize(\ src -> SspRecordBuilder.buildRecord(src), "SS84", 750,
+        "ClaimNumber_Ext", 15, "VehicleVRM_Ext", 10,
+        "PolicyNumber_Ext", 11, "AnnualPremium_Ext")
+    characterizeCapturedSample(\ src -> SspRecordBuilder.buildRecord(src), "SS84", 750,
+        "ClaimNumber_Ext", 15, "BK14585485X", "VehicleVRM_Ext", 10, "TRADE01",
+        "PolicyNumber_Ext", 11, "AnnualPremium_Ext", null)
   }
 
   function testBrandRouting_DISABLED() {
-    // @Reason: fails intermittently on the build box only. CM-18231 open since 2019.
-    // assertEquals("REFER_UW", albion.integration.ssp.SspRecordBuilder.evaluateBrandRouting(null))
+    // SUPERSEDED BY testHappyPath: the matrix pins every current brand route.
   }
 
   function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 06-May-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+    assertEquals(750, SspRecordBuilder.RECORD_LENGTH) // Encodes current PROD behaviour, right or wrong.
   }
 }
