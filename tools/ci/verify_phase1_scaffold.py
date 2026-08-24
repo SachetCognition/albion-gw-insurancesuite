@@ -316,12 +316,21 @@ def check_rating_flag_environments():
     print("checked %s in %d environment files" % (RATING_KEY, checked))
 
 
+# Never lower without an explicit decision - raise it if rows are added.
+MIN_XREF_ROWS = 7
+
+
 def check_brand_xref_pinned():
     """brand_xref.csv rows must equal the rows pinned in BrandDirectoryCandidate.XREF_ROWS
     (all four centre copies). Drift between the csv and the candidate is a Stream 2B breach
-    that must surface here, not silently in a shadow window."""
+    that must surface here, not silently in a shadow window. The row count is pinned like
+    MIN_FIXTURES: a row disappearing from the csv (incl. the retired 07RP00 and disputed
+    03DL00 rows) shrinks the checked set and must fail, not pass."""
     csv_path = os.path.join(REPO, "integration/polaris/mappings/brand_xref.csv")
     csv_rows = [line.strip() for line in open(csv_path, encoding="utf-8").read().split("\n")[1:] if line.strip()]
+    if len(csv_rows) < MIN_XREF_ROWS:
+        fail("brand_xref.csv holds %d rows but at least %d are required - a mapping row may "
+             "not be removed silently (AGI-5452 / AGI-30921)" % (len(csv_rows), MIN_XREF_ROWS))
     candidates = [
         "claimcenter/config/gsrc/albion/util/BrandDirectoryCandidate.gs",
         "policycenter/config/gsrc/albion/util/BrandDirectoryCandidate.gs",
