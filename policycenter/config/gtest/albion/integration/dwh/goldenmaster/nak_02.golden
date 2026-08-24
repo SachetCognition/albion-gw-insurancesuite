@@ -1,0 +1,13 @@
+# Golden-master fixture: DWH
+# Produced by albion.integration.dwh.DwhRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/dwh/nak_02.xml (UAT 06-Aug-2019).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.SumInsured_Ext=PRB-25485
+input.PolicyNumber_Ext=HH17731419B
+input.NINumber_Ext=
+input.ERNRef_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=300
+expected.trailingFiller=244
+expected.recordPrefix=DW21PRB-25485      HH1773141900000000000000000000007RP01
+expected.record=DW21PRB-25485      HH1773141900000000000000000000007RP01                                                                                                                                                                                                                                                    

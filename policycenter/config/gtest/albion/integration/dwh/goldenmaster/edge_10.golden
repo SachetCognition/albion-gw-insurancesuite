@@ -1,0 +1,13 @@
+# Golden-master fixture: DWH
+# Produced by albion.integration.dwh.DwhRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/dwh/edge_10.xml (UAT 04-Mar-2022).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.SumInsured_Ext=GWBC-17922
+input.PolicyNumber_Ext=HH26196433X
+input.NINumber_Ext=
+input.ERNRef_Ext=
+input.BrandCode_Ext=HERIT
+expected.length=300
+expected.trailingFiller=244
+expected.recordPrefix=DW21GWBC-17922     HH2619643300000000000000000000000XX99
+expected.record=DW21GWBC-17922     HH2619643300000000000000000000000XX99                                                                                                                                                                                                                                                    

@@ -1,5 +1,6 @@
 package albion.integration.ipt
 
+uses albion.integration.shadow.CutoverRouter
 uses albion.integration.shadow.InMemoryShadowDiffRecorder
 uses albion.integration.shadow.LoggingShadowDiffRecorder
 uses albion.integration.shadow.ReconciliationResult
@@ -22,12 +23,19 @@ uses albion.util.AlbionFeatureFlags
  * configuration still calls IptRecordBuilder directly. This class is the seam the
  * later cut-over streams will use.
  *
+ * Phase 3A adds the per-brand cut-over path: when cl.feature.cutover.iptrecordbuilder is
+ * enabled for the record's brand (allowed only after that brand's Phase 2 reconciliation is
+ * GREEN, enforced by tools/ci/verify_phase1_scaffold.py), CutoverRouter makes the CANDIDATE
+ * authoritative while the legacy builder keeps running as the reverse shadow with auto-alert
+ * and per-record auto-revert on any difference.
+ *
  * Flag: cl.feature.shadow.iptrecordbuilder.enabled (+ optional .brands / .brand.<CODE>.enabled overrides).
  */
 class IptRecordBuilderShadow {
 
   public static final var CENTRE : String = AlbionFeatureFlags.CENTRE_CLAIMCENTER
   public static final var FEATURE : String = "shadow.iptrecordbuilder"
+  public static final var CUTOVER_FEATURE : String = "cutover.iptrecordbuilder"
   public static final var FEED : String = "IPT"
 
   /** Known drift risk carried on every recorded diff. Documented, deliberately not converged in Phase 1. */
@@ -40,6 +48,11 @@ class IptRecordBuilderShadow {
 
   public static function buildRecord(src : KeyableBean, recorder : ShadowDiffRecorder) : String {
     var brandCode = brandOf(src)
+    if (AlbionFeatureFlags.isEnabledForBrand(CENTRE, CUTOVER_FEATURE, brandCode)) {
+      return CutoverRouter.route(FEED, brandCode, recorder, BRAND_DRIFT_NOTE,
+          \ -> IptRecordBuilder.buildRecord(src),
+          \ -> IptRecordBuilderCandidate.buildRecord(src))
+    }
     if (not AlbionFeatureFlags.isEnabledForBrand(CENTRE, FEATURE, brandCode)) {
       return IptRecordBuilder.buildRecord(src)   // dormant default: legacy only
     }

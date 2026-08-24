@@ -1,0 +1,13 @@
+# Golden-master fixture: VERISK
+# Produced by albion.integration.verisk.VeriskRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/verisk/good_08.xml (PROD (scrubbed... mostly) 17-Jun-2023).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ERNRef_Ext=GWPC-6801
+input.ClaimNumber_Ext=AD44911147X
+input.InceptionDate_Ext=
+input.NINumber_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=400
+expected.trailingFiller=349
+expected.recordPrefix=VE17GWPC-6801   AD44911100000000000000000000007RP01
+expected.record=VE17GWPC-6801   AD44911100000000000000000000007RP01                                                                                                                                                                                                                                                                                                                                                             

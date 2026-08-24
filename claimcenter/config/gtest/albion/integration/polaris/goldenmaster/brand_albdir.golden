@@ -1,0 +1,13 @@
+# Golden-master fixture: POLARIS_MF
+# Produced by albion.integration.polaris.PolarisPartyRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# No captured sample exists under integration/samples/ for this interface; input is the pinned brand-matrix characterization row.
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.AnnualPremium_Ext=
+input.InsuredSurname_Ext=
+input.PolicyNumber_Ext=
+input.ClaimNumber_Ext=
+input.BrandCode_Ext=ALBDIR
+expected.length=300
+expected.trailingFiller=224
+expected.recordPrefix=PO58                                             00000000000000000000001AD00
+expected.record=PO58                                             00000000000000000000001AD00                                                                                                                                                                                                                                

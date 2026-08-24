@@ -1,0 +1,13 @@
+# Golden-master fixture: CRIF
+# Produced by albion.integration.crif.CrifRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/crif/prod_incident_06.xml (UAT 15-Jul-2023).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.NINumber_Ext=HERIT-41719
+input.VehicleVRM_Ext=P314474503X
+input.AnnualPremium_Ext=
+input.ClaimNumber_Ext=
+input.BrandCode_Ext=HERIT
+expected.length=750
+expected.trailingFiller=672
+expected.recordPrefix=CR58HERIT-41719    P314474503X                   0000000000000000000000000XX99
+expected.record=CR58HERIT-41719    P314474503X                   0000000000000000000000000XX99                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

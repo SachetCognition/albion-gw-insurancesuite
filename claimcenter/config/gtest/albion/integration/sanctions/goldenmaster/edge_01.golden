@@ -1,0 +1,13 @@
+# Golden-master fixture: SANCTIONS
+# Produced by albion.integration.sanctions.SanctionsRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/sanctions/edge_01.xml (PROD (scrubbed... mostly) 21-Jan-2024).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.PolicyNumber_Ext=GWCC-48353
+input.AnnualPremium_Ext=HH32495238C
+input.UPRN_Ext=
+input.RiskPostcode_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=250
+expected.trailingFiller=196
+expected.recordPrefix=SA37GWCC-48353     HH32495200000000000000000000007RP01
+expected.record=SA37GWCC-48353     HH32495200000000000000000000007RP01                                                                                                                                                                                                    

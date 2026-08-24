@@ -1,0 +1,13 @@
+# Golden-master fixture: MID
+# Produced by albion.integration.mid.MidRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/mid/nak_11.xml (SIT 03-Nov-2019).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.PolicyNumber_Ext=AGI-3529
+input.AnnualPremium_Ext=P387143596C
+input.UPRN_Ext=
+input.SumInsured_Ext=
+input.BrandCode_Ext=ALBBRK
+expected.length=600
+expected.trailingFiller=549
+expected.recordPrefix=MI56AGI-3529    P387143500000000000000000000002BK00
+expected.record=MI56AGI-3529    P387143500000000000000000000002BK00                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

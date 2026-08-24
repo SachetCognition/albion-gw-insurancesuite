@@ -1,0 +1,13 @@
+# Golden-master fixture: SANCTIONS
+# Produced by albion.integration.sanctions.SanctionsRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/sanctions/good_05.xml (SIT 15-Sep-2017).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.PolicyNumber_Ext=REG-25459
+input.AnnualPremium_Ext=P363678049A
+input.UPRN_Ext=
+input.RiskPostcode_Ext=
+input.BrandCode_Ext=HERIT
+expected.length=250
+expected.trailingFiller=196
+expected.recordPrefix=SA37REG-25459      P363678000000000000000000000000XX99
+expected.record=SA37REG-25459      P363678000000000000000000000000XX99                                                                                                                                                                                                    

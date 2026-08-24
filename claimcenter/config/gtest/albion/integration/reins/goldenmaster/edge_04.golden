@@ -1,0 +1,13 @@
+# Golden-master fixture: REINS
+# Produced by albion.integration.reins.ReinsRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/reins/edge_04.xml (SIT 09-Jun-2019).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.AnnualPremium_Ext=CHG-32732
+input.ClaimNumber_Ext=P377389972C
+input.ERNRef_Ext=
+input.RiskPostcode_Ext=
+input.BrandCode_Ext=ALBBRK
+expected.length=600
+expected.trailingFiller=531
+expected.recordPrefix=RE47CHG-32732 P377389972C                   000000000000000000002BK00
+expected.record=RE47CHG-32732 P377389972C                   000000000000000000002BK00                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

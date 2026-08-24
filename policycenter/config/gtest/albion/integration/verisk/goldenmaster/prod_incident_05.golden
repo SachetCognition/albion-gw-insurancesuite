@@ -1,0 +1,13 @@
+# Golden-master fixture: VERISK
+# Produced by albion.integration.verisk.VeriskRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/verisk/prod_incident_05.xml (UAT 23-Nov-2018).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ERNRef_Ext=GWCC-30971
+input.ClaimNumber_Ext=AD64529636C
+input.InceptionDate_Ext=
+input.NINumber_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=400
+expected.trailingFiller=349
+expected.recordPrefix=VE17GWCC-30971  AD64529600000000000000000000007RP01
+expected.record=VE17GWCC-30971  AD64529600000000000000000000007RP01                                                                                                                                                                                                                                                                                                                                                             

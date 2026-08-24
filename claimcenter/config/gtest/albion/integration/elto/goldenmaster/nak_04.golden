@@ -1,0 +1,13 @@
+# Golden-master fixture: ELTO
+# Produced by albion.integration.elto.EltoRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/elto/nak_04.xml (SIT 16-Aug-2023).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.InceptionDate_Ext=GWPC-22855
+input.UPRN_Ext=HH15108739C
+input.NINumber_Ext=
+input.ERNRef_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=400
+expected.trailingFiller=346
+expected.recordPrefix=EL82GWPC-22855     HH15108700000000000000000000007RP01
+expected.record=EL82GWPC-22855     HH15108700000000000000000000007RP01                                                                                                                                                                                                                                                                                                                                                          

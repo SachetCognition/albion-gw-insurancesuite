@@ -1,0 +1,13 @@
+# Golden-master fixture: ELTO
+# Produced by albion.integration.elto.EltoRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/elto/nak_01.xml (SIT 20-Nov-2016).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.InceptionDate_Ext=PRB-34669
+input.UPRN_Ext=AD96826045C
+input.NINumber_Ext=
+input.ERNRef_Ext=
+input.BrandCode_Ext=ALBDIR
+expected.length=400
+expected.trailingFiller=346
+expected.recordPrefix=EL82PRB-34669      AD96826000000000000000000000001AD00
+expected.record=EL82PRB-34669      AD96826000000000000000000000001AD00                                                                                                                                                                                                                                                                                                                                                          

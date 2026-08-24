@@ -1,0 +1,13 @@
+# Golden-master fixture: FLOODRE
+# Produced by albion.integration.floodre.FloodreRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/floodre/good_09.xml (UAT 01-Nov-2019).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ClaimNumber_Ext=INC-34303
+input.InceptionDate_Ext=AD90548591C
+input.SumInsured_Ext=
+input.NINumber_Ext=
+input.BrandCode_Ext=ALBDIR
+expected.length=600
+expected.trailingFiller=553
+expected.recordPrefix=FL61INC-34303 AD905485000000000000000000001AD00
+expected.record=FL61INC-34303 AD905485000000000000000000001AD00                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

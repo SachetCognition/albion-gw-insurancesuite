@@ -1,0 +1,13 @@
+# Golden-master fixture: PRINTV
+# Produced by albion.integration.printv.PrintvRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/printv/edge_07.xml (PROD (scrubbed... mostly) 07-May-2022).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.InsuredSurname_Ext=INC-23311
+input.ClaimNumber_Ext=AD89065933A
+input.RiskPostcode_Ext=
+input.PolicyNumber_Ext=
+input.BrandCode_Ext=ALBBRK
+expected.length=250
+expected.trailingFiller=175
+expected.recordPrefix=PR16INC-23311   AD89065933A                   0000000000000000000000002BK00
+expected.record=PR16INC-23311   AD89065933A                   0000000000000000000000002BK00                                                                                                                                                                               

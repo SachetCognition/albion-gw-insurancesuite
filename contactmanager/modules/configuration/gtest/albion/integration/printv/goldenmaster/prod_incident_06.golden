@@ -1,0 +1,13 @@
+# Golden-master fixture: PRINTV
+# Produced by albion.integration.printv.PrintvRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/printv/prod_incident_06.xml (UAT 14-Aug-2024).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.InsuredSurname_Ext=GWCC-17055
+input.ClaimNumber_Ext=HH53928144A
+input.RiskPostcode_Ext=
+input.PolicyNumber_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=250
+expected.trailingFiller=175
+expected.recordPrefix=PR16GWCC-17055  HH53928144A                   0000000000000000000000007RP01
+expected.record=PR16GWCC-17055  HH53928144A                   0000000000000000000000007RP01                                                                                                                                                                               
