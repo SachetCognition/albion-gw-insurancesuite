@@ -32,6 +32,6 @@ All 18 reviewed specifications also declare multiple competing `FINAL` versions.
 ## Cross-interface production quirks
 
 - Every listed builder silently truncates over-length strings and replaces pipe, carriage-return, and line-feed characters with spaces.
-- Every listed builder multiplies the numeric input by 100, rounds `HALF_UP`, and uses the literal `"JKLMNOPQR"` for negative trailing overpunch.
+- Every listed builder multiplies the numeric input by 100, rounds `HALF_UP`, and uses the literal `"JKLMNOPQR"` for negative trailing overpunch. Final digit `9` indexes past that nine-character literal and throws `StringIndexOutOfBoundsException`; characterization tests preserve that production failure.
 - Every listed builder independently duplicates the brand mapping in `integration/polaris/mappings/brand_xref.csv`: `ALBDIR -> 01AD00`, `ALBBRK -> 02BK00`, `RETPLS -> 07RP01`, `HERIT -> 00XX99`, default `999999`.
 - The four centre-specific `PolarisPartyRecordBuilder.gs` classes are additional internal parity oracles, but they do not correspond to one of the 18 reviewed interface specifications.

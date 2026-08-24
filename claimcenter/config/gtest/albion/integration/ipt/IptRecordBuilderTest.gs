@@ -28,6 +28,11 @@ class IptRecordBuilderTest extends RecordBuilderCharacterizationTestBase {
         "NINumber_Ext", 11, "VehicleVRM_Ext")
   }
 
+  function testNegativeNineOverpunchFailure() {
+    characterizeNegativeOverpunchNineFailure(\ src -> IptRecordBuilder.buildRecord(src),
+        "ERNRef_Ext", "PolicyNumber_Ext", "NINumber_Ext")
+  }
+
   function testDeclaredLengthGuardIsPreemptedByOversizedNumber() {
     characterizeOversizedNumberFailure(\ src -> IptRecordBuilder.buildRecord(src), 512,
         "ERNRef_Ext", "PolicyNumber_Ext", "NINumber_Ext", "VehicleVRM_Ext")

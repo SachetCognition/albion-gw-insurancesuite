@@ -44,11 +44,29 @@ abstract class RecordBuilderCharacterizationTestBase extends TestBase {
                                                     numberField : String,
                                                     numberWidth : int,
                                                     dateField : String) {
-    for (digit in 0..9) {
+    for (digit in 0..8) {
       var value = new BigDecimal("-1.0" + digit)
       assertRecord(builder, recordType, recordLength, firstField, firstWidth, null,
           secondField, secondWidth, null, numberField, numberWidth, value, dateField, null, "HERIT")
     }
+  }
+
+  protected function characterizeNegativeOverpunchNineFailure(builder : block(src : KeyableBean) : String,
+                                                               firstField : String,
+                                                               secondField : String,
+                                                               numberField : String) {
+    var source = EasyMock.createMock(KeyableBean)
+    EasyMock.expect(source.getFieldValue(firstField)).andReturn(null)
+    EasyMock.expect(source.getFieldValue(secondField)).andReturn(null)
+    EasyMock.expect(source.getFieldValue(numberField)).andReturn(new BigDecimal("-1.09"))
+    EasyMock.replay(source)
+    try {
+      builder(source)
+      fail("Expected the production negative-nine overpunch failure")
+    } catch (e : java.lang.StringIndexOutOfBoundsException) {
+      assertNotNull(e.Message) // Encodes current PROD overpunch failure, right or wrong.
+    }
+    EasyMock.verify(source)
   }
 
   protected function characterizeCapturedSample(builder : block(src : KeyableBean) : String,

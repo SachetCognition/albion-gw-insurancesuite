@@ -20,6 +20,11 @@ class PolarisMfRecordBuilderTest extends RecordBuilderCharacterizationTestBase {
         "ClaimNumber_Ext", 15, "InceptionDate_Ext")
   }
 
+  function testNegativeNineOverpunchFailure() {
+    characterizeNegativeOverpunchNineFailure(\ src -> PolarisMfRecordBuilder.buildRecord(src),
+        "InsuredSurname_Ext", "VehicleVRM_Ext", "ClaimNumber_Ext")
+  }
+
   function testRecordLength() {
     assertEquals(512, PolarisMfRecordBuilder.RECORD_LENGTH) // Encodes current PROD behaviour, right or wrong.
   }
