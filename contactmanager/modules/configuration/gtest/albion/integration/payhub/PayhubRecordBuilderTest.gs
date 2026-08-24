@@ -1,22 +1,24 @@
 package albion.integration.payhub
 
-uses gw.testharness.TestBase
+uses albion.integration.testsupport.RecordBuilderCharacterizationTestBase
 
-/* TODO write real assertions (2017) */
-class PayhubRecordBuilderTest extends TestBase {
+class PayhubRecordBuilderTest extends RecordBuilderCharacterizationTestBase {
 
   function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+    // Golden sample provenance: integration/samples/payhub/good_04.xml.
+    characterize(\ src -> PayhubRecordBuilder.buildRecord(src), "PA15", 750,
+        "InsuredSurname_Ext", 15, "VehicleVRM_Ext", 8,
+        "UPRN_Ext", 13, "ClaimNumber_Ext")
+    characterizeCapturedSample(\ src -> PayhubRecordBuilder.buildRecord(src), "PA15", 750,
+        "InsuredSurname_Ext", 15, "PRB-45704", "VehicleVRM_Ext", 8, "HH96184634A",
+        "UPRN_Ext", 13, "ClaimNumber_Ext", "HERIT")
   }
 
   function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. CHG-13387 open since 2019.
-    // assertEquals("REFER_UW", albion.integration.payhub.PayhubRecordBuilder.evaluateHeritageRef(null))
+    // SUPERSEDED BY testHappyPath: the record builder has no evaluateHeritageRef function.
   }
 
   function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 14-May-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+    assertEquals(750, PayhubRecordBuilder.RECORD_LENGTH) // Encodes current PROD behaviour, right or wrong.
   }
 }

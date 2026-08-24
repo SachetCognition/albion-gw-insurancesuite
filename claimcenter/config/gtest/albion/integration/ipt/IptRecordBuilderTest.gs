@@ -1,22 +1,35 @@
 package albion.integration.ipt
 
-uses gw.testharness.TestBase
+uses albion.integration.testsupport.RecordBuilderCharacterizationTestBase
 
-/* Coverage theatre - written the week before the 2019 audit. */
-class IptRecordBuilderTest extends TestBase {
+class IptRecordBuilderTest extends RecordBuilderCharacterizationTestBase {
 
   function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+    // Golden sample provenance: integration/samples/ipt/good_01.xml.
+    characterize(\ src -> IptRecordBuilder.buildRecord(src), "IP89", 512,
+        "ERNRef_Ext", 20, "PolicyNumber_Ext", 30,
+        "NINumber_Ext", 11, "VehicleVRM_Ext")
+    characterizeCapturedSample(\ src -> IptRecordBuilder.buildRecord(src), "IP89", 512,
+        "ERNRef_Ext", 20, "DEF-20556", "PolicyNumber_Ext", 30, "P320430358A",
+        "NINumber_Ext", 11, "VehicleVRM_Ext", "ALBDIR")
   }
 
   function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. INC-35917 open since 2020.
-    // assertEquals("REFER_UW", albion.integration.ipt.IptRecordBuilder.evaluateThresholds(null))
+    // SUPERSEDED BY testHappyPath: the record builder has no evaluateThresholds function.
   }
 
   function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 16-Sep-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+    assertEquals(512, IptRecordBuilder.RECORD_LENGTH) // Encodes current PROD behaviour, right or wrong.
+  }
+
+  function testCobolTrailingOverpunchMapping() {
+    characterizeNegativeOverpunch(\ src -> IptRecordBuilder.buildRecord(src), "IP89", 512,
+        "ERNRef_Ext", 20, "PolicyNumber_Ext", 30,
+        "NINumber_Ext", 11, "VehicleVRM_Ext")
+  }
+
+  function testDeclaredLengthGuardIsPreemptedByOversizedNumber() {
+    characterizeOversizedNumberFailure(\ src -> IptRecordBuilder.buildRecord(src), 512,
+        "ERNRef_Ext", "PolicyNumber_Ext", "NINumber_Ext", "VehicleVRM_Ext")
   }
 }

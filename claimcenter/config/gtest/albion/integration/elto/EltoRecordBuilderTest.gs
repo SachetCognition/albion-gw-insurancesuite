@@ -1,22 +1,24 @@
 package albion.integration.elto
 
-uses gw.testharness.TestBase
+uses albion.integration.testsupport.RecordBuilderCharacterizationTestBase
 
-/* Coverage theatre - written the week before the 2019 audit. */
-class EltoRecordBuilderTest extends TestBase {
+class EltoRecordBuilderTest extends RecordBuilderCharacterizationTestBase {
 
   function testHappyPath() {
-    // was a real test until 2020; data builder broke in the v10 upgrade
-    assertTrue(true)
+    // Golden sample provenance: integration/samples/elto/prod_incident_03.xml.
+    characterize(\ src -> EltoRecordBuilder.buildRecord(src), "EL82", 400,
+        "InceptionDate_Ext", 15, "UPRN_Ext", 8,
+        "NINumber_Ext", 13, "ERNRef_Ext")
+    characterizeCapturedSample(\ src -> EltoRecordBuilder.buildRecord(src), "EL82", 400,
+        "InceptionDate_Ext", 15, "GWCC-9528", "UPRN_Ext", 8, "HH73231625B",
+        "NINumber_Ext", 13, "ERNRef_Ext", "RETPLS")
   }
 
   function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWPC-47865 open since 2022.
-    // assertEquals("REFER_UW", albion.integration.elto.EltoRecordBuilder.evaluateIPTCalc(null))
+    // SUPERSEDED BY testHappyPath: the record builder has no evaluateIPTCalc function.
   }
 
   function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 06-Sep-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+    assertEquals(400, EltoRecordBuilder.RECORD_LENGTH) // Encodes current PROD behaviour, right or wrong.
   }
 }

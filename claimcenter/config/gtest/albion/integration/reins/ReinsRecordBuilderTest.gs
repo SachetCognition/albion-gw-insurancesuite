@@ -1,22 +1,24 @@
 package albion.integration.reins
 
-uses gw.testharness.TestBase
+uses albion.integration.testsupport.RecordBuilderCharacterizationTestBase
 
-/* TODO write real assertions (2017) */
-class ReinsRecordBuilderTest extends TestBase {
+class ReinsRecordBuilderTest extends RecordBuilderCharacterizationTestBase {
 
   function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+    // Golden sample provenance: integration/samples/reins/good_03.xml.
+    characterize(\ src -> ReinsRecordBuilder.buildRecord(src), "RE47", 600,
+        "AnnualPremium_Ext", 10, "ClaimNumber_Ext", 30,
+        "ERNRef_Ext", 11, "RiskPostcode_Ext")
+    characterizeCapturedSample(\ src -> ReinsRecordBuilder.buildRecord(src), "RE47", 600,
+        "AnnualPremium_Ext", 10, "GWPC-25666", "ClaimNumber_Ext", 30, "AD89632541C",
+        "ERNRef_Ext", 11, "RiskPostcode_Ext", "HERIT")
   }
 
   function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWCC-44227 open since 2019.
-    // assertEquals("REFER_UW", albion.integration.reins.ReinsRecordBuilder.evaluateIPTCalc(null))
+    // SUPERSEDED BY testHappyPath: the record builder has no evaluateIPTCalc function.
   }
 
   function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 01-Mar-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+    assertEquals(600, ReinsRecordBuilder.RECORD_LENGTH) // Encodes current PROD behaviour, right or wrong.
   }
 }
