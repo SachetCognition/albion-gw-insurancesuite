@@ -10,17 +10,22 @@ off. The legacy implementation is never deleted until the retirement step at the
 A committed `*.feature.cutover.*` flag that enables a component+brand fails
 `tools/ci/verify_phase1_scaffold.py` unless:
 
-1. the matching row in `tools/ci/reconciliation-status.csv` is `GREEN` **with cited
-   shadow-window evidence** (a durable `ReconciliationResult` archive reference, never a
-   log grep), and
-2. environment promotion order is respected: dev/sit → uat/preprod → prod. A later
-   environment cannot be enabled before every earlier one.
+1. **dev**: the matching row in `tools/ci/reconciliation-status.csv` is `GREEN_REPLAY` or
+   `GREEN` **with cited durable evidence** (never a log grep). `GREEN_REPLAY` = offline
+   replay reconciliation + benchmark (`docs/reconciliation/PHASE2-REPLAY-EVIDENCE.md`) —
+   valid for dev ONLY, because replay cannot prove entity-level behaviour, prod-only
+   typelist values, live scheduling or production-scale load;
+2. **sit/uat/preprod/prod**: the row is `GREEN` (live shadow window + load test), and
+   environment promotion order is respected: dev/sit → uat/preprod → prod. A later
+   environment cannot be enabled before every earlier one. prod and dr are additionally
+   hard-blocked while any flag is true without a `GREEN` row.
 
 A row may be set `GREEN` only when the non-prod shadow window for that component+brand has
 run sustained with **zero unexplained diffs** — exact byte parity for record builders,
 documented tolerance for count feeds only (`docs/architecture/CONTROLS-AND-TOLERANCES.md`,
-e.g. IPT month-end `<0.1%` counts). Current status: **all 124 rows PENDING**, so no flip is
-possible yet.
+e.g. IPT month-end `<0.1%` counts). Current status: **all 124 rows GREEN_REPLAY** — dev
+cut-over is enabled for all 22 builders x 4 brands (demo scope); every other environment
+remains on legacy until its live window runs.
 
 ## Brand order (smallest blast radius first)
 
@@ -36,9 +41,12 @@ possible yet.
 Flag: `<centre>.feature.cutover.<builder>.brand.<BRAND>.enabled=true`
 (prefixes: `cl` = ClaimCenter, `po` = PolicyCenter, `bi` = BillingCenter, `co` = ContactManager)
 
-1. **Pre-checks**: gate row GREEN; golden-master suite green on the deploying revision;
-   load-test gate passed for this interface (see `docs/runbooks/LOAD-TEST-GATES.md`).
-2. **Flip in dev/sit.** `CutoverRouter` now routes the candidate as authoritative for that
+1. **Pre-checks**: gate row GREEN_REPLAY (dev) or GREEN (beyond dev); golden-master suite
+   green on the deploying revision; load-test gate passed for this interface before any
+   authoritative environment beyond dev (see `docs/runbooks/LOAD-TEST-GATES.md`; the
+   offline benchmark in `PHASE2-REPLAY-EVIDENCE.md` is a proxy, not the load test).
+2. **Flip in dev** (dev-only under GREEN_REPLAY; sit requires GREEN). `CutoverRouter` now
+   routes the candidate as authoritative for that
    brand only. The legacy builder still runs on **every** record as the reverse shadow:
    any difference (including a candidate exception) is recorded as a structured
    `ReconciliationResult` (the auto-alert) and that record **auto-reverts to legacy bytes**

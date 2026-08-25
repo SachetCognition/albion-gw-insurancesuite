@@ -238,7 +238,18 @@ def check_fixtures():
     print("checked %d golden-master fixtures against their characterization tests" % total)
 
 
+# Environments where offline-replay evidence (GREEN_REPLAY) is sufficient to enable a
+# cut-over flag. Everywhere else requires a full GREEN row (live shadow window + load test).
+REPLAY_ALLOWED_ENVS = {"dev"}
+# Environments that must stay fully dormant regardless of gate status: production and its
+# disaster-recovery mirror only ever run the legacy path until a row is GREEN.
+STRICT_DORMANT_ENVS = {"prod", "dr"}
+
+
 def check_scaffold_is_dormant():
+    """prod/dr stay fully dormant; shadow flags may be true in non-prod; cut-over flags
+    may be true only in REPLAY_ALLOWED_ENVS (their gate rows are checked separately by
+    check_cutover_gate)."""
     environments = os.path.join(REPO, "environments")
     checked = 0
     for root, _dirs, names in os.walk(environments):
@@ -246,6 +257,7 @@ def check_scaffold_is_dormant():
             if not name.endswith(".properties"):
                 continue
             path = os.path.join(root, name)
+            env_name = os.path.basename(os.path.dirname(path))
             for number, line in enumerate(open(path, encoding="utf-8"), start=1):
                 stripped = line.strip()
                 if not stripped or stripped.startswith("#"):
@@ -255,10 +267,15 @@ def check_scaffold_is_dormant():
                 checked += 1
                 key, _, value = stripped.partition("=")
                 value = value.split("#")[0].strip().lower()
-                if value != "false":
-                    fail("%s:%d: %s=%s - the shadow/cutover scaffold must be dormant in every "
-                         "committed environment file" % (os.path.relpath(path, REPO), number, key.strip(), value))
-    print("checked %d committed shadow-flag entries; all dormant" % checked)
+                if value == "false":
+                    continue
+                if env_name in STRICT_DORMANT_ENVS:
+                    fail("%s:%d: %s=%s - the shadow/cutover scaffold must be dormant in %s; "
+                         "only a GREEN row (live shadow window + load test) may ever change that"
+                         % (os.path.relpath(path, REPO), number, key.strip(), value, env_name))
+                # non-prod shadow flags may be true; non-prod cut-over flags are validated
+                # against the gate CSV (status + environment) by check_cutover_gate
+    print("checked %d committed shadow/cutover-flag entries; prod/dr dormant" % checked)
 
 
 def code_lines(path, comment_markers):
@@ -356,7 +373,10 @@ ENV_PROMOTION_ORDER = [("dev", "sit"), ("uat", "preprod"), ("prod",)]
 
 
 def load_gate():
-    green = set()
+    """Returns ({target: status}, row count). GREEN and GREEN_REPLAY both require cited
+    evidence; GREEN_REPLAY (offline replay, docs/reconciliation/PHASE2-REPLAY-EVIDENCE.md)
+    only ever satisfies the gate for REPLAY_ALLOWED_ENVS."""
+    statuses = {}
     rows = 0
     for line in open(os.path.join(REPO, GATE_CSV), encoding="utf-8"):
         line = line.strip()
@@ -368,12 +388,15 @@ def load_gate():
             continue
         feature, centre, brand, status = parts[0], parts[1], parts[2], parts[3]
         rows += 1
-        if status == "GREEN":
+        if status not in ("PENDING", "GREEN", "GREEN_REPLAY"):
+            fail("%s: %s/%s/%s has unknown status %r" % (GATE_CSV, feature, centre, brand, status))
+            continue
+        if status in ("GREEN", "GREEN_REPLAY"):
             if len(parts) < 5 or not parts[4].strip():
-                fail("%s: %s/%s/%s is GREEN without evidence - a green gate row must cite "
-                     "its shadow-window evidence" % (GATE_CSV, feature, centre, brand))
-            green.add((feature, centre, brand))
-    return green, rows
+                fail("%s: %s/%s/%s is %s without evidence - a green gate row must cite "
+                     "its durable evidence" % (GATE_CSV, feature, centre, brand, status))
+        statuses[(feature, centre, brand)] = status
+    return statuses, rows
 
 
 def cutover_flags_by_env():
@@ -399,7 +422,7 @@ def cutover_flags_by_env():
 
 
 def check_cutover_gate():
-    green, rows = load_gate()
+    statuses, rows = load_gate()
     if rows == 0:
         fail("%s holds no gate rows - the Phase 3 gate would be unenforceable" % GATE_CSV)
     flags = cutover_flags_by_env()
@@ -424,9 +447,17 @@ def check_cutover_gate():
                     continue
                 brands = list(BRAND_ORDER)
             for brand in brands:
-                if (feature, centre, brand) not in green:
-                    fail("%s:%d: %s enables %s/%s/%s but its %s row is not GREEN - the Phase 2 "
-                         "shadow window gate is not met" % (path, number, key, feature, centre, brand, GATE_CSV))
+                status = statuses.get((feature, centre, brand))
+                if env_name in REPLAY_ALLOWED_ENVS:
+                    if status not in ("GREEN", "GREEN_REPLAY"):
+                        fail("%s:%d: %s enables %s/%s/%s but its %s row is not GREEN or "
+                             "GREEN_REPLAY - the Phase 2 gate is not met"
+                             % (path, number, key, feature, centre, brand, GATE_CSV))
+                elif status != "GREEN":
+                    fail("%s:%d: %s enables %s/%s/%s in %s but its %s row is not GREEN - "
+                         "offline replay evidence (GREEN_REPLAY) only permits the dev "
+                         "environment; every later environment needs a live shadow window "
+                         "+ load test" % (path, number, key, feature, centre, brand, env_name, GATE_CSV))
                 enabled.setdefault((feature, centre, brand), set()).add(env_name)
     # environment promotion order: a later stage may not be enabled before every earlier stage
     for target, envs in sorted(enabled.items()):
