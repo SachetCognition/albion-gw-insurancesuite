@@ -14,7 +14,7 @@ uses org.easymock.EasyMock
  * file is a specification of desired behaviour and no quirk asserted here may be "fixed"
  * outside a deliberate, separately-approved cut-over.
  *
- * Committed fixtures live alongside this test in goldenmaster/*.golden; each fixture records
+ * Committed fixtures live alongside this test in goldenmaster (.golden files); each fixture records
  * the input, its provenance, and the exact expected 300-byte record.
  * tools/ci/verify_phase1_scaffold.py fails the build if a fixture and the literal asserted
  * here ever drift apart.

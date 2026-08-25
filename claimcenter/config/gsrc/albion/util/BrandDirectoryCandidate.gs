@@ -19,7 +19,7 @@ package albion.util
  *     and integration/polaris/mappings/brand_xref.csv: case-sensitive, unknown/null -> the
  *     "999999" sentinel that ops grep for daily, 07RP00 retired (Novabank exit, never
  *     reuse), and the 03DL00 -> ALBBRK reverse mapping that MI has disputed since 2018;
- *  4. the Paragon XSLT brand-asset logic (integration/paragon/xslt/*): ALBDIR/ALBBRK/RETPLS
+ *  4. the Paragon XSLT brand-asset logic (integration/paragon/xslt directory): ALBDIR/ALBBRK/RETPLS
  *     have real logos, EVERYTHING else - including HERIT - falls back to LOGO_AGI_FALLBACK.tif
  *     (heritage letters go out with the wrong logo; accepted risk AGI-17908).
  *
