@@ -209,9 +209,9 @@ export default function ControlTower() {
               <div className="space-y-4 px-6 py-5 text-sm">
                 <dl className="grid gap-4 sm:grid-cols-2">
                   <Field label="Flag">
-                    <span className="font-mono text-xs">
+                    <span className="block break-all font-mono text-xs">
                       {selected.centre === 'cc' ? 'cl' : selected.centre === 'pc' ? 'po' : selected.centre === 'bc' ? 'bi' : 'co'}
-                      .feature.{selected.feature.replace('cutover.', 'cutover.')}.brand.{selected.brand}.enabled
+                      .feature.{selected.feature}.brand.{selected.brand}.enabled
                     </span>
                   </Field>
                   <Field label="Golden master (CI)">
@@ -255,9 +255,9 @@ export default function ControlTower() {
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div>
+    <div className="min-w-0">
       <dt className="text-[11px] uppercase tracking-wider text-slate-500">{label}</dt>
-      <dd className="mt-1 text-slate-200">{children}</dd>
+      <dd className="mt-1 min-w-0 text-slate-200">{children}</dd>
     </div>
   )
 }

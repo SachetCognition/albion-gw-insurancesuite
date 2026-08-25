@@ -123,7 +123,7 @@ export default function Dashboards() {
               <YAxis tick={AXIS} axisLine={false} tickLine={false} unit="k" domain={[650, 900]} />
               <Tooltip {...TOOLTIP} />
               <Legend wrapperStyle={{ fontSize: 11, color: '#94a3b8' }} />
-              <ReferenceLine y={743} stroke="#e8bf6a" strokeDasharray="4 4" label={{ value: 'prod peak 743k/day', fill: '#e8bf6a', fontSize: 10, position: 'insideBottomRight' }} />
+              <ReferenceLine y={743} stroke="#e8bf6a" strokeDasharray="4 4" label={{ value: 'prod peak 743k/day', fill: '#e8bf6a', fontSize: 10, position: 'insideBottomLeft' }} />
               <Line type="monotone" dataKey="legacy" name="legacy alone (k/day)" stroke="#7c8bab" strokeWidth={2} dot={false} />
               <Line type="monotone" dataKey="candidate" name="candidate alone (k/day)" stroke="#3fd0c9" strokeWidth={2} dot={false} />
             </LineChart>

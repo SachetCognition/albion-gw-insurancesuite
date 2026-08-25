@@ -229,7 +229,11 @@ export default function ShadowRun() {
                 </motion.div>
               ))}
             </AnimatePresence>
-            {log.length === 0 && <p className="text-xs muted">Stream paused — press resume.</p>}
+            {log.length === 0 && (
+              <p className="text-xs muted">
+                {running ? 'Comparing first record…' : 'Stream paused — press resume.'}
+              </p>
+            )}
           </div>
         </Panel>
 

@@ -210,7 +210,7 @@ export default function JourneyFlows() {
         </div>
       </Panel>
 
-      <Panel eyebrow="Where the journeys land" title="Fixed-width records on POLARIS" aside="18 interface contracts · 22 record builders">
+      <Panel eyebrow="Where the journeys land" title="Fixed-width records on POLARIS" aside="6 of 18 interface contracts shown · 22 record builders">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[860px] text-left text-sm">
             <thead>
