@@ -52,7 +52,8 @@ def strip_comments(src):
 
 
 def walk_gs(root):
-    for dirpath, _dirs, files in os.walk(root):
+    for dirpath, dirs, files in os.walk(root):
+        dirs.sort()
         for name in sorted(files):
             if name.endswith(".gs"):
                 yield os.path.join(dirpath, name)

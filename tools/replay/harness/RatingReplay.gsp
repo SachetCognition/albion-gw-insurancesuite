@@ -166,3 +166,4 @@ if (recorderStore.Records.Count == 0) {
 evidenceOut.println("SUMMARY|stream=2C|cases=" + cases + "|failures=" + failures)
 evidenceOut.close()
 print("TOTAL stream=2C cases=" + cases + " failures=" + failures)
+System.exit(failures == 0 ? 0 : 1)
