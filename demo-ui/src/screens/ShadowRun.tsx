@@ -241,13 +241,13 @@ export default function ShadowRun() {
           <div className="space-y-3 text-sm">
             {[
               {
-                mode: 'Phase 2 — shadow',
+                mode: 'Shadow — sit, uat/preprod, prod today',
                 body: 'Legacy authoritative. Candidate runs on every record; output compared and thrown away. Diffs become ReconciliationResult records.',
                 tone: 'teal' as const,
               },
               {
-                mode: 'Phase 3 — cut over (flag on, one brand)',
-                body: 'Candidate authoritative for that brand only. Legacy still runs on every record as the reverse shadow; any diff or candidate exception auto-reverts that record to legacy bytes.',
+                mode: 'Cut over — dev today, all 22 builders × 4 brands',
+                body: 'Candidate authoritative for that brand only. Legacy still runs on every record as the reverse shadow; any diff or candidate exception auto-reverts that record to legacy bytes. GREEN_REPLAY evidence permits this in dev and nowhere else.',
                 tone: 'gold' as const,
               },
               {

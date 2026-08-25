@@ -1,19 +1,24 @@
 /**
  * MOCK DATA ONLY — nothing here is read from a live system.
  *
- * Shapes are modelled on the committed Phase 2 / Phase 3 artefacts:
- *   tools/ci/reconciliation-status.csv          (124 component x brand gate rows)
+ * Shapes and headline figures are taken from the committed Phase 2 / Phase 3A artefacts:
+ *   tools/ci/reconciliation-status.csv          (124 component x brand gate rows, all GREEN_REPLAY)
+ *   docs/reconciliation/PHASE2-REPLAY-EVIDENCE.md  (14,069 replay cases, 0 failures)
  *   docs/reconciliation/PHASE2-RECONCILIATION-STATUS.md
  *   docs/runbooks/PHASE3-CUTOVER-RUNBOOK.md, docs/runbooks/LOAD-TEST-GATES.md
+ *   environments/dev/*.properties               (88 cut-over flags enabled in dev only)
  *   docs/interfaces/interface-contract-inventory.csv
  *   docs/architecture/FEEDSTATUS-STATE-MACHINE.md
- * Values are illustrative demo values for an executive walk-through.
+ * Per-record counts, bake timelines and drill logs are illustrative demo values.
  */
 
 export type Brand = 'ALBDIR' | 'ALBBRK' | 'RETPLS' | 'HERIT'
 export type Centre = 'cc' | 'pc' | 'bc' | 'cm'
-export type GateStatus = 'GREEN' | 'SHADOW' | 'PENDING' | 'BLOCKED'
-export type EnvName = 'dev/sit' | 'uat/preprod' | 'prod'
+/** Gate statuses as defined in tools/ci/reconciliation-status.csv. */
+export type GateStatus = 'GREEN' | 'GREEN_REPLAY' | 'PENDING' | 'BLOCKED'
+export type EnvName = 'dev' | 'sit' | 'uat/preprod' | 'prod'
+/** What the router does for a component x brand in a given environment. */
+export type CellState = 'CUTOVER' | 'SHADOW' | 'LEGACY'
 
 export const BRANDS: { code: Brand; label: string; note: string }[] = [
   { code: 'ALBDIR', label: 'Albion Direct', note: 'Smallest blast radius — cuts over first' },
@@ -36,8 +41,15 @@ export interface GateRow {
   brand: Brand
   status: GateStatus
   goldenMaster: 'GREEN'
+  /** Archived offline-replay evidence backing the GREEN_REPLAY row. */
   evidence: string
-  shadowDays: number
+  /** Replay cases executed for this component x brand (offline, tolerance 0). */
+  replayCases: number
+  replayFailures: 0
+  /** True for the 22 record builders whose dev cut-over flag is enabled. */
+  devCutover: boolean
+  /** Days of sustained LIVE non-prod shadow — the only thing that turns a row GREEN. */
+  liveShadowDays: number
   recordsCompared: number
   diffs: number
 }
@@ -82,36 +94,51 @@ function seeded(seed: string): number {
   return ((h >>> 0) % 1000) / 1000
 }
 
-function statusFor(component: string, brand: Brand, r: number): GateStatus {
-  if (component === 'Unified Rating (3C)' && brand === 'HERIT') return 'BLOCKED'
-  const brandBias = { ALBDIR: 0.82, ALBBRK: 0.55, RETPLS: 0.3, HERIT: 0.1 }[brand]
-  if (r < brandBias - 0.35) return 'GREEN'
-  if (r < brandBias + 0.15) return 'SHADOW'
-  return 'PENDING'
+const CENTRE_EVIDENCE: Record<Centre, string> = {
+  cc: 'tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log',
+  pc: 'tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log',
+  bc: 'tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log',
+  cm: 'tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log',
 }
+
+const CENTRE_NAME: Record<Centre, string> = {
+  cc: 'claimcenter',
+  pc: 'policycenter',
+  bc: 'billingcenter',
+  cm: 'contactmanager',
+}
+
+function evidenceFor(feature: string, centre: Centre): string {
+  if (feature === 'cutover.newratingengine') return 'tools/replay/evidence/policycenter-rating-replay.log.gz'
+  if (feature === 'cutover.branddirectory' || feature === 'cutover.feedstatus') {
+    return `tools/replay/evidence/${CENTRE_NAME[centre]}-brand-feedstatus-replay.log.gz`
+  }
+  return CENTRE_EVIDENCE[centre]
+}
+
+/** Streams 3B/3C/3D stay comparator-only in dev: they must not interleave with the 3A bake. */
+const CONVERGENCE_FEATURES = ['cutover.branddirectory', 'cutover.newratingengine', 'cutover.feedstatus']
 
 export const GATE_ROWS: GateRow[] = COMPONENTS.flatMap((c) =>
   c.centres.flatMap((centre) =>
     BRANDS.map(({ code: brand }) => {
       const r = seeded(`${c.feature}:${centre}:${brand}`)
-      const status = statusFor(c.component, brand, r)
-      const shadowDays = status === 'GREEN' ? 28 + Math.round(r * 30) : status === 'SHADOW' ? 3 + Math.round(r * 18) : 0
+      const isBuilder = !CONVERGENCE_FEATURES.includes(c.feature)
       return {
         feature: c.feature,
         component: c.component,
         centre,
         brand,
-        status,
-        shadowDays,
+        // Phase 3A: every row carries offline replay evidence — dev only, never prod.
+        status: 'GREEN_REPLAY' as const,
         goldenMaster: 'GREEN' as const,
-        evidence:
-          status === 'GREEN'
-            ? `RECON-ARCHIVE/${centre.toUpperCase()}-${brand}-${c.component.replace(/\W+/g, '').toUpperCase()}-W${shadowDays}`
-            : status === 'BLOCKED'
-              ? 'blocked: HeritageRenewalInviteBatch still binds @Deprecated *_v1'
-              : '',
-        recordsCompared: status === 'PENDING' ? 0 : Math.round((0.4 + r) * 1_900_000),
-        diffs: status === 'SHADOW' && r > 0.72 ? 1 + Math.round(r * 4) : 0,
+        evidence: evidenceFor(c.feature, centre),
+        replayCases: 40 + Math.round(r * 180),
+        replayFailures: 0 as const,
+        devCutover: isBuilder,
+        liveShadowDays: 0,
+        recordsCompared: isBuilder ? Math.round((0.4 + r) * 190_000) : 0,
+        diffs: 0,
       }
     }),
   ),
@@ -119,45 +146,103 @@ export const GATE_ROWS: GateRow[] = COMPONENTS.flatMap((c) =>
 
 export const GATE_TOTALS = {
   total: GATE_ROWS.length,
+  greenReplay: GATE_ROWS.filter((r) => r.status === 'GREEN_REPLAY').length,
   green: GATE_ROWS.filter((r) => r.status === 'GREEN').length,
-  shadow: GATE_ROWS.filter((r) => r.status === 'SHADOW').length,
   pending: GATE_ROWS.filter((r) => r.status === 'PENDING').length,
-  blocked: GATE_ROWS.filter((r) => r.status === 'BLOCKED').length,
+  devCutover: GATE_ROWS.filter((r) => r.devCutover).length,
+  devShadowOnly: GATE_ROWS.filter((r) => !r.devCutover).length,
 }
+
+/** What the router does for a row in a given environment. Only dev has flags enabled. */
+export function cellState(row: GateRow, env: EnvName): CellState {
+  if (env !== 'dev') return 'LEGACY'
+  return row.devCutover ? 'CUTOVER' : 'SHADOW'
+}
+
+/** The evidence ladder that governs where a cut-over flag may be true. */
+export const EVIDENCE_LADDER: { status: GateStatus | 'GOLDEN'; evidence: string; permits: string }[] = [
+  { status: 'GOLDEN', evidence: 'Golden-master fixtures in CI', permits: 'nothing on its own — entry ticket to shadow' },
+  { status: 'PENDING', evidence: 'none', permits: 'no environment' },
+  { status: 'GREEN_REPLAY', evidence: 'Offline replay reconciliation + benchmark (14,069 cases, 0 failures)', permits: 'dev only' },
+  { status: 'GREEN', evidence: 'Sustained live non-prod shadow window + load test', permits: 'dev → sit → uat/preprod → prod' },
+]
+
+/** Straight from docs/reconciliation/PHASE2-REPLAY-EVIDENCE.md. */
+export const REPLAY_STREAMS = [
+  { id: '2A', name: '22 record builders', detail: 'Byte-exact, tolerance 0, on the real legacy and candidate Gosu classes through the real ShadowRunner', cases: 5140, failures: 0 },
+  { id: '2B/2D', name: 'Brand single-source + FeedStatus state machine', detail: '447 canonical brandOf() copies, all 22 brandMap() tables, 29 scanned batch consumer contracts x prior status x threshold ages', cases: 7351, failures: 0 },
+  { id: '2C', name: 'Unified rating engine', detail: 'All four legacy engines vs the candidate across every pinned PS21/5 threshold, incl. the @Deprecated *_v1 signatures', cases: 1578, failures: 0 },
+]
+
+export const REPLAY_BY_CENTRE = [
+  { centre: 'ClaimCenter', cases: 1380, builders: 'AGGR, ELTO, IPT, POLARIS, REINS, SANCTIONS' },
+  { centre: 'BillingCenter', cases: 942, builders: 'CREDIT, FLOODRE, MID, POLARIS' },
+  { centre: 'PolicyCenter', cases: 1172, builders: 'CRIF, DWH, POLARIS, SSP, VERISK' },
+  { centre: 'ContactManager', cases: 1646, builders: 'CIFAS, CUE, DVLA, PAYHUB, POLARIS, POLARIS_MF, PRINTV' },
+]
+
+/** Why replay evidence can never turn a row GREEN. */
+export const REPLAY_LIMITS = [
+  'Entity-level behaviour: real KeyableBean entities, typelists, bundles, LastBatchRun_Ext persistence, the ComplianceBreach_Ext write path',
+  'Licensed-compiler compatibility (gwb compile / GUnit) and plugin wiring',
+  'Production-only data: the 3 prod-only typelist codes (AGI-35347) and real POLARIS rows',
+  'Live scheduling — Control-M versus scheduler-config.xml, and the real batch windows',
+  'Production-scale load: the JVM micro-benchmark is a proxy, not the load test',
+]
+
+/** Harness self-checks: mutated inputs must fail, or green means nothing. */
+export const HARNESS_SELF_CHECKS = [
+  { probe: 'Mutated golden fixture', expected: '1 failure — GOLDEN MISMATCH', result: 'detected' },
+  { probe: 'Mutated brand mapping + escalation threshold', expected: '7 failures — SCAN-DRIFT / BREACH', result: 'detected' },
+]
 
 export interface EnvGate {
   env: EnvName
   order: number
-  unlocked: boolean
+  /** Cut-over flags actually enabled in this environment today. */
+  flagsEnabled: number
+  state: 'CUT OVER' | 'ON LEGACY'
+  requires: string
   bake: string
-  greenRows: number
   note: string
 }
 
 export const ENV_PROMOTION: EnvGate[] = [
   {
-    env: 'dev/sit',
+    env: 'dev',
     order: 1,
-    unlocked: true,
+    flagsEnabled: 88,
+    state: 'CUT OVER',
+    requires: 'GREEN_REPLAY row + cited archived evidence',
+    bake: 'In bake now — 22 builders x 4 brands, candidate authoritative',
+    note: 'Legacy runs as the reverse shadow on every record: any diff auto-alerts and auto-reverts that record to legacy bytes',
+  },
+  {
+    env: 'sit',
+    order: 2,
+    flagsEnabled: 0,
+    state: 'ON LEGACY',
+    requires: 'GREEN — live shadow window with zero unexplained diffs',
     bake: 'One full business cycle incl. month-end',
-    greenRows: GATE_TOTALS.green,
-    note: 'CutoverRouter routes candidate as authoritative for the flipped brand only',
+    note: 'CI fails the build if a sit cut-over flag is true while the row is only GREEN_REPLAY (negative-tested)',
   },
   {
     env: 'uat/preprod',
-    order: 2,
-    unlocked: true,
-    bake: 'Second bake — surfaces the 3 PROD-only typelist codes (AGI-35347)',
-    greenRows: Math.round(GATE_TOTALS.green * 0.55),
-    note: 'A later environment can never be enabled before every earlier one',
+    order: 3,
+    flagsEnabled: 0,
+    state: 'ON LEGACY',
+    requires: 'GREEN + every earlier environment green',
+    bake: 'Second bake — surfaces the 3 prod-only typelist codes (AGI-35347)',
+    note: 'Entity-level behaviour and licensed-compiler wiring get proven here — replay cannot reach them',
   },
   {
     env: 'prod',
-    order: 3,
-    unlocked: false,
+    order: 4,
+    flagsEnabled: 0,
+    state: 'ON LEGACY',
+    requires: 'GREEN + load test at renewal+catastrophe peak',
     bake: 'Full window covering a renewal peak; MID/IPT/DWH also renewals+catastrophe',
-    greenRows: 0,
-    note: 'Legacy stays authoritative until the prod bake completes with zero auto-reverts',
+    note: 'prod and dr stay hard-blocked by CI while any row is short of GREEN',
   },
 ]
 
@@ -198,15 +283,25 @@ export const THROUGHPUT_TREND = [
   { day: 'Sun', legacy: 704, candidate: 759, peak: 743 },
 ]
 
-export const PARITY_TREND = [
-  { week: 'W1', compared: 4.1, diffs: 9, autoReverts: 9 },
-  { week: 'W2', compared: 5.4, diffs: 4, autoReverts: 4 },
-  { week: 'W3', compared: 6.2, diffs: 2, autoReverts: 2 },
-  { week: 'W4', compared: 6.9, diffs: 1, autoReverts: 1 },
-  { week: 'W5', compared: 7.4, diffs: 0, autoReverts: 0 },
-  { week: 'W6 (month-end)', compared: 9.1, diffs: 0, autoReverts: 0 },
-  { week: 'W7', compared: 7.8, diffs: 0, autoReverts: 0 },
-  { week: 'W8', compared: 8.0, diffs: 0, autoReverts: 0 },
+/** Dev bake since the 3A flip: records the candidate produced, and reverse-shadow auto-reverts. */
+export const DEV_BAKE = [
+  { day: 'D1', records: 1.9, autoReverts: 0 },
+  { day: 'D2', records: 2.1, autoReverts: 0 },
+  { day: 'D3', records: 2.0, autoReverts: 0 },
+  { day: 'D4', records: 2.4, autoReverts: 0 },
+  { day: 'D5 (month-end)', records: 3.6, autoReverts: 0 },
+  { day: 'D6', records: 2.2, autoReverts: 0 },
+  { day: 'D7', records: 2.0, autoReverts: 0 },
+]
+
+/** Micro-benchmark from the *-bench.log files: 100,000 iterations per builder, same JVM. */
+export const BENCH_NS_PER_OP = [
+  { builder: 'MID', legacy: 3410, candidate: 3180 },
+  { builder: 'IPT', legacy: 2980, candidate: 2740 },
+  { builder: 'DWH', legacy: 1920, candidate: 1810 },
+  { builder: 'Payhub', legacy: 3290, candidate: 3120 },
+  { builder: 'POLARIS Party', legacy: 2610, candidate: 2450 },
+  { builder: 'Print Vendor', legacy: 2240, candidate: 2170 },
 ]
 
 export const ROLLBACK_DRILLS = [
@@ -310,20 +405,35 @@ export const SHADOW_RECORDS: ShadowRecord[] = [
 ]
 
 export const HEADLINE_STATS = [
-  { label: 'Cut-over gate rows', value: '124', sub: 'component × brand, CI-enforced' },
-  { label: 'Interfaces in scope', value: '18', sub: '22 record builders to POLARIS' },
-  { label: 'Records diffed in shadow', value: '58.9M', sub: 'byte-exact, zero tolerance' },
+  { label: 'Replay cases reconciled', value: '14,069', sub: '0 failures — real classes, tolerance 0' },
+  { label: 'Gate rows on evidence', value: '124 / 124', sub: 'all GREEN_REPLAY — dev only, never prod' },
+  { label: 'Cut-over flags live in dev', value: '88', sub: '22 builders × 4 brands, legacy reverse-shadowing' },
   { label: 'Business changes required', value: '0', sub: 'external strings never change' },
 ]
 
+export const PHASE3A_STATE = {
+  headline: 'Dev is cut over. Everything beyond dev is still legacy — on purpose.',
+  replayCases: 14069,
+  replayFailures: 0,
+  devFlags: 88,
+  greenReplayRows: 124,
+  greenRows: 0,
+  bullets: [
+    'All 124 gate rows are GREEN_REPLAY: offline replay reconciliation ran the real legacy and candidate classes through the real ShadowRunner at tolerance 0 — 14,069 cases, 0 failures, archived under tools/replay/evidence/.',
+    'That evidence is deliberately capped at dev. CI fails the build if a sit, uat, preprod or prod cut-over flag is true while the row is only GREEN_REPLAY — negative-tested, not assumed.',
+    'In dev the candidate is authoritative for all 22 builders across all 4 brands, with the legacy builder running as reverse shadow: any divergent record auto-alerts and auto-reverts to legacy bytes.',
+    'GREEN — and therefore promotion — still needs a sustained live non-prod shadow window plus the load test at renewal+catastrophe peak.',
+  ],
+}
+
 export const PRINCIPLES = [
   {
-    title: 'Legacy stays authoritative',
-    body: 'Nothing is switched on because it looks finished. The legacy builder keeps producing the bytes that leave Albion until parity is proven over real traffic.',
+    title: 'Legacy stays authoritative where customers are',
+    body: 'Nothing is switched on because it looks finished. Every environment that touches customers still emits legacy bytes; dev is the only place the candidate is authoritative, and even there legacy runs behind it as the reverse shadow.',
   },
   {
-    title: 'Parity is evidence, not opinion',
-    body: 'Golden-master parity in CI plus a sustained non-prod shadow window with zero unexplained diffs. Record builders are byte-exact; only month-end IPT counts carry a documented <0.1% tolerance.',
+    title: 'Evidence has grades, and grades have limits',
+    body: 'GREEN_REPLAY is offline replay of the real classes — strong enough for dev, and explicitly not enough for anything else. Only a sustained live window plus the load test earns GREEN and the right to promote.',
   },
   {
     title: 'Rollback is a flag, not a project',
@@ -331,7 +441,7 @@ export const PRINCIPLES = [
   },
   {
     title: 'Smallest blast radius first',
-    body: 'ALBDIR → ALBBRK → RETPLS → HERIT, and dev/sit → uat/preprod → prod. CI refuses a later environment before every earlier one is green.',
+    body: 'ALBDIR → ALBBRK → RETPLS → HERIT, and dev → sit → uat/preprod → prod. CI refuses a later environment before every earlier one is green, and keeps prod and dr dormant.',
   },
 ]
 
@@ -341,5 +451,6 @@ export const RISK_REGISTER = [
   { risk: 'Negative overpunch digit 9 throws', control: 'Characterization fixture pinned; candidate reproduces the throw exactly', severity: 'medium' },
   { risk: 'Unbounded PENDING query (1.4M rows)', control: 'Bounded/resumable selection shipped separately, after 3D flip', severity: 'high' },
   { risk: 'Double scheduling (Control-M vs scheduler-config)', control: 'Single active scheduler per environment, individually gated', severity: 'medium' },
-  { risk: '3 PROD-only typelist codes (AGI-35347)', control: 'Treated as diffs in uat/preprod bake, not surprises in prod', severity: 'low' },
+  { risk: '3 PROD-only typelist codes (AGI-35347)', control: 'Out of reach of replay — surfaced in the uat/preprod bake, not in prod', severity: 'low' },
+  { risk: 'Replay evidence mistaken for live parity', control: 'GREEN_REPLAY is a distinct CI status that permits dev only; prod/dr hard-blocked', severity: 'high' },
 ]

@@ -17,8 +17,10 @@ import {
 import { Panel, ScreenHeader, Stat, Tag } from '../components/ui'
 import {
   BRANDS,
+  DEV_BAKE,
   GATE_ROWS,
-  PARITY_TREND,
+  PHASE3A_STATE,
+  REPLAY_BY_CENTRE,
   ROLLBACK_DRILLS,
   THROUGHPUT_BASELINES,
   THROUGHPUT_TREND,
@@ -40,9 +42,9 @@ export default function Dashboards() {
     const rows = GATE_ROWS.filter((r) => r.brand === b.code)
     return {
       brand: b.code,
-      green: rows.filter((r) => r.status === 'GREEN').length,
-      shadow: rows.filter((r) => r.status === 'SHADOW').length,
-      pending: rows.filter((r) => r.status === 'PENDING' || r.status === 'BLOCKED').length,
+      cutover: rows.filter((r) => r.devCutover).length,
+      comparator: rows.filter((r) => !r.devCutover).length,
+      liveGreen: rows.filter((r) => r.status === 'GREEN').length,
     }
   })
 
@@ -54,29 +56,42 @@ export default function Dashboards() {
       <ScreenHeader
         eyebrow="05 · Dashboards"
         title="Parity, throughput, and the rollback we rehearse"
-        lede="Three numbers decide whether a component flips: does it produce identical bytes, does it keep up with the real peak, and can we put it back in seconds. All three are measured before a flag moves."
+        lede="Three numbers decide whether a component flips: does it produce identical bytes, does it keep up with the real peak, and can we put it back in seconds. Replay has answered the first for dev; the live window and the load test still have to answer them for everywhere else."
         aside={
           <div className="panel px-5 py-4 text-left">
             <div className="eyebrow">Programme headline</div>
             <div className="mt-1 text-2xl font-semibold text-white">
-              {(totalCompared / 1_000_000).toFixed(1)}M <span className="text-sm font-normal muted">records diffed</span>
+              {PHASE3A_STATE.replayCases.toLocaleString('en-GB')}{' '}
+              <span className="text-sm font-normal muted">replay cases</span>
             </div>
-            <div className="text-xs muted">{openDiffs} unexplained diffs open</div>
+            <div className="text-xs muted">
+              {PHASE3A_STATE.replayFailures} failures · {(totalCompared / 1_000_000).toFixed(1)}M records built by the
+              candidate in the dev bake so far
+            </div>
           </div>
         }
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Stat label="Byte-exact match rate" value="99.9997%" sub="tolerance is zero — every diff investigated" />
-        <Stat label="Open unexplained diffs" value={String(openDiffs)} sub="blocks the affected gate rows" tone="teal" />
-        <Stat label="Throughput vs baseline" value="+7.4%" sub="candidate-alone vs legacy-alone, same run" />
+        <Stat label="Replay failures" value={String(PHASE3A_STATE.replayFailures)} sub="14,069 cases, tolerance zero" />
+        <Stat
+          label="Dev auto-reverts in bake"
+          value={String(openDiffs)}
+          sub="legacy reverse-shadow found nothing to fix"
+          tone="teal"
+        />
+        <Stat label="Bench delta vs legacy" value="+6.1%" sub="candidate faster, same JVM, 100k iterations" />
         <Stat label="Rollback time (drill mean)" value="10 s" sub="flag flip; no deploy, no data change" />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
-        <Panel eyebrow="Parity reconciliation" title="Diffs fall to zero and stay there" aside="8-week non-prod shadow window">
+        <Panel
+          eyebrow="Dev bake since the 3A flip"
+          title="Candidate authoritative, legacy watching every record"
+          aside="0 auto-reverts to date"
+        >
           <ResponsiveContainer width="100%" height={260}>
-            <AreaChart data={PARITY_TREND} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
+            <AreaChart data={DEV_BAKE} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
               <defs>
                 <linearGradient id="gCompared" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#3fd0c9" stopOpacity={0.45} />
@@ -84,16 +99,16 @@ export default function Dashboards() {
                 </linearGradient>
               </defs>
               <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
-              <XAxis dataKey="week" tick={AXIS} axisLine={false} tickLine={false} />
+              <XAxis dataKey="day" tick={AXIS} axisLine={false} tickLine={false} />
               <YAxis yAxisId="l" tick={AXIS} axisLine={false} tickLine={false} unit="M" />
-              <YAxis yAxisId="r" orientation="right" tick={AXIS} axisLine={false} tickLine={false} />
+              <YAxis yAxisId="r" orientation="right" tick={AXIS} axisLine={false} tickLine={false} domain={[0, 4]} />
               <Tooltip {...TOOLTIP} />
               <Legend wrapperStyle={{ fontSize: 11, color: '#94a3b8' }} />
               <Area
                 yAxisId="l"
                 type="monotone"
-                dataKey="compared"
-                name="records compared (M)"
+                dataKey="records"
+                name="records built by candidate (M)"
                 stroke="#3fd0c9"
                 fill="url(#gCompared)"
                 strokeWidth={2}
@@ -101,8 +116,8 @@ export default function Dashboards() {
               <Line
                 yAxisId="r"
                 type="monotone"
-                dataKey="diffs"
-                name="unexplained diffs"
+                dataKey="autoReverts"
+                name="auto-reverts to legacy"
                 stroke="#ff6b6b"
                 strokeWidth={2}
                 dot={{ r: 3 }}
@@ -110,8 +125,8 @@ export default function Dashboards() {
             </AreaChart>
           </ResponsiveContainer>
           <p className="mt-3 text-[11px] leading-relaxed text-slate-500">
-            Record builders carry tolerance zero. Only month-end IPT counts carry a documented &lt;0.1% relative
-            tolerance — record bytes stay exact.
+            Dev only. This bake is not the live shadow window that earns GREEN — it runs on dev data, so it cannot
+            promote anything on its own.
           </p>
         </Panel>
 
@@ -155,7 +170,7 @@ export default function Dashboards() {
           </p>
         </Panel>
 
-        <Panel eyebrow="Gate progress by brand" title="ALBDIR leads, HERIT last by design">
+        <Panel eyebrow="Dev routing by brand" title="All four brands cut over in dev, none anywhere else">
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={brandProgress} layout="vertical" margin={{ top: 8, right: 16, left: 10, bottom: 0 }}>
               <CartesianGrid stroke="rgba(255,255,255,0.05)" horizontal={false} />
@@ -163,13 +178,13 @@ export default function Dashboards() {
               <YAxis type="category" dataKey="brand" tick={AXIS} axisLine={false} tickLine={false} width={60} />
               <Tooltip {...TOOLTIP} />
               <Legend wrapperStyle={{ fontSize: 11, color: '#94a3b8' }} />
-              <Bar dataKey="green" name="green" stackId="a" fill="#34d399">
+              <Bar dataKey="cutover" name="candidate authoritative in dev" stackId="a" fill="#3fd0c9">
                 {brandProgress.map((b) => (
                   <Cell key={b.brand} />
                 ))}
               </Bar>
-              <Bar dataKey="shadow" name="shadow window" stackId="a" fill="#3fd0c9" />
-              <Bar dataKey="pending" name="not started / blocked" stackId="a" fill="#33415c" radius={[0, 4, 4, 0]} />
+              <Bar dataKey="comparator" name="comparator only (3B/3C/3D)" stackId="a" fill="#d4a441" />
+              <Bar dataKey="liveGreen" name="live GREEN rows" stackId="a" fill="#34d399" radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -179,8 +194,47 @@ export default function Dashboards() {
               </Tag>
             ))}
           </div>
+          <p className="mt-3 text-[11px] leading-relaxed text-slate-500">
+            Brand order still governs promotion: no row is live GREEN yet, so ALBDIR → ALBBRK → RETPLS → HERIT sequencing
+            applies from sit onwards.
+          </p>
         </Panel>
       </div>
+
+      <Panel
+        eyebrow="Offline replay reconciliation"
+        title="14,069 cases across four centres, 0 failures"
+        aside="tools/replay/evidence/ · tolerance 0"
+      >
+        <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
+          <ResponsiveContainer width="100%" height={230}>
+            <BarChart data={REPLAY_BY_CENTRE} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
+              <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
+              <XAxis dataKey="centre" tick={AXIS} axisLine={false} tickLine={false} />
+              <YAxis tick={AXIS} axisLine={false} tickLine={false} />
+              <Tooltip {...TOOLTIP} formatter={(v) => Number(v).toLocaleString('en-GB')} />
+              <Bar dataKey="cases" name="builder replay cases" fill="#d4a441" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+          <div className="space-y-2">
+            {REPLAY_BY_CENTRE.map((c) => (
+              <div key={c.centre} className="rounded-xl border border-white/5 bg-ink-800/60 px-4 py-3">
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="text-sm font-medium text-white">{c.centre}</span>
+                  <span className="font-mono text-xs tabular-nums text-gold-300">
+                    {c.cases.toLocaleString('en-GB')} cases
+                  </span>
+                </div>
+                <p className="mt-1 font-mono text-[11px] text-slate-500">{c.builders}</p>
+              </div>
+            ))}
+            <p className="text-[11px] leading-relaxed text-slate-500">
+              Builder streams shown here; the brand/FeedStatus and rating streams add a further 8,929 cases. Every case
+              ran the real legacy and candidate classes through the real ShadowRunner.
+            </p>
+          </div>
+        </div>
+      </Panel>
 
       <Panel
         eyebrow="Rollback drills"

@@ -2,15 +2,19 @@ import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import clsx from 'clsx'
 import { Panel, ScreenHeader, StatusChip, Tag } from '../components/ui'
-import { statusCell } from '../components/status'
+import { CELL_STYLE } from '../components/status'
 import {
   BRANDS,
   CENTRES,
   ENV_PROMOTION,
+  EVIDENCE_LADDER,
   GATE_ROWS,
   GATE_TOTALS,
+  REPLAY_LIMITS,
+  cellState,
   type Brand,
   type Centre,
+  type EnvName,
   type GateRow,
 } from '../data/mock'
 
@@ -18,6 +22,7 @@ const CENTRE_FILTERS: (Centre | 'all')[] = ['all', 'cc', 'pc', 'bc', 'cm']
 
 export default function ControlTower() {
   const [centre, setCentre] = useState<Centre | 'all'>('all')
+  const [env, setEnv] = useState<EnvName>('dev')
   const [selected, setSelected] = useState<GateRow | null>(null)
 
   const rows = useMemo(() => {
@@ -34,29 +39,32 @@ export default function ControlTower() {
       component: list[0].component,
       centre: list[0].centre,
       feature: list[0].feature,
+      status: list[0].status,
       byBrand: Object.fromEntries(list.map((r) => [r.brand, r])) as Record<Brand, GateRow>,
     }))
   }, [centre])
+
+  const liveFlags = ENV_PROMOTION.find((e) => e.env === env)?.flagsEnabled ?? 0
 
   return (
     <div className="space-y-8">
       <ScreenHeader
         eyebrow="02 · Migration control tower"
-        title="Every flip has a gate, and the gate is in the build"
-        lede="124 component × brand rows. A cut-over flag that enables a component for a brand fails the build unless the matching gate row is GREEN with cited shadow-window evidence, and unless every earlier environment is already green."
+        title="Dev is cut over. Everything past dev is still legacy, on purpose"
+        lede="All 124 component × brand rows now carry archived offline-replay evidence — status GREEN_REPLAY. That status permits the cut-over flag in dev and nowhere else, so dev runs the candidate for all 22 builders × 4 brands while sit, uat/preprod and prod stay on legacy until a live shadow window turns each row GREEN."
         aside={
           <div className="flex gap-3">
             <div className="panel px-4 py-3 text-left">
+              <div className="text-2xl font-semibold tabular-nums text-gold-300">{GATE_TOTALS.greenReplay}</div>
+              <div className="text-[11px] muted">rows GREEN_REPLAY</div>
+            </div>
+            <div className="panel px-4 py-3 text-left">
+              <div className="text-2xl font-semibold tabular-nums text-candidate">{GATE_TOTALS.devCutover}</div>
+              <div className="text-[11px] muted">flags live in dev</div>
+            </div>
+            <div className="panel px-4 py-3 text-left">
               <div className="text-2xl font-semibold tabular-nums text-emerald-300">{GATE_TOTALS.green}</div>
-              <div className="text-[11px] muted">rows green</div>
-            </div>
-            <div className="panel px-4 py-3 text-left">
-              <div className="text-2xl font-semibold tabular-nums text-candidate">{GATE_TOTALS.shadow}</div>
-              <div className="text-[11px] muted">in shadow window</div>
-            </div>
-            <div className="panel px-4 py-3 text-left">
-              <div className="text-2xl font-semibold tabular-nums text-alert">{GATE_TOTALS.blocked}</div>
-              <div className="text-[11px] muted">blocked</div>
+              <div className="text-[11px] muted">rows GREEN (live)</div>
             </div>
           </div>
         }
@@ -64,10 +72,10 @@ export default function ControlTower() {
 
       <Panel
         eyebrow="Environment promotion"
-        title="dev/sit → uat/preprod → prod"
+        title="dev → sit → uat/preprod → prod"
         aside="CI refuses out-of-order promotion"
       >
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {ENV_PROMOTION.map((e, i) => (
             <motion.div
               key={e.env}
@@ -76,21 +84,24 @@ export default function ControlTower() {
               transition={{ delay: 0.08 * i }}
               className={clsx(
                 'relative rounded-xl border p-5',
-                e.unlocked ? 'border-candidate/30 bg-candidate/[0.06]' : 'border-white/5 bg-ink-800/50',
+                e.state === 'CUT OVER' ? 'border-candidate/30 bg-candidate/[0.06]' : 'border-white/5 bg-ink-800/50',
               )}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <span className="font-mono text-sm text-white">{e.env}</span>
-                {e.unlocked ? <Tag tone="teal">open</Tag> : <Tag>locked</Tag>}
+                {e.state === 'CUT OVER' ? <Tag tone="teal">cut over</Tag> : <Tag>on legacy</Tag>}
               </div>
-              <div className="mt-3 text-3xl font-semibold tabular-nums text-white">{e.greenRows}</div>
-              <div className="text-[11px] muted">rows green in this environment</div>
+              <div className="mt-3 text-3xl font-semibold tabular-nums text-white">{e.flagsEnabled}</div>
+              <div className="text-[11px] muted">cut-over flags enabled</div>
               <div className="mt-3 border-t border-white/5 pt-3 text-xs leading-relaxed text-slate-400">
+                <span className="text-gold-400/90">Needs:</span> {e.requires}
+              </div>
+              <div className="mt-2 text-xs leading-relaxed text-slate-400">
                 <span className="text-gold-400/90">Bake:</span> {e.bake}
               </div>
               <p className="mt-2 text-[11px] leading-relaxed text-slate-500">{e.note}</p>
               {i < ENV_PROMOTION.length - 1 && (
-                <span className="absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 items-center justify-center text-gold-500/60 md:flex">
+                <span className="absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 items-center justify-center text-gold-500/60 xl:flex">
                   →
                 </span>
               )}
@@ -100,34 +111,95 @@ export default function ControlTower() {
       </Panel>
 
       <Panel
-        eyebrow="Cut-over status board"
-        title="Component × brand, per centre"
-        aside={
-          <div className="flex flex-wrap justify-end gap-1">
-            {CENTRE_FILTERS.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setCentre(c)}
+        eyebrow="Evidence ladder"
+        title="What each grade of evidence is allowed to unlock"
+        aside="tools/ci/verify_phase1_scaffold.py enforces this"
+      >
+        <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr]">
+          <div className="space-y-2">
+            {EVIDENCE_LADDER.map((e) => (
+              <div
+                key={e.status}
                 className={clsx(
-                  'rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors',
-                  centre === c ? 'bg-gold-500/20 text-gold-300' : 'bg-white/5 text-slate-400 hover:text-slate-200',
+                  'flex flex-wrap items-center gap-3 rounded-xl border px-4 py-3',
+                  e.status === 'GREEN_REPLAY'
+                    ? 'border-gold-500/30 bg-gold-500/[0.07]'
+                    : e.status === 'GREEN'
+                      ? 'border-emerald-400/25 bg-emerald-400/[0.06]'
+                      : 'border-white/5 bg-ink-800/60',
                 )}
               >
-                {c === 'all' ? 'All centres' : `${c.toUpperCase()} · ${CENTRES[c]}`}
-              </button>
+                <span className="font-mono text-xs text-white">{e.status}</span>
+                <span className="min-w-0 flex-1 text-[11px] leading-relaxed text-slate-400">{e.evidence}</span>
+                <span className="shrink-0 font-mono text-[11px] text-gold-300">{e.permits}</span>
+              </div>
             ))}
+          </div>
+          <div className="rounded-xl border border-alert/20 bg-alert/[0.05] p-4">
+            <div className="eyebrow text-alert/80">What replay cannot prove</div>
+            <ul className="mt-2 space-y-1.5 text-[11px] leading-relaxed text-slate-400">
+              {REPLAY_LIMITS.map((l) => (
+                <li key={l} className="flex gap-2">
+                  <span className="text-alert/70">·</span>
+                  <span>{l}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Panel>
+
+      <Panel
+        eyebrow="Cut-over status board"
+        title="Who builds the record, per environment"
+        aside={
+          <div className="space-y-2">
+            <div className="flex flex-wrap justify-end gap-1">
+              {ENV_PROMOTION.map((e) => (
+                <button
+                  key={e.env}
+                  type="button"
+                  onClick={() => setEnv(e.env)}
+                  className={clsx(
+                    'rounded-md px-2.5 py-1 font-mono text-[11px] transition-colors',
+                    env === e.env ? 'bg-candidate/20 text-candidate' : 'bg-white/5 text-slate-400 hover:text-slate-200',
+                  )}
+                >
+                  {e.env}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap justify-end gap-1">
+              {CENTRE_FILTERS.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setCentre(c)}
+                  className={clsx(
+                    'rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors',
+                    centre === c ? 'bg-gold-500/20 text-gold-300' : 'bg-white/5 text-slate-400 hover:text-slate-200',
+                  )}
+                >
+                  {c === 'all' ? 'All centres' : `${c.toUpperCase()} · ${CENTRES[c]}`}
+                </button>
+              ))}
+            </div>
           </div>
         }
         bodyClassName="px-0 py-0"
       >
+        <div className="flex flex-wrap items-center gap-3 border-b border-white/5 px-6 py-3 text-[11px] text-slate-400">
+          Showing <span className="font-mono text-white">{env}</span> ·
+          <span className="font-mono text-candidate">{liveFlags}</span> cut-over flags enabled here
+          {liveFlags === 0 && <span className="text-slate-500">— legacy builds every record in this environment</span>}
+        </div>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[880px] text-left text-sm">
+          <table className="w-full min-w-[920px] text-left text-sm">
             <thead className="bg-ink-800/70">
               <tr className="text-[11px] uppercase tracking-wider text-slate-500">
                 <th className="px-6 py-3 font-medium">Component</th>
                 <th className="px-3 py-3 font-medium">Centre</th>
-                <th className="px-3 py-3 font-medium">Golden master</th>
+                <th className="px-3 py-3 font-medium">Gate row</th>
                 {BRANDS.map((b) => (
                   <th key={b.code} className="px-3 py-3 font-medium">
                     {b.code}
@@ -144,10 +216,11 @@ export default function ControlTower() {
                   </td>
                   <td className="px-3 py-3 font-mono text-xs text-slate-400">{row.centre}</td>
                   <td className="px-3 py-3">
-                    <Tag tone="green">GREEN</Tag>
+                    <StatusChip status={row.status} />
                   </td>
                   {BRANDS.map((b) => {
                     const cell = row.byBrand[b.code]
+                    const state = cellState(cell, env)
                     return (
                       <td key={b.code} className="px-3 py-3">
                         <button
@@ -155,13 +228,10 @@ export default function ControlTower() {
                           onClick={() => setSelected(cell)}
                           className={clsx(
                             'w-full rounded-lg border px-2.5 py-1.5 text-left text-[11px] font-medium transition-transform hover:scale-[1.03]',
-                            statusCell(cell.status),
+                            CELL_STYLE[state].cls,
                           )}
                         >
-                          {cell.status}
-                          {cell.status === 'SHADOW' && (
-                            <span className="ml-1 opacity-70">· d{cell.shadowDays}</span>
-                          )}
+                          {CELL_STYLE[state].label}
                         </button>
                       </td>
                     )
@@ -172,10 +242,11 @@ export default function ControlTower() {
           </table>
         </div>
         <div className="flex flex-wrap items-center gap-4 border-t border-white/5 px-6 py-4 text-[11px] text-slate-500">
-          <StatusChip status="GREEN" /> parity proven, flip eligible
-          <StatusChip status="SHADOW" /> window running, legacy authoritative
-          <StatusChip status="PENDING" /> window not started
-          <StatusChip status="BLOCKED" /> dependency outstanding
+          <span className={clsx('chip', CELL_STYLE.CUTOVER.cls)}>CANDIDATE</span> candidate authoritative, legacy
+          reverse-shadowing
+          <span className={clsx('chip', CELL_STYLE.SHADOW.cls)}>SHADOW</span> comparator only — 3B/3C/3D stay out of the
+          3A bake
+          <span className={clsx('chip', CELL_STYLE.LEGACY.cls)}>LEGACY</span> legacy builds the record
           <span className="ml-auto">Select a cell for evidence detail</span>
         </div>
       </Panel>
@@ -214,27 +285,31 @@ export default function ControlTower() {
                       .feature.{selected.feature}.brand.{selected.brand}.enabled
                     </span>
                   </Field>
+                  <Field label="Enabled in">
+                    {selected.devCutover ? (
+                      <Tag tone="teal">dev only — GREEN_REPLAY ceiling</Tag>
+                    ) : (
+                      <Tag>nowhere — comparator shadowing in dev</Tag>
+                    )}
+                  </Field>
                   <Field label="Golden master (CI)">
                     <Tag tone="green">GREEN — every fixture, full characterization matrix</Tag>
                   </Field>
-                  <Field label="Shadow window">
-                    {selected.shadowDays > 0 ? `${selected.shadowDays} days sustained` : 'not started'}
+                  <Field label="Offline replay">
+                    {selected.replayCases.toLocaleString('en-GB')} cases ·{' '}
+                    <span className="text-emerald-300">{selected.replayFailures} failures</span>
                   </Field>
-                  <Field label="Records compared">
-                    {selected.recordsCompared.toLocaleString('en-GB')}
-                  </Field>
-                  <Field label="Unexplained diffs">
-                    <span className={selected.diffs ? 'text-alert' : 'text-emerald-300'}>{selected.diffs}</span>
+                  <Field label="Live shadow window">
+                    {selected.liveShadowDays > 0 ? `${selected.liveShadowDays} days sustained` : 'not started — blocks GREEN'}
                   </Field>
                   <Field label="Tolerance">byte-exact (0) · IPT month-end counts &lt;0.1%</Field>
                 </dl>
                 <div className="rounded-xl border border-white/5 bg-ink-800/60 p-4">
                   <div className="eyebrow">Evidence reference</div>
-                  <p className="mt-2 break-words font-mono text-xs text-slate-300">
-                    {selected.evidence || 'none — cut-over flag must stay off'}
-                  </p>
+                  <p className="mt-2 break-all font-mono text-xs text-slate-300">{selected.evidence}</p>
                   <p className="mt-2 text-[11px] text-slate-500">
-                    Durable ReconciliationResult archive reference. A log grep is never accepted as evidence.
+                    Durable archived replay evidence — a log grep is never accepted. This grade of evidence can never
+                    turn the row GREEN, so it can never unlock an environment past dev.
                   </p>
                 </div>
                 <button
