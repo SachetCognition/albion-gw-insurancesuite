@@ -1,0 +1,13 @@
+# Golden-master fixture: REINS
+# Produced by albion.integration.reins.ReinsRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/reins/good_03.xml (SIT 27-Sep-2016).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.AnnualPremium_Ext=GWPC-25666
+input.ClaimNumber_Ext=AD89632541C
+input.ERNRef_Ext=
+input.RiskPostcode_Ext=
+input.BrandCode_Ext=HERIT
+expected.length=600
+expected.trailingFiller=531
+expected.recordPrefix=RE47GWPC-25666AD89632541C                   000000000000000000000XX99
+expected.record=RE47GWPC-25666AD89632541C                   000000000000000000000XX99                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

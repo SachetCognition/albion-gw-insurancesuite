@@ -1,0 +1,4 @@
+BENCH|CREDIT|iterations=100000|legacyNsPerOp=3883|candidateNsPerOp=2415|sink=61200000
+BENCH|FLOODRE|iterations=100000|legacyNsPerOp=1990|candidateNsPerOp=1770|sink=122400000
+BENCH|MID|iterations=100000|legacyNsPerOp=2478|candidateNsPerOp=2012|sink=122400000
+BENCH|POLARIS|iterations=100000|legacyNsPerOp=1643|candidateNsPerOp=1445|sink=153000000

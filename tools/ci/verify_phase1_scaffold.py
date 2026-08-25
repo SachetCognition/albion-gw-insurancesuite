@@ -33,17 +33,104 @@ GTEST_ROOTS = {
 }
 
 FIXTURE_DIRS = {
+    "billingcenter/config/gtest/albion/integration/credit/goldenmaster":
+        "billingcenter/config/gtest/albion/integration/credit/CreditRecordBuilderGoldenMasterTest.gs",
+    "billingcenter/config/gtest/albion/integration/floodre/goldenmaster":
+        "billingcenter/config/gtest/albion/integration/floodre/FloodreRecordBuilderGoldenMasterTest.gs",
+    "billingcenter/config/gtest/albion/integration/mid/goldenmaster":
+        "billingcenter/config/gtest/albion/integration/mid/MidRecordBuilderGoldenMasterTest.gs",
+    "billingcenter/config/gtest/albion/integration/polaris/goldenmaster":
+        "billingcenter/config/gtest/albion/integration/polaris/PolarisPartyRecordBuilderGoldenMasterTest.gs",
+    "claimcenter/config/gtest/albion/integration/aggr/goldenmaster":
+        "claimcenter/config/gtest/albion/integration/aggr/AggrRecordBuilderGoldenMasterTest.gs",
+    "claimcenter/config/gtest/albion/integration/elto/goldenmaster":
+        "claimcenter/config/gtest/albion/integration/elto/EltoRecordBuilderGoldenMasterTest.gs",
     "claimcenter/config/gtest/albion/integration/ipt/goldenmaster":
         "claimcenter/config/gtest/albion/integration/ipt/IptRecordBuilderGoldenMasterTest.gs",
+    "claimcenter/config/gtest/albion/integration/polaris/goldenmaster":
+        "claimcenter/config/gtest/albion/integration/polaris/PolarisPartyRecordBuilderGoldenMasterTest.gs",
+    "claimcenter/config/gtest/albion/integration/reins/goldenmaster":
+        "claimcenter/config/gtest/albion/integration/reins/ReinsRecordBuilderGoldenMasterTest.gs",
+    "claimcenter/config/gtest/albion/integration/sanctions/goldenmaster":
+        "claimcenter/config/gtest/albion/integration/sanctions/SanctionsRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/cifas/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/cifas/CifasRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/cue/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/cue/CueRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/dvla/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/dvla/DvlaRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/payhub/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/payhub/PayhubRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/polaris/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/polaris/PolarisPartyRecordBuilderGoldenMasterTest.gs",
     "contactmanager/modules/configuration/gtest/albion/integration/polaris_mf/goldenmaster":
         "contactmanager/modules/configuration/gtest/albion/integration/polaris_mf/PolarisMfRecordBuilderGoldenMasterTest.gs",
+    "contactmanager/modules/configuration/gtest/albion/integration/printv/goldenmaster":
+        "contactmanager/modules/configuration/gtest/albion/integration/printv/PrintvRecordBuilderGoldenMasterTest.gs",
+    "policycenter/config/gtest/albion/integration/crif/goldenmaster":
+        "policycenter/config/gtest/albion/integration/crif/CrifRecordBuilderGoldenMasterTest.gs",
+    "policycenter/config/gtest/albion/integration/dwh/goldenmaster":
+        "policycenter/config/gtest/albion/integration/dwh/DwhRecordBuilderGoldenMasterTest.gs",
+    "policycenter/config/gtest/albion/integration/polaris/goldenmaster":
+        "policycenter/config/gtest/albion/integration/polaris/PolarisPartyRecordBuilderGoldenMasterTest.gs",
+    "policycenter/config/gtest/albion/integration/ssp/goldenmaster":
+        "policycenter/config/gtest/albion/integration/ssp/SspRecordBuilderGoldenMasterTest.gs",
+    "policycenter/config/gtest/albion/integration/verisk/goldenmaster":
+        "policycenter/config/gtest/albion/integration/verisk/VeriskRecordBuilderGoldenMasterTest.gs",
 }
 
 # Minimum committed fixture count per directory. Adding fixtures is welcome; losing them is not,
 # so raise these numbers with the fixtures and never lower them without an explicit decision.
 MIN_FIXTURES = {
+    "billingcenter/config/gtest/albion/integration/credit/goldenmaster": 12,
+    "billingcenter/config/gtest/albion/integration/floodre/goldenmaster": 9,
+    "billingcenter/config/gtest/albion/integration/mid/goldenmaster": 12,
+    "billingcenter/config/gtest/albion/integration/polaris/goldenmaster": 6,
+    "claimcenter/config/gtest/albion/integration/aggr/goldenmaster": 8,
+    "claimcenter/config/gtest/albion/integration/elto/goldenmaster": 4,
     "claimcenter/config/gtest/albion/integration/ipt/goldenmaster": 6,
+    "claimcenter/config/gtest/albion/integration/polaris/goldenmaster": 6,
+    "claimcenter/config/gtest/albion/integration/reins/goldenmaster": 6,
+    "claimcenter/config/gtest/albion/integration/sanctions/goldenmaster": 12,
+    "contactmanager/modules/configuration/gtest/albion/integration/cifas/goldenmaster": 11,
+    "contactmanager/modules/configuration/gtest/albion/integration/cue/goldenmaster": 12,
+    "contactmanager/modules/configuration/gtest/albion/integration/dvla/goldenmaster": 9,
+    "contactmanager/modules/configuration/gtest/albion/integration/payhub/goldenmaster": 12,
+    "contactmanager/modules/configuration/gtest/albion/integration/polaris/goldenmaster": 6,
     "contactmanager/modules/configuration/gtest/albion/integration/polaris_mf/goldenmaster": 10,
+    "contactmanager/modules/configuration/gtest/albion/integration/printv/goldenmaster": 7,
+    "policycenter/config/gtest/albion/integration/crif/goldenmaster": 11,
+    "policycenter/config/gtest/albion/integration/dwh/goldenmaster": 10,
+    "policycenter/config/gtest/albion/integration/polaris/goldenmaster": 6,
+    "policycenter/config/gtest/albion/integration/ssp/goldenmaster": 10,
+    "policycenter/config/gtest/albion/integration/verisk/goldenmaster": 9,
+}
+
+# Fixed record length per feed, pinned from each production builder's padTo(...) call.
+# Changing one of these is a change to production bytes and needs an explicit decision.
+RECORD_LENGTHS = {
+    "billingcenter/config/gtest/albion/integration/credit/goldenmaster": 300,
+    "billingcenter/config/gtest/albion/integration/floodre/goldenmaster": 600,
+    "billingcenter/config/gtest/albion/integration/mid/goldenmaster": 600,
+    "billingcenter/config/gtest/albion/integration/polaris/goldenmaster": 750,
+    "claimcenter/config/gtest/albion/integration/aggr/goldenmaster": 512,
+    "claimcenter/config/gtest/albion/integration/elto/goldenmaster": 400,
+    "claimcenter/config/gtest/albion/integration/ipt/goldenmaster": 512,
+    "claimcenter/config/gtest/albion/integration/polaris/goldenmaster": 300,
+    "claimcenter/config/gtest/albion/integration/reins/goldenmaster": 600,
+    "claimcenter/config/gtest/albion/integration/sanctions/goldenmaster": 250,
+    "contactmanager/modules/configuration/gtest/albion/integration/cifas/goldenmaster": 750,
+    "contactmanager/modules/configuration/gtest/albion/integration/cue/goldenmaster": 400,
+    "contactmanager/modules/configuration/gtest/albion/integration/dvla/goldenmaster": 400,
+    "contactmanager/modules/configuration/gtest/albion/integration/payhub/goldenmaster": 750,
+    "contactmanager/modules/configuration/gtest/albion/integration/polaris/goldenmaster": 400,
+    "contactmanager/modules/configuration/gtest/albion/integration/polaris_mf/goldenmaster": 512,
+    "contactmanager/modules/configuration/gtest/albion/integration/printv/goldenmaster": 250,
+    "policycenter/config/gtest/albion/integration/crif/goldenmaster": 750,
+    "policycenter/config/gtest/albion/integration/dwh/goldenmaster": 300,
+    "policycenter/config/gtest/albion/integration/polaris/goldenmaster": 300,
+    "policycenter/config/gtest/albion/integration/ssp/goldenmaster": 750,
+    "policycenter/config/gtest/albion/integration/verisk/goldenmaster": 400,
 }
 
 RUNNER = "tools/ci/run-golden-master.sh"
@@ -109,6 +196,7 @@ def check_fixtures():
             fail("missing fixture directory %s" % fixture_dir)
             continue
         test_source = open(os.path.join(REPO, test_file), encoding="utf-8").read()
+        record_length = RECORD_LENGTHS.get(fixture_dir, RECORD_LENGTH)
         names = sorted(n for n in os.listdir(directory) if n.endswith(".golden"))
         if not names:
             fail("no .golden fixtures committed under %s" % fixture_dir)
@@ -119,14 +207,14 @@ def check_fixtures():
             if record is None or prefix is None:
                 fail("%s/%s: missing expected.record or expected.recordPrefix" % (fixture_dir, name))
                 continue
-            if len(record) != RECORD_LENGTH:
+            if len(record) != record_length:
                 fail("%s/%s: expected.record is %d bytes, not %d"
-                     % (fixture_dir, name, len(record), RECORD_LENGTH))
-            if record != prefix + " " * (RECORD_LENGTH - len(prefix)):
+                     % (fixture_dir, name, len(record), record_length))
+            if record != prefix + " " * (record_length - len(prefix)):
                 fail("%s/%s: expected.record is not expected.recordPrefix padded with filler"
                      % (fixture_dir, name))
-            if int(fixture.get("expected.length", "0")) != RECORD_LENGTH:
-                fail("%s/%s: expected.length must be %d" % (fixture_dir, name, RECORD_LENGTH))
+            if int(fixture.get("expected.length", "0")) != record_length:
+                fail("%s/%s: expected.length must be %d" % (fixture_dir, name, record_length))
             position = test_source.find('"%s"' % prefix)
             if position < 0:
                 fail("%s/%s: expected.recordPrefix is not asserted in %s - fixture and test have drifted"
@@ -150,7 +238,18 @@ def check_fixtures():
     print("checked %d golden-master fixtures against their characterization tests" % total)
 
 
+# Environments where offline-replay evidence (GREEN_REPLAY) is sufficient to enable a
+# cut-over flag. Everywhere else requires a full GREEN row (live shadow window + load test).
+REPLAY_ALLOWED_ENVS = {"dev"}
+# Environments that must stay fully dormant regardless of gate status: production and its
+# disaster-recovery mirror only ever run the legacy path until a row is GREEN.
+STRICT_DORMANT_ENVS = {"prod", "dr"}
+
+
 def check_scaffold_is_dormant():
+    """prod/dr stay fully dormant; shadow flags may be true in non-prod; cut-over flags
+    may be true only in REPLAY_ALLOWED_ENVS (their gate rows are checked separately by
+    check_cutover_gate)."""
     environments = os.path.join(REPO, "environments")
     checked = 0
     for root, _dirs, names in os.walk(environments):
@@ -158,17 +257,25 @@ def check_scaffold_is_dormant():
             if not name.endswith(".properties"):
                 continue
             path = os.path.join(root, name)
+            env_name = os.path.basename(os.path.dirname(path))
             for number, line in enumerate(open(path, encoding="utf-8"), start=1):
                 stripped = line.strip()
-                if not stripped or stripped.startswith("#") or ".feature.shadow." not in stripped:
+                if not stripped or stripped.startswith("#"):
+                    continue
+                if ".feature.shadow." not in stripped and ".feature.cutover." not in stripped:
                     continue
                 checked += 1
                 key, _, value = stripped.partition("=")
                 value = value.split("#")[0].strip().lower()
-                if value != "false":
-                    fail("%s:%d: %s=%s - the Phase 1 shadow scaffold must be dormant in every "
-                         "committed environment file" % (os.path.relpath(path, REPO), number, key.strip(), value))
-    print("checked %d committed shadow-flag entries; all dormant" % checked)
+                if value == "false":
+                    continue
+                if env_name in STRICT_DORMANT_ENVS:
+                    fail("%s:%d: %s=%s - the shadow/cutover scaffold must be dormant in %s; "
+                         "only a GREEN row (live shadow window + load test) may ever change that"
+                         % (os.path.relpath(path, REPO), number, key.strip(), value, env_name))
+                # non-prod shadow flags may be true; non-prod cut-over flags are validated
+                # against the gate CSV (status + environment) by check_cutover_gate
+    print("checked %d committed shadow/cutover-flag entries; prod/dr dormant" % checked)
 
 
 def code_lines(path, comment_markers):
@@ -199,11 +306,186 @@ def check_pipelines_do_not_swallow_failures():
     print("checked both pipelines and %s for failure-swallowing or missing test invocations" % RUNNER)
 
 
+# The pre-existing per-environment rating key (read by RatingEngineShadow since Phase 2).
+# Shadowing may only ever run where it was ALREADY true (dev/dev2/sit); production and every
+# other committed environment must stay false until a Phase 3C decision flips it explicitly.
+RATING_KEY = "po.feature.newratingengine.enabled"
+RATING_KEY_ALLOWED_TRUE = {"dev", "dev2", "sit"}
+
+
+def check_rating_flag_environments():
+    environments = os.path.join(REPO, "environments")
+    checked = 0
+    for env_name in sorted(os.listdir(environments)):
+        path = os.path.join(environments, env_name, "policycenter.properties")
+        if not os.path.isfile(path):
+            continue
+        for number, line in enumerate(open(path, encoding="utf-8"), start=1):
+            stripped = line.strip()
+            if not stripped.startswith(RATING_KEY):
+                continue
+            checked += 1
+            value = stripped.partition("=")[2].split("#")[0].strip().lower()
+            if value == "true" and env_name not in RATING_KEY_ALLOWED_TRUE:
+                fail("%s:%d: %s=true - the rating shadow may only run in %s until Phase 3C"
+                     % (os.path.relpath(path, REPO), number, RATING_KEY,
+                        "/".join(sorted(RATING_KEY_ALLOWED_TRUE))))
+    print("checked %s in %d environment files" % (RATING_KEY, checked))
+
+
+# Never lower without an explicit decision - raise it if rows are added.
+MIN_XREF_ROWS = 7
+
+
+def check_brand_xref_pinned():
+    """brand_xref.csv rows must equal the rows pinned in BrandDirectoryCandidate.XREF_ROWS
+    (all four centre copies). Drift between the csv and the candidate is a Stream 2B breach
+    that must surface here, not silently in a shadow window. The row count is pinned like
+    MIN_FIXTURES: a row disappearing from the csv (incl. the retired 07RP00 and disputed
+    03DL00 rows) shrinks the checked set and must fail, not pass."""
+    csv_path = os.path.join(REPO, "integration/polaris/mappings/brand_xref.csv")
+    csv_rows = [line.strip() for line in open(csv_path, encoding="utf-8").read().split("\n")[1:] if line.strip()]
+    if len(csv_rows) < MIN_XREF_ROWS:
+        fail("brand_xref.csv holds %d rows but at least %d are required - a mapping row may "
+             "not be removed silently (AGI-5452 / AGI-30921)" % (len(csv_rows), MIN_XREF_ROWS))
+    candidates = [
+        "claimcenter/config/gsrc/albion/util/BrandDirectoryCandidate.gs",
+        "policycenter/config/gsrc/albion/util/BrandDirectoryCandidate.gs",
+        "billingcenter/config/gsrc/albion/util/BrandDirectoryCandidate.gs",
+        "contactmanager/modules/configuration/gsrc/albion/util/BrandDirectoryCandidate.gs",
+    ]
+    for rel in candidates:
+        source = open(os.path.join(REPO, rel), encoding="utf-8").read()
+        for row in csv_rows:
+            if '"%s"' % row not in source:
+                fail("%s: brand_xref.csv row %r is not pinned in XREF_ROWS - csv and candidate "
+                     "have drifted (AGI-5452 / AGI-30921)" % (rel, row))
+    print("checked %d brand_xref.csv rows against all four BrandDirectoryCandidate copies" % len(csv_rows))
+
+
+# Phase 3 cut-over gate: a committed cutover flag may be true ONLY when the matching
+# component+brand row in tools/ci/reconciliation-status.csv is GREEN, and only in the
+# environment promotion order dev/sit -> uat/preprod -> prod (a later environment may not
+# be enabled before every earlier one).
+GATE_CSV = "tools/ci/reconciliation-status.csv"
+BRAND_ORDER = ["ALBDIR", "ALBBRK", "RETPLS", "HERIT"]
+ENV_PROMOTION_ORDER = [("dev", "sit"), ("uat", "preprod"), ("prod",)]
+
+
+def load_gate():
+    """Returns ({target: status}, row count). GREEN and GREEN_REPLAY both require cited
+    evidence; GREEN_REPLAY (offline replay, docs/reconciliation/PHASE2-REPLAY-EVIDENCE.md)
+    only ever satisfies the gate for REPLAY_ALLOWED_ENVS."""
+    statuses = {}
+    rows = 0
+    for line in open(os.path.join(REPO, GATE_CSV), encoding="utf-8"):
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = line.split(",")
+        if len(parts) < 4:
+            fail("%s: malformed row %r" % (GATE_CSV, line))
+            continue
+        feature, centre, brand, status = parts[0], parts[1], parts[2], parts[3]
+        rows += 1
+        if status not in ("PENDING", "GREEN", "GREEN_REPLAY"):
+            fail("%s: %s/%s/%s has unknown status %r" % (GATE_CSV, feature, centre, brand, status))
+            continue
+        if status in ("GREEN", "GREEN_REPLAY"):
+            if len(parts) < 5 or not parts[4].strip():
+                fail("%s: %s/%s/%s is %s without evidence - a green gate row must cite "
+                     "its durable evidence" % (GATE_CSV, feature, centre, brand, status))
+        statuses[(feature, centre, brand)] = status
+    return statuses, rows
+
+
+def cutover_flags_by_env():
+    """{env: [(file, line no, key, value)]} for every *.feature.cutover.* entry."""
+    flags = {}
+    environments = os.path.join(REPO, "environments")
+    for env_name in sorted(os.listdir(environments)):
+        env_dir = os.path.join(environments, env_name)
+        if not os.path.isdir(env_dir):
+            continue
+        for name in sorted(os.listdir(env_dir)):
+            if not name.endswith(".properties"):
+                continue
+            path = os.path.join(env_dir, name)
+            for number, line in enumerate(open(path, encoding="utf-8"), start=1):
+                stripped = line.strip()
+                if not stripped or stripped.startswith("#") or ".feature.cutover." not in stripped:
+                    continue
+                key, _, value = stripped.partition("=")
+                value = value.split("#")[0].strip()
+                flags.setdefault(env_name, []).append((os.path.relpath(path, REPO), number, key.strip(), value))
+    return flags
+
+
+def check_cutover_gate():
+    statuses, rows = load_gate()
+    if rows == 0:
+        fail("%s holds no gate rows - the Phase 3 gate would be unenforceable" % GATE_CSV)
+    flags = cutover_flags_by_env()
+    enabled = {}  # (feature, centre, brand) -> set of envs
+    for env_name, entries in flags.items():
+        for path, number, key, value in entries:
+            parts = key.split(".")
+            centre_prefix = parts[0]
+            centre = {"cl": "cc", "po": "pc", "bi": "bc", "co": "cm"}.get(centre_prefix)
+            if centre is None:
+                fail("%s:%d: unknown centre prefix in %s" % (path, number, key))
+                continue
+            feature = "cutover." + key.split(".feature.cutover.", 1)[1].split(".brand")[0].split(".enabled")[0].split(".brands")[0]
+            if key.endswith(".brands"):
+                brands = [b.strip() for b in value.split(",") if b.strip()]
+            elif ".brand." in key:
+                if value.lower() != "true":
+                    continue
+                brands = [key.split(".brand.")[1].split(".")[0]]
+            else:
+                if value.lower() != "true":
+                    continue
+                brands = list(BRAND_ORDER)
+            for brand in brands:
+                status = statuses.get((feature, centre, brand))
+                if env_name in REPLAY_ALLOWED_ENVS:
+                    if status not in ("GREEN", "GREEN_REPLAY"):
+                        fail("%s:%d: %s enables %s/%s/%s but its %s row is not GREEN or "
+                             "GREEN_REPLAY - the Phase 2 gate is not met"
+                             % (path, number, key, feature, centre, brand, GATE_CSV))
+                elif status != "GREEN":
+                    fail("%s:%d: %s enables %s/%s/%s in %s but its %s row is not GREEN - "
+                         "offline replay evidence (GREEN_REPLAY) only permits the dev "
+                         "environment; every later environment needs a live shadow window "
+                         "+ load test" % (path, number, key, feature, centre, brand, env_name, GATE_CSV))
+                enabled.setdefault((feature, centre, brand), set()).add(env_name)
+    # environment promotion order: a later stage may not be enabled before every earlier stage
+    for target, envs in sorted(enabled.items()):
+        reached = False
+        for stage_index in range(len(ENV_PROMOTION_ORDER) - 1, -1, -1):
+            stage = ENV_PROMOTION_ORDER[stage_index]
+            if any(e in envs for e in stage):
+                reached = True
+            elif reached:
+                continue
+            if reached:
+                for earlier in ENV_PROMOTION_ORDER[:stage_index]:
+                    if not any(e in envs for e in earlier):
+                        fail("cutover %s/%s/%s is enabled in a later environment without %s - "
+                             "promotion order is dev/sit -> uat/preprod -> prod"
+                             % (target[0], target[1], target[2], "/".join(earlier)))
+                break
+    print("checked %d cut-over gate rows; %d component/brand cut-overs enabled" % (rows, len(enabled)))
+
+
 def main():
     check_suite_classes()
     check_fixtures()
     check_scaffold_is_dormant()
     check_pipelines_do_not_swallow_failures()
+    check_rating_flag_environments()
+    check_brand_xref_pinned()
+    check_cutover_gate()
     if failures:
         print("\nPhase 1 scaffold verification FAILED:")
         for message in failures:

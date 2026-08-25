@@ -1,0 +1,13 @@
+# Golden-master fixture: PAYHUB
+# Produced by albion.integration.payhub.PayhubRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/payhub/good_12.xml (PROD (scrubbed... mostly) 14-Sep-2022).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.InsuredSurname_Ext=INC-37888
+input.VehicleVRM_Ext=HH16997177A
+input.UPRN_Ext=
+input.ClaimNumber_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=750
+expected.trailingFiller=696
+expected.recordPrefix=PA15INC-37888      HH16997100000000000000000000007RP01
+expected.record=PA15INC-37888      HH16997100000000000000000000007RP01                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

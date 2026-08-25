@@ -1,5 +1,6 @@
 package albion.integration.polaris_mf
 
+uses albion.integration.shadow.CutoverRouter
 uses albion.integration.shadow.InMemoryShadowDiffRecorder
 uses albion.integration.shadow.LoggingShadowDiffRecorder
 uses albion.integration.shadow.ReconciliationResult
@@ -22,12 +23,19 @@ uses albion.util.AlbionFeatureFlags
  * configuration still calls PolarisMfRecordBuilder directly. This class is the seam the
  * later cut-over streams will use.
  *
+ * Phase 3A adds the per-brand cut-over path: when co.feature.cutover.polarismfrecordbuilder is
+ * enabled for the record's brand (allowed only after that brand's Phase 2 reconciliation is
+ * GREEN, enforced by tools/ci/verify_phase1_scaffold.py), CutoverRouter makes the CANDIDATE
+ * authoritative while the legacy builder keeps running as the reverse shadow with auto-alert
+ * and per-record auto-revert on any difference.
+ *
  * Flag: co.feature.shadow.polarismfrecordbuilder.enabled (+ optional .brands / .brand.<CODE>.enabled overrides).
  */
 class PolarisMfRecordBuilderShadow {
 
   public static final var CENTRE : String = AlbionFeatureFlags.CENTRE_CONTACTMANAGER
   public static final var FEATURE : String = "shadow.polarismfrecordbuilder"
+  public static final var CUTOVER_FEATURE : String = "cutover.polarismfrecordbuilder"
   public static final var FEED : String = "POLARIS_MF"
 
   /** Known drift risk carried on every recorded diff. Documented, deliberately not converged in Phase 1. */
@@ -40,6 +48,11 @@ class PolarisMfRecordBuilderShadow {
 
   public static function buildRecord(src : KeyableBean, recorder : ShadowDiffRecorder) : String {
     var brandCode = brandOf(src)
+    if (AlbionFeatureFlags.isEnabledForBrand(CENTRE, CUTOVER_FEATURE, brandCode)) {
+      return CutoverRouter.route(FEED, brandCode, recorder, BRAND_DRIFT_NOTE,
+          \ -> PolarisMfRecordBuilder.buildRecord(src),
+          \ -> PolarisMfRecordBuilderCandidate.buildRecord(src))
+    }
     if (not AlbionFeatureFlags.isEnabledForBrand(CENTRE, FEATURE, brandCode)) {
       return PolarisMfRecordBuilder.buildRecord(src)   // dormant default: legacy only
     }

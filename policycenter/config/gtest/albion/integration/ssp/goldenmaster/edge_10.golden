@@ -1,0 +1,13 @@
+# Golden-master fixture: SSP
+# Produced by albion.integration.ssp.SspRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/ssp/edge_10.edi (EDI capture; no Brand segment, null brand pins the 999999 sentinel).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ClaimNumber_Ext=AGI002
+input.VehicleVRM_Ext=BK29702199X
+input.PolicyNumber_Ext=
+input.AnnualPremium_Ext=
+input.BrandCode_Ext=
+expected.length=750
+expected.trailingFiller=696
+expected.recordPrefix=SS84AGI002         BK297021990000000000000000000999999
+expected.record=SS84AGI002         BK297021990000000000000000000999999                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

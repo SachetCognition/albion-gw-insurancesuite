@@ -1,0 +1,13 @@
+# Golden-master fixture: AGGR
+# Produced by albion.integration.aggr.AggrRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/aggr/nak_05.edi (EDI capture; no Brand segment, null brand pins the 999999 sentinel).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.RiskPostcode_Ext=AGI002
+input.InceptionDate_Ext=BK78404084X
+input.InsuredSurname_Ext=
+input.VehicleVRM_Ext=
+input.BrandCode_Ext=
+expected.length=512
+expected.trailingFiller=463
+expected.recordPrefix=AG84AGI002      BK7840400000000000000000000999999
+expected.record=AG84AGI002      BK7840400000000000000000000999999                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

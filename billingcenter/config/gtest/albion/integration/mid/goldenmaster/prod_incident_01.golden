@@ -1,0 +1,13 @@
+# Golden-master fixture: MID
+# Produced by albion.integration.mid.MidRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/mid/prod_incident_01.xml (PROD (scrubbed... mostly) 23-Apr-2025).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.PolicyNumber_Ext=CHG-26378
+input.AnnualPremium_Ext=AD62250414B
+input.UPRN_Ext=
+input.SumInsured_Ext=
+input.BrandCode_Ext=HERIT
+expected.length=600
+expected.trailingFiller=549
+expected.recordPrefix=MI56CHG-26378   AD62250400000000000000000000000XX99
+expected.record=MI56CHG-26378   AD62250400000000000000000000000XX99                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

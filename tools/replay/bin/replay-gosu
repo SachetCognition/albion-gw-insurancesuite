@@ -1,0 +1,16 @@
+#!/bin/sh
+# Offline replay launcher: open-source Gosu with the gw.lang.Deprecated shim first
+# on the raw JVM classpath so the pinned legacy sources load unmodified.
+# Usage: replay-gosu <gosu-source-classpath> <program.gsp> [args...]
+set -e
+GOSU_HOME="${GOSU_HOME:-$HOME/tools/gosu-1.18.9}"
+JAVA_HOME="${JAVA_HOME:-/usr/lib/jvm/java-11-openjdk-amd64}"
+REPLAY_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+if [ ! -f "$REPLAY_DIR/shim/classes/gw/lang/Deprecated.class" ]; then
+  mkdir -p "$REPLAY_DIR/shim/classes"
+  "$JAVA_HOME/bin/javac" -d "$REPLAY_DIR/shim/classes" "$REPLAY_DIR/shim/src/gw/lang/Deprecated.java"
+fi
+SRC_CP="$1"; shift
+exec "$JAVA_HOME/bin/java" -Xmx2g \
+  -classpath "$REPLAY_DIR/shim/classes:$GOSU_HOME/lib/*" \
+  gw.lang.Gosu -classpath "$SRC_CP" "$@"

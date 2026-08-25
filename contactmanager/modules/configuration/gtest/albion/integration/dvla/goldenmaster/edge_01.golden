@@ -1,0 +1,13 @@
+# Golden-master fixture: DVLA
+# Produced by albion.integration.dvla.DvlaRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/dvla/edge_01.xml (PROD (scrubbed... mostly) 09-Nov-2017).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.InceptionDate_Ext=PRB-12553
+input.SumInsured_Ext=HH81031645C
+input.RiskPostcode_Ext=
+input.ERNRef_Ext=
+input.BrandCode_Ext=HERIT
+expected.length=400
+expected.trailingFiller=349
+expected.recordPrefix=DV29PRB-12553   HH81031600000000000000000000000XX99
+expected.record=DV29PRB-12553   HH81031600000000000000000000000XX99                                                                                                                                                                                                                                                                                                                                                             

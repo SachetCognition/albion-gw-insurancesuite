@@ -1,0 +1,13 @@
+# Golden-master fixture: CRIF
+# Produced by albion.integration.crif.CrifRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/crif/good_02.xml (PROD (scrubbed... mostly) 13-Sep-2022).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.NINumber_Ext=PRB-47333
+input.VehicleVRM_Ext=HH14524509B
+input.AnnualPremium_Ext=
+input.ClaimNumber_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=750
+expected.trailingFiller=672
+expected.recordPrefix=CR58PRB-47333      HH14524509B                   0000000000000000000000007RP01
+expected.record=CR58PRB-47333      HH14524509B                   0000000000000000000000007RP01                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

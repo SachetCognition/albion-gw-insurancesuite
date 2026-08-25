@@ -1,0 +1,5 @@
+BENCH|CRIF|iterations=100000|legacyNsPerOp=4266|candidateNsPerOp=2148|sink=153000000
+BENCH|DWH|iterations=100000|legacyNsPerOp=2175|candidateNsPerOp=2017|sink=61200000
+BENCH|POLARIS|iterations=100000|legacyNsPerOp=1917|candidateNsPerOp=1533|sink=61200000
+BENCH|SSP|iterations=100000|legacyNsPerOp=2412|candidateNsPerOp=1866|sink=153000000
+BENCH|VERISK|iterations=100000|legacyNsPerOp=1769|candidateNsPerOp=1775|sink=81600000

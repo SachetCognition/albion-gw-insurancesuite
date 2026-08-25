@@ -1,0 +1,133 @@
+# Phase 2 reconciliation status - THE Phase 3 cut-over gate.
+# Statuses:
+#   PENDING      - no evidence; no cut-over flag may be true anywhere.
+#   GREEN_REPLAY - offline replay reconciliation evidence (docs/reconciliation/PHASE2-REPLAY-EVIDENCE.md);
+#                  permits the cut-over flag in the dev environment ONLY.
+#   GREEN        - sustained live non-prod shadow window + load test; permits promotion
+#                  dev/sit -> uat/preprod -> prod (see docs/runbooks/PHASE3-CUTOVER-RUNBOOK.md).
+# A GREEN or GREEN_REPLAY row must cite durable evidence.
+# feature,centre,brand,status,evidence
+cutover.creditrecordbuilder,bc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.creditrecordbuilder,bc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.creditrecordbuilder,bc,RETPLS,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.creditrecordbuilder,bc,HERIT,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.floodrerecordbuilder,bc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.floodrerecordbuilder,bc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.floodrerecordbuilder,bc,RETPLS,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.floodrerecordbuilder,bc,HERIT,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.midrecordbuilder,bc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.midrecordbuilder,bc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.midrecordbuilder,bc,RETPLS,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.midrecordbuilder,bc,HERIT,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.polarispartyrecordbuilder,bc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.polarispartyrecordbuilder,bc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.polarispartyrecordbuilder,bc,RETPLS,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.polarispartyrecordbuilder,bc,HERIT,GREEN_REPLAY,tools/replay/evidence/billingcenter-builders-replay.log.gz + billingcenter-bench.log
+cutover.aggrrecordbuilder,cc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.aggrrecordbuilder,cc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.aggrrecordbuilder,cc,RETPLS,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.aggrrecordbuilder,cc,HERIT,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.eltorecordbuilder,cc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.eltorecordbuilder,cc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.eltorecordbuilder,cc,RETPLS,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.eltorecordbuilder,cc,HERIT,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.iptrecordbuilder,cc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.iptrecordbuilder,cc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.iptrecordbuilder,cc,RETPLS,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.iptrecordbuilder,cc,HERIT,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.polarispartyrecordbuilder,cc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.polarispartyrecordbuilder,cc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.polarispartyrecordbuilder,cc,RETPLS,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.polarispartyrecordbuilder,cc,HERIT,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.reinsrecordbuilder,cc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.reinsrecordbuilder,cc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.reinsrecordbuilder,cc,RETPLS,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.reinsrecordbuilder,cc,HERIT,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.sanctionsrecordbuilder,cc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.sanctionsrecordbuilder,cc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.sanctionsrecordbuilder,cc,RETPLS,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.sanctionsrecordbuilder,cc,HERIT,GREEN_REPLAY,tools/replay/evidence/claimcenter-builders-replay.log.gz + claimcenter-bench.log
+cutover.cifasrecordbuilder,cm,ALBDIR,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.cifasrecordbuilder,cm,ALBBRK,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.cifasrecordbuilder,cm,RETPLS,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.cifasrecordbuilder,cm,HERIT,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.cuerecordbuilder,cm,ALBDIR,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.cuerecordbuilder,cm,ALBBRK,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.cuerecordbuilder,cm,RETPLS,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.cuerecordbuilder,cm,HERIT,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.dvlarecordbuilder,cm,ALBDIR,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.dvlarecordbuilder,cm,ALBBRK,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.dvlarecordbuilder,cm,RETPLS,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.dvlarecordbuilder,cm,HERIT,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.payhubrecordbuilder,cm,ALBDIR,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.payhubrecordbuilder,cm,ALBBRK,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.payhubrecordbuilder,cm,RETPLS,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.payhubrecordbuilder,cm,HERIT,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.polarismfrecordbuilder,cm,ALBDIR,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.polarismfrecordbuilder,cm,ALBBRK,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.polarismfrecordbuilder,cm,RETPLS,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.polarismfrecordbuilder,cm,HERIT,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.polarispartyrecordbuilder,cm,ALBDIR,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.polarispartyrecordbuilder,cm,ALBBRK,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.polarispartyrecordbuilder,cm,RETPLS,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.polarispartyrecordbuilder,cm,HERIT,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.printvrecordbuilder,cm,ALBDIR,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.printvrecordbuilder,cm,ALBBRK,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.printvrecordbuilder,cm,RETPLS,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.printvrecordbuilder,cm,HERIT,GREEN_REPLAY,tools/replay/evidence/contactmanager-builders-replay.log.gz + contactmanager-bench.log
+cutover.crifrecordbuilder,pc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.crifrecordbuilder,pc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.crifrecordbuilder,pc,RETPLS,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.crifrecordbuilder,pc,HERIT,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.dwhrecordbuilder,pc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.dwhrecordbuilder,pc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.dwhrecordbuilder,pc,RETPLS,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.dwhrecordbuilder,pc,HERIT,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.polarispartyrecordbuilder,pc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.polarispartyrecordbuilder,pc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.polarispartyrecordbuilder,pc,RETPLS,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.polarispartyrecordbuilder,pc,HERIT,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.ssprecordbuilder,pc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.ssprecordbuilder,pc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.ssprecordbuilder,pc,RETPLS,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.ssprecordbuilder,pc,HERIT,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.veriskrecordbuilder,pc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.veriskrecordbuilder,pc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.veriskrecordbuilder,pc,RETPLS,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.veriskrecordbuilder,pc,HERIT,GREEN_REPLAY,tools/replay/evidence/policycenter-builders-replay.log.gz + policycenter-bench.log
+cutover.branddirectory,cc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/claimcenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,cc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/claimcenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,cc,RETPLS,GREEN_REPLAY,tools/replay/evidence/claimcenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,cc,HERIT,GREEN_REPLAY,tools/replay/evidence/claimcenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,pc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/policycenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,pc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/policycenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,pc,RETPLS,GREEN_REPLAY,tools/replay/evidence/policycenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,pc,HERIT,GREEN_REPLAY,tools/replay/evidence/policycenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,bc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/billingcenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,bc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/billingcenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,bc,RETPLS,GREEN_REPLAY,tools/replay/evidence/billingcenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,bc,HERIT,GREEN_REPLAY,tools/replay/evidence/billingcenter-brand-feedstatus-replay.log.gz
+cutover.branddirectory,cm,ALBDIR,GREEN_REPLAY,tools/replay/evidence/contactmanager-brand-feedstatus-replay.log.gz
+cutover.branddirectory,cm,ALBBRK,GREEN_REPLAY,tools/replay/evidence/contactmanager-brand-feedstatus-replay.log.gz
+cutover.branddirectory,cm,RETPLS,GREEN_REPLAY,tools/replay/evidence/contactmanager-brand-feedstatus-replay.log.gz
+cutover.branddirectory,cm,HERIT,GREEN_REPLAY,tools/replay/evidence/contactmanager-brand-feedstatus-replay.log.gz
+cutover.newratingengine,pc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/policycenter-rating-replay.log.gz
+cutover.newratingengine,pc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/policycenter-rating-replay.log.gz
+cutover.newratingengine,pc,RETPLS,GREEN_REPLAY,tools/replay/evidence/policycenter-rating-replay.log.gz
+cutover.newratingengine,pc,HERIT,GREEN_REPLAY,tools/replay/evidence/policycenter-rating-replay.log.gz
+cutover.feedstatus,cc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/claimcenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,cc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/claimcenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,cc,RETPLS,GREEN_REPLAY,tools/replay/evidence/claimcenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,cc,HERIT,GREEN_REPLAY,tools/replay/evidence/claimcenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,pc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/policycenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,pc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/policycenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,pc,RETPLS,GREEN_REPLAY,tools/replay/evidence/policycenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,pc,HERIT,GREEN_REPLAY,tools/replay/evidence/policycenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,bc,ALBDIR,GREEN_REPLAY,tools/replay/evidence/billingcenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,bc,ALBBRK,GREEN_REPLAY,tools/replay/evidence/billingcenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,bc,RETPLS,GREEN_REPLAY,tools/replay/evidence/billingcenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,bc,HERIT,GREEN_REPLAY,tools/replay/evidence/billingcenter-brand-feedstatus-replay.log.gz
+cutover.feedstatus,cm,ALBDIR,GREEN_REPLAY,tools/replay/evidence/contactmanager-brand-feedstatus-replay.log.gz
+cutover.feedstatus,cm,ALBBRK,GREEN_REPLAY,tools/replay/evidence/contactmanager-brand-feedstatus-replay.log.gz
+cutover.feedstatus,cm,RETPLS,GREEN_REPLAY,tools/replay/evidence/contactmanager-brand-feedstatus-replay.log.gz
+cutover.feedstatus,cm,HERIT,GREEN_REPLAY,tools/replay/evidence/contactmanager-brand-feedstatus-replay.log.gz

@@ -1,0 +1,13 @@
+# Golden-master fixture: CREDIT
+# Produced by albion.integration.credit.CreditRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/credit/prod_incident_11.xml (UAT 17-Aug-2018).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.RiskPostcode_Ext=HERIT-11955
+input.InceptionDate_Ext=P338842562A
+input.PolicyNumber_Ext=
+input.SumInsured_Ext=
+input.BrandCode_Ext=HERIT
+expected.length=300
+expected.trailingFiller=222
+expected.recordPrefix=CR61HERIT-11955    P338842562A                   0000000000000000000000000XX99
+expected.record=CR61HERIT-11955    P338842562A                   0000000000000000000000000XX99                                                                                                                                                                                                                              

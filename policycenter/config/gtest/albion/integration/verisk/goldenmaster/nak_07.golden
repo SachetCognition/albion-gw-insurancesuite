@@ -1,0 +1,13 @@
+# Golden-master fixture: VERISK
+# Produced by albion.integration.verisk.VeriskRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/verisk/nak_07.xml (UAT 07-Dec-2025).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ERNRef_Ext=AGI-22627
+input.ClaimNumber_Ext=AD89107224A
+input.InceptionDate_Ext=
+input.NINumber_Ext=
+input.BrandCode_Ext=HERIT
+expected.length=400
+expected.trailingFiller=349
+expected.recordPrefix=VE17AGI-22627   AD89107200000000000000000000000XX99
+expected.record=VE17AGI-22627   AD89107200000000000000000000000XX99                                                                                                                                                                                                                                                                                                                                                             

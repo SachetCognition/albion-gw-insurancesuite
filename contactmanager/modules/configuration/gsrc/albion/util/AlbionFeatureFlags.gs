@@ -87,9 +87,9 @@ class AlbionFeatureFlags {
    * A null or unknown brand code is only enabled when no allow-list is configured.
    */
   public static function isEnabledForBrand(centre : String, feature : String, brandCode : String) : boolean {
-    var override = lookup(brandOverrideKey(centre, feature, brandCode))
-    if (brandCode != null and not isBlank(override)) {
-      return isTrue(override)
+    var overrideValue = lookup(brandOverrideKey(centre, feature, brandCode))
+    if (brandCode != null and not isBlank(overrideValue)) {
+      return isTrue(overrideValue)
     }
     if (not isEnabled(centre, feature)) {
       return false

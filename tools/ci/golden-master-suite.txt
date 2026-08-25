@@ -31,3 +31,69 @@ pc albion.integration.shadow.ShadowToleranceTest
 bc albion.util.AlbionFeatureFlagsTest
 bc albion.integration.shadow.ShadowRunnerTest
 bc albion.integration.shadow.ShadowToleranceTest
+
+# ---- Phase 2 Stream 2A: golden-master + shadow suites for the remaining 20 builders ----
+
+cc albion.integration.aggr.AggrRecordBuilderGoldenMasterTest
+cc albion.integration.aggr.AggrRecordBuilderShadowTest
+cc albion.integration.elto.EltoRecordBuilderGoldenMasterTest
+cc albion.integration.elto.EltoRecordBuilderShadowTest
+cc albion.integration.polaris.PolarisPartyRecordBuilderGoldenMasterTest
+cc albion.integration.polaris.PolarisPartyRecordBuilderShadowTest
+cc albion.integration.reins.ReinsRecordBuilderGoldenMasterTest
+cc albion.integration.reins.ReinsRecordBuilderShadowTest
+cc albion.integration.sanctions.SanctionsRecordBuilderGoldenMasterTest
+cc albion.integration.sanctions.SanctionsRecordBuilderShadowTest
+
+cm albion.integration.cifas.CifasRecordBuilderGoldenMasterTest
+cm albion.integration.cifas.CifasRecordBuilderShadowTest
+cm albion.integration.cue.CueRecordBuilderGoldenMasterTest
+cm albion.integration.cue.CueRecordBuilderShadowTest
+cm albion.integration.dvla.DvlaRecordBuilderGoldenMasterTest
+cm albion.integration.dvla.DvlaRecordBuilderShadowTest
+cm albion.integration.payhub.PayhubRecordBuilderGoldenMasterTest
+cm albion.integration.payhub.PayhubRecordBuilderShadowTest
+cm albion.integration.polaris.PolarisPartyRecordBuilderGoldenMasterTest
+cm albion.integration.polaris.PolarisPartyRecordBuilderShadowTest
+cm albion.integration.printv.PrintvRecordBuilderGoldenMasterTest
+cm albion.integration.printv.PrintvRecordBuilderShadowTest
+
+pc albion.integration.crif.CrifRecordBuilderGoldenMasterTest
+pc albion.integration.crif.CrifRecordBuilderShadowTest
+pc albion.integration.dwh.DwhRecordBuilderGoldenMasterTest
+pc albion.integration.dwh.DwhRecordBuilderShadowTest
+pc albion.integration.polaris.PolarisPartyRecordBuilderGoldenMasterTest
+pc albion.integration.polaris.PolarisPartyRecordBuilderShadowTest
+pc albion.integration.ssp.SspRecordBuilderGoldenMasterTest
+pc albion.integration.ssp.SspRecordBuilderShadowTest
+pc albion.integration.verisk.VeriskRecordBuilderGoldenMasterTest
+pc albion.integration.verisk.VeriskRecordBuilderShadowTest
+
+bc albion.integration.credit.CreditRecordBuilderGoldenMasterTest
+bc albion.integration.credit.CreditRecordBuilderShadowTest
+bc albion.integration.floodre.FloodreRecordBuilderGoldenMasterTest
+bc albion.integration.floodre.FloodreRecordBuilderShadowTest
+bc albion.integration.mid.MidRecordBuilderGoldenMasterTest
+bc albion.integration.mid.MidRecordBuilderShadowTest
+bc albion.integration.polaris.PolarisPartyRecordBuilderGoldenMasterTest
+bc albion.integration.polaris.PolarisPartyRecordBuilderShadowTest
+
+# ---- Phase 2 Streams 2B/2C/2D + Phase 3A cut-over seam (all dormant) ----
+
+cc albion.integration.shadow.CutoverRouterTest
+cc albion.util.BrandDirectoryCandidateTest
+cc albion.feedstatus.FeedStatusStateMachineCandidateTest
+
+pc albion.integration.shadow.CutoverRouterTest
+pc albion.util.BrandDirectoryCandidateTest
+pc albion.feedstatus.FeedStatusStateMachineCandidateTest
+
+bc albion.integration.shadow.CutoverRouterTest
+bc albion.util.BrandDirectoryCandidateTest
+bc albion.feedstatus.FeedStatusStateMachineCandidateTest
+
+cm albion.integration.shadow.CutoverRouterTest
+cm albion.util.BrandDirectoryCandidateTest
+cm albion.feedstatus.FeedStatusStateMachineCandidateTest
+
+pc albion.policy.rating.unified.UnifiedRatingEngineCandidateTest

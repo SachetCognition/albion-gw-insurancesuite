@@ -1,0 +1,13 @@
+# Golden-master fixture: FLOODRE
+# Produced by albion.integration.floodre.FloodreRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/floodre/good_03.xml (UAT 17-Nov-2022).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ClaimNumber_Ext=HERIT-6739
+input.InceptionDate_Ext=P360764125X
+input.SumInsured_Ext=
+input.NINumber_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=600
+expected.trailingFiller=553
+expected.recordPrefix=FL61HERIT-6739P3607641000000000000000000007RP01
+expected.record=FL61HERIT-6739P3607641000000000000000000007RP01                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

@@ -1,0 +1,13 @@
+# Golden-master fixture: CRIF
+# Produced by albion.integration.crif.CrifRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/crif/prod_incident_04.xml (SIT 11-Jan-2020).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.NINumber_Ext=GWBC-40919
+input.VehicleVRM_Ext=P340584658C
+input.AnnualPremium_Ext=
+input.ClaimNumber_Ext=
+input.BrandCode_Ext=ALBDIR
+expected.length=750
+expected.trailingFiller=672
+expected.recordPrefix=CR58GWBC-40919     P340584658C                   0000000000000000000000001AD00
+expected.record=CR58GWBC-40919     P340584658C                   0000000000000000000000001AD00                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

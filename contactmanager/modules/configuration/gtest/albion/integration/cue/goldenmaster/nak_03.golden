@@ -1,0 +1,13 @@
+# Golden-master fixture: CUE
+# Produced by albion.integration.cue.CueRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/cue/nak_03.xml (SIT 27-Nov-2021).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ERNRef_Ext=GWCC-36190
+input.NINumber_Ext=P331701870X
+input.AnnualPremium_Ext=
+input.SumInsured_Ext=
+input.BrandCode_Ext=HERIT
+expected.length=400
+expected.trailingFiller=349
+expected.recordPrefix=CU86GWCC-36190  P331701870000000000000000000000XX99
+expected.record=CU86GWCC-36190  P331701870000000000000000000000XX99                                                                                                                                                                                                                                                                                                                                                             

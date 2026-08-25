@@ -1,0 +1,13 @@
+# Golden-master fixture: REINS
+# Produced by albion.integration.reins.ReinsRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/reins/good_06.xml (UAT 06-Mar-2023).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.AnnualPremium_Ext=PRB-9586
+input.ClaimNumber_Ext=P366095242X
+input.ERNRef_Ext=
+input.RiskPostcode_Ext=
+input.BrandCode_Ext=RETPLS
+expected.length=600
+expected.trailingFiller=531
+expected.recordPrefix=RE47PRB-9586  P366095242X                   000000000000000000007RP01
+expected.record=RE47PRB-9586  P366095242X                   000000000000000000007RP01                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

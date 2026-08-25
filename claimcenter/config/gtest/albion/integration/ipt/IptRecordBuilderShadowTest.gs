@@ -22,6 +22,7 @@ class IptRecordBuilderShadowTest extends TestBase {
 
   static final var CENTRE : String = IptRecordBuilderShadow.CENTRE
   static final var FEATURE : String = IptRecordBuilderShadow.FEATURE
+  static final var CUTOVER : String = IptRecordBuilderShadow.CUTOVER_FEATURE
 
   function testFlagKeysFollowTheDocumentedConvention() {
     assertEquals("cl.feature.shadow.iptrecordbuilder.enabled", AlbionFeatureFlags.enabledKey(CENTRE, FEATURE))
@@ -134,6 +135,25 @@ class IptRecordBuilderShadowTest extends TestBase {
   }
 
   /** Restores the production property source so no later test in the suite sees a test source. */
+  /**
+   * PHASE 3A seam: with the cut-over flag on for a brand, the candidate is authoritative,
+   * the legacy builder still runs as the reverse shadow, and because the two are byte-identical
+   * the emitted record is unchanged and nothing is recorded.
+   */
+  function testCutoverFlagRoutesCandidateWithReverseShadowParity() {
+    var properties = new Properties()
+    properties.setProperty(AlbionFeatureFlags.enabledKey(CENTRE, CUTOVER), "true")
+    properties.setProperty(AlbionFeatureFlags.brandsKey(CENTRE, CUTOVER), "ALBDIR")
+    AlbionFeatureFlags.useProperties(properties)
+    var recorder = new InMemoryShadowDiffRecorder()
+    assertEquals("cl.feature.cutover.iptrecordbuilder.enabled", AlbionFeatureFlags.enabledKey(CENTRE, CUTOVER))
+    assertEquals(legacyRecord("ALBDIR"), IptRecordBuilderShadow.buildRecord(source("ALBDIR"), recorder))
+    assertEquals(0, recorder.RecordCount)   // reverse shadow found no difference; no auto-revert
+    // brands not in the cut-over allow-list stay entirely on legacy
+    assertEquals(legacyRecord("HERIT"), IptRecordBuilderShadow.buildRecord(source("HERIT"), recorder))
+    assertEquals(0, recorder.RecordCount)
+  }
+
   function testPropertySourceIsRestored() {
     AlbionFeatureFlags.useSystemProperties()
     assertFalse(AlbionFeatureFlags.isEnabled(CENTRE, FEATURE))

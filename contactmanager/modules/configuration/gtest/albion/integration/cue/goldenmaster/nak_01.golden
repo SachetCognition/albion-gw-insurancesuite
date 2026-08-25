@@ -1,0 +1,13 @@
+# Golden-master fixture: CUE
+# Produced by albion.integration.cue.CueRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/cue/nak_01.xml (PROD (scrubbed... mostly) 26-Sep-2022).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ERNRef_Ext=PRB-4934
+input.NINumber_Ext=P392580909C
+input.AnnualPremium_Ext=
+input.SumInsured_Ext=
+input.BrandCode_Ext=ALBDIR
+expected.length=400
+expected.trailingFiller=349
+expected.recordPrefix=CU86PRB-4934    P392580909000000000000000000001AD00
+expected.record=CU86PRB-4934    P392580909000000000000000000001AD00                                                                                                                                                                                                                                                                                                                                                             

@@ -22,6 +22,7 @@ class PolarisMfRecordBuilderShadowTest extends TestBase {
 
   static final var CENTRE : String = PolarisMfRecordBuilderShadow.CENTRE
   static final var FEATURE : String = PolarisMfRecordBuilderShadow.FEATURE
+  static final var CUTOVER : String = PolarisMfRecordBuilderShadow.CUTOVER_FEATURE
 
   function testFlagKeysFollowTheDocumentedConvention() {
     assertEquals("co.feature.shadow.polarismfrecordbuilder.enabled", AlbionFeatureFlags.enabledKey(CENTRE, FEATURE))
@@ -134,6 +135,25 @@ class PolarisMfRecordBuilderShadowTest extends TestBase {
   }
 
   /** Restores the production property source so no later test in the suite sees a test source. */
+  /**
+   * PHASE 3A seam: with the cut-over flag on for a brand, the candidate is authoritative,
+   * the legacy builder still runs as the reverse shadow, and because the two are byte-identical
+   * the emitted record is unchanged and nothing is recorded.
+   */
+  function testCutoverFlagRoutesCandidateWithReverseShadowParity() {
+    var properties = new Properties()
+    properties.setProperty(AlbionFeatureFlags.enabledKey(CENTRE, CUTOVER), "true")
+    properties.setProperty(AlbionFeatureFlags.brandsKey(CENTRE, CUTOVER), "ALBDIR")
+    AlbionFeatureFlags.useProperties(properties)
+    var recorder = new InMemoryShadowDiffRecorder()
+    assertEquals("co.feature.cutover.polarismfrecordbuilder.enabled", AlbionFeatureFlags.enabledKey(CENTRE, CUTOVER))
+    assertEquals(legacyRecord("ALBDIR"), PolarisMfRecordBuilderShadow.buildRecord(source("ALBDIR"), recorder))
+    assertEquals(0, recorder.RecordCount)   // reverse shadow found no difference; no auto-revert
+    // brands not in the cut-over allow-list stay entirely on legacy
+    assertEquals(legacyRecord("HERIT"), PolarisMfRecordBuilderShadow.buildRecord(source("HERIT"), recorder))
+    assertEquals(0, recorder.RecordCount)
+  }
+
   function testPropertySourceIsRestored() {
     AlbionFeatureFlags.useSystemProperties()
     assertFalse(AlbionFeatureFlags.isEnabled(CENTRE, FEATURE))

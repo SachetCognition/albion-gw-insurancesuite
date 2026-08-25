@@ -1,0 +1,6 @@
+BENCH|AGGR|iterations=100000|legacyNsPerOp=3133|candidateNsPerOp=1860|sink=104448000
+BENCH|ELTO|iterations=100000|legacyNsPerOp=1823|candidateNsPerOp=1653|sink=81600000
+BENCH|IPT|iterations=100000|legacyNsPerOp=1738|candidateNsPerOp=1619|sink=104448000
+BENCH|POLARIS|iterations=100000|legacyNsPerOp=1386|candidateNsPerOp=1341|sink=61200000
+BENCH|REINS|iterations=100000|legacyNsPerOp=3000|candidateNsPerOp=3240|sink=122400000
+BENCH|SANCTIONS|iterations=100000|legacyNsPerOp=2454|candidateNsPerOp=2496|sink=51000000

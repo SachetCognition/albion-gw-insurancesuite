@@ -1,0 +1,13 @@
+# Golden-master fixture: CREDIT
+# Produced by albion.integration.credit.CreditRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/credit/nak_10.xml (SIT 12-Jun-2020).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.RiskPostcode_Ext=REG-23380
+input.InceptionDate_Ext=HH27763773X
+input.PolicyNumber_Ext=
+input.SumInsured_Ext=
+input.BrandCode_Ext=ALBDIR
+expected.length=300
+expected.trailingFiller=222
+expected.recordPrefix=CR61REG-23380      HH27763773X                   0000000000000000000000001AD00
+expected.record=CR61REG-23380      HH27763773X                   0000000000000000000000001AD00                                                                                                                                                                                                                              

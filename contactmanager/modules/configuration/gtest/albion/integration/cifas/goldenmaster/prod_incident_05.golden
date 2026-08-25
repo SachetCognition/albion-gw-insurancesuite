@@ -1,0 +1,13 @@
+# Golden-master fixture: CIFAS
+# Produced by albion.integration.cifas.CifasRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/cifas/prod_incident_05.xml (SIT 06-Mar-2023).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.NINumber_Ext=CM-27531
+input.SumInsured_Ext=P319788000C
+input.InceptionDate_Ext=
+input.InsuredSurname_Ext=
+input.BrandCode_Ext=ALBDIR
+expected.length=750
+expected.trailingFiller=695
+expected.recordPrefix=CI87CM-27531    P3197880000000000000000000000000001AD00
+expected.record=CI87CM-27531    P3197880000000000000000000000000001AD00                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

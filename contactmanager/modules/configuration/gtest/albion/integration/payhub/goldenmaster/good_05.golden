@@ -1,0 +1,13 @@
+# Golden-master fixture: PAYHUB
+# Produced by albion.integration.payhub.PayhubRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/payhub/good_05.xml (PROD (scrubbed... mostly) 28-Oct-2016).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.InsuredSurname_Ext=GWBC-40518
+input.VehicleVRM_Ext=HH58871879A
+input.UPRN_Ext=
+input.ClaimNumber_Ext=
+input.BrandCode_Ext=ALBBRK
+expected.length=750
+expected.trailingFiller=696
+expected.recordPrefix=PA15GWBC-40518     HH58871800000000000000000000002BK00
+expected.record=PA15GWBC-40518     HH58871800000000000000000000002BK00                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

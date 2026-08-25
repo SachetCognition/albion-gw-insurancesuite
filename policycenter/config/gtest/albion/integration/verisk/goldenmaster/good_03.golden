@@ -1,0 +1,13 @@
+# Golden-master fixture: VERISK
+# Produced by albion.integration.verisk.VeriskRecordBuilder.buildRecord (current PROD behaviour, Phase 2 baseline).
+# Input captured from integration/samples/verisk/good_03.xml (SIT 22-Nov-2020).
+# Regenerate/verify with tools/ci/verify_phase1_scaffold.py - never edit expected.record by hand.
+input.ERNRef_Ext=PRB-44001
+input.ClaimNumber_Ext=HH14529934X
+input.InceptionDate_Ext=
+input.NINumber_Ext=
+input.BrandCode_Ext=ALBDIR
+expected.length=400
+expected.trailingFiller=349
+expected.recordPrefix=VE17PRB-44001   HH14529900000000000000000000001AD00
+expected.record=VE17PRB-44001   HH14529900000000000000000000001AD00                                                                                                                                                                                                                                                                                                                                                             
