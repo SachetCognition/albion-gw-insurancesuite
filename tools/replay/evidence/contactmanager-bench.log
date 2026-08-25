@@ -1,0 +1,7 @@
+BENCH|CIFAS|iterations=100000|legacyNsPerOp=3128|candidateNsPerOp=2178|sink=153000000
+BENCH|CUE|iterations=100000|legacyNsPerOp=2180|candidateNsPerOp=1948|sink=81600000
+BENCH|DVLA|iterations=100000|legacyNsPerOp=1837|candidateNsPerOp=1898|sink=81600000
+BENCH|PAYHUB|iterations=100000|legacyNsPerOp=1882|candidateNsPerOp=1724|sink=153000000
+BENCH|POLARIS|iterations=100000|legacyNsPerOp=1412|candidateNsPerOp=1361|sink=81600000
+BENCH|POLARIS_MF|iterations=100000|legacyNsPerOp=2000|candidateNsPerOp=1899|sink=104448000
+BENCH|PRINTV|iterations=100000|legacyNsPerOp=2000|candidateNsPerOp=1663|sink=51000000
