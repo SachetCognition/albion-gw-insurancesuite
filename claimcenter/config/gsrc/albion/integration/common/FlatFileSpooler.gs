@@ -10,7 +10,7 @@ uses java.util.concurrent.locks.ReentrantLock
 /*
  * FlatFileSpooler - appends fixed-width outbound records to the per-feed spool file
  * <spool dir>/<FEED>/<FEED>_<yyyyMMdd>.dat, one record per line. The spool directory is read from
- * AlbionConfigService key integration.spool.dir (default: java.io.tmpdir).
+ * AlbionConfigService key integration.spool.dir (default: /var/agi/spool/outbound, as ContactManager).
  *
  *  05/02/2011   akowal       CR GWBC-21656 - added ALBBRK brand handling
  *  17/08/2014   hyamam       Perf fix CM-37799 - query was table scanning CC_CLAIM
@@ -29,13 +29,15 @@ class FlatFileSpooler {
 
   public static final var KEY_SPOOL_DIR : String = "integration.spool.dir"
 
+  public static final var DEFAULT_SPOOL_DIR : String = "/var/agi/spool/outbound"
+
   private static final var LOCK = new ReentrantLock()
 
   private construct() {
   }
 
   static function spoolDirectory() : File {
-    return new File(AlbionConfigService.Instance.getString(KEY_SPOOL_DIR, System.getProperty("java.io.tmpdir")))
+    return new File(AlbionConfigService.Instance.getString(KEY_SPOOL_DIR, DEFAULT_SPOOL_DIR))
   }
 
   static function spoolFile(feed : String, day : java.util.Date) : File {

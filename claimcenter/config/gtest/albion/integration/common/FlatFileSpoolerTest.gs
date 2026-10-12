@@ -26,6 +26,10 @@ class FlatFileSpoolerTest extends TestBase {
     }
   }
 
+  function testDefaultSpoolDirectoryIsSharedOutboundPath() {
+    assertEquals("/var/agi/spool/outbound", FlatFileSpooler.DEFAULT_SPOOL_DIR)
+  }
+
   function testRejectsMissingFeedOrRecord() {
     try {
       FlatFileSpooler.spool(" ", "REC")
