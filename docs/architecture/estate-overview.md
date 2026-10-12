@@ -20,3 +20,18 @@
 2. Three display-name formatters, three VRM normalisers, two rating engines, two complaint clocks.
 3. `FeedStatus_Ext` drives the feed batches with no enforced state machine — see `FEEDSTATUS-STATE-MACHINE.md`.
 4. IPT is computed in 4 places; month-end reconciliation is a runbook (`docs/runbooks/month-end-ipt-reconciliation.md`), not a control.
+
+## Admin data
+Each centre loads its activity patterns from `<config-root>/import/gen/albion-activity-patterns.xml`, listed in that directory's `importfiles.txt` and loaded with the standard admin-data import: ClaimCenter 13, PolicyCenter 20, BillingCenter 15 and ContactManager 18 patterns. Every pattern code raised by a rule (`AGI_*`) or an escalation batch is defined there; `check_gw_coherence.py` (E11) fails the build if a code is missing. In BillingCenter and ContactManager the activity subjects are display keys.
+
+## Known gaps
+- **Claim data outside ClaimCenter.** BillingCenter and ContactManager do not hold claim data. Claim-amount thresholds read 0 in those centres, and the ClaimNumber slots in their outbound records are blank or filler; record lengths are unchanged.
+- **Navigation.** The Albion screens in all four centres have no navigation entry point, because the base-product menus they hang from are not held in this repository.
+- **Encryption.** `NINumber_Ext` in PolicyCenter is stored unencrypted pending the encryption plugin.
+- **Rules for business review.**
+  - BillingCenter `AGI_ESCA_001`/`AGI_ESCA_002` and `AGI_PREU_001`/`AGI_PREU_006` have duplicate conditions.
+  - BillingCenter `AGI_ESCA_009` and `AGI_PREU_007`, and ContactManager `vali_002`, fire on every record.
+  - ContactManager `preu_006` duplicates `preu_003`.
+- **POLARIS policyholder summary.** The summary is carried on `ABContact` in ContactManager.
+- **Mainframe confirmation.** Program and dataset names in `AGIP709D` and `AGIC163D` are still to be confirmed against Endevor.
+- **Unscheduled batch.** Some interface feeds have JCL in `batch/jcl/adhoc/` but no Control-M job. The POLARIS heritage nightly sync is the first candidate for scheduling.
