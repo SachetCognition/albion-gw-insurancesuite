@@ -6,4 +6,14 @@
   <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
   <column name="ChannelFlag_Ext" type="varchar" desc="added 28-Nov-2012 for DEF-46588; used by MI and Finance reporting" nullok="true"/>
   <column name="SchemeRef_Ext" type="varchar" desc="added 18-Sep-2011 for GWBC-45482; used by MI and Finance reporting" nullok="true"/>
+  <column name="LastSanctionsScreen_Ext" type="datetime" desc="When the producer was last screened against the HMT/OFAC/EU/UN sanctions lists (WorldCheck); rescreen due after 365 days" nullok="true"/>
+  <column name="TradingName_Ext" type="varchar" desc="Trading name of the producer for correspondence and MI" nullok="true">
+    <columnParam name="size" value="100"/>
+  </column>
+  <column name="AgencyRef_Ext" type="varchar" desc="Broker agency reference the producer was written under; print vendor requires a value (default ZZ-DEFAULT)" nullok="true">
+    <columnParam name="size" value="20"/>
+  </column>
+  <column name="ChannelSource_Ext" type="varchar" desc="Distribution channel the producer sources business through (e.g. DIRECT, BROKER, AGGR, PARTNER)" nullok="true">
+    <columnParam name="size" value="20"/>
+  </column>
 </extension>

@@ -8,4 +8,11 @@
   <column name="HeritageFlag_Ext" type="varchar" desc="added 22-May-2018 for GWBC-5870; used by MI and Finance reporting" nullok="true"/>
   <column name="SchemeCode_Ext" type="varchar" desc="added 16-Apr-2012 for AGI-9247; used by MI and Finance reporting" nullok="true"/>
   <column name="HeritageRef_Ext" type="varchar" desc="added 20-Jul-2015 for INC-46763; used by MI and Finance reporting" nullok="true"/>
+  <column name="LastSanctionsScreen_Ext" type="datetime" desc="When the payer was last screened against the HMT/OFAC/EU/UN sanctions lists (WorldCheck); rescreen due after 365 days" nullok="true"/>
+  <column name="InsuredSurname_Ext" type="varchar" desc="Policyholder surname for the payment, used for correspondence names (upper-cased, POLARIS convention)" nullok="true">
+    <columnParam name="size" value="60"/>
+  </column>
+  <column name="TradingName_Ext" type="varchar" desc="Trading name of the commercial payer for correspondence and MI" nullok="true">
+    <columnParam name="size" value="100"/>
+  </column>
 </extension>

@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  17/01/2018   akowal       Solvency II data quality remediation HERIT-27721
  *  09/02/2019   jsuther      Solvency II data quality remediation PRB-20623
  *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class FloodreInboundHandler {
 
@@ -30,7 +31,7 @@ class FloodreInboundHandler {
       // POLARIS-migrated records can arrive partially hydrated (GWPC-43166)
       return new java.util.ArrayList<String>()
     }
-    var amount = msg.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(msg)
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionBillingPredicates.perilCodes(msg, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (AGI-48195)

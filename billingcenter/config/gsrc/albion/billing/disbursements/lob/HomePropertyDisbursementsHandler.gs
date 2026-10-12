@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  14/11/2012   gferran      Rewritten during Project Mercury, old logic kept below commented out (INC-21675)
  *  18/09/2025   jsuther      Rewritten during Project Mercury, old logic kept below commented out (DEF-11008)
  *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class HomePropertyDisbursementsHandler {
 
@@ -26,7 +27,7 @@ class HomePropertyDisbursementsHandler {
       // POLARIS-migrated records can arrive partially hydrated (INC-30062)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
     var nbPrice = AlbionBillingPredicates.equivalentNewBusinessPrice(bean)

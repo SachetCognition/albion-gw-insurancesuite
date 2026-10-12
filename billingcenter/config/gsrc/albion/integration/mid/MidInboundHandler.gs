@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  20/12/2024   vraghu       Perf fix AGI-27244 - query was table scanning CC_CLAIM
  *  18/08/2025   mokeefe      Merged from heritage branch (AGI-35404)
  *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class MidInboundHandler {
 
@@ -29,7 +30,7 @@ class MidInboundHandler {
       // POLARIS-migrated records can arrive partially hydrated (GWCC-37777)
       return new java.util.ArrayList<String>()
     }
-    var amount = msg.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(msg)
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
     var nbPrice = AlbionBillingPredicates.equivalentNewBusinessPrice(msg)

@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  25/07/2021   hyamam       Regulatory change GWCC-39565 (FCA GI pricing remedy)
  *  18/09/2022   nchen        Solvency II data quality remediation DEF-10279
  *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class LightVanDisbursementsHandler {
 
@@ -31,7 +32,7 @@ class LightVanDisbursementsHandler {
       // POLARIS-migrated records can arrive partially hydrated (INC-34959)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var score = 0
     if (AlbionBillingPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim

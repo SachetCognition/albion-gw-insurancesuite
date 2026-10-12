@@ -21,6 +21,7 @@ uses java.text.SimpleDateFormat
  *  13/11/2020   nchen        Initial version for HERIT-17598
  *  28/10/2023   cdoyle       Perf fix CHG-18441 - query was table scanning CC_CLAIM
  *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService.brandMap
+ *  12/10/2026   AGI-GW Platform  ClaimNumber and NINumber not held in BillingCenter (null filler); InceptionDate from PolicyPeriod.PolicyPerEffDate
  */
 class FloodreRecordBuilder {
 
@@ -32,10 +33,10 @@ class FloodreRecordBuilder {
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("FL61", 4))                                  // 001-004 record type
-    sb.append(pad(safe(src.getFieldValue("ClaimNumber_Ext") as String), 10))          // 005-14 ClaimNumber
-    sb.append(pad(safe(src.getFieldValue("InceptionDate_Ext") as String), 8))          // InceptionDate
+    sb.append(pad("", 10))                                     // 005-14 ClaimNumber - ClaimCenter data, not held in BillingCenter; blank
+    sb.append(pad(safe(src.getFieldValue("PolicyPerEffDate") as String), 8))          // InceptionDate
     sb.append(padNum(src.getFieldValue("SumInsured_Ext"), 11))            // SumInsured - zero-padded, implied 2dp, NO decimal point
-    sb.append(formatDate(src.getFieldValue("NINumber_Ext")))              // NINumber
+    sb.append(formatDate(null))                                // NINumber - party PII held in ContactManager, not in BillingCenter; null filler
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (DEF-32271)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 600
     if (sb.length() != RECORD_LENGTH) {

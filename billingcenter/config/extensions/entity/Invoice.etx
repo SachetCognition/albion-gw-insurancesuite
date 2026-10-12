@@ -12,4 +12,13 @@
   <column name="AnnualPremium_Ext" type="decimal" precision="18" scale="2" desc="Annual premium the invoice relates to; IPT base used by the nightly feed batches" nullok="true"/>
   <column name="IPTAmount_Ext" type="decimal" precision="18" scale="2" desc="Insurance Premium Tax on AnnualPremium_Ext at the configured standard rate, set by the nightly feed batches" nullok="true"/>
   <column name="LastBatchRun_Ext" type="datetime" desc="When the reconciliation escalation batch last sent this invoice to the outbound spool" nullok="true"/>
+  <column name="ChannelRef_Ext" type="varchar" desc="Sales channel reference the invoice was raised under; shown on the Albion invoice screens" nullok="true"/>
+  <column name="SchemeCode_Ext" type="varchar" desc="Albion scheme (affinity/broker scheme) code the invoice belongs to; shown on the Albion invoice screens" nullok="true"/>
+  <column name="LastSanctionsScreen_Ext" type="datetime" desc="When the invoice account holder was last screened against the HMT/OFAC/EU/UN sanctions lists (WorldCheck); rescreen due after 365 days" nullok="true"/>
+  <column name="InsuredSurname_Ext" type="varchar" desc="Policyholder surname for the invoice, used for correspondence names (upper-cased, POLARIS convention)" nullok="true">
+    <columnParam name="size" value="60"/>
+  </column>
+  <column name="AgencyRef_Ext" type="varchar" desc="Broker agency reference the invoice was written under; print vendor requires a value (default ZZ-DEFAULT)" nullok="true">
+    <columnParam name="size" value="20"/>
+  </column>
 </extension>

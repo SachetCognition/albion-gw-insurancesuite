@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!-- PolicyPeriod risk attributes replicated from PolicyCenter on issuance/change through the billing system integration; PolicyCenter remains the owner. -->
+<extension xmlns="http://guidewire.com/datamodel" entityName="PolicyPeriod">
+  <column name="SumInsured_Ext" type="decimal" desc="Policy sum insured (GBP) as issued in PolicyCenter; used by collections, refund and Flood Re/MID feeds" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="RiskPostcode_Ext" type="varchar" desc="Postcode of the insured risk address as issued in PolicyCenter" nullok="true">
+    <columnParam name="size" value="10"/>
+  </column>
+  <column name="FloodReCeded_Ext" type="bit" desc="True when the home risk is ceded to the Flood Re scheme" nullok="true"/>
+  <column name="UPRN_Ext" type="decimal" desc="Ordnance Survey Unique Property Reference Number of the insured property (up to 12 digits)" nullok="true">
+    <columnParam name="precision" value="12"/>
+    <columnParam name="scale" value="0"/>
+  </column>
+  <column name="ERNRef_Ext" type="varchar" desc="Employer Reference Number (HMRC PAYE ref) for employers liability policies, as reported to ELTO" nullok="true">
+    <columnParam name="size" value="14"/>
+  </column>
+  <column name="LastSanctionsScreen_Ext" type="datetime" desc="When the policyholder was last screened against the HMT/OFAC/EU/UN sanctions lists (WorldCheck); rescreen due after 365 days" nullok="true"/>
+  <column name="InsuredSurname_Ext" type="varchar" desc="Policyholder surname for the policy period, used for correspondence names (upper-cased, POLARIS convention)" nullok="true">
+    <columnParam name="size" value="60"/>
+  </column>
+  <column name="AgencyRef_Ext" type="varchar" desc="Broker agency reference the policy period was written under; print vendor requires a value (default ZZ-DEFAULT)" nullok="true">
+    <columnParam name="size" value="20"/>
+  </column>
+</extension>

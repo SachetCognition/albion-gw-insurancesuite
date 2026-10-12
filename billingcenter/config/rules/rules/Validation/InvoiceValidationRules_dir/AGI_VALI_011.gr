@@ -1,6 +1,7 @@
 package rules.Validation.InvoiceValidationRules_dir
 
 uses albion.util.AlbionActivityUtils
+uses gw.api.locale.DisplayKey
 
 @gw.rules.RuleName("AGI_VALI_011: hold invoices where brand is HERIT for validation review")
 internal class AGI_VALI_011 {
@@ -14,7 +15,7 @@ return invoice.BrandCode_Ext == BrandCode_Ext.TC_HERIT
 /*start00rule*/
 // priority 402; sets the invoice back to PENDING and raises the AGI_VALI_011 review activity
 invoice.FeedStatus_Ext = "PENDING"
-AlbionActivityUtils.raiseActivity(invoice, "review_agi_vali_011", "Validation review: brand is HERIT")
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_vali_011", DisplayKey.get("Albion.Activity.Subject.AGI_VALI_011"))
 /*end00rule*/
   }
 }

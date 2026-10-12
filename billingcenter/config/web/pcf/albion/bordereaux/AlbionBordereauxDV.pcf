@@ -17,7 +17,7 @@
           id="SchemeCode_Ext"
           label="&quot;SchemeCode&quot;"
           value="Invoice.SchemeCode_Ext"/>
-        <TextInput
+        <TypeKeyInput
           editable="true"
           id="BrandCode_Ext"
           label="&quot;BrandCode&quot;"

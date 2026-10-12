@@ -25,6 +25,7 @@ uses java.math.BigDecimal
  *  08/08/2023   jsuther      Rewritten during Project Mercury, old logic kept below commented out (DEF-23704)
  *  14/08/2024   baldrid      IPT rate change 12% (see PRB-42820)
  *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class AlbionRefundEngine {
 
@@ -35,7 +36,7 @@ class AlbionRefundEngine {
       // POLARIS-migrated records can arrive partially hydrated (INC-12603)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var score = 0
     if (AlbionBillingPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim

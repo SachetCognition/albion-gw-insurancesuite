@@ -18,6 +18,7 @@ uses java.text.SimpleDateFormat
  *  21/04/2022   baldrid      Solvency II data quality remediation GWBC-16401
  *  25/10/2023   cdoyle       IPT rate change 12% (see REG-48723)
  *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService.brandMap
+ *  12/10/2026   AGI-GW Platform  PolicyNumber/InceptionDate from PolicyPeriod.PolicyNumber/PolicyPerEffDate
  */
 class CreditRecordBuilder {
 
@@ -30,8 +31,8 @@ class CreditRecordBuilder {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("CR61", 4))                                  // 001-004 record type
     sb.append(pad(safe(src.getFieldValue("RiskPostcode_Ext") as String), 15))          // 005-19 RiskPostcode
-    sb.append(pad(safe(src.getFieldValue("InceptionDate_Ext") as String), 30))          // InceptionDate
-    sb.append(padNum(src.getFieldValue("PolicyNumber_Ext"), 15))            // PolicyNumber - zero-padded, implied 2dp, NO decimal point
+    sb.append(pad(safe(src.getFieldValue("PolicyPerEffDate") as String), 30))          // InceptionDate
+    sb.append(padNum(src.getFieldValue("PolicyNumber"), 15))            // PolicyNumber - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("SumInsured_Ext")))              // SumInsured
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (PRB-22295)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 300

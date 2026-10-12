@@ -7,7 +7,7 @@
       name="Invoice"
       type="Invoice"/>
     <InputColumn>
-        <TextInput
+        <TypeKeyInput
           editable="true"
           id="BrandCode_Ext"
           label="&quot;BrandCode&quot;"

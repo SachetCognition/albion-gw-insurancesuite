@@ -25,6 +25,7 @@ uses java.math.BigDecimal
  *  05/09/2022   nchen        Defect fix CHG-32639 - null pointer when policy period not bound
  *  16/01/2023   rpatel       Merged from heritage branch (GWPC-14887)
  *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class AlbionAPRDisclosureHelper {
 
@@ -36,7 +37,7 @@ class AlbionAPRDisclosureHelper {
       // POLARIS-migrated records can arrive partially hydrated (AGI-23200)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var cfg = AlbionConfigService.Instance
     var referAlbDir = cfg.referThresholdAlbDir("AlbionAPRDisclosureHelper", 10000bd)
