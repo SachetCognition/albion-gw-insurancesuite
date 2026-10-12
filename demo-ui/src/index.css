@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-ink-900 text-slate-200 font-sans antialiased;
+    background-image:
+      radial-gradient(70rem 40rem at 15% -10%, rgba(212, 164, 65, 0.1), transparent 60%),
+      radial-gradient(60rem 40rem at 95% 0%, rgba(63, 208, 201, 0.08), transparent 55%),
+      linear-gradient(180deg, #04070f 0%, #060a16 60%, #04070f 100%);
+    background-attachment: fixed;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-ink-500 rounded-full;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-2xl border border-white/5 bg-ink-700/60 backdrop-blur-sm shadow-panel;
+  }
+
+  .panel-hd {
+    @apply flex items-baseline justify-between gap-4 border-b border-white/5 px-6 py-4;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-400/80;
+  }
+
+  .muted {
+    @apply text-slate-400;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium tracking-wide;
+  }
+
+  .gold-rule {
+    @apply h-px w-full bg-gradient-to-r from-gold-500/60 via-gold-500/10 to-transparent;
+  }
+}
