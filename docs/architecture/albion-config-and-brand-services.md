@@ -67,8 +67,10 @@ Strangler feature flags (not business constants; listed in `FEATURE_KEYS`, commi
 | `feature.shadow.enabled` | `false` | `ShadowRunEnabled : boolean` | `true`/`false` |
 | `feature.shadow.feeds` | empty | `ShadowFeeds : List<String>` | comma list, upper-cased |
 | `feature.shadow.brands` | empty (all brands) | `ShadowBrands : List<String>` | comma list, upper-cased |
+| `feature.cutover.feeds` | empty | `CutoverFeeds : List<String>` | comma list, upper-cased; each feed must be shadow-run |
 
-`isShadowEnabled(feed, brandTypecode)` combines them; see `docs/migration/strangler-phase1.md`.
+`isShadowEnabled(feed, brandTypecode)` combines the shadow keys (`docs/migration/strangler-phase1.md`);
+`isCutoverEnabled(feed, brandTypecode)` adds the cutover list on top (`docs/migration/strangler-phase2-3.md`).
 
 Key names are also public constants (`AlbionConfigService.KEY_*`, list in `BUSINESS_KEYS`); defaults are `DEFAULT_*`.
 Generic typed getters for other keys: `getString`, `getBoolean`, `getInt(key, default, min, max)`,
@@ -194,7 +196,7 @@ Python 3 stdlib only, no Guidewire distribution needed; exit 1 on drift. Fails w
 `GW_TYPECODE` is missing from or retired in the typelist; the service tables differ from the typelist or CSV (or roles
 are inconsistent with the CSV notes); any per-centre service/test copy is not byte-identical; `AlbionCentre` prefix does
 not match the env files; any of the 40 env/centre property files lacks a business, feature-flag or encryption key; or
-a template sets `feature.shadow.enabled` to anything but `false`. Per env/centre it checks
+a template sets `feature.shadow.enabled` to anything but `false` or `feature.cutover.feeds` to anything but empty. Per env/centre it checks
 `environments/<env>/<centre>.properties.template` when present, else `<centre>.properties`, and fails if neither exists.
 Runs as the first blocking stage of the `Jenkinsfile` (`Brand config drift`), before any centre is compiled.
 

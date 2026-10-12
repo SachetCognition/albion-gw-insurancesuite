@@ -1,0 +1,792 @@
+{
+  "schema": "albion.shadow.replay/v1",
+  "generatedAt": "2026-10-12T23:36:30Z",
+  "status": "GREEN",
+  "tolerance": "exact",
+  "runtime": "open-source Gosu 1.17.5",
+  "negativeControl": "RED",
+  "fixtures": [
+    {
+      "path": "tools/replay/fixtures/ipt_cc.csv",
+      "sha256": "2bf3e4599b65770dae7f7c6240c5d3b3af0765afc8394dd49f2713338f386529",
+      "cases": 17
+    },
+    {
+      "path": "tools/replay/fixtures/polaris_mf_pc.csv",
+      "sha256": "8458fdf5f012d4d0c721051f2ff00564415a3ccb29ae811934395c89a490d045",
+      "cases": 16
+    },
+    {
+      "path": "tools/replay/fixtures/polaris_mf_cm.csv",
+      "sha256": "77d4253fb2680399754f5f0572a21d35436fe2640df82e08717af86f951243ec",
+      "cases": 12
+    }
+  ],
+  "runs": [
+    {
+      "schema": "albion.shadow.evidence/v1",
+      "source": "offline-replay",
+      "centre": "cc",
+      "periodStart": "2026-10-12T23:36:21Z",
+      "generatedAt": "2026-10-12T23:36:21Z",
+      "status": "GREEN",
+      "totals": {
+        "compared": 17,
+        "matched": 17,
+        "withinTolerance": 0,
+        "breaches": 0,
+        "candidateErrors": 0,
+        "cutoverCandidateEmitted": 0,
+        "cutoverReverted": 0
+      },
+      "feeds": [
+        {
+          "feed": "IPT",
+          "brand": "ALBDIR",
+          "compared": 9,
+          "matched": 9,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "IPT",
+          "brand": "ALBBRK",
+          "compared": 2,
+          "matched": 2,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "IPT",
+          "brand": "RETPLS",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "IPT",
+          "brand": "HERIT",
+          "compared": 2,
+          "matched": 2,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "IPT",
+          "brand": "ALBHNW",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "IPT",
+          "brand": "NOVABK",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "IPT",
+          "brand": "SYNTST",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        }
+      ],
+      "cases": [
+        {
+          "id": "ipt_cc/syn_001",
+          "feed": "IPT",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_002",
+          "feed": "IPT",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_003",
+          "feed": "IPT",
+          "brand": "RETPLS",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_004",
+          "feed": "IPT",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_005",
+          "feed": "IPT",
+          "brand": "ALBHNW",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_006",
+          "feed": "IPT",
+          "brand": "NOVABK",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_007",
+          "feed": "IPT",
+          "brand": "albdir",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_008",
+          "feed": "IPT",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_009",
+          "feed": "IPT",
+          "brand": "SYNTST",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_010",
+          "feed": "IPT",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_011",
+          "feed": "IPT",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_012",
+          "feed": "IPT",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_013",
+          "feed": "IPT",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_014",
+          "feed": "IPT",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_015",
+          "feed": "IPT",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_016",
+          "feed": "IPT",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 42,
+          "candidateLength": 42,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "ipt_cc/syn_017",
+          "feed": "IPT",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        }
+      ]
+    },
+    {
+      "schema": "albion.shadow.evidence/v1",
+      "source": "offline-replay",
+      "centre": "pc",
+      "periodStart": "2026-10-12T23:36:24Z",
+      "generatedAt": "2026-10-12T23:36:24Z",
+      "status": "GREEN",
+      "totals": {
+        "compared": 16,
+        "matched": 16,
+        "withinTolerance": 0,
+        "breaches": 0,
+        "candidateErrors": 0,
+        "cutoverCandidateEmitted": 0,
+        "cutoverReverted": 0
+      },
+      "feeds": [
+        {
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "compared": 9,
+          "matched": 9,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "ALBBRK",
+          "compared": 2,
+          "matched": 2,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "RETPLS",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "HERIT",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "ALBHNW",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "NOVABK",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "SYNTST",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        }
+      ],
+      "cases": [
+        {
+          "id": "polaris_mf_pc/syn_001",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_002",
+          "feed": "POLARIS_MF",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_003",
+          "feed": "POLARIS_MF",
+          "brand": "RETPLS",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_004",
+          "feed": "POLARIS_MF",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_005",
+          "feed": "POLARIS_MF",
+          "brand": "ALBHNW",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_006",
+          "feed": "POLARIS_MF",
+          "brand": "NOVABK",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_007",
+          "feed": "POLARIS_MF",
+          "brand": "albdir",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_008",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_009",
+          "feed": "POLARIS_MF",
+          "brand": "SYNTST",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_010",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_011",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_012",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_013",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_014",
+          "feed": "POLARIS_MF",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_015",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 42,
+          "candidateLength": 42,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_pc/syn_016",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        }
+      ]
+    },
+    {
+      "schema": "albion.shadow.evidence/v1",
+      "source": "offline-replay",
+      "centre": "cm",
+      "periodStart": "2026-10-12T23:36:28Z",
+      "generatedAt": "2026-10-12T23:36:28Z",
+      "status": "GREEN",
+      "totals": {
+        "compared": 12,
+        "matched": 12,
+        "withinTolerance": 0,
+        "breaches": 0,
+        "candidateErrors": 0,
+        "cutoverCandidateEmitted": 0,
+        "cutoverReverted": 0
+      },
+      "feeds": [
+        {
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "compared": 6,
+          "matched": 6,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "ALBBRK",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "RETPLS",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "HERIT",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "ALBHNW",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "NOVABK",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "POLARIS_MF",
+          "brand": "SYNTST",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        }
+      ],
+      "cases": [
+        {
+          "id": "polaris_mf_cm/syn_001",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_002",
+          "feed": "POLARIS_MF",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_003",
+          "feed": "POLARIS_MF",
+          "brand": "RETPLS",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_004",
+          "feed": "POLARIS_MF",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_005",
+          "feed": "POLARIS_MF",
+          "brand": "ALBHNW",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_006",
+          "feed": "POLARIS_MF",
+          "brand": "NOVABK",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_007",
+          "feed": "POLARIS_MF",
+          "brand": "albdir",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_008",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_009",
+          "feed": "POLARIS_MF",
+          "brand": "SYNTST",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_010",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_011",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "polaris_mf_cm/syn_012",
+          "feed": "POLARIS_MF",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 512,
+          "candidateLength": 512,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        }
+      ]
+    }
+  ]
+}

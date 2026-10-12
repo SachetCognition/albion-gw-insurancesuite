@@ -126,6 +126,14 @@
     desc="Nightly sanctions/PEP screening feed for ABContact records pending feed"
     name="Albion Screening Feed"/>
   <typecode
+    code="AlbionShadowRecon_Ext"
+    desc="Strangler shadow reconciliation report, unscheduled (AlbionShadowReconciliationBatch)"
+    name="Albion Shadow Reconciliation">
+    <category
+      code="UIRunnable"
+      typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode
     code="AlbionVendormgmtHo_Ext"
     desc="Nightly supplier-vetting housekeeping; escalates items aged more than 5 days"
     name="Albion Vendor Management Housekeeping"/>

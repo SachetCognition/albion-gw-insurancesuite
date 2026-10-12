@@ -19,8 +19,9 @@ Checks:
      encryption.key / encryption.key.id / encryption.keys.retired tokens). Per env/centre the committed
      environments/<env>/<centre>.properties.template is checked when present, else <centre>.properties
      (drift if neither exists).
-  7. The strangler shadow switch <prefix>.feature.shadow.enabled is false in every committed env property file: the
-     scaffold ships dormant until an owner changes this check together with the value.
+  7. The strangler shadow switch <prefix>.feature.shadow.enabled is false and the cutover list
+     <prefix>.feature.cutover.feeds is empty in every committed env property file: the scaffold ships dormant and
+     SIT/UAT/prod enablement is a deploy-time override (docs/migration/strangler-phase2-3.md), never a committed value.
 
 Usage: python3 tools/scripts/check_brand_config_drift.py [--root <repo root>]
 """
@@ -57,9 +58,11 @@ COPIED_FILES = [
     "gsrc/albion/integration/shadow/LoggingShadowDiffRecorder.gs",
     "gsrc/albion/integration/shadow/ReconciliationResult.gs",
     "gsrc/albion/integration/shadow/ShadowDiffRecorder.gs",
+    "gsrc/albion/integration/shadow/ShadowReconciliationLedger.gs",
     "gsrc/albion/integration/shadow/ShadowRecordFacade.gs",
     "gsrc/albion/integration/shadow/ShadowRunner.gs",
     "gsrc/albion/integration/shadow/ShadowTolerance.gs",
+    "gtest/albion/integration/shadow/ShadowReconciliationLedgerTest.gs",
     "gtest/albion/integration/shadow/ShadowRecordFacadeTest.gs",
     "gtest/albion/integration/shadow/ShadowRunnerTest.gs",
 ]
@@ -70,7 +73,7 @@ NS = "{http://guidewire.com/typelists}"
 # Keys AlbionConfigService reads but which already existed before the shared config service was introduced (not required to be added).
 PRE_EXISTING_KEYS = {"ipt.rate"}
 # Strangler switches that must hold this value in every committed env property file (check 7).
-DORMANT_FLAGS = {"feature.shadow.enabled": "false"}
+DORMANT_FLAGS = {"feature.shadow.enabled": "false", "feature.cutover.feeds": ""}
 
 
 def env_property_file(root, env, env_name):
@@ -215,7 +218,7 @@ def main():
             for k, dormant in DORMANT_FLAGS.items():
                 value = props.get(f"{prefix}.{k}")
                 if value is not None and value.split("#")[0].strip().lower() != dormant:
-                    err(f"{p}: {prefix}.{k}={value.strip()} - must be {dormant} (strangler scaffold ships dormant)")
+                    err(f"{p}: {prefix}.{k}={value.strip()} - must be {dormant or 'empty'} (strangler scaffold ships dormant)")
 
     if err.errors:
         for e in err.errors:
