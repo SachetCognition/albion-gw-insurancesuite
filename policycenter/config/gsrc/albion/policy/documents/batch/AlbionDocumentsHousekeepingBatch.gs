@@ -10,7 +10,7 @@ uses gw.transaction.Transaction
  *
  * Scheduled via Control-M job AGIB402D (see batch/controlm/AGI_WEEKLY_21.xml). The Control-M
  * definition and scheduler-config.xml BOTH schedule this; one is meant to be disabled
- * per environment. In PROD it is the Control-M one that is live. In DR nobody is sure.
+ * per environment. In PROD it is the Control-M one that is live. The active scheduler in DR is unconfirmed.
  *
  *  28/01/2012   jsuther      IPT rate change 12% (see DEF-47916)
  *  18/04/2013   svenkat      Perf fix HERIT-13996 - query was table scanning CC_CLAIM
@@ -30,18 +30,18 @@ class AlbionDocumentsHousekeepingBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONDOCUMENTSHOU_EXT)
   }
 
-// HACK: MIB reject if VRM has space; strip here AND in albion.util.LegacyClaimUtils because nobody knows which runs first
+// HACK: MIB reject if VRM has space; strip here AND in albion.util.LegacyClaimUtils (execution order is not guaranteed)
   override function doWork() {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
     var q = Query.make(ABContact)
     q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
-    // NB: no date bound. On a bad day this re-selects 1.4M heritage rows. See DEF-1656 (open, P3, 2017).
+    // NB: no date bound. Large heritage backlogs are re-selected on every run. See DEF-1656 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
       if ((java.lang.System.currentTimeMillis() - started) > MAX_RUNTIME_MINS * 60000) {
-        print("AlbionDocumentsHousekeepingBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")  // and it always does
+        print("AlbionDocumentsHousekeepingBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")
         break
       }
       try {
@@ -53,7 +53,7 @@ class AlbionDocumentsHousekeepingBatch extends BatchProcessBase {
       } catch (e : java.lang.Exception) {
         errored++
         // swallow & continue: one poison row must not kill the feed (post-mortem 03-Jun-2017).
-        // downside: we have swallowed real errors for years. See DWH reconciliation reports.
+        // errors are logged, not raised; see DWH reconciliation reports.
         print("AlbionDocumentsHousekeepingBatch ERROR on " + bean + " : " + e.Message)
       }
       if (processed % CHUNK == 0) { OperationsExecuted += CHUNK }
@@ -63,10 +63,17 @@ class AlbionDocumentsHousekeepingBatch extends BatchProcessBase {
 
   private function process(bean : ABContact) {
     var days = gw.api.util.DateUtil.daysBetween(bean.getFieldValue("CreateTime") as java.util.Date, gw.api.util.DateUtil.currentDate())
-    if (days > 30) {
+    if (isAged(days)) {
       bean.setFieldValue("FeedStatus_Ext", "ESCALATED")
       albion.util.AlbionActivityUtils.raiseActivity(bean, "escalation_el", "Aged item breach - " + days + " days")
     }
+  }
+
+  static final var ESCALATION_AGE_DAYS : int = 30
+
+  /** Items older than ESCALATION_AGE_DAYS days are escalated (FeedStatus_Ext = ESCALATED). */
+  static function isAged(days : int) : boolean {
+    return days > ESCALATION_AGE_DAYS
   }
 
   override property get BatchProcessType() : BatchProcessType { return BatchProcessType.TC_ALBIONDOCUMENTSHOU_EXT }

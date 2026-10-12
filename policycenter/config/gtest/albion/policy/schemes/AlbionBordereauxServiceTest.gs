@@ -1,0 +1,99 @@
+package albion.policy.schemes
+
+uses albion.config.AlbionConfigService
+uses albion.policy.support.AlbionPolicyTestBeans
+uses gw.testharness.TestBase
+uses java.util.Map
+
+class AlbionBordereauxServiceTest extends TestBase {
+
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(AlbionBordereauxService.evaluateAlbionBordereauxService(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
+  }
+
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
+  }
+
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(AlbionBordereauxService.evaluateAlbionBordereauxService_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(AlbionBordereauxService.evaluateAlbionBordereauxService_v1(null))
+  }
+
+  function testAlbDirRefersAboveLegacyThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 5000bd}), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 5000.01bd}), null))
+  }
+
+  function testAlbBrkRefersAndSeniorTierAboveTwiceThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 12500bd}), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 12500.01bd}), null))
+    assertEquals("REFER_UW,REFER_UW_SENIOR", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 25000.01bd}), null))
+  }
+
+  function testRetPlsAlwaysManualReview() {
+    assertEquals("MANUAL_REVIEW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "RETPLS"}), null))
+  }
+
+  function testHeritageUsesPolarisThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 9999.99bd}), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 10000bd}), null))
+  }
+
+  function testMissingBrandDefaultsToAlbDir() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"TotalIncurred_Ext" -> 5000.01bd}), null))
+    assertEquals("", run(AlbionPolicyTestBeans.bean(null), null))
+  }
+
+  function testUnrecognisedBrandRefers() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBHNW"}), null))
+  }
+
+  function testScopedConfigOverridesLegacyThreshold() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 2bd}), {"po.refer.threshold.albdir.AlbionBordereauxService" -> "1"}))
+    assertEquals("REFER_UW,REFER_UW_SENIOR", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 3bd}), {"po.refer.threshold.albbrk.AlbionBordereauxService" -> "1"}))
+  }
+
+  function testUnscopedConfigDoesNotMoveLegacyThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 2bd}), {"po.refer.threshold.albdir" -> "1"}))
+  }
+
+  function testBrandVariantALBDIRKey() {
+    assertEquals("brandvariant.AlbionBordereauxService.ALBDIR.enabled", AlbionBordereauxService.brandVariantKey("ALBDIR"))
+  }
+
+  function testBrandVariantALBDIROffByDefault() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 1000000bd, "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 1000000bd, "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionBordereauxService.ALBDIR.enabled" -> "false"}))
+  }
+
+  function testBrandVariantALBDIREnabledByConfig() {
+    assertEquals("FLOODRE_NOTIFY,SUPPRESS_EXCESS_WAIVER", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 1000000bd, "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionBordereauxService.ALBDIR.enabled" -> "true"}))
+  }
+
+  function testBrandVariantALBDIROnlyAppliesToItsBrand() {
+    assertEquals("REFER_UW,REFER_UW_SENIOR", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 1000000bd, "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionBordereauxService.ALBDIR.enabled" -> "true"}))
+  }
+
+  function testBrandVariantHERITKey() {
+    assertEquals("brandvariant.AlbionBordereauxService.HERIT.enabled", AlbionBordereauxService.brandVariantKey("HERIT"))
+  }
+
+  function testBrandVariantHERITOffByDefault() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 1000000bd, "SumInsured_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 1000000bd, "SumInsured_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionBordereauxService.HERIT.enabled" -> "false"}))
+  }
+
+  function testBrandVariantHERITEnabledByConfig() {
+    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 1000000bd, "SumInsured_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionBordereauxService.HERIT.enabled" -> "true"}))
+  }
+
+  function testBrandVariantHERITOnlyAppliesToItsBrand() {
+    assertEquals("REFER_UW,REFER_UW_SENIOR", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 1000000bd, "SumInsured_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionBordereauxService.HERIT.enabled" -> "true"}))
+  }
+}

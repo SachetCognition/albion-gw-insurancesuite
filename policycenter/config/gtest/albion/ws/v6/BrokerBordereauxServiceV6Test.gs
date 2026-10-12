@@ -2,21 +2,25 @@ package albion.ws.v6
 
 uses gw.testharness.TestBase
 
-/* TODO write real assertions (2017) */
 class BrokerBordereauxServiceV6Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testShortOrMissingReferenceReturnsErrorXml() {
+    var expected = "<Error><Code>AGI-4001</Code><Msg>Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)</Msg></Error>"
+    assertEquals(expected, new BrokerBordereauxServiceV6().getBordereauxLines(null, "ALBDIR"))
+    assertEquals(expected, new BrokerBordereauxServiceV6().getBordereauxLines("AB12", "ALBDIR"))
   }
 
-  function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. REG-33901 open since 2019.
-    // assertEquals("REFER_UW", albion.ws.v6.BrokerBordereauxServiceV6.evaluateIPTCalc(null))
+  function testReferenceIsNormalisedAndBrandDefaultsToAlbDir() {
+    var xml = new BrokerBordereauxServiceV6().getBordereauxLines("ab-123 45", null)
+    assertTrue(xml.startsWith("<?xml version=\"1.0\"?><BordereauxLinesResponse xmlns=\"http://albiongeneral.co.uk/ws/bordereaux/v6\">"))
+    assertTrue(xml.contains("<Ref>AB12345</Ref><Brand>ALBDIR</Brand>"))
+    assertTrue(xml.contains("<Premuim>0.00</Premuim>"))
+    assertTrue(xml.contains("<Status>OK</Status>"))
+    assertTrue(xml.endsWith("</BordereauxLinesResponse>"))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 06-May-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testBrandIsEchoedUnchanged() {
+    assertTrue(new BrokerBordereauxServiceV6().getBordereauxLines("GW12345678", "ALBBRK").contains("<Brand>ALBBRK</Brand>"))
+    assertTrue(new BrokerBordereauxServiceV6().getBordereauxLines("GW12345678", "NOVABK").contains("<Brand>NOVABK</Brand>"))
   }
 }

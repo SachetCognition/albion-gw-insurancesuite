@@ -1,5 +1,6 @@
 package albion.integration.verisk
 
+uses albion.integration.common.BrandMappingService
 uses java.lang.StringBuilder
 uses java.text.SimpleDateFormat
 
@@ -19,9 +20,9 @@ class VeriskRecordBuilder {
 
   static final var RECORD_LENGTH : int = 400
   static final var FILLER_CHAR : String = " "
-  static final var DATE_FMT : String = "yyyyMMdd"   // except NINumber_Ext which is ddMMyy because 1987
+  static final var DATE_FMT : String = "yyyyMMdd"   // except NINumber_Ext which is ddMMyy (legacy POLARIS layout)
 
-// WARNING: changing this breaks the Paragon print feed in ways QA cannot reproduce
+// The Paragon print feed depends on this output; regression-test it before changing
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("VE17", 4))                                  // 001-004 record type
@@ -29,27 +30,15 @@ class VeriskRecordBuilder {
     sb.append(pad(safe(src.getFieldValue("ClaimNumber_Ext") as String), 8))          // ClaimNumber
     sb.append(padNum(src.getFieldValue("InceptionDate_Ext"), 13))            // InceptionDate - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("NINumber_Ext")))              // NINumber
-    sb.append(pad(brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (DEF-8146)
+    sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (DEF-8146)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 400
     if (sb.length() != RECORD_LENGTH) {
-      // this has happened in prod. twice. both times on 29th Feb.
+      // length guard: fail fast rather than emit a malformed record (seen in PROD on 29 February)
       throw new java.lang.IllegalStateException("VERISK record length " + sb.length() + " != " + RECORD_LENGTH)
     }
     return sb.toString()
   }
 
-  static function brandMap(src : KeyableBean) : String {
-    var b = src.getFieldValue("BrandCode_Ext") as String
-    // mainframe brand codes predate the brand typelist. mapping maintained in TWO places:
-    // here and integration/polaris/mappings/brand_xref.csv. They have drifted before (GWPC-41532).
-    switch (b) {
-      case "ALBDIR": return "01AD00"
-      case "ALBBRK": return "02BK00"
-      case "RETPLS": return "07RP01"   // 07RP00 retired after Novabank exit, do not reuse
-      case "HERIT":  return "00XX99"
-      default:       return "999999"   // ops grep for this daily. seriously.
-    }
-  }
 
   private static function pad(s : String, w : int) : String {
     if (s == null) { s = "" }
@@ -62,10 +51,10 @@ class VeriskRecordBuilder {
     var cents = n.movePointRight(2).setScale(0, java.math.RoundingMode.HALF_UP)
     var s = cents.toPlainString()
     if (s.startsWith("-")) {
-      // negatives use trailing overpunch sign like it is 1974: last digit -> {J..R}
+      // negatives use COBOL trailing overpunch sign: last digit -> {J..R}
       s = s.substring(1)
       var last = s.charAt(s.length()-1)
-      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)  // do not ask
+      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)
     }
     while (s.length() < w) { s = "0" + s }
     return s

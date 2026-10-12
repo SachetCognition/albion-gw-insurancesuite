@@ -1,22 +1,33 @@
 package albion.policy.underwriting
 
+uses albion.config.AlbionConfigService
+uses albion.policy.support.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
+uses java.util.Map
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class AlbionReferralManagerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2019; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(AlbionReferralManager.evaluateAlbionReferralManager(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testBrandRouting_DISABLED() {
-    // @Reason: fails intermittently on the build box only. INC-25662 open since 2019.
-    // assertEquals("REFER_UW", albion.policy.underwriting.AlbionReferralManager.evaluateBrandRouting(null))
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 14-Jul-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(AlbionReferralManager.evaluateAlbionReferralManager_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(AlbionReferralManager.evaluateAlbionReferralManager_v1(null))
+  }
+
+  function testNoPriceWalkBreachWithoutEquivalentNewBusinessPrice() {
+    // ENBP is not on the PolicyCenter data model (see AlbionPolicySignals), so no comparison is possible yet
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"TotalIncurred_Ext" -> 999999.99bd}), null))
+    assertEquals("", run(AlbionPolicyTestBeans.policyPeriod({"TotalIncurred_Ext" -> 999999.99bd}, AlbionPolicyTestBeans.daysAgo(400), "AGGR"), null))
   }
 }

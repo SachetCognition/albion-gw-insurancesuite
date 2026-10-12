@@ -1,22 +1,52 @@
 package albion.policy.newbusiness.lob
 
+uses albion.config.AlbionConfigService
+uses albion.policy.support.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
+uses java.util.Map
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class HomePropertyNewbusinessHandlerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2019; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(HomePropertyNewbusinessHandler.evaluateHomePropertyNewbusinessHandler(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. REG-41452 open since 2019.
-    // assertEquals("REFER_UW", albion.policy.newbusiness.lob.HomePropertyNewbusinessHandler.evaluateIPTCalc(null))
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 16-Mar-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(HomePropertyNewbusinessHandler.evaluateHomePropertyNewbusinessHandler_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(HomePropertyNewbusinessHandler.evaluateHomePropertyNewbusinessHandler_v1(null))
+  }
+
+  function testNoSignalsNoReferral() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"SumInsured_Ext" -> 50000bd}), null))
+  }
+
+  function testEarlyClaimAloneIsBelowWatchScore() {
+    assertEquals("", run(AlbionPolicyTestBeans.policyPeriod(null, AlbionPolicyTestBeans.daysAgo(5), null), null))
+  }
+
+  function testEarlyAggregatorBusinessIsFraudWatch() {
+    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.policyPeriod(null, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
+  }
+
+  function testOlderAggregatorBusinessIsNotFlagged() {
+    assertEquals("", run(AlbionPolicyTestBeans.policyPeriod(null, AlbionPolicyTestBeans.daysAgo(60), "AGGR"), null))
+  }
+
+  function testFraudReferScoreComesFromConfig() {
+    assertEquals("SIU_REFER", run(AlbionPolicyTestBeans.policyPeriod(null, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.fraud.refer.score" -> "35"}))
+    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.policyPeriod(null, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.fraud.refer.score" -> "36"}))
+  }
+
+  function testJobSignalsUseLatestPeriod() {
+    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.job(null, AlbionPolicyTestBeans.policyPeriod(null, AlbionPolicyTestBeans.daysAgo(2), null), "AGGR"), null))
   }
 }

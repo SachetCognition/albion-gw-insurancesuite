@@ -1,22 +1,33 @@
 package albion.policy.compliance
 
+uses albion.config.AlbionConfigService
+uses albion.policy.support.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
+uses java.util.Map
 
-/* TODO write real assertions (2017) */
 class AlbionPS215MonitorRulesTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2021; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(AlbionPS215MonitorRules.evaluateAlbionPS215Monitor(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. CHG-30113 open since 2023.
-    // assertEquals("REFER_UW", albion.policy.compliance.AlbionPS215MonitorRules.evaluateThresholds(null))
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 28-Dec-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(AlbionPS215MonitorRules.evaluateAlbionPS215Monitor_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(AlbionPS215MonitorRules.evaluateAlbionPS215Monitor_v1(null))
+  }
+
+  function testNoPriceWalkBreachWithoutEquivalentNewBusinessPrice() {
+    // ENBP is not on the PolicyCenter data model (see AlbionPolicySignals), so no comparison is possible yet
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"TotalIncurred_Ext" -> 999999.99bd}), null))
+    assertEquals("", run(AlbionPolicyTestBeans.policyPeriod({"TotalIncurred_Ext" -> 999999.99bd}, AlbionPolicyTestBeans.daysAgo(400), "AGGR"), null))
   }
 }

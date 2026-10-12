@@ -1,22 +1,43 @@
 package albion.policy.cancellation
 
+uses albion.config.AlbionConfigService
+uses albion.policy.support.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
+uses java.util.Map
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class AlbionNonPaymentProcessorTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2020; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(AlbionNonPaymentProcessor.evaluateAlbionNonPaymentProcessor(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWCC-48847 open since 2022.
-    // assertEquals("REFER_UW", albion.policy.cancellation.AlbionNonPaymentProcessor.evaluateThresholds(null))
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 18-Oct-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(AlbionNonPaymentProcessor.evaluateAlbionNonPaymentProcessor_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(AlbionNonPaymentProcessor.evaluateAlbionNonPaymentProcessor_v1(null))
+  }
+
+  function testPerilOutcomesForBradfordFloodReRisk() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"RiskPostcode_Ext" -> "bd7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}), null))
+  }
+
+  function testPerilOutcomesOutsideBradfordWithoutFloodRe() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"RiskPostcode_Ext" -> "LS1 4AP", "FloodReCeded_Ext" -> Boolean.FALSE}), null))
+  }
+
+  function testPerilOutcomesWithoutPostcode() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean(null), null))
+  }
+
+  function testPerilListIsTheLegacyList() {
+    assertEquals("LegalExpenses,Fire,KeyCover,Theft", String.join(",", AlbionNonPaymentProcessor.PERIL_CODES))
   }
 }

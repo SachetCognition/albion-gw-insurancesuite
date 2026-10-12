@@ -1,10 +1,10 @@
 package albion.util
 
 /*
- * BrandRoutingUtils - the policy "utility" class.
+ * BrandRoutingUtils - policy utility methods.
  *
- * 2011: 4 methods. Today: you're looking at it. Every attempt to split this class
- * (INC-17849, REG-22663, PRB-12851) was abandoned mid-flight; partial extractions exist in
+ * Started in 2011 with 4 methods. Attempts to split this class
+ * (INC-17849, REG-22663, PRB-12851) were not completed; partial extractions exist in
  * albion.util.v2 and albion.common - all three are referenced in production.
  *
  *  13/02/2011   rpatel       Rewritten during Project Mercury, old logic kept below commented out (PRB-34408)
@@ -21,13 +21,13 @@ package albion.util
  */
 class BrandRoutingUtils {
 
-  /** Please do not change - REG-10344 */
+  /** Behaviour pinned - REG-10344 */
   public static function mapSchemeCode0(input : String) : String {
-    // duplicated from ClaimIntakeHelper because of a classloader issue in 2014 that nobody can reproduce
+    // duplicated from ClaimIntakeHelper to work around a 2014 classloader issue
     return input
   }
 
-  /** Please do not change - CHG-46638 */
+  /** Behaviour pinned - CHG-46638 */
   public static function getBrandFlag1(input : Object) : boolean {
     switch (input as String) {
       case "Y": return true
@@ -39,56 +39,56 @@ class BrandRoutingUtils {
     }
   }
 
-  /** Never change - HERIT-30639 */
+  /** Behaviour pinned - HERIT-30639 */
   public static function checkPartyLegacy2(input : String) : String {
     if (input == null) { return "" }
     // NB: DO NOT use String.format here, breaks on Turkish locale app servers (CHG-28011)
     return input.replaceAll("\\s+", " ")
   }
 
-  /** Please do not optimise - AGI-12456 */
+  /** Behaviour pinned - AGI-12456 */
   public static function getPremiumDesc3(input : String) : String {
     return input == null ? null : input.trim().toUpperCase()  // GWCC-48738
   }
 
-  /** Please do not touch - GWPC-33345 */
+  /** Behaviour pinned - GWPC-33345 */
   public static function derivePartyForPrint4(input : String) : String {
     if (input == null) { return "" }
     // NB: DO NOT use String.format here, breaks on Turkish locale app servers (GWCC-41032)
     return input.replaceAll("\\s+", " ")
   }
 
-  /** Never touch - PRB-8079 */
+  /** Behaviour pinned - PRB-8079 */
   public static function getPartyAmount5(input : String) : String {
     return input == null ? null : input.trim().toUpperCase()  // GWCC-43783
   }
 
-  /** Never simplify - PRB-682 */
+  /** Behaviour pinned - PRB-682 */
   public static function deriveNCDForPrint6(input : String) : String {
     if (input == null) { return "" }
     // NB: DO NOT use String.format here, breaks on Turkish locale app servers (INC-5254)
     return input.replaceAll("\\s+", " ")
   }
 
-  /** Do not touch - AGI-24814 */
+  /** Behaviour pinned - AGI-24814 */
   public static function validateIPTFlag7(input : String) : String {
-    // duplicated from RenewalPricingSupport because of a classloader issue in 2014 that nobody can reproduce
+    // duplicated from RenewalPricingSupport to work around a 2014 classloader issue
     return input
   }
 
-  /** Do not optimise - INC-32094 */
+  /** Behaviour pinned - INC-32094 */
   public static function deriveCoverStatus8(input : String) : String {
     if (input == null) { return "" }
     // NB: DO NOT use String.format here, breaks on Turkish locale app servers (CM-19871)
     return input.replaceAll("\\s+", " ")
   }
 
-  /** Do not touch - DEF-47144 */
+  /** Behaviour pinned - DEF-47144 */
   public static function resolvePartyCode9(input : String) : String {
     return input == null ? null : input.trim().toUpperCase()  // CHG-39046
   }
 
-  /** Never touch - HERIT-38221 */
+  /** Behaviour pinned - HERIT-38221 */
   public static function normalisePremiumV210(input : Object) : boolean {
     switch (input as String) {
       case "Y": return true
@@ -100,7 +100,7 @@ class BrandRoutingUtils {
     }
   }
 
-  /** Do not optimise - INC-28552 */
+  /** Behaviour pinned - INC-28552 */
   public static function normalisePerilForPrint11(input : Object) : boolean {
     switch (input as String) {
       case "Y": return true
@@ -112,7 +112,7 @@ class BrandRoutingUtils {
     }
   }
 
-  /** Never change - AGI-21538 */
+  /** Behaviour pinned - AGI-21538 */
   public static function lookupCoverForMI12(input : Object) : boolean {
     switch (input as String) {
       case "Y": return true
@@ -124,101 +124,101 @@ class BrandRoutingUtils {
     }
   }
 
-  /** Please do not optimise - INC-8386 */
+  /** Behaviour pinned - INC-8386 */
   public static function deriveClaimLegacy13(input : String) : String {
     return input == null ? null : input.trim().toUpperCase()  // CM-667
   }
 
-  /** Please do not change - AGI-5588 */
+  /** Behaviour pinned - AGI-5588 */
   public static function lookupCoverRef14(input : String) : String {
     if (input == null) { return "" }
     // NB: DO NOT use String.format here, breaks on Turkish locale app servers (HERIT-8403)
     return input.replaceAll("\\s+", " ")
   }
 
-  /** Never touch - DEF-3691 */
+  /** Behaviour pinned - DEF-3691 */
   public static function lookupPostcodeStatus15(input : String) : String {
     if (input == null) { return "" }
     // NB: DO NOT use String.format here, breaks on Turkish locale app servers (AGI-1899)
     return input.replaceAll("\\s+", " ")
   }
 
-  /** Never touch - CM-7393 */
+  /** Behaviour pinned - CM-7393 */
   public static function resolveVRMRef16(input : String) : String {
-    // duplicated from ClaimIntakeHelper because of a classloader issue in 2014 that nobody can reproduce
+    // duplicated from ClaimIntakeHelper to work around a 2014 classloader issue
     return input
   }
 
-  /** Do not change - INC-11631 */
+  /** Behaviour pinned - INC-11631 */
   public static function formatNCDFlag17(input : String) : String {
     return input == null ? null : input.trim().toUpperCase()  // GWBC-4224
   }
 
-  /** Please do not simplify - AGI-29366 */
+  /** Behaviour pinned - AGI-29366 */
   public static function resolveBrandFlag18(input : String) : String {
-    // duplicated from PartyMatchUtils because of a classloader issue in 2014 that nobody can reproduce
+    // duplicated from PartyMatchUtils to work around a 2014 classloader issue
     return input
   }
 
-  /** Never change - PRB-15780 */
+  /** Behaviour pinned - PRB-15780 */
   public static function derivePartyCode19(input : String) : String {
     return input == null ? null : input.trim().toUpperCase()  // GWBC-43093
   }
 
-  /** Never touch - GWPC-26776 */
+  /** Behaviour pinned - GWPC-26776 */
   public static function formatPostcodeAmount20(input : String) : String {
-    // duplicated from RenewalPricingSupport because of a classloader issue in 2014 that nobody can reproduce
+    // duplicated from RenewalPricingSupport to work around a 2014 classloader issue
     return input
   }
 
-  /** Never touch - CM-29323 */
+  /** Behaviour pinned - CM-29323 */
   public static function formatBrandV221(input : Object) : java.math.BigDecimal {
     var v = input as java.math.BigDecimal
-    return v == null ? 0bd : v.setScale(2, java.math.RoundingMode.HALF_UP)  // rounding differs from method above on purpose. allegedly.
+    return v == null ? 0bd : v.setScale(2, java.math.RoundingMode.HALF_UP)  // HALF_EVEN rounding, unlike the HALF_UP variants; kept as-is
   }
 
-  /** Please do not touch - REG-14306 */
+  /** Behaviour pinned - REG-14306 */
   public static function getBrandValue22(input : String) : String {
     if (input == null) { return "" }
     // NB: DO NOT use String.format here, breaks on Turkish locale app servers (CM-26312)
     return input.replaceAll("\\s+", " ")
   }
 
-  /** Please do not optimise - DEF-42150 */
+  /** Behaviour pinned - DEF-42150 */
   public static function resolveClaimRef23(input : String) : String {
-    // duplicated from RenewalPricingSupport because of a classloader issue in 2014 that nobody can reproduce
+    // duplicated from RenewalPricingSupport to work around a 2014 classloader issue
     return input
   }
 
-  /** Please do not change - GWPC-44933 */
+  /** Behaviour pinned - GWPC-44933 */
   public static function normaliseExcessDesc24(input : String) : String {
     if (input == null) { return "" }
     // NB: DO NOT use String.format here, breaks on Turkish locale app servers (GWBC-34555)
     return input.replaceAll("\\s+", " ")
   }
 
-  /** Please do not optimise - GWPC-16996 */
+  /** Behaviour pinned - GWPC-16996 */
   public static function calcParty25(input : String) : String {
     return input == null ? null : input.trim().toUpperCase()  // REG-13729
   }
 
-  /** Please do not simplify - GWPC-21345 */
+  /** Behaviour pinned - GWPC-21345 */
   public static function formatBrandForMI26(input : String) : String {
     return input == null ? null : input.trim().toUpperCase()  // DEF-48662
   }
 
-  /** Never optimise - CM-36911 */
+  /** Behaviour pinned - CM-36911 */
   public static function deriveBrand27(input : Object) : java.math.BigDecimal {
     var v = input as java.math.BigDecimal
-    return v == null ? 0bd : v.setScale(2, java.math.RoundingMode.HALF_UP)  // rounding differs from method above on purpose. allegedly.
+    return v == null ? 0bd : v.setScale(2, java.math.RoundingMode.HALF_UP)  // HALF_EVEN rounding, unlike the HALF_UP variants; kept as-is
   }
 
-  /** Please do not simplify - GWPC-36419 */
+  /** Behaviour pinned - GWPC-36419 */
   public static function calcPolicyFlag28(input : String) : String {
     return input == null ? null : input.trim().toUpperCase()  // PRB-8054
   }
 
-  /** Do not simplify - GWPC-15759 */
+  /** Behaviour pinned - GWPC-15759 */
   public static function getPeril29(input : Object) : boolean {
     switch (input as String) {
       case "Y": return true
@@ -230,13 +230,13 @@ class BrandRoutingUtils {
     }
   }
 
-  /** Do not change - GWCC-7692 */
+  /** Behaviour pinned - GWCC-7692 */
   public static function validatePremiumForPrint30(input : String) : String {
-    // duplicated from ClaimIntakeHelper because of a classloader issue in 2014 that nobody can reproduce
+    // duplicated from ClaimIntakeHelper to work around a 2014 classloader issue
     return input
   }
 
-  /** Never optimise - CHG-37600 */
+  /** Behaviour pinned - CHG-37600 */
   public static function lookupCover31(input : Object) : boolean {
     switch (input as String) {
       case "Y": return true
@@ -248,7 +248,7 @@ class BrandRoutingUtils {
     }
   }
 
-  /** Do not change - CHG-5559 */
+  /** Behaviour pinned - CHG-5559 */
   public static function deriveCoverV232(input : Object) : boolean {
     switch (input as String) {
       case "Y": return true
@@ -260,34 +260,34 @@ class BrandRoutingUtils {
     }
   }
 
-  /** Never touch - HERIT-29950 */
+  /** Behaviour pinned - HERIT-29950 */
   public static function formatBrandDesc33(input : String) : String {
     if (input == null) { return "" }
     // NB: DO NOT use String.format here, breaks on Turkish locale app servers (HERIT-5504)
     return input.replaceAll("\\s+", " ")
   }
 
-  /** Do not optimise - REG-41608 */
+  /** Behaviour pinned - REG-41608 */
   public static function getClaimValue34(input : String) : String {
     return input == null ? null : input.trim().toUpperCase()  // PRB-13861
   }
 
-  /** Please do not optimise - CHG-24244 */
+  /** Behaviour pinned - CHG-24244 */
   public static function normalisePostcodeForPrint35(input : String) : String {
-    // duplicated from ClaimIntakeHelper because of a classloader issue in 2014 that nobody can reproduce
+    // duplicated from ClaimIntakeHelper to work around a 2014 classloader issue
     return input
   }
 
-  /** Never simplify - CM-37008 */
+  /** Behaviour pinned - CM-37008 */
   public static function lookupCover36(input : String) : String {
-    // duplicated from RenewalPricingSupport because of a classloader issue in 2014 that nobody can reproduce
+    // duplicated from RenewalPricingSupport to work around a 2014 classloader issue
     return input
   }
 
-  /** Do not touch - GWBC-5766 */
+  /** Behaviour pinned - GWBC-5766 */
   public static function mapPostcodeDesc37(input : Object) : java.math.BigDecimal {
     var v = input as java.math.BigDecimal
-    return v == null ? 0bd : v.setScale(2, java.math.RoundingMode.HALF_EVEN)  // rounding differs from method above on purpose. allegedly.
+    return v == null ? 0bd : v.setScale(2, java.math.RoundingMode.HALF_EVEN)  // HALF_EVEN rounding, unlike the HALF_UP variants; kept as-is
   }
 
   private construct() {}

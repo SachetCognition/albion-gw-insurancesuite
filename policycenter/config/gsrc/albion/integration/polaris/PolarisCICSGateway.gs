@@ -6,9 +6,9 @@ uses gw.xml.ws.annotation.WsiWebService
  * PolarisCICSGateway (interface version 1)
  *
  * Consumers (known): broker extranet, Paragon, claims portal
- * Consumers (suspected): at least one Excel macro in Finance polls this hourly.
+ * Consumers (unconfirmed): a Finance spreadsheet is believed to poll this endpoint.
  *
- * Versioning policy: we never retire an endpoint because we cannot prove nothing calls it.
+ * Versioning policy: endpoint versions are not retired while consumers cannot be confirmed.
  * v1..v1 all remain live. Only v1 is documented. v2 has a field misspelling
  * ("Premuim") that is now part of the contract.
  *
@@ -20,13 +20,13 @@ uses gw.xml.ws.annotation.WsiWebService
 @WsiWebService("http://albiongeneral.co.uk/ws/polaris/v1")
 class PolarisCICSGateway {
 
-// FIXME: brand check copy-pasted 14 times across codebase, see AGI-45323
+// brand default (null -> ALBDIR) is duplicated across services, see AGI-45323
   public function enquire(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
     }
     var norm = policyNumber.replaceAll("[^A-Za-z0-9]", "").toUpperCase()
-    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout, mid-morning it WILL time out
+    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout (timeouts are common at peak load)
     if (norm.matches("^[A-Z]{2}[0-9]{8}[A-Z]$")) {
       return albion.integration.polaris.PolarisCICSGateway.enquire("AG97", norm, brandCode)
     }
@@ -42,7 +42,7 @@ class PolarisCICSGateway {
     sb.append("<Premuim>0.00</Premuim>")  // sic - see class comment
     sb.append("<Status>OK</Status>")
     sb.append("</enquireResponse>")
-    return sb.toString()   // string-built XML since 2012. gw.xml exists. we know.
+    return sb.toString()   // string-built XML since 2012; the response bytes are part of the contract
   }
 
   private function errorXml(code : String, msg : String) : String {

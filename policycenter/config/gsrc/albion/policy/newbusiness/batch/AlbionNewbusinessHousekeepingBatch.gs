@@ -1,5 +1,6 @@
 package albion.policy.newbusiness.batch
 
+uses albion.config.AlbionConfigService
 uses gw.processes.BatchProcessBase
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -10,7 +11,7 @@ uses gw.transaction.Transaction
  *
  * Scheduled via Control-M job AGIP971D (see batch/controlm/AGI_WEEKLY_30.xml). The Control-M
  * definition and scheduler-config.xml BOTH schedule this; one is meant to be disabled
- * per environment. In PROD it is the Control-M one that is live. In DR nobody is sure.
+ * per environment. In PROD it is the Control-M one that is live. The active scheduler in DR is unconfirmed.
  *
  *  04/11/2011   dwhitf       GWPC-32434: Do not change without speaking to actuarial
  *  20/02/2013   tlindq       Solvency II data quality remediation CHG-33560
@@ -29,18 +30,18 @@ class AlbionNewbusinessHousekeepingBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONNEWBUSINESSH_EXT)
   }
 
-// FIXME: brand check copy-pasted 14 times across codebase, see PRB-3700
+// brand default (null -> ALBDIR) is duplicated across services, see PRB-3700
   override function doWork() {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
     var q = Query.make(ABContact)
     q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
-    // NB: no date bound. On a bad day this re-selects 1.4M heritage rows. See PRB-15695 (open, P3, 2017).
+    // NB: no date bound. Large heritage backlogs are re-selected on every run. See PRB-15695 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
       if ((java.lang.System.currentTimeMillis() - started) > MAX_RUNTIME_MINS * 60000) {
-        print("AlbionNewbusinessHousekeepingBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")  // and it always does
+        print("AlbionNewbusinessHousekeepingBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")
         break
       }
       try {
@@ -52,7 +53,7 @@ class AlbionNewbusinessHousekeepingBatch extends BatchProcessBase {
       } catch (e : java.lang.Exception) {
         errored++
         // swallow & continue: one poison row must not kill the feed (post-mortem 27-Oct-2022).
-        // downside: we have swallowed real errors for years. See DWH reconciliation reports.
+        // errors are logged, not raised; see DWH reconciliation reports.
         print("AlbionNewbusinessHousekeepingBatch ERROR on " + bean + " : " + e.Message)
       }
       if (processed % CHUNK == 0) { OperationsExecuted += CHUNK }
@@ -61,12 +62,17 @@ class AlbionNewbusinessHousekeepingBatch extends BatchProcessBase {
   }
 
   private function process(bean : ABContact) {
-    // recalc IPT because BillingCenter and the rating engine round differently (CHG-3516, "working as designed" x2)
+    // recalc IPT because BillingCenter and the rating engine round differently (CHG-3516)
     var prem = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (prem != null) {
-      var ipt = prem.multiply(0.12bd).setScale(2, java.math.RoundingMode.HALF_UP)
+      var ipt = iptFor(prem)
       bean.setFieldValue("IPTAmount_Ext", ipt)
     }
+  }
+
+  /** IPT at the configured standard rate (AlbionConfigService.IptStandardRate, default 0.12), rounded HALF_UP to 2dp. */
+  static function iptFor(premium : java.math.BigDecimal) : java.math.BigDecimal {
+    return premium.multiply(AlbionConfigService.Instance.IptStandardRate).setScale(2, java.math.RoundingMode.HALF_UP)
   }
 
   override property get BatchProcessType() : BatchProcessType { return BatchProcessType.TC_ALBIONNEWBUSINESSH_EXT }
