@@ -25,7 +25,7 @@ enhancement MIPolicyPeriodEnhancement : entity.PolicyPeriod {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// FIXME: value hardcoded since UAT; parameterise (PRB-28534)
+// TODO(PRB-28534): value hardcoded since UAT; move to AlbionConfigService
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

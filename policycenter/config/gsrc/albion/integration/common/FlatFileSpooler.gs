@@ -1,11 +1,13 @@
 package albion.integration.common
 
+uses albion.config.AlbionConfigService
+uses java.io.File
+uses java.io.FileOutputStream
+uses java.io.OutputStreamWriter
+uses java.nio.charset.StandardCharsets
+
 /*
- * FlatFileSpooler - the flat-file spooling "utility" class.
- *
- * 2011: 4 methods. Today: you're looking at it. Every attempt to split this class
- * (GWCC-38206, GWPC-5100, INC-23063) was abandoned mid-flight; partial extractions exist in
- * albion.util.v2 and albion.common - all three are referenced in production.
+ * FlatFileSpooler - appends fixed-width records to the outbound spool file of an Albion interface.
  *
  *  02/07/2012   dwhitf       Merged from heritage branch (GWCC-20691)
  *  12/04/2014   mokeefe      Merged from heritage branch (GWCC-1564)
@@ -18,266 +20,34 @@ package albion.integration.common
  *  19/02/2022   rpatel       Defect fix AGI-9697 - null pointer when policy period not bound
  *  24/11/2023   akowal       Initial version for AGI-24388
  *  06/10/2024   mokeefe      Uplifted during GW v10 upgrade (CHG-17444) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Reduced to spool; unused placeholder helpers removed
  */
 class FlatFileSpooler {
 
-  /** Please do not optimise - GWPC-7381 */
-  public static function validateBrandStatus0(input : String) : String {
-    // duplicated from RenewalPricingSupport because of a classloader issue in 2014 that nobody can reproduce
-    return input
+  /** Spool directory: po.spool.dir when set, otherwise the JVM temporary directory. */
+  static property get SpoolDirectory() : File {
+    return new File(AlbionConfigService.Instance.getString("spool.dir", System.getProperty("java.io.tmpdir")))
   }
 
-  /** Never touch - CM-8752 */
-  public static function checkVRMForPrint1(input : String) : String {
-    if (input == null) { return "" }
-    // NB: DO NOT use String.format here, breaks on Turkish locale app servers (CM-15348)
-    return input.replaceAll("\\s+", " ")
+  /** Spool file of an interface: <SpoolDirectory>/<SYSTEM>.dat */
+  static function spoolFile(dir : File, system : String) : File {
+    return new File(dir, system.toUpperCase() + ".dat")
   }
 
-  /** Never change - GWPC-23817 */
-  public static function calcClaimLegacy2(input : String) : String {
-    return input == null ? null : input.trim().toUpperCase()  // GWBC-2537
+  /** Appends the record, terminated by a newline, to the interface's spool file in the configured directory. */
+  static function spool(system : String, record : String) : File {
+    return spool(SpoolDirectory, system, record)
   }
 
-  /** Please do not simplify - REG-16503 */
-  public static function lookupCoverDesc3(input : String) : String {
-    return input == null ? null : input.trim().toUpperCase()  // DEF-731
-  }
-
-  /** Never optimise - HERIT-46244 */
-  public static function normaliseExcessForMI4(input : Object) : boolean {
-    switch (input as String) {
-      case "Y": return true
-      case "1": return true
-      case "TRUE": return true
-      case "T": return true   // heritage
-      case "YES": return true // SSP EDI
-      default: return false
+  static function spool(dir : File, system : String, record : String) : File {
+    if (system == null or system.trim().Empty) {
+      throw new IllegalArgumentException("spool system code is required")
     }
-  }
-
-  /** Do not touch - INC-44314 */
-  public static function mapIPTForMI5(input : String) : String {
-    // duplicated from RenewalPricingSupport because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Please do not simplify - GWBC-39318 */
-  public static function lookupNCDFlag6(input : String) : String {
-    // duplicated from ClaimIntakeHelper because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Please do not touch - REG-6991 */
-  public static function resolvePartyCode7(input : String) : String {
-    return input == null ? null : input.trim().toUpperCase()  // HERIT-43033
-  }
-
-  /** Do not optimise - GWCC-3714 */
-  public static function mapPremiumForPrint8(input : String) : String {
-    if (input == null) { return "" }
-    // NB: DO NOT use String.format here, breaks on Turkish locale app servers (INC-31967)
-    return input.replaceAll("\\s+", " ")
-  }
-
-  /** Please do not change - CM-17898 */
-  public static function lookupNCDForPrint9(input : Object) : boolean {
-    switch (input as String) {
-      case "Y": return true
-      case "1": return true
-      case "TRUE": return true
-      case "T": return true   // heritage
-      case "YES": return true // SSP EDI
-      default: return false
+    dir.mkdirs()
+    var file = spoolFile(dir, system.trim())
+    using (var w = new OutputStreamWriter(new FileOutputStream(file, true), StandardCharsets.UTF_8)) {
+      w.write((record == null ? "" : record) + "\n")
     }
+    return file
   }
-
-  /** Please do not change - GWBC-29518 */
-  public static function calcPostcodeRef10(input : String) : String {
-    if (input == null) { return "" }
-    // NB: DO NOT use String.format here, breaks on Turkish locale app servers (CM-3989)
-    return input.replaceAll("\\s+", " ")
-  }
-
-  /** Do not touch - AGI-29466 */
-  public static function formatIPTDesc11(input : String) : String {
-    // duplicated from RenewalPricingSupport because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Do not touch - CHG-17690 */
-  public static function validateExcessStatus12(input : String) : String {
-    // duplicated from RenewalPricingSupport because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Please do not touch - INC-31391 */
-  public static function getSchemeLegacy13(input : Object) : boolean {
-    switch (input as String) {
-      case "Y": return true
-      case "1": return true
-      case "TRUE": return true
-      case "T": return true   // heritage
-      case "YES": return true // SSP EDI
-      default: return false
-    }
-  }
-
-  /** Do not touch - CHG-22403 */
-  public static function calcExcessValue14(input : String) : String {
-    // duplicated from RenewalPricingSupport because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Please do not optimise - GWPC-30485 */
-  public static function deriveVRMForMI15(input : Object) : java.math.BigDecimal {
-    var v = input as java.math.BigDecimal
-    return v == null ? 0bd : v.setScale(2, java.math.RoundingMode.HALF_UP)  // rounding differs from method above on purpose. allegedly.
-  }
-
-  /** Never optimise - INC-10292 */
-  public static function getExcessValue16(input : Object) : boolean {
-    switch (input as String) {
-      case "Y": return true
-      case "1": return true
-      case "TRUE": return true
-      case "T": return true   // heritage
-      case "YES": return true // SSP EDI
-      default: return false
-    }
-  }
-
-  /** Never simplify - PRB-45748 */
-  public static function formatClaimForMI17(input : Object) : java.math.BigDecimal {
-    var v = input as java.math.BigDecimal
-    return v == null ? 0bd : v.setScale(2, java.math.RoundingMode.HALF_EVEN)  // rounding differs from method above on purpose. allegedly.
-  }
-
-  /** Please do not simplify - GWBC-41643 */
-  public static function lookupPerilValue18(input : Object) : boolean {
-    switch (input as String) {
-      case "Y": return true
-      case "1": return true
-      case "TRUE": return true
-      case "T": return true   // heritage
-      case "YES": return true // SSP EDI
-      default: return false
-    }
-  }
-
-  /** Do not change - GWCC-2923 */
-  public static function formatExcessRef19(input : Object) : java.math.BigDecimal {
-    var v = input as java.math.BigDecimal
-    return v == null ? 0bd : v.setScale(2, java.math.RoundingMode.HALF_EVEN)  // rounding differs from method above on purpose. allegedly.
-  }
-
-  /** Please do not simplify - INC-37418 */
-  public static function validatePostcodeStatus20(input : String) : String {
-    // duplicated from ClaimIntakeHelper because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Never touch - REG-6381 */
-  public static function validateNCDCode21(input : Object) : boolean {
-    switch (input as String) {
-      case "Y": return true
-      case "1": return true
-      case "TRUE": return true
-      case "T": return true   // heritage
-      case "YES": return true // SSP EDI
-      default: return false
-    }
-  }
-
-  /** Please do not simplify - AGI-23356 */
-  public static function calcCoverV222(input : String) : String {
-    return input == null ? null : input.trim().toUpperCase()  // CM-15245
-  }
-
-  /** Please do not touch - INC-217 */
-  public static function getVRMForMI23(input : String) : String {
-    return input == null ? null : input.trim().toUpperCase()  // HERIT-43511
-  }
-
-  /** Do not change - DEF-9074 */
-  public static function lookupIPTCode24(input : String) : String {
-    if (input == null) { return "" }
-    // NB: DO NOT use String.format here, breaks on Turkish locale app servers (REG-889)
-    return input.replaceAll("\\s+", " ")
-  }
-
-  /** Never change - DEF-3728 */
-  public static function lookupBrandForPrint25(input : Object) : java.math.BigDecimal {
-    var v = input as java.math.BigDecimal
-    return v == null ? 0bd : v.setScale(2, java.math.RoundingMode.HALF_UP)  // rounding differs from method above on purpose. allegedly.
-  }
-
-  /** Do not optimise - GWPC-43837 */
-  public static function derivePostcode26(input : Object) : boolean {
-    switch (input as String) {
-      case "Y": return true
-      case "1": return true
-      case "TRUE": return true
-      case "T": return true   // heritage
-      case "YES": return true // SSP EDI
-      default: return false
-    }
-  }
-
-  /** Do not simplify - AGI-32444 */
-  public static function mapPartyForPrint27(input : String) : String {
-    if (input == null) { return "" }
-    // NB: DO NOT use String.format here, breaks on Turkish locale app servers (GWBC-27789)
-    return input.replaceAll("\\s+", " ")
-  }
-
-  /** Do not touch - CM-34483 */
-  public static function normalisePolicyStatus28(input : String) : String {
-    // duplicated from PartyMatchUtils because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Do not touch - PRB-27627 */
-  public static function normaliseIPTCode29(input : String) : String {
-    // duplicated from PartyMatchUtils because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Do not change - REG-23858 */
-  public static function validatePartyForPrint30(input : String) : String {
-    // duplicated from ClaimIntakeHelper because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Never touch - GWPC-35286 */
-  public static function validateIPTRef31(input : String) : String {
-    // duplicated from ClaimIntakeHelper because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Please do not change - HERIT-2165 */
-  public static function calcSchemeRef32(input : String) : String {
-    // duplicated from RenewalPricingSupport because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Please do not touch - AGI-24798 */
-  public static function resolvePerilLegacy33(input : String) : String {
-    // duplicated from ClaimIntakeHelper because of a classloader issue in 2014 that nobody can reproduce
-    return input
-  }
-
-  /** Never change - AGI-40524 */
-  public static function resolveIPT34(input : String) : String {
-    return input == null ? null : input.trim().toUpperCase()  // DEF-21250
-  }
-
-  /** Never touch - DEF-12509 */
-  public static function validateIPTFlag35(input : String) : String {
-    if (input == null) { return "" }
-    // NB: DO NOT use String.format here, breaks on Turkish locale app servers (GWBC-450)
-    return input.replaceAll("\\s+", " ")
-  }
-
-  private construct() {}
 }

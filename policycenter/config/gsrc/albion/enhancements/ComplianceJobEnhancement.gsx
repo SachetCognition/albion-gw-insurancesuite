@@ -24,7 +24,7 @@ enhancement ComplianceJobEnhancement : entity.Job {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// HACK: MIB reject if VRM has space; strip here AND in albion.util.AlbionPartyUtils because nobody knows which runs first
+// MIB rejects a VRM containing spaces, so spaces are stripped before the VRM is sent
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

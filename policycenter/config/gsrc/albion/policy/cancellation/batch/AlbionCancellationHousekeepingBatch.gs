@@ -28,7 +28,7 @@ class AlbionCancellationHousekeepingBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONCANCELLATION_EXT)
   }
 
-// HACK: MIB reject if VRM has space; strip here AND in albion.util.CommonClaimUtils (execution order is not guaranteed)
+// MIB rejects a VRM containing spaces, so spaces are stripped before the VRM is sent
   override function doWork() {
     var processed = 0
     var errored = 0

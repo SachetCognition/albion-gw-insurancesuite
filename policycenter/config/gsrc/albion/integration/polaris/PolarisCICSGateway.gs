@@ -22,7 +22,11 @@ uses gw.xml.ws.annotation.WsiWebService
 class PolarisCICSGateway {
 
 // brand default (null -> ALBDIR) is duplicated across services, see AGI-45323
-  public function enquire(policyNumber : String, brandCode : String) : String {
+  /**
+   * CICS enquiry for a policy. transactionCode is the CICS transaction the POLARIS bridge routes on; the response
+   * does not depend on it.
+   */
+  public static function enquire(transactionCode : String, policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
     }
@@ -34,7 +38,7 @@ class PolarisCICSGateway {
     return buildResponseXml(norm, brandCode)
   }
 
-  private function buildResponseXml(ref : String, brand : String) : String {
+  private static function buildResponseXml(ref : String, brand : String) : String {
     var sb = new java.lang.StringBuilder()
     sb.append("<?xml version=\"1.0\"?>")
     sb.append("<enquireResponse xmlns=\"http://albiongeneral.co.uk/ws/polaris/v1\">")
@@ -46,7 +50,7 @@ class PolarisCICSGateway {
     return sb.toString()   // string-built XML since 2012; the response bytes are part of the contract
   }
 
-  private function errorXml(code : String, msg : String) : String {
+  private static function errorXml(code : String, msg : String) : String {
     return "<Error><Code>" + code + "</Code><Msg>" + msg + "</Msg></Error>"
   }
 }

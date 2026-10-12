@@ -21,7 +21,6 @@ uses gw.xml.ws.annotation.WsiWebService
 @WsiWebService("http://albiongeneral.co.uk/ws/renewalinvite/v3")
 class RenewalInviteServiceV3 {
 
-// TODO: duplicates logic in albion.util.LegacyPolicyUtils - consolidate under PRB-21418 (raised 2016)
   public function getInviteStatus(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")

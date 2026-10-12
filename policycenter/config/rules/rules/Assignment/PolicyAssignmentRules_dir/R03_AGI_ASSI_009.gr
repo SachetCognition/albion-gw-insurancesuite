@@ -1,0 +1,20 @@
+package rules.Assignment.PolicyAssignmentRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_ASSI_009 - Queue ALBDIR brand, feed PENDING policy periods for review")
+internal class R03_AGI_ASSI_009 {
+  static function doCondition(policyPeriod : entity.PolicyPeriod) : boolean {
+/*start00rule*/
+return policyPeriod.BrandCode_Ext == BrandCode_Ext.TC_ALBDIR and
+       policyPeriod.FeedStatus_Ext == "PENDING"
+/*end00rule*/
+}
+
+  static function doAction(policyPeriod : entity.PolicyPeriod, actions : gw.rules.Action) {
+/*start00rule*/
+policyPeriod.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_assi_009", "Queue ALBDIR brand, feed PENDING policy periods for review")
+/*end00rule*/
+  }
+}

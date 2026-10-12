@@ -21,7 +21,7 @@ uses gw.xml.ws.annotation.WsiWebService
 @WsiWebService("http://albiongeneral.co.uk/ws/midvehicle/v5")
 class MIDVehicleServiceV5 {
 
-// FIXME: value hardcoded since UAT; parameterise (INC-19779)
+// TODO(INC-19779): value hardcoded since UAT; move to AlbionConfigService
   public function getVehicleSubmissionStatus(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")

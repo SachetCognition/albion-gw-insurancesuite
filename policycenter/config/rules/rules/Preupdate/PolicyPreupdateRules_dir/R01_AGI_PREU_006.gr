@@ -1,0 +1,19 @@
+package rules.Preupdate.PolicyPreupdateRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_PREU_006 - Queue brands other than ALBBRK policy periods for review")
+internal class R01_AGI_PREU_006 {
+  static function doCondition(policyPeriod : entity.PolicyPeriod) : boolean {
+/*start00rule*/
+return policyPeriod.BrandCode_Ext != BrandCode_Ext.TC_ALBBRK
+/*end00rule*/
+}
+
+  static function doAction(policyPeriod : entity.PolicyPeriod, actions : gw.rules.Action) {
+/*start00rule*/
+policyPeriod.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_preu_006", "Queue brands other than ALBBRK policy periods for review")
+/*end00rule*/
+  }
+}

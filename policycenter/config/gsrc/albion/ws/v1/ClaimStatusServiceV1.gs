@@ -21,7 +21,6 @@ uses gw.xml.ws.annotation.WsiWebService
 @WsiWebService("http://albiongeneral.co.uk/ws/claimstatus/v1")
 class ClaimStatusServiceV1 {
 
-// TODO: duplicates logic in albion.util.LegacyPolicyUtils - consolidate under GWPC-30274 (raised 2016)
   public function getClaimStatus(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
