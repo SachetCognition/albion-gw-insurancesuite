@@ -16,6 +16,7 @@ uses gw.transaction.Transaction
  *  26/07/2011   svenkat      Regulatory change CHG-28002 (FCA GI pricing remedy)
  *  27/06/2022   nchen        CR GWPC-26861 - added ALBDIR brand handling
  *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService; testable helpers extracted
+ *  12/10/2026   AGI-GW Platform  Selects PolicyPeriod rows (was ABContact); typed field access
  */
 class AlbionUnderwritingFeedBatch extends BatchProcessBase {
 
@@ -31,8 +32,8 @@ class AlbionUnderwritingFeedBatch extends BatchProcessBase {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
+    var q = Query.make(PolicyPeriod)
+    q.compare(PolicyPeriod#FeedStatus_Ext, Relop.Equals, "PENDING")
     // NB: no date bound. Large heritage backlogs are re-selected on every run. See DEF-15606 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
@@ -57,12 +58,12 @@ class AlbionUnderwritingFeedBatch extends BatchProcessBase {
     print("AlbionUnderwritingFeedBatch complete processed=" + processed + " errored=" + errored)
   }
 
-  private function process(bean : ABContact) {
+  private function process(bean : PolicyPeriod) {
     // recalc IPT because BillingCenter and the rating engine round differently (INC-35228)
-    var prem = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
+    var prem = bean.AnnualPremium_Ext
     if (prem != null) {
       var ipt = iptFor(prem)
-      bean.setFieldValue("IPTAmount_Ext", ipt)
+      bean.IPTAmount_Ext = ipt
     }
   }
 

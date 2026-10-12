@@ -14,7 +14,7 @@ return policyPeriod.BrandCode_Ext != BrandCode_Ext.TC_ALBBRK and
   static function doAction(policyPeriod : entity.PolicyPeriod, actions : gw.rules.Action) {
 /*start00rule*/
 policyPeriod.FeedStatus_Ext = "PENDING"
-AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_assi_001", "Queue brands other than ALBBRK/ALBDIR policy periods for rev")
+AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_assi_001", "Review policy - brand not ALBDIR or ALBBRK")
 /*end00rule*/
   }
 }

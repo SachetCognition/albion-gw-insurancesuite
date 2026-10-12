@@ -14,7 +14,7 @@ return policyPeriod.BrandCode_Ext == BrandCode_Ext.TC_ALBDIR and
   static function doAction(policyPeriod : entity.PolicyPeriod, actions : gw.rules.Action) {
 /*start00rule*/
 policyPeriod.FeedStatus_Ext = "PENDING"
-AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_assi_009", "Queue ALBDIR brand, feed PENDING policy periods for review")
+AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_assi_009", "Review policy - ALBDIR feed pending")
 /*end00rule*/
   }
 }

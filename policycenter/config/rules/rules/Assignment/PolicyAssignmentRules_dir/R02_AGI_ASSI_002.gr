@@ -13,7 +13,7 @@ return policyPeriod.FeedStatus_Ext != "PENDING"
   static function doAction(policyPeriod : entity.PolicyPeriod, actions : gw.rules.Action) {
 /*start00rule*/
 policyPeriod.FeedStatus_Ext = "PENDING"
-AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_assi_002", "Queue feed not PENDING policy periods for review")
+AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_assi_002", "Review policy - outbound feed not pending")
 /*end00rule*/
   }
 }

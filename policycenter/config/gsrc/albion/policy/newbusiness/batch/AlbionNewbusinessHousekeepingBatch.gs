@@ -21,6 +21,7 @@ uses gw.transaction.Transaction
  *  01/10/2023   tlindq       Rewritten during Project Mercury, old logic kept below commented out (GWBC-15595)
  *  17/05/2024   hyamam       IPT rate change 12% (see GWCC-17055)
  *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService; testable helpers extracted
+ *  12/10/2026   AGI-GW Platform  Selects PolicyPeriod rows (was ABContact); typed field access
  */
 class AlbionNewbusinessHousekeepingBatch extends BatchProcessBase {
 
@@ -36,8 +37,8 @@ class AlbionNewbusinessHousekeepingBatch extends BatchProcessBase {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
+    var q = Query.make(PolicyPeriod)
+    q.compare(PolicyPeriod#FeedStatus_Ext, Relop.Equals, "PENDING")
     // NB: no date bound. Large heritage backlogs are re-selected on every run. See PRB-15695 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
@@ -62,12 +63,12 @@ class AlbionNewbusinessHousekeepingBatch extends BatchProcessBase {
     print("AlbionNewbusinessHousekeepingBatch complete processed=" + processed + " errored=" + errored)
   }
 
-  private function process(bean : ABContact) {
+  private function process(bean : PolicyPeriod) {
     // recalc IPT because BillingCenter and the rating engine round differently (CHG-3516)
-    var prem = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
+    var prem = bean.AnnualPremium_Ext
     if (prem != null) {
       var ipt = iptFor(prem)
-      bean.setFieldValue("IPTAmount_Ext", ipt)
+      bean.IPTAmount_Ext = ipt
     }
   }
 

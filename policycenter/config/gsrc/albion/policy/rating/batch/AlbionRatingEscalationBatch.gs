@@ -10,10 +10,11 @@ uses gw.transaction.Transaction
  *
  * Scheduled via Control-M job AGIP651D (see batch/controlm/AGI_EOM_01.xml). The Control-M
  * definition and scheduler-config.xml BOTH schedule this; one is meant to be disabled
- * per environment. In PROD it is the Control-M one that is live. In DR nobody is sure.
+ * per environment. In PROD it is the Control-M one that is live. The active scheduler in DR is unconfirmed.
  *
  *  01/12/2015   gwoffshore   Merged from heritage branch (GWBC-10415)
  *  10/09/2024   jsuther      Emergency prod fix PRB-38190 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Selects PolicyPeriod rows (was ABContact); typed field access
  */
 class AlbionRatingEscalationBatch extends BatchProcessBase {
 
@@ -29,8 +30,8 @@ class AlbionRatingEscalationBatch extends BatchProcessBase {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
+    var q = Query.make(PolicyPeriod)
+    q.compare(PolicyPeriod#FeedStatus_Ext, Relop.Equals, "PENDING")
     // NB: no date bound. On a bad day this re-selects 1.4M heritage rows. See GWCC-45483 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
@@ -55,10 +56,10 @@ class AlbionRatingEscalationBatch extends BatchProcessBase {
     print("AlbionRatingEscalationBatch complete processed=" + processed + " errored=" + errored)
   }
 
-  private function process(bean : ABContact) {
-    var days = gw.api.util.DateUtil.daysBetween(bean.getFieldValue("CreateTime") as java.util.Date, gw.api.util.DateUtil.currentDate())
+  private function process(bean : PolicyPeriod) {
+    var days = gw.api.util.DateUtil.daysBetween(bean.CreateTime, gw.api.util.DateUtil.currentDate())
     if (days > 5) {
-      bean.setFieldValue("FeedStatus_Ext", "ESCALATED")
+      bean.FeedStatus_Ext = "ESCALATED"
       albion.util.AlbionActivityUtils.raiseActivity(bean, "escalation_pmot", "Aged item breach - " + days + " days")
     }
   }
