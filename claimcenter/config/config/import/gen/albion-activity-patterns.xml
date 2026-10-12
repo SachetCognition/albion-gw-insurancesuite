@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<!-- Albion ClaimCenter activity patterns raised by rules (AGI_*) and batch escalations. Loaded with the standard admin data import (listed in importfiles.txt). -->
+<import xmlns="http://guidewire.com/cc/exim/import" version="10.0" usePeriodicFlushes="true">
+  <ActivityPattern public-id="agi:ap:escalation_cpkg">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>escalation_cpkg</Code>
+    <Description>Commercial package FNOL item open more than 5 days (AlbionFnolEscalationBatch). Handle in the Commercial Claims team queue.</Description>
+    <EscalationDays>3</EscalationDays>
+    <Mandatory>true</Mandatory>
+    <Priority>high</Priority>
+    <Subject>Aged commercial package FNOL item - escalate</Subject>
+    <TargetDays>1</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:escalation_pi">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>escalation_pi</Code>
+    <Description>Professional indemnity payment item open more than 5 days (AlbionPaymentsSweepBatch). Handle in the Claims Payments team queue.</Description>
+    <EscalationDays>3</EscalationDays>
+    <Mandatory>true</Mandatory>
+    <Priority>high</Priority>
+    <Subject>Aged professional indemnity payment item - escalate</Subject>
+    <TargetDays>1</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:escalation_van">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>escalation_van</Code>
+    <Description>Light van bodily injury item open more than 5 days (AlbionBodilyinjuryEscalationBatch). Handle in the Motor Injury team queue.</Description>
+    <EscalationDays>3</EscalationDays>
+    <Mandatory>true</Mandatory>
+    <Priority>high</Priority>
+    <Subject>Aged light van bodily injury item - escalate</Subject>
+    <TargetDays>1</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_assi_002">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_assi_002</Code>
+    <Description>Rule AGI_ASSI_002: heritage-book (HERIT) claim needs manual assignment review. Handle in the Heritage Claims team queue.</Description>
+    <EscalationDays>5</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Subject>Review assignment - heritage brand claim</Subject>
+    <TargetDays>2</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_esca_005">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_esca_005</Code>
+    <Description>Rule AGI_ESCA_005: HERIT claim not sourced from POLARIS with feed status PENDING. Handle in the Heritage Claims team queue.</Description>
+    <EscalationDays>3</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>high</Priority>
+    <Subject>Review escalation - heritage claim not from POLARIS awaiting feed</Subject>
+    <TargetDays>1</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_esca_009">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_esca_009</Code>
+    <Description>Rule AGI_ESCA_009: claim not on brand ALBBRK whose feed status is not PENDING. Handle in the Claims Escalation team queue.</Description>
+    <EscalationDays>5</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Subject>Review escalation - non-broker claim with feed already sent</Subject>
+    <TargetDays>2</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_preu_001">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_preu_001</Code>
+    <Description>Rule AGI_PREU_001: ALBBRK claim updated; outbound feed reset to PENDING. Handle in the Broker Claims team queue.</Description>
+    <EscalationDays>5</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Subject>Review update - broker brand claim</Subject>
+    <TargetDays>2</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_segm_003">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_segm_003</Code>
+    <Description>Rule AGI_SEGM_003: non-heritage claim needs segment confirmation. Handle in the Claims Segmentation team queue.</Description>
+    <EscalationDays>5</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Subject>Review segmentation - brand not HERIT</Subject>
+    <TargetDays>2</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_segm_010">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_segm_010</Code>
+    <Description>Rule AGI_SEGM_010: claim not sourced from POLARIS needs segment confirmation. Handle in the Claims Segmentation team queue.</Description>
+    <EscalationDays>5</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Subject>Review segmentation - claim not from POLARIS</Subject>
+    <TargetDays>2</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_segm_011">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_segm_011</Code>
+    <Description>Rule AGI_SEGM_011: non-direct claim not sourced from POLARIS needs segment confirmation. Handle in the Claims Segmentation team queue.</Description>
+    <EscalationDays>5</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Subject>Review segmentation - brand not ALBDIR, not from POLARIS</Subject>
+    <TargetDays>2</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_002">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_vali_002</Code>
+    <Description>Rule AGI_VALI_002: ALBDIR claim flagged for data validation review. Handle in the Claims Data Quality team queue.</Description>
+    <EscalationDays>7</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>low</Priority>
+    <Subject>Review validation - direct brand claim</Subject>
+    <TargetDays>3</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_008">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_vali_008</Code>
+    <Description>Rule AGI_VALI_008: claim whose outbound feed status is not PENDING flagged for validation review. Handle in the Claims Data Quality team queue.</Description>
+    <EscalationDays>7</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>low</Priority>
+    <Subject>Review validation - feed status not PENDING</Subject>
+    <TargetDays>3</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_013">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_vali_013</Code>
+    <Description>Rule AGI_VALI_013: non-broker claim flagged for data validation review. Handle in the Claims Data Quality team queue.</Description>
+    <EscalationDays>7</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>low</Priority>
+    <Subject>Review validation - brand not ALBBRK</Subject>
+    <TargetDays>3</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+</import>

@@ -12,7 +12,7 @@ return claim.BrandCode_Ext == BrandCode_Ext.TC_HERIT and claim.SourceSystem_Ext 
 /*start00rule*/
 // Legacy rule AGI_ESCA_005 (priority 42, HERIT-43701): set feed status to PENDING and raise a escalation review activity.
 claim.FeedStatus_Ext = "PENDING"
-albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_esca_005", "Escalation review: brand is HERIT, source system is not POLARIS, feed status is ")
+albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_esca_005", "Escalation review: HERIT claim not from POLARIS, feed PENDING")
 /*end00rule*/
   }
 }
