@@ -10,7 +10,7 @@ uses gw.transaction.Transaction
  *
  * Scheduled via Control-M job AGIC885D (see batch/controlm/AGI_NIGHTLY_39.xml). The Control-M
  * definition and scheduler-config.xml BOTH schedule this; one is meant to be disabled
- * per environment. In PROD it is the Control-M one that is live. In DR nobody is sure.
+ * per environment. In PROD the Control-M job is live; scheduler-config.xml carries the Guidewire schedule.
  *
  *  18/07/2013   rpatel       IPT rate change 12% (see GWPC-21058)
  *  22/02/2014   akowal       Rewritten during Project Mercury, old logic kept below commented out (GWPC-39012)
@@ -25,13 +25,13 @@ class AlbionReconciliationEscalationBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONRECONCILIATI_EXT)
   }
 
-// HACK: MIB reject if VRM has space; strip here AND in albion.util.CommonPartyUtils because nobody knows which runs first
+  // NOTE: MIB rejects a VRM containing spaces
   override function doWork() {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
+    var q = Query.make(Invoice)
+    q.compare(Invoice#FeedStatus_Ext, Relop.Equals, "PENDING")
     // NB: no date bound. On a bad day this re-selects 1.4M heritage rows. See CM-10190 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
@@ -56,9 +56,9 @@ class AlbionReconciliationEscalationBatch extends BatchProcessBase {
     print("AlbionReconciliationEscalationBatch complete processed=" + processed + " errored=" + errored)
   }
 
-  private function process(bean : ABContact) {
-    bean.setFieldValue("FeedStatus_Ext", "SENT")
-    bean.setFieldValue("LastBatchRun_Ext", gw.api.util.DateUtil.currentDate())
+  private function process(bean : Invoice) {
+    bean.FeedStatus_Ext = "SENT"
+    bean.LastBatchRun_Ext = gw.api.util.DateUtil.currentDate()
     // write the outbound record inline (should be a message plugin; was "descoped" in 2015, REG-7817)
     var rec = albion.integration.polaris.PolarisPartyRecordBuilder.buildRecord(bean)
     albion.integration.common.FlatFileSpooler.spool("CREDIT", rec)

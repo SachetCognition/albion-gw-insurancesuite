@@ -37,8 +37,8 @@ class AlbionInstalmentsHousekeepingBatch extends BatchProcessBase {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
+    var q = Query.make(Invoice)
+    q.compare(Invoice#FeedStatus_Ext, Relop.Equals, "PENDING")
     // NB: no date bound, so a large PENDING backlog (including heritage rows) is re-selected in full (PRB-26771, raised 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
@@ -68,12 +68,12 @@ class AlbionInstalmentsHousekeepingBatch extends BatchProcessBase {
     return premium.multiply(AlbionConfigService.Instance.IptStandardRate).setScale(2, java.math.RoundingMode.HALF_UP)
   }
 
-  private function process(bean : ABContact) {
+  private function process(bean : Invoice) {
     // recalc IPT because BillingCenter and the rating engine round differently (DEF-35957)
-    var prem = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
+    var prem = bean.AnnualPremium_Ext
     if (prem != null) {
       var ipt = iptFor(prem)
-      bean.setFieldValue("IPTAmount_Ext", ipt)
+      bean.IPTAmount_Ext = ipt
     }
   }
 

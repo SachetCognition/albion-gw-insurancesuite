@@ -1,0 +1,14 @@
+package rules.Assignment
+
+@gw.rules.RuleName("InvoiceAssignmentRules")
+@gw.rules.RuleSetDescription("Invoice assignment rules: return matching invoices to PENDING and raise a assignment review activity. Rule order (by legacy priority): AGI_ASSI_001, AGI_ASSI_010, AGI_ASSI_008")
+@gw.lang.Export
+class InvoiceAssignmentRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.Invoice) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.Invoice) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "InvoiceAssignmentRules", InvoiceAssignmentRules)
+  }
+}

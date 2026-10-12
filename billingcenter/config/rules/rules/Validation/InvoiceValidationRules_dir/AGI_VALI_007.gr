@@ -1,0 +1,20 @@
+package rules.Validation.InvoiceValidationRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_VALI_007: hold invoices where feed status is PENDING, source system is POLARIS for validation review")
+internal class AGI_VALI_007 {
+  static function doCondition(invoice  :  entity.Invoice) : boolean {
+/*start00rule*/
+return invoice.FeedStatus_Ext == "PENDING" and invoice.SourceSystem_Ext == "POLARIS"
+/*end00rule*/
+}
+
+  static function doAction(invoice  :  entity.Invoice, actions : gw.rules.Action) {
+/*start00rule*/
+// priority 28; sets the invoice back to PENDING and raises the AGI_VALI_007 review activity
+invoice.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_vali_007", "Validation review: feed status is PENDING, source system is POLARIS")
+/*end00rule*/
+  }
+}

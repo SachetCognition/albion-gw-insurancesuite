@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- AlbionPaymentsPopup.pcf : cloned from base OOTB screen then diverged. Do NOT diff against base; upgrade team gave up in v9->v10 (GWCC-921). -->
+<!-- AlbionPaymentsPopup.pcf : derived from the base OOTB screen and customised; not re-based during the v9->v10 upgrade (GWCC-921). -->
 <PCF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <Screen
     id="AlbionPaymentsPopup">

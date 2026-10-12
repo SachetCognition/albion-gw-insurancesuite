@@ -1,0 +1,20 @@
+package rules.Validation.InvoiceValidationRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_VALI_001: hold invoices where brand is not ALBDIR for validation review")
+internal class AGI_VALI_001 {
+  static function doCondition(invoice  :  entity.Invoice) : boolean {
+/*start00rule*/
+return invoice.BrandCode_Ext != BrandCode_Ext.TC_ALBDIR
+/*end00rule*/
+}
+
+  static function doAction(invoice  :  entity.Invoice, actions : gw.rules.Action) {
+/*start00rule*/
+// priority 688; sets the invoice back to PENDING and raises the AGI_VALI_001 review activity
+invoice.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_vali_001", "Validation review: brand is not ALBDIR")
+/*end00rule*/
+  }
+}

@@ -28,7 +28,7 @@ class AlbionRebateRules {
   // legacy peril list for this rule (HERIT-20426); see AlbionBillingPredicates.perilCodes
   static final var PERIL_CODES : List<String> = {"TheftHome","Storm","UninsuredLoss","FireDamage"}
 
-  // NOTE: MIB rejects a VRM containing spaces; spaces are also stripped in albion.util.LegacyPolicyUtils
+  // NOTE: MIB rejects a VRM containing spaces
   public static function evaluateAlbionRebate(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

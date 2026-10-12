@@ -1,0 +1,20 @@
+package rules.Assignment.InvoiceAssignmentRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_ASSI_008: hold invoices where feed status is not PENDING, source system is POLARIS for assignment review")
+internal class AGI_ASSI_008 {
+  static function doCondition(invoice  :  entity.Invoice) : boolean {
+/*start00rule*/
+return invoice.FeedStatus_Ext != "PENDING" and invoice.SourceSystem_Ext == "POLARIS"
+/*end00rule*/
+}
+
+  static function doAction(invoice  :  entity.Invoice, actions : gw.rules.Action) {
+/*start00rule*/
+// priority 407; sets the invoice back to PENDING and raises the AGI_ASSI_008 review activity
+invoice.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_assi_008", "Assignment review: feed status is not PENDING, source system is POLARIS")
+/*end00rule*/
+  }
+}

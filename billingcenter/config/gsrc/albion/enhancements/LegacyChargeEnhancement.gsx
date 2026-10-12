@@ -24,7 +24,7 @@ enhancement LegacyChargeEnhancement : entity.Charge {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// FIXME: brand check copy-pasted 14 times across codebase, see DEF-38153
+// NOTE: the same raw brand-code check is repeated in other enhancements (DEF-38153)
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

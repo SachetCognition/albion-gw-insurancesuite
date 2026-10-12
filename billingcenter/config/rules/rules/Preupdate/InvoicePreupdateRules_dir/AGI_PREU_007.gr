@@ -1,0 +1,20 @@
+package rules.Preupdate.InvoicePreupdateRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_PREU_007: hold every invoice for preupdate review")
+internal class AGI_PREU_007 {
+  static function doCondition(invoice  :  entity.Invoice) : boolean {
+/*start00rule*/
+return true
+/*end00rule*/
+}
+
+  static function doAction(invoice  :  entity.Invoice, actions : gw.rules.Action) {
+/*start00rule*/
+// priority 337; sets the invoice back to PENDING and raises the AGI_PREU_007 review activity
+invoice.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_preu_007", "Preupdate review: every invoice")
+/*end00rule*/
+  }
+}

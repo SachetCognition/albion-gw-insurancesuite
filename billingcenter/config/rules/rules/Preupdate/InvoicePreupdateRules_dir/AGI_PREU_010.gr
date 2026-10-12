@@ -1,0 +1,20 @@
+package rules.Preupdate.InvoicePreupdateRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_PREU_010: hold invoices where brand is HERIT for preupdate review")
+internal class AGI_PREU_010 {
+  static function doCondition(invoice  :  entity.Invoice) : boolean {
+/*start00rule*/
+return invoice.BrandCode_Ext == BrandCode_Ext.TC_HERIT
+/*end00rule*/
+}
+
+  static function doAction(invoice  :  entity.Invoice, actions : gw.rules.Action) {
+/*start00rule*/
+// priority 882; sets the invoice back to PENDING and raises the AGI_PREU_010 review activity
+invoice.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_preu_010", "Preupdate review: brand is HERIT")
+/*end00rule*/
+  }
+}

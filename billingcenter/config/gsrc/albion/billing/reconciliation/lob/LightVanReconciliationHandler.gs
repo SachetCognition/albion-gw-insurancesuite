@@ -27,7 +27,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class LightVanReconciliationHandler {
 
-  // NOTE: MIB rejects a VRM containing spaces; spaces are also stripped in albion.util.CommonPartyUtils
+  // NOTE: MIB rejects a VRM containing spaces
   public static function evaluateLightVanReconciliationHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {
