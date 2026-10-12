@@ -1,5 +1,0 @@
-RequirePhoneNumber
-RequirePrimaryNumber
-RequirePastDOB
-RequireValidPhoneCountry
-RequirePhoneCountryCode

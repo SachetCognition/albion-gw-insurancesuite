@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Albion activity patterns raised by ContactManager party rules and batch processes.
+     Loaded by the standard admin data import (listed in importfiles.txt). Codes are referenced
+     from AlbionActivityUtils.raiseActivity callers and must stay unique. -->
+<import>
+  <ActivityPattern public-id="agi:actpat:review_agi_assi_001">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>assignmentreview</Category>
+    <Code>review_agi_assi_001</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_assi_001</Description>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>AsgReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_assi_001</Subject>
+    <TargetDays>2</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>assignmentreview</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_assi_004">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>assignmentreview</Category>
+    <Code>review_agi_assi_004</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_assi_004</Description>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>AsgReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_assi_004</Subject>
+    <TargetDays>2</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>assignmentreview</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_assi_005">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>assignmentreview</Category>
+    <Code>review_agi_assi_005</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_assi_005</Description>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>AsgReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_assi_005</Subject>
+    <TargetDays>2</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>assignmentreview</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_esca_001">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>warning</Category>
+    <Code>review_agi_esca_001</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_esca_001</Description>
+    <EscalationDays>3</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>true</Mandatory>
+    <Priority>high</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>EscReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_esca_001</Subject>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_esca_004">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>warning</Category>
+    <Code>review_agi_esca_004</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_esca_004</Description>
+    <EscalationDays>3</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>true</Mandatory>
+    <Priority>high</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>EscReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_esca_004</Subject>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_preu_003">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>reminder</Category>
+    <Code>review_agi_preu_003</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_preu_003</Description>
+    <EscalationDays>10</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <Priority>low</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>PreReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_preu_003</Subject>
+    <TargetDays>5</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_preu_006">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>reminder</Category>
+    <Code>review_agi_preu_006</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_preu_006</Description>
+    <EscalationDays>10</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <Priority>low</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>PreReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_preu_006</Subject>
+    <TargetDays>5</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_preu_007">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>reminder</Category>
+    <Code>review_agi_preu_007</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_preu_007</Description>
+    <EscalationDays>10</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <Priority>low</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>PreReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_preu_007</Subject>
+    <TargetDays>5</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_segm_001">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_segm_001</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_segm_001</Description>
+    <EscalationDays>10</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>SegReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_segm_001</Subject>
+    <TargetDays>5</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_segm_003">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_segm_003</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_segm_003</Description>
+    <EscalationDays>10</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>SegReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_segm_003</Subject>
+    <TargetDays>5</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_segm_009">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_segm_009</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_segm_009</Description>
+    <EscalationDays>10</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>SegReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_segm_009</Subject>
+    <TargetDays>5</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_segm_012">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_segm_012</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_segm_012</Description>
+    <EscalationDays>10</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>SegReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_segm_012</Subject>
+    <TargetDays>5</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_vali_002">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>request</Category>
+    <Code>review_agi_vali_002</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_vali_002</Description>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>true</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ValReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_vali_002</Subject>
+    <TargetDays>3</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_vali_003">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>request</Category>
+    <Code>review_agi_vali_003</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_vali_003</Description>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>true</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ValReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_vali_003</Subject>
+    <TargetDays>3</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_vali_010">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>request</Category>
+    <Code>review_agi_vali_010</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_vali_010</Description>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>true</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ValReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_vali_010</Subject>
+    <TargetDays>3</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:review_agi_vali_011">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>request</Category>
+    <Code>review_agi_vali_011</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.review_agi_vali_011</Description>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>true</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ValReview</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.review_agi_vali_011</Subject>
+    <TargetDays>3</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:escalation_pi">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>warning</Category>
+    <Code>escalation_pi</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.escalation_pi</Description>
+    <EscalationDays>2</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>true</Mandatory>
+    <Priority>urgent</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>AgedFeed</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.escalation_pi</Subject>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:actpat:escalation_pmot">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>warning</Category>
+    <Code>escalation_pmot</Code>
+    <Description displayKey="true">AdminData.ActivityPattern.Description.escalation_pmot</Description>
+    <EscalationDays>1</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>true</Mandatory>
+    <Priority>urgent</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>AgedMatch</ShortSubject>
+    <Subject displayKey="true">AdminData.ActivityPattern.Subject.escalation_pmot</Subject>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+</import>
