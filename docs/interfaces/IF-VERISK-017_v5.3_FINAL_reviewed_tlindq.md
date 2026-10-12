@@ -11,7 +11,7 @@ Connect:Direct from the mainframe
 See `integration/polaris/copybooks/AGIVERIRE.cpy`. Where copybook and this doc disagree, **production behaviour wins** (transcribed by hand into `VeriskRecordBuilder.gs`).
 
 ## Error handling
-NAKs land in a queue reviewed when someone remembers. Retry is manual only.
+NAKs land in a queue reviewed ad hoc (no fixed cadence). Retry is manual only.
 
 ## Volumes
 ~418k records/week. Peak: renewals season + cat events combined (02-Oct-2024 backlog post-mortem, PRB-30400).

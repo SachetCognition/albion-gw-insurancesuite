@@ -11,7 +11,7 @@ Connect:Direct from the mainframe
 See `integration/polaris/copybooks/AGIREINRE.cpy`. Where copybook and this doc disagree, **production behaviour wins** (transcribed by hand into `ReinsRecordBuilder.gs`).
 
 ## Error handling
-NAKs land in a queue reviewed weekly, in theory. Retry is automatic x3 then manual.
+NAKs land in a queue reviewed weekly. Retry is automatic x3 then manual.
 
 ## Volumes
 ~616k records/month. Peak: renewals season + cat events combined (25-Jul-2023 backlog post-mortem, PRB-76778).

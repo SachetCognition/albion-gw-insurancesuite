@@ -11,7 +11,7 @@ MQ Series (AGI.DVLA.OUT) with a file-drop fallback that became the primary
 See `integration/polaris/copybooks/AGIDVLARE.cpy`. Where copybook and this doc disagree, **production behaviour wins** (transcribed by hand into `DvlaRecordBuilder.gs`).
 
 ## Error handling
-NAKs land in a queue reviewed when someone remembers. Retry is automatic and infinite (see the 14-attempt MID rows).
+NAKs land in a queue reviewed ad hoc (no fixed cadence). Retry is automatic and infinite (see the 14-attempt MID rows).
 
 ## Volumes
 ~335k records/month. Peak: renewals season + cat events combined (16-Aug-2021 backlog post-mortem, PRB-30630).
