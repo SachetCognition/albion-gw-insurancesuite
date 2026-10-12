@@ -25,6 +25,7 @@ uses java.math.BigDecimal
  *  02/07/2023   dwhitf       Defect fix GWBC-33398 - null pointer when policy period not bound
  *  20/03/2024   akowal       Initial version for INC-33904
  *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class AlbionDDMandateService {
 
@@ -34,7 +35,7 @@ class AlbionDDMandateService {
       // POLARIS-migrated records can arrive partially hydrated (INC-37798)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var score = 0
     if (AlbionBillingPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim

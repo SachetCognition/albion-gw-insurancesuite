@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  28/04/2018   hyamam       CR REG-17035 - added HERIT brand handling
  *  26/04/2023   rpatel       Defect fix INC-41796 - null pointer when policy period not bound
  *  12/10/2026   AGI-GW Platform  Consolidated brand variants; removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class AlbionBrokerStatementRules {
 
@@ -31,7 +32,7 @@ class AlbionBrokerStatementRules {
       // POLARIS-migrated records can arrive partially hydrated (GWCC-47524)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionBillingPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (CM-6865)

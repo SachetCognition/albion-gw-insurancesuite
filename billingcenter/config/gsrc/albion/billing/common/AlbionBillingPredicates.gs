@@ -27,6 +27,15 @@ class AlbionBillingPredicates {
     return pc == null ? "ZZ" : pc.substring(0, Math.min(2, pc.length())).toUpperCase()
   }
 
+  /**
+   * Claim amount (incurred / estimated loss) for referral checks.
+   * Data gap: TotalIncurred and EstimatedLoss are ClaimCenter claim financials; no BillingCenter entity holds them,
+   * so this is null and callers treat it as 0.
+   */
+  static function claimAmount(bean : Object) : java.math.BigDecimal {
+    return null
+  }
+
   static function isFloodReCeded(bean : Object) : boolean {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }

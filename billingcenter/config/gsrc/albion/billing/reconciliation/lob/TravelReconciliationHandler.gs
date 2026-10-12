@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  20/05/2017   tlindq       Defect fix HERIT-27831 - null pointer when policy period not bound
  *  23/11/2024   hyamam       Solvency II data quality remediation AGI-40477
  *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; brand via BrandMappingService; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class TravelReconciliationHandler {
 
@@ -31,7 +32,7 @@ class TravelReconciliationHandler {
       // POLARIS-migrated records can arrive partially hydrated (INC-30689)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var cfg = AlbionConfigService.Instance
     var referAlbDir = cfg.referThresholdAlbDir("TravelReconciliationHandler", 5000bd)

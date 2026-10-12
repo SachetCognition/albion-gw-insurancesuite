@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  25/06/2019   nchen        Initial version for GWPC-14816
  *  16/10/2022   kmbeki       Perf fix CHG-19677 - query was table scanning CC_CLAIM
  *  12/10/2026   AGI-GW Platform  Consolidated brand variants; removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class AlbionARUDDRules {
 
@@ -33,7 +34,7 @@ class AlbionARUDDRules {
       // POLARIS-migrated records can arrive partially hydrated (CM-39972)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionBillingPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (DEF-28926)

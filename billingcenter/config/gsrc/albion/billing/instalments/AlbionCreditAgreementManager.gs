@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  01/05/2020   kmbeki       GWPC-47807: Do not change without speaking to actuarial
  *  14/12/2021   gwoffshore   Perf fix INC-980 - query was table scanning CC_CLAIM
  *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class AlbionCreditAgreementManager {
 
@@ -36,7 +37,7 @@ class AlbionCreditAgreementManager {
       // POLARIS-migrated records can arrive partially hydrated (GWBC-46883)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionBillingPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (DEF-3599)

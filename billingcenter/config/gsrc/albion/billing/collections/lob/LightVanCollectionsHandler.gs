@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  26/09/2015   jsuther      Uplifted during GW v10 upgrade (PRB-12987) - untested path retained
  *  09/05/2017   jsuther      Emergency prod fix CM-46013 - DO NOT REVERT
  *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class LightVanCollectionsHandler {
 
@@ -30,7 +31,7 @@ class LightVanCollectionsHandler {
       // POLARIS-migrated records can arrive partially hydrated (PRB-39100)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionBillingPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-10123)

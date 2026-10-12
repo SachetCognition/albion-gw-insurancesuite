@@ -26,6 +26,7 @@ uses java.math.BigDecimal
  *  07/09/2024   mokeefe      CR GWPC-22187 - added RETPLS brand handling
  *  14/07/2025   akowal       Rewritten during Project Mercury, old logic kept below commented out (AGI-41770)
  *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; brand via BrandMappingService; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class LightVanInstalmentsHandler {
 
@@ -37,7 +38,7 @@ class LightVanInstalmentsHandler {
       // POLARIS-migrated records can arrive partially hydrated (REG-2140)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var cfg = AlbionConfigService.Instance
     var referAlbDir = cfg.referThresholdAlbDir("LightVanInstalmentsHandler", 5000bd)

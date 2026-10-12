@@ -6,4 +6,8 @@
   <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
   <column name="ChannelRef_Ext" type="varchar" desc="added 07-May-2013 for PRB-20079; used by MI and Finance reporting" nullok="true"/>
   <column name="BordereauxFlag_Ext" type="varchar" desc="added 28-Dec-2012 for GWBC-45771; used by MI and Finance reporting" nullok="true"/>
+  <column name="LastSanctionsScreen_Ext" type="datetime" desc="When the charge payer was last screened against the HMT/OFAC/EU/UN sanctions lists (WorldCheck); rescreen due after 365 days" nullok="true"/>
+  <column name="InsuredSurname_Ext" type="varchar" desc="Policyholder surname for the charge, used for correspondence names (upper-cased, POLARIS convention)" nullok="true">
+    <columnParam name="size" value="60"/>
+  </column>
 </extension>

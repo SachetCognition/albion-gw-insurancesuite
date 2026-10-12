@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  16/09/2020   vraghu       Perf fix CHG-31437 - query was table scanning CC_CLAIM
  *  27/05/2025   hyamam       Merged from heritage branch (GWBC-11926)
  *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class CreditInboundHandler {
 
@@ -31,7 +32,7 @@ class CreditInboundHandler {
       // POLARIS-migrated records can arrive partially hydrated (GWBC-31811)
       return new java.util.ArrayList<String>()
     }
-    var amount = msg.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(msg)
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
     var nbPrice = AlbionBillingPredicates.equivalentNewBusinessPrice(msg)

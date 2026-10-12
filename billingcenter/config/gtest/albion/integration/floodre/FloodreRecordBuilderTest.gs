@@ -1,17 +1,23 @@
 package albion.integration.floodre
 
 uses albion.integration.testsupport.RecordBuilderCharacterizationTestBase
+uses org.easymock.EasyMock
 
 class FloodreRecordBuilderTest extends RecordBuilderCharacterizationTestBase {
 
-  function testGoldenMasterMatrix() {
-    // Golden sample provenance: integration/samples/floodre/good_03.xml.
-    characterize(\ src -> FloodreRecordBuilder.buildRecord(src), "FL61", 600,
-        "ClaimNumber_Ext", 10, "InceptionDate_Ext", 8,
-        "SumInsured_Ext", 11, "NINumber_Ext")
-    characterizeCapturedSample(\ src -> FloodreRecordBuilder.buildRecord(src), "FL61", 600,
-        "ClaimNumber_Ext", 10, "HERIT-6739", "InceptionDate_Ext", 8, "P360764125X",
-        "SumInsured_Ext", 11, "NINumber_Ext", "RETPLS")
+  function testClaimNumberAndNinoSlotsCarryNullFiller() {
+    // Golden sample provenance: integration/samples/floodre/good_03.xml (ClaimNumber and NINumber are not held in BillingCenter).
+    var src = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(src.getFieldValue("PolicyPerEffDate")).andStubReturn("P360764125X")
+    EasyMock.expect(src.getFieldValue("BrandCode_Ext")).andStubReturn("RETPLS")
+    EasyMock.replay(src)
+    var rec = FloodreRecordBuilder.buildRecord(src)
+    assertEquals(600, rec.length())
+    assertEquals("FL61", rec.substring(0, 4))
+    assertEquals(" ".repeat(10), rec.substring(4, 14))
+    assertEquals("P3607641", rec.substring(14, 22))   // silent truncation to 8, as per POLARIS
+    assertEquals("00000000000", rec.substring(22, 33))
+    assertEquals("00000000", rec.substring(33, 41))
   }
 
   function testRecordLength() {

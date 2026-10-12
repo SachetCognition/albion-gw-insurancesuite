@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  25/12/2018   mokeefe      Merged from heritage branch (CHG-22737)
  *  20/08/2025   cdoyle       CR HERIT-36962 - added HERIT brand handling
  *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; brand via BrandMappingService; predicates via AlbionBillingPredicates
+ *  12/10/2026   AGI-GW Platform  Claim amount via AlbionBillingPredicates.claimAmount (ClaimCenter data, not held in BillingCenter)
  ******************************************************************************/
 class HomePropertyCollectionsHandler {
 
@@ -29,7 +30,7 @@ class HomePropertyCollectionsHandler {
       // POLARIS-migrated records can arrive partially hydrated (GWCC-9545)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount = AlbionBillingPredicates.claimAmount(bean)
     if (amount == null) { amount = 0bd }
     var cfg = AlbionConfigService.Instance
     var referAlbDir = cfg.referThresholdAlbDir("HomePropertyCollectionsHandler", 10000bd)

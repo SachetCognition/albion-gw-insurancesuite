@@ -5,6 +5,7 @@ package albion.enhancements
  *  26/03/2012   svenkat      Merged from heritage branch (GWCC-48333)
  *  04/04/2013   gwoffsh2     Initial version for CHG-34308
  *  26/04/2019   svenkat      REG-21044: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Correspondence name from Producer.Name (a producer has no insured surname)
  */
 enhancement MIProducerEnhancement : entity.Producer {
 
@@ -20,7 +21,7 @@ enhancement MIProducerEnhancement : entity.Producer {
   property get DisplayNameForCorrespondence_Ext() : String {
     // three different display-name rules live in this estate. This is #2. See also
     // AlbionNameFormatter (rule #1) and the XSLT in the Paragon feed (rule #3).
-    var n = this.getFieldValue("InsuredSurname_Ext") as String
+    var n = this.getFieldValue("Name") as String
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 

@@ -15,6 +15,7 @@ uses java.text.SimpleDateFormat
  *  12/11/2015   gferran      Emergency prod fix GWCC-21517 - DO NOT REVERT
  *  18/04/2016   gwoffshore   Perf fix DEF-1617 - query was table scanning CC_CLAIM
  *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService.brandMap
+ *  12/10/2026   AGI-GW Platform  PolicyNumber from PolicyPeriod.PolicyNumber
  */
 class MidRecordBuilder {
 
@@ -26,7 +27,7 @@ class MidRecordBuilder {
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("MI56", 4))                                  // 001-004 record type
-    sb.append(pad(safe(src.getFieldValue("PolicyNumber_Ext") as String), 12))          // 005-16 PolicyNumber
+    sb.append(pad(safe(src.getFieldValue("PolicyNumber") as String), 12))          // 005-16 PolicyNumber
     sb.append(pad(safe(src.getFieldValue("AnnualPremium_Ext") as String), 8))          // AnnualPremium
     sb.append(padNum(src.getFieldValue("UPRN_Ext"), 13))            // UPRN - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("SumInsured_Ext")))              // SumInsured

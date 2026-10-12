@@ -12,7 +12,6 @@ class AlbionAPRDisclosureHelperTest extends TestBase {
   private function bean(brand : String, amount : BigDecimal, postcode : String, floodReCeded : Boolean) : KeyableBean {
     var b = EasyMock.createNiceMock(KeyableBean)
     EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
-    EasyMock.expect(b.getFieldValue("EstimatedLoss_Ext")).andStubReturn(amount)
     EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
     EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
     EasyMock.replay(b)
@@ -37,33 +36,33 @@ class AlbionAPRDisclosureHelperTest extends TestBase {
   }
 
   // ALBDIR: standard rules
-  function testAlbdir_ReferralOutcomesAtThresholds() {
+  function testAlbdir_NoReferralWithoutClaimAmount() {
     assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 0bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 1000000bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 1000000bd, null, null)).toString())
     assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 10000bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 10000.01bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 12500bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 12500.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 10000.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 12500bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 12500.01bd, null, null)).toString())
     assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 9999.99bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 25000bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 25000.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 25000bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 25000.01bd, null, null)).toString())
   }
 
   // ALBBRK: standard rules
-  function testAlbbrk_ReferralOutcomesAtThresholds() {
+  function testAlbbrk_NoReferralWithoutClaimAmount() {
     assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 0bd, null, null)).toString())
-    assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 1000000bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 1000000bd, null, null)).toString())
     assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 10000bd, null, null)).toString())
     assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 10000.01bd, null, null)).toString())
     assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 12500bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 12500.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 12500.01bd, null, null)).toString())
     assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 9999.99bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 25000bd, null, null)).toString())
-    assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 25000.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 25000bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 25000.01bd, null, null)).toString())
   }
 
   // RETPLS: standard rules
-  function testRetpls_ReferralOutcomesAtThresholds() {
+  function testRetpls_NoReferralWithoutClaimAmount() {
     assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 0bd, null, null)).toString())
     assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 1000000bd, null, null)).toString())
     assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 10000bd, null, null)).toString())
@@ -76,20 +75,20 @@ class AlbionAPRDisclosureHelperTest extends TestBase {
   }
 
   // HERIT: standard rules
-  function testHerit_ReferralOutcomesAtThresholds() {
+  function testHerit_NoReferralWithoutClaimAmount() {
     assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 0bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 1000000bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 10000bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 10000.01bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 12500bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 12500.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 1000000bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 10000bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 10000.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 12500bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 12500.01bd, null, null)).toString())
     assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 9999.99bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 25000bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 25000.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 25000bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 25000.01bd, null, null)).toString())
   }
 
   // unrecognised brand: standard rules
-  function testUnknownBrand_ReferralOutcomesAtThresholds() {
+  function testUnknownBrand_NoReferralWithoutClaimAmount() {
     assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 0bd, null, null)).toString())
     assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 1000000bd, null, null)).toString())
     assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 10000bd, null, null)).toString())
@@ -110,7 +109,7 @@ class AlbionAPRDisclosureHelperTest extends TestBase {
     values.put(AlbionCentre.PROPERTY_PREFIX + ".refer.threshold.albdir.AlbionAPRDisclosureHelper", "100")
     AlbionConfigService.setInstance(new AlbionConfigService(AlbionCentre.PROPERTY_PREFIX, values))
     try {
-      assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 100.01bd, null, null)).toString())
+      assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 100.01bd, null, null)).toString())
       assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 100bd, null, null)).toString())
     } finally {
       AlbionConfigService.setInstance(null)
@@ -121,7 +120,7 @@ class AlbionAPRDisclosureHelperTest extends TestBase {
     AlbionConfigService.setInstance(new AlbionConfigService(AlbionCentre.PROPERTY_PREFIX, new java.util.HashMap<String, String>()))
     try {
       assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 10000bd, null, null)).toString())
-      assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 10000.01bd, null, null)).toString())
+      assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 10000.01bd, null, null)).toString())
     } finally {
       AlbionConfigService.setInstance(null)
     }
