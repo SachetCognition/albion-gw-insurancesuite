@@ -28,6 +28,8 @@ Sensitive values are replaced by ${PREFIX_KEY_NAME} tokens (key uppercased, '.' 
   <p>.sanctions.worldcheck.url                    sanctions-screening partner endpoint
   <p>.paragon.sftp.host                           Paragon print SFTP host
   <p>.novabank.callback.url                       legacy partner callback (partner exited 2019)
+  <p>.integration.spool.dir                       outbound flat-file spool directory (bi/cl/co/po only;
+                                                  not secret, value supplied at deploy time)
 
   e.g. cl.db.password=${CL_DB_PASSWORD}
 
