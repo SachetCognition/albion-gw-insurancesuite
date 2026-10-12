@@ -9,11 +9,15 @@ Usage:
 
 Categories:
     E1-E10  centre entity/typelist/class/PCF/registry/scheduler/rule references
+    E11     ActivityPattern codes used by raiseActivity/findPattern/Code queries but absent from
+            the centre's config/import admin data (W11 warns on defined-but-unreferenced patterns)
+    E12     "*_Ext" field names in string literals (getFieldValue/setFieldValue/isFieldChanged/
+            getOriginalValue or other lookups) that no entity, typelist or entity extension defines
     J1, R1  placeholder classes and rules not in Guidewire format
     T1      meta/tell markers in files
     B1-B4   Control-M conditions, Control-M job to JCL member mapping, JOB card agreement
 
-Exit status: 0 when no findings, 1 when any finding is reported.
+Exit status: 0 when no findings, 1 when any finding is reported. Warnings (W*) never fail the run.
 """
 import argparse, os, re, sys, collections
 
@@ -55,10 +59,15 @@ def strip_comments(s):
 
 
 report = collections.OrderedDict()
+warnings = collections.OrderedDict()
 
 
 def add(cat, centre, item, where):
     report.setdefault(cat, collections.defaultdict(list))[(centre, item)].append(os.path.relpath(where, root))
+
+
+def warn(cat, centre, item, where):
+    warnings.setdefault(cat, collections.defaultdict(list))[(centre, item)].append(os.path.relpath(where, root))
 
 
 def audit_centre(cc, base):
@@ -122,6 +131,44 @@ def audit_centre(cc, base):
         if p.endswith('.pcf') or p.endswith(('.gs','.gsx')):
             for ref in set(re.findall(r'\bdef="(\w+)\(', s)) | set(re.findall(r'\b(Albion\w+)\.(?:go|push|drilldown)\(', s)):
                 if ref.startswith('Albion') and ref not in pcfids: add('E6 PCF ref to missing screen', cc, ref, p)
+    # --- activity patterns (E11) and string field references (E12)
+    patterns = {}
+    for p in files(base, {'xml'}):
+        if '/import/' not in p:
+            continue
+        s = re.sub(r'<!--.*?-->', '', read(p), flags=re.S)
+        for body in re.findall(r'<ActivityPattern\b(.*?)(?:/>|</ActivityPattern>)', s, re.S):
+            code = re.search(r'\bcode="(\w+)"|<Code>\s*(\w+)\s*</Code>', body, re.I)
+            if code:
+                patterns[code.group(1) or code.group(2)] = p
+    used_patterns = set()
+    for p in files(base, {'gs', 'gsx', 'gr', 'pcf'}):
+        if '/gtest/' in p:
+            continue
+        s = read(p)
+        code_refs = set(re.findall(r'\braiseActivity\(\s*[^,()]*(?:\([^()]*\))?[^,()]*,\s*"(\w+)"', s))
+        code_refs |= set(re.findall(r'\bfindPattern\(\s*"(\w+)"', s))
+        code_refs |= set(re.findall(r'ActivityPattern#Code\s*,\s*Relop\.Equals\s*,\s*"(\w+)"', s))
+        for code in code_refs:
+            used_patterns.add(code)
+            if code not in patterns:
+                add('E11 ActivityPattern code not defined in import admin data', cc, code, p)
+        if p.endswith('.pcf'):
+            continue
+        body = re.sub(r'/\*.*?\*/', '', s, flags=re.S)
+        body = '\n'.join(re.sub(r'//.*$', '', l) for l in body.split('\n'))
+        accessor = set(re.findall(r'\b(?:get|set)FieldValue\(\s*"(\w+_Ext)"', body))
+        accessor |= set(re.findall(r'\b(?:isFieldChanged|getOriginalValue)\(\s*"(\w+_Ext)"', body))
+        for name in accessor:
+            if name not in fields:
+                add('E12 string field reference not defined on any entity', cc, name, p)
+        for name in set(re.findall(r'"(\w+_Ext)"', body)) - accessor:
+            if name not in fields and name not in entities and name not in tl:
+                add('E12 string field reference not defined on any entity', cc, name, p)
+    for code, p in patterns.items():
+        if code not in used_patterns:
+            warn('W11 ActivityPattern defined but not referenced by code', cc, code, p)
+
     # --- registries
     for p in files(base, {'xml','gwp'}):
         s = re.sub(r'<!--.*?-->','',read(p),flags=re.S)
@@ -209,6 +256,11 @@ if 'batch' in selected:
 for cat, items in report.items():
     by = collections.Counter(c for c, _ in items)
     print(f'{cat}: {len(items)} distinct  ' + ' '.join(f'{c}={n}' for c, n in sorted(by.items())))
+    for (c, i), ws in list(items.items())[:args.detail]:
+        print(f'    [{c}] {i}  ({len(ws)} files, e.g. {ws[0]})')
+for cat, items in warnings.items():
+    by = collections.Counter(c for c, _ in items)
+    print(f'{cat} (warning, not counted): {len(items)} distinct  ' + ' '.join(f'{c}={n}' for c, n in sorted(by.items())))
     for (c, i), ws in list(items.items())[:args.detail]:
         print(f'    [{c}] {i}  ({len(ws)} files, e.g. {ws[0]})')
 total = sum(len(items) for items in report.values())

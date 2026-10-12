@@ -32,4 +32,4 @@ Spreadsheet-submitted schedules are re-keyed by an offshore team into a staging 
 | 24-Jul-2014 | DEF-38580 | Initial process onboarded from POLARIS ops manual ch.6 |
 | 20-Mar-2017 | HERIT-32408 | Mercury op-model re-segmentation |
 | 15-Apr-2021 | AGI-38080 | Whiplash reform / OIC portal fork added |
-| 17-May-2022 | CHG-22692 | Consumer Duty outcome-testing checkpoints bolted on |
+| 17-May-2022 | CHG-22692 | Consumer Duty outcome-testing checkpoints added |

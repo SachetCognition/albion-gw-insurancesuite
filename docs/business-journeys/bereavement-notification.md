@@ -32,4 +32,4 @@ Suppression reaches the outbound dialler file via a nightly batch; a death notif
 | 19-Nov-2015 | GWCC-32567 | Initial process onboarded from POLARIS ops manual ch.13 |
 | 22-Sep-2017 | HERIT-21544 | Mercury op-model re-segmentation |
 | 27-Feb-2019 | CHG-45368 | Whiplash reform / OIC portal fork added |
-| 25-Oct-2023 | INC-46306 | Consumer Duty outcome-testing checkpoints bolted on |
+| 25-Oct-2023 | INC-46306 | Consumer Duty outcome-testing checkpoints added |

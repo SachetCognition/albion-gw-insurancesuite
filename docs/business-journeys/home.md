@@ -32,4 +32,4 @@ The drying-vendor CSV has a column order change every time the vendor releases; 
 | 22-Sep-2013 | AGI-19304 | Initial process onboarded from POLARIS ops manual ch.3 |
 | 21-Dec-2017 | AGI-38460 | Mercury op-model re-segmentation |
 | 14-Jun-2020 | REG-34716 | Whiplash reform / OIC portal fork added |
-| 21-Sep-2023 | INC-33982 | Consumer Duty outcome-testing checkpoints bolted on |
+| 21-Sep-2023 | INC-33982 | Consumer Duty outcome-testing checkpoints added |

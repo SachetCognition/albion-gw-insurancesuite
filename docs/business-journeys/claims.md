@@ -32,4 +32,4 @@ The two screening services disagree on 'Ł' vs 'L' transliteration. Compliance m
 | 05-Apr-2015 | GWCC-31450 | Initial process onboarded from POLARIS ops manual ch.15 |
 | 25-Jun-2016 | REG-1958 | Mercury op-model re-segmentation |
 | 08-Jul-2019 | CM-31566 | Whiplash reform / OIC portal fork added |
-| 09-Feb-2025 | REG-43444 | Consumer Duty outcome-testing checkpoints bolted on |
+| 09-Feb-2025 | REG-43444 | Consumer Duty outcome-testing checkpoints added |

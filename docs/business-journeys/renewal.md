@@ -34,4 +34,4 @@ Heritage book renewals run through a SEPARATE batch (HeritageRenewalInviteBatch)
 | 14-Jan-2014 | REG-5727 | Initial process onboarded from POLARIS ops manual ch.18 |
 | 05-Sep-2016 | DEF-39890 | Mercury op-model re-segmentation |
 | 08-Sep-2020 | GWCC-6110 | Whiplash reform / OIC portal fork added |
-| 10-Oct-2024 | CM-5378 | Consumer Duty outcome-testing checkpoints bolted on |
+| 10-Oct-2024 | CM-5378 | Consumer Duty outcome-testing checkpoints added |

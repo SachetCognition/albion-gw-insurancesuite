@@ -32,4 +32,4 @@ Surge mode is toggled via a script_parameter changed directly in prod DB by DBAs
 | 27-Oct-2014 | CHG-4949 | Initial process onboarded from POLARIS ops manual ch.8 |
 | 03-Nov-2018 | CM-44022 | Mercury op-model re-segmentation |
 | 14-Dec-2019 | DEF-12991 | Whiplash reform / OIC portal fork added |
-| 27-Aug-2023 | PRB-23105 | Consumer Duty outcome-testing checkpoints bolted on |
+| 27-Aug-2023 | PRB-23105 | Consumer Duty outcome-testing checkpoints added |

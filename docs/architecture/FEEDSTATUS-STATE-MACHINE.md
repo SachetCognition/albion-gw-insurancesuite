@@ -2,6 +2,9 @@
 
 ## Scope and evidence
 
+The counts below are the Phase 0 baseline scan and are kept as the reference for parity testing. Since that scan the rules have been converted from XML to native Guidewire rule sets (`.grs` plus one `.gr` per rule under `config/rules/rules/`), so rule file counts in the current tree differ; re-run the scan before relying on a count.
+
+
 `FeedStatus_Ext` is a nullable `varchar`, not a typekey and not a state-machine entity. A repository-wide scan finds 388 consumers:
 
 | Consumer type | Count | Behaviour |
@@ -72,7 +75,7 @@ Every row below:
 - has no date bound, with a comment warning that a bad run can re-select **1.4 million heritage rows**;
 - catches `Exception`, logs it, and continues;
 - includes the comment “**we have swallowed real errors for years**”;
-- is declared in both the named Control-M XML and `scheduler-config.xml`; comments say Control-M is live in production and the DR choice is uncertain.
+- names a Control-M job and definition in its class header and has a `scheduler-config.xml` entry; the header comments say Control-M is live in production and the DR choice is unconfirmed. The named definitions are not held in `batch/controlm/`, which mirrors only the 18 interface jobs, so the Control-M side cannot be verified from this repository.
 
 | Centre | Batch consumer | Control-M job / definition | Transition on success | Unbounded-query reference |
 |---|---|---|---|---|
@@ -169,7 +172,7 @@ The scripts have names dated from 2015 through 2026. Their existence means the e
 
 ## Operational risks to preserve in the baseline
 
-1. **Double scheduling:** every batch declares both a Control-M definition and a `scheduler-config.xml` schedule. The source comments say one is meant to be disabled per environment, production uses Control-M, and DR ownership is uncertain.
+1. **Double scheduling:** every batch names a Control-M definition (held only in the production scheduler, not in `batch/controlm/`) as well as a `scheduler-config.xml` schedule. The source comments say one is meant to be disabled per environment, production uses Control-M, and DR ownership is uncertain.
 2. **Unbounded selection:** all 29 batches query all `PENDING` rows without a date bound. The source explicitly warns that a run can re-select 1.4 million heritage rows.
 3. **Swallowed row failures:** all 29 catch broad `Exception`, print the error, and continue. The source says, “we have swallowed real errors for years.” The row remains `PENDING`.
 4. **No retry state:** repeated selection is the retry mechanism. There is no attempt counter, next-attempt time, terminal failure, or idempotency token.
