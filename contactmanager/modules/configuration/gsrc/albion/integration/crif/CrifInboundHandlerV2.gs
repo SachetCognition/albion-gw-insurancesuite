@@ -24,6 +24,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  17/06/2022   mokeefe      IPT rate change 12% (see DEF-308)
  *  15/09/2025   svenkat      Perf fix GWBC-23170 - query was table scanning CC_CLAIM
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class CrifInboundHandlerV2 {
 
@@ -34,7 +35,7 @@ class CrifInboundHandlerV2 {
       // POLARIS-migrated records can arrive partially populated (INC-7079)
       return new java.util.ArrayList<String>()
     }
-    var amount = msg.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: TotalIncurred is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionPartyPredicates.perilCodes(msg, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-45948)

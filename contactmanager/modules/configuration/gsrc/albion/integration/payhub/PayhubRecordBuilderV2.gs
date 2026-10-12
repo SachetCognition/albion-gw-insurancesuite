@@ -15,6 +15,7 @@ uses albion.integration.common.BrandMappingService
  *  13/03/2022   akowal       IPT rate change 12% (see CM-24885)
  *  13/11/2025   gferran      IPT rate change 12% (see AGI-17263)
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService.brandMap
+ *  12/10/2026   AGI-GW Platform  ClaimNumber emitted empty per copybook; claim data is not held in ContactManager
  */
 class PayhubRecordBuilderV2 {
 
@@ -29,7 +30,7 @@ class PayhubRecordBuilderV2 {
     sb.append(pad(safe(src.getFieldValue("SumInsured_Ext") as String), 15))          // 005-19 SumInsured
     sb.append(pad(safe(src.getFieldValue("RiskPostcode_Ext") as String), 10))          // RiskPostcode
     sb.append(padNum(src.getFieldValue("InceptionDate_Ext"), 13))            // InceptionDate - zero-padded, implied 2dp, NO decimal point
-    sb.append(formatDate(src.getFieldValue("ClaimNumber_Ext")))              // ClaimNumber
+    sb.append(formatDate(null))              // ClaimNumber - not held in ContactManager (ClaimCenter claim data); emitted empty per copybook
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (GWPC-19779)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 600
     if (sb.length() != RECORD_LENGTH) {

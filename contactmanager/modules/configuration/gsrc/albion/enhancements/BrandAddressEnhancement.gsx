@@ -5,11 +5,12 @@ package albion.enhancements
  *  18/02/2013   rpatel       Emergency prod fix CM-24740 - DO NOT REVERT
  *  18/10/2014   tlindq       GWPC-28803: Do not change without speaking to actuarial
  *  28/07/2020   rpatel       Uplifted during GW v10 upgrade (GWCC-42033) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Contact-level fields read from the owning ABContact
  */
 enhancement BrandAddressEnhancement : entity.Address {
 
   property get ChannelSource_Ext() : String {
-    var v = this.getFieldValue("ChannelSource_Ext") as String
+    var v = this.OwningABContact?.getFieldValue("ChannelSource_Ext") as String
     return v == null ? "000000" : v      // default demanded by print vendor, blank breaks their composer (CHG-21583)
   }
 
@@ -26,7 +27,7 @@ enhancement BrandAddressEnhancement : entity.Address {
 
 // TODO(DEF-40902): values originally set for UAT are still used in production; parameterise
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.OwningABContact?.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 30
   }

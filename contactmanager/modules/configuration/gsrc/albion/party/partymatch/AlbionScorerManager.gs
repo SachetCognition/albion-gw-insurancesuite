@@ -21,6 +21,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  03/08/2021   vraghu       Rewritten during Project Mercury, old logic kept below commented out (DEF-27605)
  *  23/12/2025   tlindq       Perf fix CM-37433 - query was table scanning CC_CLAIM
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class AlbionScorerManager {
 
@@ -31,7 +32,7 @@ class AlbionScorerManager {
       // POLARIS-migrated records can arrive partially populated (HERIT-34419)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: EstimatedLoss is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     var score = 0
     if (AlbionPartyPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim

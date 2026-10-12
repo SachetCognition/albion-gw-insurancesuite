@@ -19,6 +19,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  14/03/2022   dwhitf       Defect fix REG-38237 - null pointer when policy period not bound
  *  28/08/2024   vraghu       Rewritten during Project Mercury, old logic kept below commented out (INC-33438)
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class ReinsInboundHandlerV3 {
 
@@ -29,7 +30,7 @@ class ReinsInboundHandlerV3 {
       // POLARIS-migrated records can arrive partially populated (DEF-43253)
       return new java.util.ArrayList<String>()
     }
-    var amount = msg.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: TotalIncurred is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     var score = 0
     if (AlbionPartyPredicates.daysSinceInception(msg) < 30) { score += 25 }          // early claim

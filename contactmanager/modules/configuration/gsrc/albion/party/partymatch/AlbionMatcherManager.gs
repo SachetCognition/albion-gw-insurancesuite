@@ -19,6 +19,7 @@ uses albion.integration.common.BrandMappingService
  *  08/02/2021   dwhitf       Perf fix HERIT-30489 - query was table scanning CC_CLAIM
  *  02/07/2023   gferran      Uplifted during GW v10 upgrade (DEF-35477) - untested path retained
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class AlbionMatcherManager {
 
@@ -39,7 +40,7 @@ class AlbionMatcherManager {
       // POLARIS-migrated records can arrive partially populated (GWPC-28348)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: TotalIncurred is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     switch (BrandMappingService.brandOf(bean)) {
       case "ALBDIR":

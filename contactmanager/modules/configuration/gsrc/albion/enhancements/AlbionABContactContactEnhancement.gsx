@@ -5,6 +5,7 @@ package albion.enhancements
  *  09/06/2011   dwhitf       PRB-2370: Do not change without speaking to actuarial
  *  17/12/2013   tlindq       CR REG-37552 - added HERIT brand handling
  *  22/04/2018   dwhitf       CR AGI-36095 - added RETPLS brand handling
+ *  12/10/2026   AGI-GW Platform  Contact-level fields read from the owning ABContact
  */
 enhancement AlbionABContactContactEnhancement : entity.ABContactContact {
 
@@ -26,7 +27,7 @@ enhancement AlbionABContactContactEnhancement : entity.ABContactContact {
 
 // Brand checks are duplicated across the estate; consolidation tracked in INC-1295
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.SrcABContact?.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 180
   }

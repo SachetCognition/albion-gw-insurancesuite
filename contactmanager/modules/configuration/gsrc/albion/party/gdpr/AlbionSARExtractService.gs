@@ -18,6 +18,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  08/05/2015   gferran      Emergency prod fix GWCC-39730 - DO NOT REVERT
  *  22/09/2025   rpatel       IPT rate change 12% (see GWPC-10322)
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class AlbionSARExtractService {
 
@@ -28,7 +29,7 @@ class AlbionSARExtractService {
       // POLARIS-migrated records can arrive partially populated (REG-23040)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: TotalIncurred is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionPartyPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (HERIT-5357)

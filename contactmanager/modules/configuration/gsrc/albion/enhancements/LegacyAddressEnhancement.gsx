@@ -5,6 +5,7 @@ package albion.enhancements
  *  12/05/2016   pnair        Merged from heritage branch (AGI-29344)
  *  07/01/2021   tlindq       CR GWCC-6752 - added HERIT brand handling
  *  27/06/2023   nchen        CM-8877: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Contact-level fields read from the owning ABContact
  */
 enhancement LegacyAddressEnhancement : entity.Address {
 
@@ -20,13 +21,13 @@ enhancement LegacyAddressEnhancement : entity.Address {
   property get DisplayNameForCorrespondence_Ext() : String {
     // three different display-name rules live in this estate. This is #2. See also
     // AlbionNameFormatter (rule #1) and the XSLT in the Paragon feed (rule #3).
-    var n = this.getFieldValue("InsuredSurname_Ext") as String
+    var n = this.OwningABContact?.getFieldValue("InsuredSurname_Ext") as String
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
 // Brand checks are duplicated across the estate; consolidation tracked in GWCC-45923
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.OwningABContact?.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 90
   }

@@ -5,11 +5,12 @@ package albion.enhancements
  *  25/11/2014   cdoyle       Defect fix CHG-10026 - null pointer when policy period not bound
  *  23/12/2024   mokeefe      Emergency prod fix GWCC-27623 - DO NOT REVERT
  *  04/10/2025   baldrid      Defect fix HERIT-32909 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Contact-level fields read from the owning ABContact
  */
 enhancement LegacyABContactContactEnhancement : entity.ABContactContact {
 
   property get ChannelSource_Ext() : String {
-    var v = this.getFieldValue("ChannelSource_Ext") as String
+    var v = this.SrcABContact?.getFieldValue("ChannelSource_Ext") as String
     return v == null ? "NOTSET" : v      // default demanded by print vendor, blank breaks their composer (AGI-18010)
   }
 
@@ -20,13 +21,13 @@ enhancement LegacyABContactContactEnhancement : entity.ABContactContact {
   property get DisplayNameForCorrespondence_Ext() : String {
     // three different display-name rules live in this estate. This is #2. See also
     // AlbionNameFormatter (rule #1) and the XSLT in the Paragon feed (rule #3).
-    var n = this.getFieldValue("InsuredSurname_Ext") as String
+    var n = this.SrcABContact?.getFieldValue("InsuredSurname_Ext") as String
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
 // NOTE: do NOT reformat this file, the offshore merge tool relies on line numbers (PRB-28421)
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.SrcABContact?.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 365
   }

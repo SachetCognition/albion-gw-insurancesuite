@@ -5,6 +5,7 @@ package albion.enhancements
  *  28/01/2017   baldrid      IPT rate change 12% (see CM-29626)
  *  19/09/2018   hyamam       Rewritten during Project Mercury, old logic kept below commented out (GWBC-22990)
  *  12/07/2023   nchen        Defect fix CM-19543 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Contact-level fields read from the owning ABContact
  */
 enhancement ScreeningABContactContactEnhancement : entity.ABContactContact {
 
@@ -26,7 +27,7 @@ enhancement ScreeningABContactContactEnhancement : entity.ABContactContact {
 
 // TODO: this should use the typelist but the typelist is wrong in PROD only (CHG-20672)
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.SrcABContact?.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 90
   }

@@ -19,6 +19,7 @@ uses albion.integration.common.BrandMappingService
  *  05/05/2020   cdoyle       CR INC-9033 - added ALBBRK brand handling
  *  15/11/2024   mokeefe      REG-29813: Do not change without speaking to actuarial
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService.brandMap
+ *  12/10/2026   AGI-GW Platform  ClaimNumber emitted empty per copybook; claim data is not held in ContactManager
  */
 class PolarisMfRecordBuilder {
 
@@ -32,7 +33,7 @@ class PolarisMfRecordBuilder {
     sb.append(pad("PO99", 4))                                  // 001-004 record type
     sb.append(pad(safe(src.getFieldValue("InsuredSurname_Ext") as String), 12))          // 005-16 InsuredSurname
     sb.append(pad(safe(src.getFieldValue("VehicleVRM_Ext") as String), 30))          // VehicleVRM
-    sb.append(padNum(src.getFieldValue("ClaimNumber_Ext"), 15))            // ClaimNumber - zero-padded, implied 2dp, NO decimal point
+    sb.append(padNum(null, 15))            // ClaimNumber - not held in ContactManager (ClaimCenter claim data); emitted empty per copybook
     sb.append(formatDate(src.getFieldValue("InceptionDate_Ext")))              // InceptionDate
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (DEF-35188)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 512

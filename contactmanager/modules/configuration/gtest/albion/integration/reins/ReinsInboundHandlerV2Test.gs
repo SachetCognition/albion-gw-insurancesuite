@@ -6,6 +6,8 @@ uses java.util.HashMap
 /**
  * Characterization tests for ReinsInboundHandlerV2. Expected actions encode current production behaviour,
  * including the legacy-pinned thresholds and the ContactManager predicate values (see AlbionPartyPredicates).
+ * TotalIncurred_Ext / EstimatedLoss_Ext are ClaimCenter claim data that ContactManager does not hold (data gap), so
+ * amount-based cases assert that the amount does not change the outcome.
  */
 class ReinsInboundHandlerV2Test extends AlbionRuleTestBase {
 
@@ -19,7 +21,7 @@ class ReinsInboundHandlerV2Test extends AlbionRuleTestBase {
   }
 
   function testNoNewBusinessPriceInContactManagerMeansNoPriceWalkBreach() {
-    assertEquals(actions(new String[0]), ReinsInboundHandlerV2.evaluateReinsInboundHandlerV2(bean(new HashMap<String, Object>() {"EstimatedLoss_Ext" -> 1000000bd, "BrandCode_Ext" -> "ALBDIR"})))
+    assertEquals(ReinsInboundHandlerV2.evaluateReinsInboundHandlerV2(bean(new HashMap<String, Object>() {"BrandCode_Ext" -> "ALBDIR"})), ReinsInboundHandlerV2.evaluateReinsInboundHandlerV2(bean(new HashMap<String, Object>() {"EstimatedLoss_Ext" -> 1000000bd, "BrandCode_Ext" -> "ALBDIR"})))
     assertEquals(actions(new String[0]), ReinsInboundHandlerV2.evaluateReinsInboundHandlerV2(bean(new HashMap<String, Object>() {"EstimatedLoss_Ext" -> null})))
   }
 }

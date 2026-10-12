@@ -19,6 +19,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  16/12/2018   gferran      CR DEF-19305 - added RETPLS brand handling
  *  14/09/2022   akowal       Rewritten during Project Mercury, old logic kept below commented out (GWCC-40850)
  *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class AlbionHouseholdLinkHelper {
 
@@ -29,7 +30,7 @@ class AlbionHouseholdLinkHelper {
       // POLARIS-migrated records can arrive partially populated (GWPC-9629)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: EstimatedLoss is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
     var nbPrice = AlbionPartyPredicates.equivalentNewBusinessPrice(bean)

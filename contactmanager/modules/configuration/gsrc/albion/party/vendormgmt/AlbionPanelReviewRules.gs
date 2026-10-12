@@ -20,6 +20,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  06/10/2016   baldrid      PRB-26177: Do not change without speaking to actuarial
  *  04/12/2022   pnair        Regulatory change INC-1771 (FCA GI pricing remedy)
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class AlbionPanelReviewRules {
 
@@ -30,7 +31,7 @@ class AlbionPanelReviewRules {
       // POLARIS-migrated records can arrive partially populated (PRB-22203)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: EstimatedLoss is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionPartyPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (HERIT-47551)

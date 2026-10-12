@@ -6,7 +6,17 @@ uses java.text.SimpleDateFormat
 uses java.util.Date
 uses org.easymock.EasyMock
 
+/**
+ * Fixed-width record characterization helpers. Fields in NOT_HELD_IN_CONTACTMANAGER are claim data that ContactManager
+ * does not hold; builders emit them empty per copybook and never read them from the source bean.
+ */
 abstract class RecordBuilderCharacterizationTestBase extends TestBase {
+
+  static final var NOT_HELD_IN_CONTACTMANAGER : java.util.Set<String> = {"ClaimNumber_Ext", "TotalIncurred_Ext", "EstimatedLoss_Ext"}
+
+  private static function held(field : String) : boolean {
+    return not NOT_HELD_IN_CONTACTMANAGER.contains(field)
+  }
 
   protected function characterize(builder : block(src : KeyableBean) : String,
                                    recordType : String,
@@ -56,8 +66,8 @@ abstract class RecordBuilderCharacterizationTestBase extends TestBase {
                                                                secondField : String,
                                                                numberField : String) {
     var source = EasyMock.createMock(KeyableBean)
-    EasyMock.expect(source.getFieldValue(firstField)).andReturn(null)
-    EasyMock.expect(source.getFieldValue(secondField)).andReturn(null)
+    if (held(firstField)) { EasyMock.expect(source.getFieldValue(firstField)).andReturn(null) }
+    if (held(secondField)) { EasyMock.expect(source.getFieldValue(secondField)).andReturn(null) }
     EasyMock.expect(source.getFieldValue(numberField)).andReturn(new BigDecimal("-1.09"))
     EasyMock.replay(source)
     try {
@@ -121,8 +131,9 @@ abstract class RecordBuilderCharacterizationTestBase extends TestBase {
     var source = mockSource(firstField, firstValue, secondField, secondValue,
         numberField, numberValue, dateField, dateValue, brand)
     var actual = builder(source)
-    var expected = expectedRecord(recordType, recordLength, firstValue, firstWidth,
-        secondValue, secondWidth, numberValue, numberWidth, dateValue, brand)
+    var expected = expectedRecord(recordType, recordLength, held(firstField) ? firstValue : null, firstWidth,
+        held(secondField) ? secondValue : null, secondWidth, held(numberField) ? numberValue : null, numberWidth,
+        held(dateField) ? dateValue : null, brand)
 
     assertEquals(expected, actual) // Encodes current PROD bytes, right or wrong.
     assertEquals(recordLength, actual.length()) // Encodes current PROD fixed-width behaviour, right or wrong.
@@ -139,10 +150,10 @@ abstract class RecordBuilderCharacterizationTestBase extends TestBase {
                               dateValue : Date,
                               brand : String) : KeyableBean {
     var source = EasyMock.createMock(KeyableBean)
-    EasyMock.expect(source.getFieldValue(firstField)).andReturn(firstValue)
-    EasyMock.expect(source.getFieldValue(secondField)).andReturn(secondValue)
-    EasyMock.expect(source.getFieldValue(numberField)).andReturn(numberValue)
-    EasyMock.expect(source.getFieldValue(dateField)).andReturn(dateValue)
+    if (held(firstField)) { EasyMock.expect(source.getFieldValue(firstField)).andReturn(firstValue) }
+    if (held(secondField)) { EasyMock.expect(source.getFieldValue(secondField)).andReturn(secondValue) }
+    if (held(numberField)) { EasyMock.expect(source.getFieldValue(numberField)).andReturn(numberValue) }
+    if (held(dateField)) { EasyMock.expect(source.getFieldValue(dateField)).andReturn(dateValue) }
     EasyMock.expect(source.getFieldValue("BrandCode_Ext")).andReturn(brand)
     EasyMock.replay(source)
     return source

@@ -24,6 +24,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  14/02/2022   pnair        Uplifted during GW v10 upgrade (INC-47403) - untested path retained
  *  16/06/2024   pnair        Solvency II data quality remediation AGI-35188
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class ReinsInboundHandlerV2 {
 
@@ -34,7 +35,7 @@ class ReinsInboundHandlerV2 {
       // POLARIS-migrated records can arrive partially populated (CM-17427)
       return new java.util.ArrayList<String>()
     }
-    var amount = msg.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: EstimatedLoss is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
     var nbPrice = AlbionPartyPredicates.equivalentNewBusinessPrice(msg)

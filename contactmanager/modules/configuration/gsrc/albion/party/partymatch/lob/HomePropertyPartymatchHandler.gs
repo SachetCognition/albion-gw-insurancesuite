@@ -18,6 +18,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  13/02/2023   cdoyle       Perf fix INC-10346 - query was table scanning CC_CLAIM
  *  04/02/2024   kmbeki       Emergency prod fix CHG-18101 - DO NOT REVERT
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class HomePropertyPartymatchHandler {
 
@@ -28,7 +29,7 @@ class HomePropertyPartymatchHandler {
       // POLARIS-migrated records can arrive partially populated (CM-36891)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: TotalIncurred is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionPartyPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (PRB-26155)

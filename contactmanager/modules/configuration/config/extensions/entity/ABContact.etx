@@ -11,4 +11,51 @@
   <column name="ChannelCode_Ext" type="varchar" desc="added 18-Sep-2011 for REG-2819" nullok="true"/>
   <column name="VulnerabilityNoted_Ext" type="bit" desc="Customer flagged as vulnerable under FCA FG21/1; drives vulnerable-customer handling on Albion screens" nullok="true"/>
   <column name="SchemeCode_Ext" type="varchar" desc="Albion scheme (affinity/broker scheme) code the contact was written under" nullok="true"/>
+  <column name="InsuredSurname_Ext" type="varchar" desc="Policyholder surname (company name for corporate parties) as carried on the POLARIS party record; used by the print and bureau feeds" nullok="true">
+    <columnParam name="size" value="40"/>
+  </column>
+  <column name="NINumber_Ext" type="varchar" desc="National Insurance number, individuals only; encrypted at rest" nullok="true">
+    <columnParam name="size" value="9"/>
+    <columnParam name="encryption" value="true"/>
+  </column>
+  <column name="ERNRef_Ext" type="varchar" desc="Employer reference number (PAYE ERN) for employer parties; reported on the ELTO and bureau feeds" nullok="true">
+    <columnParam name="size" value="14"/>
+  </column>
+  <column name="TradingName_Ext" type="varchar" desc="Trading-as name for sole traders and companies" nullok="true">
+    <columnParam name="size" value="60"/>
+  </column>
+  <column name="AgencyRef_Ext" type="varchar" desc="Broker agency reference the party is serviced through; print vendor default NOTSET when absent (AGI-45870)" nullok="true">
+    <columnParam name="size" value="20"/>
+  </column>
+  <column name="LastSanctionsScreen_Ext" type="datetime" desc="Date of the last sanctions (WorldCheck) screen for the party; drives the 365-day rescreen" nullok="true"/>
+  <column name="ChannelSource_Ext" type="varchar" desc="POLARIS source-channel code the party was captured through; print vendor default 000000 when absent" nullok="true">
+    <columnParam name="size" value="6"/>
+  </column>
+  <!-- Policyholder summary carried on the inbound POLARIS party record and re-emitted on the outbound bureau feeds. The policy itself is mastered in PolicyCenter/POLARIS. -->
+  <column name="PolicyNumber_Ext" type="varchar" desc="Primary policy number on the POLARIS party record" nullok="true">
+    <columnParam name="size" value="20"/>
+  </column>
+  <column name="InceptionDate_Ext" type="datetime" desc="Inception date of the primary policy on the POLARIS party record" nullok="true"/>
+  <column name="SumInsured_Ext" type="decimal" desc="Sum insured of the primary policy on the POLARIS party record (GBP)" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="AnnualPremium_Ext" type="decimal" desc="Annual premium of the primary policy on the POLARIS party record (GBP)" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="IPTAmount_Ext" type="decimal" desc="Insurance Premium Tax on AnnualPremium_Ext, set by the screening feed batch (GBP)" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="VehicleVRM_Ext" type="varchar" desc="Vehicle registration mark of the primary motor policy" nullok="true">
+    <columnParam name="size" value="8"/>
+  </column>
+  <column name="UPRN_Ext" type="varchar" desc="Unique Property Reference Number of the primary property risk" nullok="true">
+    <columnParam name="size" value="12"/>
+  </column>
+  <column name="RiskPostcode_Ext" type="varchar" desc="Postcode of the primary policy risk address (may differ from the correspondence address)" nullok="true">
+    <columnParam name="size" value="10"/>
+  </column>
+  <column name="FloodReCeded_Ext" type="bit" desc="Primary property risk is ceded to Flood Re" nullok="true"/>
 </extension>
