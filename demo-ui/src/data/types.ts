@@ -143,6 +143,7 @@ export interface RepoFacts {
     gaps: { title: string; detail: string }[]
     systemicIssues: string[]
   }
+  migration: MigrationFacts
 }
 
 /*
@@ -192,4 +193,40 @@ export interface MigrationEvidence {
   shadowRuns: ShadowRunResult[]
   reconciliation: ReconciliationResult[]
   cutover: CutoverState[]
+}
+
+export interface ReplayTotals {
+  compared: number
+  matched: number
+  withinTolerance: number
+  breaches: number
+  candidateErrors: number
+  cutoverCandidateEmitted: number
+  cutoverReverted: number
+}
+
+export interface ReplayRun {
+  centre: CentreCode
+  source: string
+  status: string
+  totals: ReplayTotals
+  feeds: string[]
+  brands: { feed: string; brand: string; compared: number; matched: number; status: string }[]
+  outcomes: Record<string, number>
+}
+
+export interface MigrationFacts {
+  source: string
+  doc: string
+  schema: string
+  status: string
+  tolerance: string
+  runtime: string
+  negativeControl: string
+  generatedAt: string
+  fixtures: { path: string; cases: number }[]
+  runs: ReplayRun[]
+  totals: ReplayTotals
+  switches: { templates: number; shadowEnabled: number; shadowFeeds: number; cutoverFeeds: number }
+  reconBatchCentres: CentreCode[]
 }

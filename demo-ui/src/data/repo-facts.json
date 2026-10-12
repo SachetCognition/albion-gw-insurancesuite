@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-12 23:17 UTC",
-  "commit": "ea018d1",
+  "generatedAt": "2026-10-12 23:42 UTC",
+  "commit": "54fe646",
   "commitDate": "2026-10-12",
   "checks": {
     "drift": {
       "command": "python3 tools/scripts/check_brand_config_drift.py",
       "passed": true,
-      "output": "OK: 4 typelists identical (8 typecodes), 7 brand_xref rows consistent, 6 service files identical across 4 centres, 14 keys present in 40 env property files",
+      "output": "OK: 4 typelists identical (8 typecodes), 7 brand_xref rows consistent, 18 service files identical across 4 centres, 18 keys present in 40 env property files",
       "typelists": 4,
       "typecodes": 8,
       "xrefRows": 7,
-      "serviceFiles": 6,
+      "serviceFiles": 18,
       "centres": 4,
-      "keys": 14,
+      "keys": 18,
       "envFiles": 40
     },
     "coherence": {
@@ -81,8 +81,8 @@
       ],
       "activityPatterns": 13,
       "screens": 26,
-      "gosuClasses": 382,
-      "unitTests": 373,
+      "gosuClasses": 393,
+      "unitTests": 378,
       "entityExtensions": 22,
       "encryptedColumns": 1,
       "pluginRegistrations": 11,
@@ -150,8 +150,8 @@
       ],
       "activityPatterns": 20,
       "screens": 30,
-      "gosuClasses": 187,
-      "unitTests": 160,
+      "gosuClasses": 198,
+      "unitTests": 166,
       "entityExtensions": 20,
       "encryptedColumns": 1,
       "pluginRegistrations": 11,
@@ -214,8 +214,8 @@
       ],
       "activityPatterns": 15,
       "screens": 37,
-      "gosuClasses": 59,
-      "unitTests": 51,
+      "gosuClasses": 68,
+      "unitTests": 55,
       "entityExtensions": 15,
       "encryptedColumns": 0,
       "pluginRegistrations": 11,
@@ -324,8 +324,8 @@
       ],
       "activityPatterns": 18,
       "screens": 523,
-      "gosuClasses": 377,
-      "unitTests": 70,
+      "gosuClasses": 388,
+      "unitTests": 75,
       "entityExtensions": 406,
       "encryptedColumns": 3,
       "pluginRegistrations": 58,
@@ -355,8 +355,8 @@
     "ruleSets": 28,
     "activityPatterns": 66,
     "screens": 616,
-    "gosuClasses": 1005,
-    "unitTests": 654,
+    "gosuClasses": 1047,
+    "unitTests": 674,
     "encryptedColumns": 5,
     "outboundDestinations": 45,
     "copybooks": 18,
@@ -2447,7 +2447,7 @@
       },
       {
         "title": "Unscheduled batch.",
-        "detail": "Some interface feeds have JCL in `batch/jcl/adhoc/` but no Control-M job. The POLARIS heritage nightly sync is the first candidate for scheduling."
+        "detail": "Some interface feeds have JCL in `batch/jcl/adhoc/` but no Control-M job. The POLARIS heritage nightly sync is the first candidate for scheduling. `AlbionShadowReconciliationBatch` (CC/PC/CM) has no Control-M job or JCL member either; it runs on demand from the batch process console while a feed is shadow-run."
       }
     ],
     "systemicIssues": [
@@ -2461,6 +2461,7 @@
     "source": "docs/architecture/CONTROLS-AND-TOLERANCES.md",
     "controls": [
       "Reconciliation count tolerance",
+      "Strangler shadow reconciliation",
       "POLARIS end-of-day gate",
       "POLARIS knowledge prerequisite",
       "Break-glass and bridge access",
@@ -2472,5 +2473,264 @@
       "Legacy production-release validation"
     ],
     "reconciliationTolerance": null
+  },
+  "migration": {
+    "source": "tools/replay/evidence/replay-evidence.json",
+    "doc": "docs/migration/strangler-phase2-3.md",
+    "schema": "albion.shadow.replay/v1",
+    "status": "GREEN",
+    "tolerance": "exact",
+    "runtime": "open-source Gosu 1.17.5",
+    "negativeControl": "RED",
+    "generatedAt": "2026-10-12T23:36:30Z",
+    "fixtures": [
+      {
+        "path": "tools/replay/fixtures/ipt_cc.csv",
+        "cases": 17
+      },
+      {
+        "path": "tools/replay/fixtures/polaris_mf_pc.csv",
+        "cases": 16
+      },
+      {
+        "path": "tools/replay/fixtures/polaris_mf_cm.csv",
+        "cases": 12
+      }
+    ],
+    "runs": [
+      {
+        "centre": "cc",
+        "source": "offline-replay",
+        "status": "GREEN",
+        "totals": {
+          "compared": 17,
+          "matched": 17,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0
+        },
+        "feeds": [
+          "IPT"
+        ],
+        "brands": [
+          {
+            "feed": "IPT",
+            "brand": "ALBDIR",
+            "compared": 9,
+            "matched": 9,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "ALBBRK",
+            "compared": 2,
+            "matched": 2,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "RETPLS",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "HERIT",
+            "compared": 2,
+            "matched": 2,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "ALBHNW",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "NOVABK",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "SYNTST",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          }
+        ],
+        "outcomes": {
+          "MATCH": 17
+        }
+      },
+      {
+        "centre": "pc",
+        "source": "offline-replay",
+        "status": "GREEN",
+        "totals": {
+          "compared": 16,
+          "matched": 16,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0
+        },
+        "feeds": [
+          "POLARIS_MF"
+        ],
+        "brands": [
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBDIR",
+            "compared": 9,
+            "matched": 9,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBBRK",
+            "compared": 2,
+            "matched": 2,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "RETPLS",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "HERIT",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBHNW",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "NOVABK",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "SYNTST",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          }
+        ],
+        "outcomes": {
+          "MATCH": 16
+        }
+      },
+      {
+        "centre": "cm",
+        "source": "offline-replay",
+        "status": "GREEN",
+        "totals": {
+          "compared": 12,
+          "matched": 12,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0
+        },
+        "feeds": [
+          "POLARIS_MF"
+        ],
+        "brands": [
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBDIR",
+            "compared": 6,
+            "matched": 6,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBBRK",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "RETPLS",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "HERIT",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBHNW",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "NOVABK",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "SYNTST",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          }
+        ],
+        "outcomes": {
+          "MATCH": 12
+        }
+      }
+    ],
+    "totals": {
+      "compared": 45,
+      "matched": 45,
+      "withinTolerance": 0,
+      "breaches": 0,
+      "candidateErrors": 0,
+      "cutoverCandidateEmitted": 0,
+      "cutoverReverted": 0
+    },
+    "switches": {
+      "templates": 40,
+      "shadowEnabled": 0,
+      "shadowFeeds": 0,
+      "cutoverFeeds": 0
+    },
+    "reconBatchCentres": [
+      "cc",
+      "pc",
+      "cm"
+    ]
   }
 }

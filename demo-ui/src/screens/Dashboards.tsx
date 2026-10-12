@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Bar, EmptyEvidence, Panel, PlannedTag, ScreenHeader, Source, Stat } from '../components/ui'
+import { Bar, EmptyEvidence, Panel, ScreenHeader, Source, Stat } from '../components/ui'
 import { BRANDS, CENTRE_NAME, FACTS, MONTHLY_RECORDS_K, fmt } from '../data/facts'
 import { EVIDENCE, HAS_CUTOVER, HAS_RECON, HAS_SHADOW } from '../data/evidence'
 
@@ -186,21 +186,26 @@ export default function Dashboards() {
       <div>
         <div className="mb-3 flex items-center gap-3">
           <div className="eyebrow">Phase 2/3 scorecard</div>
-          {!(HAS_SHADOW || HAS_RECON || HAS_CUTOVER) && <PlannedTag />}
+          <span className="text-[11px] muted">Offline replay over synthetic cases; production results not yet available</span>
         </div>
         <div className="grid gap-4 lg:grid-cols-3">
           <Panel title="Parity">
             {HAS_SHADOW ? (
               <Stat label="Mismatches / records compared" value={`${fmt(shadowMismatches)} / ${fmt(shadowCompared)}`} tone="teal" />
             ) : (
-              <EmptyEvidence what="shadow-run results" />
+              <>
+                <Stat label="Offline replay: identical / cases" value={`${fmt(FACTS.migration.totals.matched)} / ${fmt(FACTS.migration.totals.compared)}`} tone="teal" />
+                <p className="mt-2 text-[11px] text-slate-500">
+                  Replay {FACTS.migration.status}, negative control {FACTS.migration.negativeControl}. Source: {FACTS.migration.source}
+                </p>
+              </>
             )}
           </Panel>
           <Panel title="Reconciliation">
             {HAS_RECON ? (
               <Stat label="Breaks / controls run" value={`${reconBreaks} / ${EVIDENCE.reconciliation.length}`} tone="teal" />
             ) : (
-              <EmptyEvidence what="reconciliation results" />
+              <EmptyEvidence what="production reconciliation results" />
             )}
           </Panel>
           <Panel title="Cutover">
@@ -211,7 +216,10 @@ export default function Dashboards() {
                 tone="teal"
               />
             ) : (
-              <EmptyEvidence what="cutover records" />
+              <>
+                <Stat label="Templates with cutover switched on" value={`${FACTS.migration.switches.cutoverFeeds} / ${FACTS.migration.switches.templates}`} tone="teal" />
+                <p className="mt-2 text-[11px] text-slate-500">Committed off; enabled per environment at deploy time. Source: environments/*/*.properties.template</p>
+              </>
             )}
           </Panel>
         </div>

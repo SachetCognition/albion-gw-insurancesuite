@@ -253,6 +253,32 @@ def control_facts():
             'reconciliationTolerance': tolerance.group(1) if tolerance else None}
 
 
+REPLAY_EVIDENCE = 'tools/replay/evidence/replay-evidence.json'
+
+
+def migration_facts():
+    ev = json.load(open(p(REPLAY_EVIDENCE), encoding='utf-8'))
+    runs = [{'centre': r['centre'], 'source': r['source'], 'status': r['status'], 'totals': r['totals'],
+             'feeds': sorted({x['feed'] for x in r['feeds']}),
+             'brands': [{k: x[k] for k in ('feed', 'brand', 'compared', 'matched', 'status')} for x in r['feeds']],
+             'outcomes': dict(collections.Counter(c['outcome'] for c in r.get('cases', [])))} for r in ev['runs']]
+    switches = {'templates': 0, 'shadowEnabled': 0, 'shadowFeeds': 0, 'cutoverFeeds': 0}
+    for t in walk('environments', '.properties.template'):
+        vals = dict(re.findall(r'^\w+\.(feature\.(?:shadow\.enabled|shadow\.feeds|cutover\.feeds))=(.*)$', read(t), re.M))
+        if not vals:
+            continue
+        switches['templates'] += 1
+        switches['shadowEnabled'] += vals.get('feature.shadow.enabled', 'false').strip() != 'false'
+        switches['shadowFeeds'] += bool(vals.get('feature.shadow.feeds', '').strip())
+        switches['cutoverFeeds'] += bool(vals.get('feature.cutover.feeds', '').strip())
+    return {'source': REPLAY_EVIDENCE, 'doc': 'docs/migration/strangler-phase2-3.md',
+            **{k: ev[k] for k in ('schema', 'status', 'tolerance', 'runtime', 'negativeControl', 'generatedAt')},
+            'fixtures': [{'path': x['path'], 'cases': x['cases']} for x in ev['fixtures']],
+            'runs': runs, 'totals': {k: sum(r['totals'][k] for r in ev['runs']) for k in ev['runs'][0]['totals']},
+            'switches': switches,
+            'reconBatchCentres': [code for code, _, top, *_ in CENTRES if any('AlbionShadowReconciliationBatch' in g for g in walk(top, '.gs'))]}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('--out', default=DEFAULT_OUT)
@@ -281,6 +307,7 @@ def main():
         'feedStatus': feedstatus_facts(),
         'estate': known_gaps(),
         'controls': control_facts(),
+        'migration': migration_facts(),
     }
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     with open(args.out, 'w', encoding='utf-8') as f:

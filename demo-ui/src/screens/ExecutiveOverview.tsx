@@ -4,6 +4,8 @@ import { Panel, PlannedTag, ScreenHeader, Source, Stat, Tag } from '../component
 import { BRANDS, FACTS, MONTHLY_RECORDS_K, TRANSPORT_PLUGINS, fmt, plain } from '../data/facts'
 import { HAS_CUTOVER, HAS_RECON, HAS_SHADOW } from '../data/evidence'
 
+const REPLAY = FACTS.migration
+
 const { totals, checks, environments: env, batch } = FACTS
 const encryptedIn = FACTS.centres.filter((c) => c.encryptionPlugin).length
 
@@ -38,8 +40,8 @@ const FOUNDATION = [
   `Every change runs a ${FACTS.pipelineStages.length}-stage release pipeline: brand drift, estate coherence, compile, unit tests and code-quality gate. A failure stops the release.`,
 ]
 
-type PhaseState = 'done' | 'evidence' | 'planned'
-const PHASES: { id: string; name: string; body: string; state: PhaseState }[] = [
+type PhaseState = 'done' | 'built' | 'evidence' | 'planned'
+const PHASES: { id: string; name: string; body: string; state: PhaseState; tag?: string }[] = [
   {
     id: 'Phase 1',
     name: 'Make the estate safe to change',
@@ -49,14 +51,16 @@ const PHASES: { id: string; name: string; body: string; state: PhaseState }[] = 
   {
     id: 'Phase 2',
     name: 'Shadow run and reconcile',
-    body: 'New interface code runs alongside the current code on real traffic; every outbound record and control total is compared before anything is switched.',
-    state: HAS_SHADOW || HAS_RECON ? 'evidence' : 'planned',
+    body: 'New interface code runs alongside the current code; every outbound record and control total is compared before anything is switched. Built and switched off; proven on an offline replay of synthetic cases, production shadow running not yet started.',
+    state: HAS_SHADOW || HAS_RECON ? 'evidence' : REPLAY.status === 'GREEN' ? 'built' : 'planned',
+    tag: `Built · replay ${REPLAY.status}`,
   },
   {
     id: 'Phase 3',
     name: 'Controlled cutover',
-    body: 'Switch one interface, one brand, one environment at a time, with the current code kept warm so any switch can be reversed immediately.',
-    state: HAS_CUTOVER ? 'evidence' : 'planned',
+    body: 'Switch one feed, one environment at a time, with the current code kept running so clearing one setting reverses the switch. Built; committed off in every environment.',
+    state: HAS_CUTOVER ? 'evidence' : REPLAY.switches.cutoverFeeds === 0 ? 'built' : 'planned',
+    tag: 'Built · switched off',
   },
   {
     id: 'Phase 4',
@@ -72,15 +76,15 @@ export default function ExecutiveOverview() {
       <ScreenHeader
         eyebrow="01 · Executive overview"
         title="Modernising the engine while it keeps running"
-        lede={`Albion's claims, policy, billing and customer platforms exchange data with ${FACTS.interfaces.length} regulators, partners and the POLARIS mainframe. The foundation work is complete and enforced on every release. The next step is to prove new interface code against live traffic before any customer, partner or regulator sees a change.`}
+        lede={`Albion's claims, policy, billing and customer platforms exchange data with ${FACTS.interfaces.length} regulators, partners and the POLARIS mainframe. The foundation work is complete and enforced on every release. The controls to shadow-run, reconcile and switch the first feeds are built and switched off, and an offline replay over synthetic cases shows the new code reproduces today's records exactly. The next step is shadow running in a test environment.`}
         aside={
           <div className="panel px-5 py-4 text-left">
             <div className="eyebrow">Programme position</div>
             <div className="mt-2 flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-              <span className="text-lg font-semibold text-white">Phase 1 complete</span>
+              <span className="text-lg font-semibold text-white">Phases 1–3 built</span>
             </div>
-            <div className="mt-1 text-xs muted">Phase 2 shadow run is next · no traffic switched</div>
+            <div className="mt-1 text-xs muted">Replay {REPLAY.status} on synthetic cases · no traffic switched</div>
           </div>
         }
       />
@@ -104,7 +108,7 @@ export default function ExecutiveOverview() {
               className={clsx(
                 'rounded-xl border p-5',
                 p.state === 'done' && 'border-emerald-400/30 bg-emerald-400/[0.06]',
-                p.state === 'evidence' && 'border-candidate/30 bg-candidate/[0.06]',
+                (p.state === 'evidence' || p.state === 'built') && 'border-candidate/30 bg-candidate/[0.06]',
                 p.state === 'planned' && 'border-dashed border-white/10 bg-ink-800/50',
               )}
             >
@@ -112,6 +116,7 @@ export default function ExecutiveOverview() {
                 <span className="font-mono text-xs text-gold-400">{p.id}</span>
                 {p.state === 'done' && <Tag tone="green">In place</Tag>}
                 {p.state === 'evidence' && <Tag tone="teal">Evidence loaded</Tag>}
+                {p.state === 'built' && <Tag tone="teal">{p.tag}</Tag>}
                 {p.state === 'planned' && <PlannedTag phase="next" />}
               </div>
               <div className="mt-2 text-base font-semibold text-white">{p.name}</div>

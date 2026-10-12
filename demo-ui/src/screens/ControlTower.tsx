@@ -26,7 +26,7 @@ export default function ControlTower() {
       <ScreenHeader
         eyebrow="02 · Estate control tower"
         title="Everything that has to keep working, in one view"
-        lede="The four platforms, every external interface, the batch schedule that drives them and the environments they run in, read directly from the repository. The cutover columns show who is producing each feed today; they change only when cutover evidence is committed."
+        lede="The four platforms, every external interface, the batch schedule that drives them and the environments they run in, read directly from the repository. The cutover columns show who is producing each feed today; cutover is committed off in every environment and is only enabled per environment at deploy time."
         aside={
           <div className="panel px-5 py-4 text-left">
             <div className="eyebrow">Traffic switched to new code</div>
@@ -34,7 +34,7 @@ export default function ControlTower() {
               {EVIDENCE.cutover.filter((c) => c.authority === 'NEW').length}
               <span className="text-sm font-normal muted"> of {FACTS.interfaces.length * BRANDS.length} interface × brand feeds</span>
             </div>
-            <div className="text-xs muted">{HAS_CUTOVER ? 'from committed cutover evidence' : 'no cutover evidence committed'}</div>
+            <div className="text-xs muted">{HAS_CUTOVER ? 'from committed cutover evidence' : `cutover switch empty in ${FACTS.migration.switches.templates - FACTS.migration.switches.cutoverFeeds} of ${FACTS.migration.switches.templates} committed templates`}</div>
           </div>
         }
       />
@@ -196,7 +196,7 @@ export default function ControlTower() {
             <Source>
               <span className="font-mono">docs/interfaces/interface-contract-inventory.csv</span> and{' '}
               <span className="font-mono">integration/samples/{iface.name.toLowerCase().replace(' ', '_')}/</span>. Cutover
-              cells: {HAS_CUTOVER ? EVIDENCE.sources.join(', ') : 'no cutover evidence committed, so every feed shows current code'}.
+              cells: {HAS_CUTOVER ? EVIDENCE.sources.join(', ') : 'cutover is switched off in every committed environment template, so every feed shows current code'}.
             </Source>
           </div>
         </div>
