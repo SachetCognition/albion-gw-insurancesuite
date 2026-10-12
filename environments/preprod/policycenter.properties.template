@@ -1,0 +1,34 @@
+# po - PREPROD - DO NOT COPY BETWEEN ENVIRONMENTS (this file was copied between environments)
+# owner: platform team (was: middleware team, was: svenkat)
+po.db.url=${PO_DB_URL}
+po.db.user=${PO_DB_USER}
+po.db.password=${PO_DB_PASSWORD}   # rotated 18-Mar-2022; see CyberArk safe AGI-GW-PREPROD
+po.mq.host=${PO_MQ_HOST}
+po.mq.channel=${PO_MQ_CHANNEL}
+po.mq.queue.mid.out=${PO_MQ_QUEUE_MID_OUT}
+po.polaris.cics.gateway=${PO_POLARIS_CICS_GATEWAY}
+po.polaris.enabled=true   # perf env points at stub; stub behaviour differs from CICS (AGI-5177)
+po.sanctions.worldcheck.url=${PO_SANCTIONS_WORLDCHECK_URL}
+po.paragon.sftp.host=${PO_PARAGON_SFTP_HOST}
+po.feature.floodre.enabled=true
+po.feature.oicportal.enabled=true
+po.feature.newratingengine.enabled=false   # 'temporary' dual-running since 2021
+po.ipt.rate=0.12
+po.ipt.rate.travel=0.20
+# legacy keys below - unknown consumers, removal attempt GWBC-19890 rolled back
+po.novabank.callback.url=${PO_NOVABANK_CALLBACK_URL}   # partner exited 2019
+po.tempdir=/appl/po/temp
+po.tempdir2=/appl/po/temp2   # do not use tempdir on preprod - NFS issue 2017
+# business constants - non-sensitive, read by albion.config.AlbionConfigService (docs/architecture/albion-config-and-brand-services.md)
+# values equal the estate defaults; per-call-site overrides use <key>.<CallerClassName>; checked by tools/scripts/check_brand_config_drift.py
+po.fraud.refer.score=55
+po.refer.threshold.albdir=10000
+po.refer.threshold.albbrk=4000
+po.ipt.standard.rate=0.12
+po.large.loss.threshold=25000
+po.sla.credithire.mitigation.hours=3
+po.sla.cat.event.declare.hours=4
+po.sla.complaint.ack.promise.days=3
+po.sla.complaint.ack.regulatory.days=5
+po.sla.complaint.holding.letter.days=28
+po.sla.complaint.final.response.days=56

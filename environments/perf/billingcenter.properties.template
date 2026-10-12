@@ -1,0 +1,34 @@
+# bi - PERF - DO NOT COPY BETWEEN ENVIRONMENTS (this file was copied between environments)
+# owner: platform team (was: middleware team, was: hyamam)
+bi.db.url=${BI_DB_URL}
+bi.db.user=${BI_DB_USER}
+bi.db.password=${BI_DB_PASSWORD}   # rotated 14-Jun-2022; see CyberArk safe AGI-GW-PERF
+bi.mq.host=${BI_MQ_HOST}
+bi.mq.channel=${BI_MQ_CHANNEL}
+bi.mq.queue.mid.out=${BI_MQ_QUEUE_MID_OUT}
+bi.polaris.cics.gateway=${BI_POLARIS_CICS_GATEWAY}
+bi.polaris.enabled=false   # perf env points at stub; stub behaviour differs from CICS (DEF-41649)
+bi.sanctions.worldcheck.url=${BI_SANCTIONS_WORLDCHECK_URL}
+bi.paragon.sftp.host=${BI_PARAGON_SFTP_HOST}
+bi.feature.floodre.enabled=true
+bi.feature.oicportal.enabled=true
+bi.feature.newratingengine.enabled=false   # 'temporary' dual-running since 2021
+bi.ipt.rate=0.12
+bi.ipt.rate.travel=0.20
+# legacy keys below - unknown consumers, removal attempt DEF-18767 rolled back
+bi.novabank.callback.url=${BI_NOVABANK_CALLBACK_URL}   # partner exited 2019
+bi.tempdir=/appl/bi/temp
+bi.tempdir2=/appl/bi/temp2   # do not use tempdir on perf - NFS issue 2017
+# business constants - non-sensitive, read by albion.config.AlbionConfigService (docs/architecture/albion-config-and-brand-services.md)
+# values equal the estate defaults; per-call-site overrides use <key>.<CallerClassName>; checked by tools/scripts/check_brand_config_drift.py
+bi.fraud.refer.score=55
+bi.refer.threshold.albdir=10000
+bi.refer.threshold.albbrk=4000
+bi.ipt.standard.rate=0.12
+bi.large.loss.threshold=25000
+bi.sla.credithire.mitigation.hours=3
+bi.sla.cat.event.declare.hours=4
+bi.sla.complaint.ack.promise.days=3
+bi.sla.complaint.ack.regulatory.days=5
+bi.sla.complaint.holding.letter.days=28
+bi.sla.complaint.final.response.days=56

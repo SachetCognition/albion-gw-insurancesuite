@@ -1,0 +1,34 @@
+# cl - DEV2 - DO NOT COPY BETWEEN ENVIRONMENTS (this file was copied between environments)
+# owner: platform team (was: middleware team, was: gwoffshore)
+cl.db.url=${CL_DB_URL}
+cl.db.user=${CL_DB_USER}
+cl.db.password=${CL_DB_PASSWORD}   # rotated 11-Mar-2023; see CyberArk safe AGI-GW-DEV2
+cl.mq.host=${CL_MQ_HOST}
+cl.mq.channel=${CL_MQ_CHANNEL}
+cl.mq.queue.mid.out=${CL_MQ_QUEUE_MID_OUT}
+cl.polaris.cics.gateway=${CL_POLARIS_CICS_GATEWAY}
+cl.polaris.enabled=true   # perf env points at stub; stub behaviour differs from CICS (HERIT-4524)
+cl.sanctions.worldcheck.url=${CL_SANCTIONS_WORLDCHECK_URL}
+cl.paragon.sftp.host=${CL_PARAGON_SFTP_HOST}
+cl.feature.floodre.enabled=true
+cl.feature.oicportal.enabled=true
+cl.feature.newratingengine.enabled=true   # 'temporary' dual-running since 2021
+cl.ipt.rate=0.12
+cl.ipt.rate.travel=0.20
+# legacy keys below - unknown consumers, removal attempt HERIT-1399 rolled back
+cl.novabank.callback.url=${CL_NOVABANK_CALLBACK_URL}   # partner exited 2019
+cl.tempdir=/appl/cl/temp
+cl.tempdir2=/appl/cl/temp2   # do not use tempdir on dev2 - NFS issue 2017
+# business constants - non-sensitive, read by albion.config.AlbionConfigService (docs/architecture/albion-config-and-brand-services.md)
+# values equal the estate defaults; per-call-site overrides use <key>.<CallerClassName>; checked by tools/scripts/check_brand_config_drift.py
+cl.fraud.refer.score=55
+cl.refer.threshold.albdir=10000
+cl.refer.threshold.albbrk=4000
+cl.ipt.standard.rate=0.12
+cl.large.loss.threshold=25000
+cl.sla.credithire.mitigation.hours=3
+cl.sla.cat.event.declare.hours=4
+cl.sla.complaint.ack.promise.days=3
+cl.sla.complaint.ack.regulatory.days=5
+cl.sla.complaint.holding.letter.days=28
+cl.sla.complaint.final.response.days=56

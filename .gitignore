@@ -33,3 +33,13 @@ ThemeApp/
 webapps/
 java-examples.zip
 compiler.log
+# Environment config: real values are rendered at deploy time from CyberArk
+# (see environments/README.txt). Only *.template files are committed.
+environments/**/*.properties
+environments/**/hosts.txt
+environments/**/*.env
+environments/**/*.jks
+environments/**/*.p12
+environments/**/*.pem
+environments/**/*.key
+!environments/**/*.template

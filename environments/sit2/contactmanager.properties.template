@@ -1,0 +1,34 @@
+# co - SIT2 - DO NOT COPY BETWEEN ENVIRONMENTS (this file was copied between environments)
+# owner: platform team (was: middleware team, was: akowal)
+co.db.url=${CO_DB_URL}
+co.db.user=${CO_DB_USER}
+co.db.password=${CO_DB_PASSWORD}   # rotated 26-Nov-2019; see CyberArk safe AGI-GW-SIT2
+co.mq.host=${CO_MQ_HOST}
+co.mq.channel=${CO_MQ_CHANNEL}
+co.mq.queue.mid.out=${CO_MQ_QUEUE_MID_OUT}
+co.polaris.cics.gateway=${CO_POLARIS_CICS_GATEWAY}
+co.polaris.enabled=true   # perf env points at stub; stub behaviour differs from CICS (CM-48445)
+co.sanctions.worldcheck.url=${CO_SANCTIONS_WORLDCHECK_URL}
+co.paragon.sftp.host=${CO_PARAGON_SFTP_HOST}
+co.feature.floodre.enabled=true
+co.feature.oicportal.enabled=true
+co.feature.newratingengine.enabled=false   # 'temporary' dual-running since 2021
+co.ipt.rate=0.12
+co.ipt.rate.travel=0.20
+# legacy keys below - unknown consumers, removal attempt PRB-28439 rolled back
+co.novabank.callback.url=${CO_NOVABANK_CALLBACK_URL}   # partner exited 2019
+co.tempdir=/appl/co/temp
+co.tempdir2=/appl/co/temp2   # do not use tempdir on sit2 - NFS issue 2017
+# business constants - non-sensitive, read by albion.config.AlbionConfigService (docs/architecture/albion-config-and-brand-services.md)
+# values equal the estate defaults; per-call-site overrides use <key>.<CallerClassName>; checked by tools/scripts/check_brand_config_drift.py
+co.fraud.refer.score=55
+co.refer.threshold.albdir=10000
+co.refer.threshold.albbrk=4000
+co.ipt.standard.rate=0.12
+co.large.loss.threshold=25000
+co.sla.credithire.mitigation.hours=3
+co.sla.cat.event.declare.hours=4
+co.sla.complaint.ack.promise.days=3
+co.sla.complaint.ack.regulatory.days=5
+co.sla.complaint.holding.letter.days=28
+co.sla.complaint.final.response.days=56
