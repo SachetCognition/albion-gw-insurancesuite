@@ -21,6 +21,21 @@
 3. `FeedStatus_Ext` drives the feed batches with no enforced state machine — see `FEEDSTATUS-STATE-MACHINE.md`.
 4. IPT is computed in 4 places; month-end reconciliation is a runbook (`docs/runbooks/month-end-ipt-reconciliation.md`), not a control.
 
+## Strangler migration
+POLARIS-facing record builders are replaced feed by feed behind `albion.integration.shadow.ShadowRecordFacade`, which the
+registered `IptTransport` (ClaimCenter) and `PolarisMfTransport` (PolicyCenter, ContactManager) call for every record.
+Shadow running is switched by `<prefix>.feature.shadow.enabled` / `.feeds` / `.brands` in the environment templates and
+ships off, so each feed writes its legacy record only. Golden-master GUnit tests pin today's IPT and POLARIS_MF 512-byte
+records and the IPT calculation, and prove each candidate builder byte-identical. See `docs/migration/strangler-phase1.md`.
+
+Phase 2 and 3 (`docs/migration/strangler-phase2-3.md`) add reconciliation and a gated cutover, also committed OFF:
+- `ShadowRecordFacade.Ledger` counts every shadow comparison per feed and brand as GREEN/RED evidence; the unscheduled
+  `AlbionShadowReconciliationBatch` (`AlbionShadowRecon_Ext`, CC/PC/CM) logs it as `albion.shadow.evidence/v1` JSON.
+- `tools/replay/run_replay.sh` replays synthetic fixtures through each legacy/candidate pair and writes
+  `tools/replay/evidence/replay-evidence.json` (currently GREEN, 45 cases, negative control RED).
+- `<prefix>.feature.cutover.feeds` sends the candidate record for a shadow-run feed when it reconciles with legacy,
+  which still runs as the reverse shadow. Rollback is clearing the key. No feed is cut over in any committed template.
+
 ## Admin data
 Each centre loads its activity patterns from `<config-root>/import/gen/albion-activity-patterns.xml`, listed in that directory's `importfiles.txt` and loaded with the standard admin-data import: ClaimCenter 13, PolicyCenter 20, BillingCenter 15 and ContactManager 18 patterns. Every pattern code raised by a rule (`AGI_*`) or an escalation batch is defined there; `check_gw_coherence.py` (E11) fails the build if a code is missing. In BillingCenter and ContactManager the activity subjects are display keys.
 
@@ -34,4 +49,4 @@ Each centre loads its activity patterns from `<config-root>/import/gen/albion-ac
   - ContactManager `preu_006` duplicates `preu_003`.
 - **POLARIS policyholder summary.** The summary is carried on `ABContact` in ContactManager.
 - **Mainframe confirmation.** Program and dataset names in `AGIP709D` and `AGIC163D` are still to be confirmed against Endevor.
-- **Unscheduled batch.** Some interface feeds have JCL in `batch/jcl/adhoc/` but no Control-M job. The POLARIS heritage nightly sync is the first candidate for scheduling.
+- **Unscheduled batch.** Some interface feeds have JCL in `batch/jcl/adhoc/` but no Control-M job. The POLARIS heritage nightly sync is the first candidate for scheduling. `AlbionShadowReconciliationBatch` (CC/PC/CM) has no Control-M job or JCL member either; it runs on demand from the batch process console while a feed is shadow-run.

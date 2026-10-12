@@ -233,4 +233,72 @@ class AlbionConfigServiceTest extends TestBase {
       System.setProperty(name, value)
     }
   }
+
+  function testShadowFlagsDefaultOff() {
+    var s = svc(new HashMap<String, String>())
+    assertFalse(s.ShadowRunEnabled)
+    assertTrue(s.ShadowFeeds.Empty)
+    assertTrue(s.ShadowBrands.Empty)
+    assertFalse(s.isShadowEnabled("IPT", "ALBDIR"))
+    assertFalse(s.isShadowEnabled(null, null))
+  }
+
+  function testShadowFlagsNeedMasterSwitchAndFeed() {
+    var values = new HashMap<String, String>()
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_FEEDS), " ipt , POLARIS_MF,,IPT   # pilot feeds")
+    assertEquals({"IPT", "POLARIS_MF"}, svc(values).ShadowFeeds)
+    assertFalse(svc(values).isShadowEnabled("IPT", "ALBDIR"))
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_ENABLED), "TRUE")
+    assertTrue(svc(values).isShadowEnabled("IPT", "ALBDIR"))
+    assertTrue(svc(values).isShadowEnabled("polaris_mf", null))
+    assertFalse(svc(values).isShadowEnabled("CUE", "ALBDIR"))
+  }
+
+  function testShadowBrandAllowList() {
+    var values = new HashMap<String, String>()
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_ENABLED), "true")
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_FEEDS), "IPT")
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_BRANDS), "HERIT,albbrk")
+    var s = svc(values)
+    assertTrue(s.isShadowEnabled("IPT", "HERIT"))
+    assertTrue(s.isShadowEnabled("IPT", "ALBBRK"))
+    assertFalse(s.isShadowEnabled("IPT", "ALBDIR"))
+    assertFalse(s.isShadowEnabled("IPT", null))
+  }
+
+  function testInvalidShadowSwitchIsAValidationError() {
+    var values = new HashMap<String, String>()
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_ENABLED), "yes")
+    var errors = svc(values).validationErrors()
+    assertEquals(1, errors.size())
+    assertTrue(errors.get(0).contains(key(AlbionConfigService.KEY_FEATURE_SHADOW_ENABLED)))
+  }
+
+  function testCutoverDefaultsOffAndNeedsShadowRun() {
+    var values = new HashMap<String, String>()
+    assertTrue(svc(values).CutoverFeeds.Empty)
+    assertFalse(svc(values).isCutoverEnabled("IPT", "ALBDIR"))
+    values.put(key(AlbionConfigService.KEY_FEATURE_CUTOVER_FEEDS), " ipt ")
+    assertEquals({"IPT"}, svc(values).CutoverFeeds)
+    assertFalse(svc(values).isCutoverEnabled("IPT", "ALBDIR"))
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_ENABLED), "true")
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_FEEDS), "IPT,POLARIS_MF")
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_BRANDS), "HERIT")
+    var s = svc(values)
+    assertTrue(s.isCutoverEnabled("IPT", "HERIT"))
+    assertFalse(s.isCutoverEnabled("IPT", "ALBDIR"))
+    assertFalse(s.isCutoverEnabled("POLARIS_MF", "HERIT"))
+    assertFalse(s.isCutoverEnabled(null, "HERIT"))
+    assertTrue(s.validationErrors().Empty)
+  }
+
+  function testCutoverWithoutShadowRunIsAValidationError() {
+    var values = new HashMap<String, String>()
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_ENABLED), "true")
+    values.put(key(AlbionConfigService.KEY_FEATURE_SHADOW_FEEDS), "IPT")
+    values.put(key(AlbionConfigService.KEY_FEATURE_CUTOVER_FEEDS), "IPT,POLARIS_MF")
+    var errors = svc(values).validationErrors()
+    assertEquals(1, errors.size())
+    assertTrue(errors.get(0).contains(key(AlbionConfigService.KEY_FEATURE_CUTOVER_FEEDS) + " lists POLARIS_MF"))
+  }
 }

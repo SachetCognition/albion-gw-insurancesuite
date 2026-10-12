@@ -15,6 +15,12 @@ co.integration.spool.dir=${CO_INTEGRATION_SPOOL_DIR}
 co.feature.floodre.enabled=true
 co.feature.oicportal.enabled=true
 co.feature.newratingengine.enabled=false   # 'temporary' dual-running since 2021
+# strangler shadow running (albion.integration.shadow.ShadowRecordFacade): dormant - legacy record only until enabled; see docs/migration/strangler-phase1.md
+co.feature.shadow.enabled=false
+co.feature.shadow.feeds=
+co.feature.shadow.brands=
+# strangler cutover: empty = legacy record authoritative for every feed; set per change window only, see docs/migration/strangler-phase2-3.md
+co.feature.cutover.feeds=
 co.ipt.rate=0.12
 co.ipt.rate.travel=0.20
 # legacy keys below - unknown consumers, removal attempt GWPC-5209 rolled back

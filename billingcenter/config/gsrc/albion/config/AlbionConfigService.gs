@@ -13,6 +13,10 @@ uses java.util.concurrent.locks.ReentrantLock
  * AlbionConfigService - typed access to the non-sensitive Albion business constants held in
  * environments/<env>/<centre>.properties (keys are prefixed per centre, see AlbionCentre.PROPERTY_PREFIX).
  *
+ * The KEY_FEATURE_SHADOW_* keys are the strangler shadow-run switches (docs/migration/strangler-phase1.md) and
+ * KEY_FEATURE_CUTOVER_FEEDS is the Phase 3 cutover switch (docs/migration/strangler-phase2-3.md). They default
+ * OFF/empty, so with no value configured every feed produces its legacy record only.
+ *
  * The KEY_ENCRYPTION_* keys are the exception: they carry CyberArk-rendered key material for
  * albion.security.AlbionAesEncryptionPlugin. They have no defaults, are not BUSINESS_KEYS and must never be logged.
  *
@@ -43,6 +47,18 @@ class AlbionConfigService {
   public static final var KEY_SLA_COMPLAINT_HOLDING_LETTER_DAYS : String = "sla.complaint.holding.letter.days"
   public static final var KEY_SLA_COMPLAINT_FINAL_RESPONSE_DAYS : String = "sla.complaint.final.response.days"
 
+  /** Strangler shadow running: master switch. false (the default) = legacy record only for every feed. */
+  public static final var KEY_FEATURE_SHADOW_ENABLED : String = "feature.shadow.enabled"
+  /** Feed names shadow-run when the master switch is on, comma separated (e.g. IPT,POLARIS_MF). Empty (the default) = none. */
+  public static final var KEY_FEATURE_SHADOW_FEEDS : String = "feature.shadow.feeds"
+  /** Optional BrandCode_Ext typecodes the shadow run is limited to, comma separated. Empty (the default) = all brands. */
+  public static final var KEY_FEATURE_SHADOW_BRANDS : String = "feature.shadow.brands"
+  /**
+   * Feed names cut over to the candidate builder, comma separated. Empty (the default) = none. A listed feed must also be
+   * shadow-run: the candidate record is emitted only when it reconciles with the legacy record, which still runs.
+   */
+  public static final var KEY_FEATURE_CUTOVER_FEEDS : String = "feature.cutover.feeds"
+
   /** Current AES-256 key, Base64 of 32 bytes. CyberArk token; no default. */
   public static final var KEY_ENCRYPTION_KEY : String = "encryption.key"
   /** Id written in front of every value encrypted with KEY_ENCRYPTION_KEY. CyberArk token; no default. */
@@ -69,6 +85,11 @@ class AlbionConfigService {
       KEY_SLA_CREDIT_HIRE_MITIGATION_HOURS, KEY_SLA_CAT_EVENT_DECLARE_HOURS,
       KEY_SLA_COMPLAINT_ACK_PROMISE_DAYS, KEY_SLA_COMPLAINT_ACK_REGULATORY_DAYS,
       KEY_SLA_COMPLAINT_HOLDING_LETTER_DAYS, KEY_SLA_COMPLAINT_FINAL_RESPONSE_DAYS
+  }
+
+  /** Strangler feature-flag keys (validated at start-up with the business constants; never business constants themselves). */
+  public static final var FEATURE_KEYS : List<String> = {
+      KEY_FEATURE_SHADOW_ENABLED, KEY_FEATURE_SHADOW_FEEDS, KEY_FEATURE_SHADOW_BRANDS, KEY_FEATURE_CUTOVER_FEEDS
   }
 
   static final var INSTANCE_LOCK : ReentrantLock = new ReentrantLock()
@@ -219,6 +240,22 @@ class AlbionConfigService {
     return parsed
   }
 
+  /** Comma-separated value as a list: entries trimmed and upper-cased, blanks and duplicates dropped; empty when unset. */
+  function getList(key : String) : List<String> {
+    var result = new ArrayList<String>()
+    var v = rawValue(key)
+    if (v == null) {
+      return result
+    }
+    for (entry in v.split(",")) {
+      var item = entry.trim().toUpperCase()
+      if (item.length() > 0 and not result.contains(item)) {
+        result.add(item)
+      }
+    }
+    return result
+  }
+
   // ---------------------------------------------------------------- business constants (uniform across the estate)
 
   /** SIU referral score; every call site uses 55 today. Key: fraud.refer.score (0..100). */
@@ -297,9 +334,51 @@ class AlbionConfigService {
     return getInt(KEY_SLA_COMPLAINT_FINAL_RESPONSE_DAYS, DEFAULT_SLA_COMPLAINT_FINAL_RESPONSE_DAYS, 1, 365)
   }
 
+  // ------------------------------------------------------------------------------- strangler feature flags
+
+  /** Master shadow-run switch. Key: feature.shadow.enabled (true|false), default false. */
+  property get ShadowRunEnabled() : boolean {
+    return getBoolean(KEY_FEATURE_SHADOW_ENABLED, false)
+  }
+
+  /** Feeds listed for shadow running, upper case. Key: feature.shadow.feeds, default empty (no feed). */
+  property get ShadowFeeds() : List<String> {
+    return getList(KEY_FEATURE_SHADOW_FEEDS)
+  }
+
+  /** Brand allow-list for shadow running, upper case. Key: feature.shadow.brands, default empty (all brands). */
+  property get ShadowBrands() : List<String> {
+    return getList(KEY_FEATURE_SHADOW_BRANDS)
+  }
+
+  /**
+   * True only when the master switch is on, the feed is listed and the brand typecode is allowed.
+   * Every other case, including a null feed, resolves to false: legacy record only.
+   */
+  function isShadowEnabled(feed : String, brandTypecode : String) : boolean {
+    if (feed == null or not ShadowRunEnabled or not ShadowFeeds.contains(feed.trim().toUpperCase())) {
+      return false
+    }
+    var brands = ShadowBrands
+    return brands.Empty or (brandTypecode != null and brands.contains(brandTypecode.trim().toUpperCase()))
+  }
+
+  /** Feeds listed for cutover, upper case. Key: feature.cutover.feeds, default empty (no feed). */
+  property get CutoverFeeds() : List<String> {
+    return getList(KEY_FEATURE_CUTOVER_FEEDS)
+  }
+
+  /**
+   * True only when the feed is listed for cutover and isShadowEnabled(feed, brandTypecode) is true, so a cut-over record
+   * is always reconciled against legacy. Clearing feature.cutover.feeds (or the shadow switch) restores legacy-only output.
+   */
+  function isCutoverEnabled(feed : String, brandTypecode : String) : boolean {
+    return feed != null and CutoverFeeds.contains(feed.trim().toUpperCase()) and isShadowEnabled(feed, brandTypecode)
+  }
+
   // ------------------------------------------------------------------------------------------------ validation
 
-  /** Every problem with the configured business constants; empty when all are valid. Call at server start-up. */
+  /** Every problem with the configured business constants and feature flags; empty when all are valid. Call at server start-up. */
   function validationErrors() : List<String> {
     var errors = new ArrayList<String>()
     for (key in BUSINESS_KEYS) {
@@ -309,12 +388,23 @@ class AlbionConfigService {
         errors.add(e.Message)
       }
     }
+    try {
+      getBoolean(KEY_FEATURE_SHADOW_ENABLED, false)
+    } catch (e : IllegalStateException) {
+      errors.add(e.Message)
+    }
     if (errors.Empty) {
       if (ComplaintAckPromiseDays > ComplaintAckRegulatoryDays) {
         errors.add(fullKey(KEY_SLA_COMPLAINT_ACK_PROMISE_DAYS) + " must not exceed " + fullKey(KEY_SLA_COMPLAINT_ACK_REGULATORY_DAYS))
       }
       if (ComplaintHoldingLetterDays >= ComplaintFinalResponseDays) {
         errors.add(fullKey(KEY_SLA_COMPLAINT_HOLDING_LETTER_DAYS) + " must be less than " + fullKey(KEY_SLA_COMPLAINT_FINAL_RESPONSE_DAYS))
+      }
+      for (feed in CutoverFeeds) {
+        if (not ShadowRunEnabled or not ShadowFeeds.contains(feed)) {
+          errors.add(fullKey(KEY_FEATURE_CUTOVER_FEEDS) + " lists " + feed + " but it is not shadow-run: cutover requires "
+              + fullKey(KEY_FEATURE_SHADOW_ENABLED) + "=true and " + feed + " in " + fullKey(KEY_FEATURE_SHADOW_FEEDS))
+        }
       }
     }
     return errors
