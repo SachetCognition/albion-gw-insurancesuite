@@ -21,7 +21,7 @@
 - `MID` — vehicle feed
 - `BillingCenter` — AP/RP
 
-## Known deviations / tribal knowledge
+## Known deviations
 
 Spreadsheet-submitted schedules are re-keyed by an offshore team into a staging screen built in 2013; it validates VRMs against a regex that rejects new-format trade plates.
 

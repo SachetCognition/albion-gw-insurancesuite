@@ -36,14 +36,6 @@
               id="LoadDuplicateContactSampleData"
               labelAbove="true"
               value="DisplayKey.get(&quot;Web.ABDuplicateContactSampleData.Load&quot;)"/>
-            <PreFormattedTextInput
-              id="Spacer3"
-              value="&quot;&quot;"/>
-            <ButtonInput
-              action="result = trainingapp.batch.additionalsampledata.ABContactLoadAdditionalSampleData.loadDataFromCSV()"
-              id="LoadAdditionalSampleData"
-              labelAbove="true"
-              value="DisplayKey.get(&quot;Training.ABDAdditionalContactSampleData.Load&quot;)"/>
           </InputColumn>
         </DetailViewPanel>
       </PanelRef>

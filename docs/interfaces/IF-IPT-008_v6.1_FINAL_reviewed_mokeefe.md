@@ -5,7 +5,7 @@ Insurance Premium Tax calculation & HMRC returns
 > **Document status:** FINAL (v1). There are 4 other "FINAL" versions of this document. This one matches production closest, per the 2023 audit sample.
 
 ## Transport
-Connect:Direct from the mainframe, do not ask
+Connect:Direct from the mainframe
 
 ## Record layout
 See `integration/polaris/copybooks/AGIIPTRE.cpy`. Where copybook and this doc disagree, **production behaviour wins** (transcribed by hand into `IptRecordBuilder.gs`).

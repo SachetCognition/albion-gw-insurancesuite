@@ -18,12 +18,12 @@
 ## Systems touched (in order)
 
 - `PolicyCenter` — renewal jobs
-- `Rating engine x2` — dual-running 'temporarily' since 2021
+- `Rating engine x2` — dual-running since 2021 (introduced as an interim measure)
 - `BillingCenter` — instalment re-plan
 - `Paragon` — invites
 - `Experian` — re-score
 
-## Known deviations / tribal knowledge
+## Known deviations
 
 Heritage book renewals run through a SEPARATE batch (HeritageRenewalInviteBatch) that reimplements ~70% of this journey with 2015-era rules. Its PS21/5 gate was retrofitted differently. Pricing insists both are compliant. Evidence pack differs.
 

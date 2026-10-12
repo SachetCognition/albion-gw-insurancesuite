@@ -18,5 +18,5 @@
 ## Known systemic issues
 1. Brand handling: typelist + varchar column + POLARIS codes + XSLT logic — four sources of truth.
 2. Three display-name formatters, three VRM normalisers, two rating engines, two complaint clocks.
-3. `FeedStatus_Ext` drives 11 batches with no state machine — status values are folklore.
+3. `FeedStatus_Ext` drives 11 batches with no state machine — status values are undocumented.
 4. IPT is computed in 4 places; month-end reconciliation is a runbook, not a control.

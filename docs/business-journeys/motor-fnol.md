@@ -25,7 +25,7 @@
 - `POLARIS` — heritage motor still notified via mainframe bridge
 - `Paragon` — acknowledgement letters
 
-## Known deviations / tribal knowledge
+## Known deviations
 
 App-originated FNOLs skip the vulnerability prompt (defect since 2022, accepted). Heritage motor book FNOL requires manual POLARIS enquiry — handlers keep a green-screen emulator open. The fraud score threshold differs between the model doc (65) and the code (55).
 

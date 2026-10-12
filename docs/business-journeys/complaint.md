@@ -22,7 +22,7 @@
 - `Paragon` — letters
 - `DWH` — FCA complaints return
 
-## Known deviations / tribal knowledge
+## Known deviations
 
 The 8-week clock calculation excludes weekends in GW and includes them in Pega. Quarterly FCA return is hand-adjusted to reconcile. Everyone knows.
 

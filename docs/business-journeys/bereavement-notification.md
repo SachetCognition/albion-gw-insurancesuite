@@ -21,7 +21,7 @@
 - `PolicyCenter` — cover decisions
 - `Print` — condolence template — brand logo bug applies
 
-## Known deviations / tribal knowledge
+## Known deviations
 
 Suppression reaches the outbound dialler file via a nightly batch; a death notified after the 21:00 extract can still generate an arrears call next morning. PRB open since 2020.
 

@@ -5,7 +5,7 @@ POLARIS mainframe policy admin (heritage book) nightly sync
 > **Document status:** FINAL (v7). There are 3 other "FINAL" versions of this document. This one matches production closest, per the 2023 audit sample.
 
 ## Transport
-Connect:Direct from the mainframe, do not ask
+Connect:Direct from the mainframe
 
 ## Record layout
 See `integration/polaris/copybooks/AGIPOLARE.cpy`. Where copybook and this doc disagree, **production behaviour wins** (transcribed by hand into `PolarisMfRecordBuilder.gs`).

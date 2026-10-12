@@ -18,11 +18,5 @@
       location="Monitoring()"/>
     <LocationRef
       location="Utilities()"/>
-  <!-- BEGIN :: TrainingApp -->
-    <LocationRef
-      location="IntegrationPluginsLG()"/>
-    <LocationRef
-      location="IntegrationMessageLG()"/>
-  <!-- END :: TrainingApp -->
   </LocationGroup>
 </PCF>

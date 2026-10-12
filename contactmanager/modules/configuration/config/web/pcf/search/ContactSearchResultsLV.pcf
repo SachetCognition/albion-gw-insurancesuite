@@ -46,7 +46,7 @@
         name="abContact"/>
       <Row>
         <TextCell
-          action="ABContactSummaryPage.go(abContact)"
+          action="ContactDetail.go(abContact)"
           id="DisplayName"
           label="DisplayKey.get(&quot;Web.ContactSearchResults.DisplayName&quot;)"
           sortBy="abContact"
