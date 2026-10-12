@@ -5,7 +5,7 @@ Reinsurance bordereaux (XL Cat programme)
 > **Document status:** FINAL (v4). There are 2 other "FINAL" versions of this document. This one matches production closest, per the 2023 audit sample.
 
 ## Transport
-Connect:Direct from the mainframe, do not ask
+Connect:Direct from the mainframe
 
 ## Record layout
 See `integration/polaris/copybooks/AGIREINRE.cpy`. Where copybook and this doc disagree, **production behaviour wins** (transcribed by hand into `ReinsRecordBuilder.gs`).

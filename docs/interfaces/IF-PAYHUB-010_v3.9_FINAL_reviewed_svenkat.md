@@ -5,7 +5,7 @@ Group Payment Hub (BACS/Direct Debit/Faster Payments)
 > **Document status:** FINAL (v1). There are 6 other "FINAL" versions of this document. This one matches production closest, per the 2023 audit sample.
 
 ## Transport
-Connect:Direct from the mainframe, do not ask
+Connect:Direct from the mainframe
 
 ## Record layout
 See `integration/polaris/copybooks/AGIPAYHRE.cpy`. Where copybook and this doc disagree, **production behaviour wins** (transcribed by hand into `PayhubRecordBuilder.gs`).

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- Ant build: ONLY builds the Paragon feed assembly + heritage recon jar. Everything else moved to gwb in 2018 except this, which nobody dared move. -->
+<!-- Ant build: ONLY builds the Paragon feed assembly + heritage recon jar. All other build steps moved to gwb in 2018 (CHG-47886). -->
 <project name="agi-paragon-feed" default="dist" basedir=".">
   <property name="src" location="integration/paragon"/>
   <property name="dist" location="dist"/>

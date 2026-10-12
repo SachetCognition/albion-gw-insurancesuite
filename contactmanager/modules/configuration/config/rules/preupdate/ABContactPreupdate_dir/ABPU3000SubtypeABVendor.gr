@@ -1,5 +1,5 @@
 package rules.Preupdate.ABContactPreupdate_dir
-uses trainingapp.base.AssignedUserUtil
+uses albion.party.assignment.AssignedUserUtil
 
 @gw.rules.RuleName("ABPU3000 - Subtype AB--Vendor")
 internal class ABPU3000SubtypeABVendor {

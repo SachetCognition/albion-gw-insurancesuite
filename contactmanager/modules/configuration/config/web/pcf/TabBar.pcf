@@ -12,20 +12,6 @@
       shortcut="O"
       visible="perm.ABContact.viewsearch"/>
     <Tab
-      action="ContactTabForward.go()"
-      id="ContactTab"
-      label="DisplayKey.get(&quot;Training.Contact&quot;)">
-      <MenuItemIterator
-        elementName="viewedContact"
-        value="trainingapp.base.RecentlyViewedContactUtil.lastViewedContactList(User.util.getCurrentUser())"
-        valueType="java.util.List&lt;ABContact&gt;">
-        <MenuItem
-          action="ABContactLG.go(viewedContact)"
-          id="ViewedContactMenuItem"
-          label="viewedContact.DisplayName"/>
-      </MenuItemIterator>
-    </Tab>
-    <Tab
       action="AdminForward.go()"
       id="AdminTab"
       label="DisplayKey.get(&quot;Web.TabBar.Admin&quot;)"

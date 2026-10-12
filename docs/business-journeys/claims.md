@@ -21,7 +21,7 @@
 - `ClaimCenter` — payment block
 - `BillingCenter` — refund block — added 2 years after claims, gap window documented in REG-8817
 
-## Known deviations / tribal knowledge
+## Known deviations
 
 The two screening services disagree on 'Ł' vs 'L' transliteration. Compliance manually re-screens Polish surnames. Known since 2019.
 

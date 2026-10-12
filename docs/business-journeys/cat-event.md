@@ -21,7 +21,7 @@
 - `Reinsurance` — XL cat notify at 60% retention
 - `DWH` — event MI
 
-## Known deviations / tribal knowledge
+## Known deviations
 
 Surge mode is toggled via a script_parameter changed directly in prod DB by DBAs under break-glass. It has been left on for up to 11 days after stand-down.
 

@@ -9,7 +9,7 @@
 ## Journey steps
 
 1. **FNOL** — EOW is 40% of home claims by volume
-2. **Triage** — Postcode BD* forces surveyor (2010 freeze rule, nobody will remove it)
+2. **Triage** — Postcode BD* forces surveyor (2010 freeze rule, still in force)
 3. **Drying** — IoT drying monitors feed readings via CSV email attachment (yes)
 4. **Alternative accommodation** — AA desk; long-running spend leakage reports monthly
 5. **Scope & settle** — Scope agreed in supplier portal, re-keyed into CC manually
@@ -21,7 +21,7 @@
 - `Paragon` — letters
 - `DWH` — leakage MI
 
-## Known deviations / tribal knowledge
+## Known deviations
 
 The drying-vendor CSV has a column order change every time the vendor releases; parser has 6 format branches keyed off file header sniffing.
 
