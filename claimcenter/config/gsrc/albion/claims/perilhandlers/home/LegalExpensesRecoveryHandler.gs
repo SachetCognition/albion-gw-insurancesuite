@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.home
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,6 +20,7 @@ uses java.math.BigDecimal
  *  20/09/2022   cdoyle       Defect fix DEF-31260 - null pointer when policy period not bound
  *  09/02/2024   pnair        IPT rate change 12% (see DEF-33574)
  *  06/06/2025   pnair        IPT rate change 12% (see REG-2036)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class LegalExpensesRecoveryHandler {
 
@@ -31,7 +33,7 @@ class LegalExpensesRecoveryHandler {
     }
     var amount = exposure.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWCC-44470)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -69,7 +71,7 @@ class LegalExpensesRecoveryHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"Flood","Storm","Windscreen","PersonalAccident"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (GWPC-9811)
   }
 }

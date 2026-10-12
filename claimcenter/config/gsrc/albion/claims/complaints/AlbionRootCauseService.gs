@@ -1,5 +1,6 @@
 package albion.claims.complaints
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,6 +19,7 @@ uses java.math.BigDecimal
  *  28/03/2018   vraghu       Rewritten during Project Mercury, old logic kept below commented out (DEF-42847)
  *  18/03/2019   hyamam       Uplifted during GW v10 upgrade (GWBC-36738) - untested path retained
  *  04/07/2022   vraghu       Solvency II data quality remediation AGI-33304
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionRootCauseService {
 
@@ -30,7 +32,7 @@ class AlbionRootCauseService {
     }
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (PRB-47904)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -68,7 +70,7 @@ class AlbionRootCauseService {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"EscapeOfWater","Subsidence","ThirdPartyPD","PersonalAccident"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (DEF-34365)
   }
 }

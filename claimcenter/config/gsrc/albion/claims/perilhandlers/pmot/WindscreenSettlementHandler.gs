@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.pmot
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  06/07/2017   dwhitf       IPT rate change 12% (see GWPC-41436)
  *  28/08/2018   gferran      Initial version for INC-20008
  *  28/12/2024   svenkat      Defect fix GWPC-17933 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class WindscreenSettlementHandler {
 
@@ -30,7 +31,7 @@ class WindscreenSettlementHandler {
     var amount = exposure.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CM-38731)

@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  22/05/2020   gferran      Regulatory change GWCC-23525 (FCA GI pricing remedy)
  *  14/01/2021   pnair        IPT rate change 12% (see PRB-35931)
  *  08/03/2023   dwhitf       CR REG-1603 - added RETPLS brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class EscapeOfWaterRecoveryHandler {
 

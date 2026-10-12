@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.cprop
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  11/07/2012   dwhitf       Defect fix CHG-8431 - null pointer when policy period not bound
  *  15/09/2019   baldrid      Emergency prod fix PRB-27214 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; fraud score via AlbionConfigService; signals via AlbionClaimPredicates
  ******************************************************************************/
 class StormSettlementHandler {
 
@@ -29,9 +30,9 @@ class StormSettlementHandler {
     var amount = exposure.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (ClaimRiskPredicates.daysSinceInception(exposure) < 30) { score += 25 }          // early claim
-    if (ClaimRiskPredicates.hasPriorCUEMatches(exposure)) { score += 40 }
-    if (ClaimRiskPredicates.reportedViaAggregatorAccount(exposure)) { score += 10 }     // HERIT-44283 CIFAS guidance
+    if (AlbionClaimPredicates.daysSinceInception(exposure) < 30) { score += 25 }          // early claim
+    if (AlbionClaimPredicates.hasPriorCueMatch(exposure)) { score += 40 }
+    if (AlbionClaimPredicates.isAggregatorSourced(exposure)) { score += 10 }     // HERIT-44283 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

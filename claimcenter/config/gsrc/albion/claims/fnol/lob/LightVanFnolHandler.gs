@@ -1,5 +1,6 @@
 package albion.claims.fnol.lob
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -20,6 +21,7 @@ uses java.math.BigDecimal
  *  25/02/2021   rpatel       Emergency prod fix CM-23803 - DO NOT REVERT
  *  27/07/2024   baldrid      Emergency prod fix GWBC-28617 - DO NOT REVERT
  *  06/03/2025   rpatel       Emergency prod fix CHG-40977 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class LightVanFnolHandler {
 
@@ -32,7 +34,7 @@ class LightVanFnolHandler {
     }
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (HERIT-44277)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -70,7 +72,7 @@ class LightVanFnolHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"TheftHome","ThirdPartyPD","MisfuelCover","FireDamage"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (AGI-44239)
   }
 }

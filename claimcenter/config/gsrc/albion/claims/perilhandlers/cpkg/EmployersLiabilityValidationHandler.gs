@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  07/07/2015   hyamam       Rewritten during Project Mercury, old logic kept below commented out (AGI-47551)
  *  07/05/2017   mokeefe      Defect fix GWBC-40041 - null pointer when policy period not bound
  *  23/09/2025   akowal       Uplifted during GW v10 upgrade (GWBC-3300) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class EmployersLiabilityValidationHandler {
 

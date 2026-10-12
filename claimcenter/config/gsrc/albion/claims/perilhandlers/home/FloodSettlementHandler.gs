@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  26/12/2012   hyamam       Perf fix GWCC-7194 - query was table scanning CC_CLAIM
  *  01/05/2014   gwoffshore   Emergency prod fix DEF-27434 - DO NOT REVERT
  *  19/06/2025   kmbeki       Defect fix GWCC-10635 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class FloodSettlementHandler {
 

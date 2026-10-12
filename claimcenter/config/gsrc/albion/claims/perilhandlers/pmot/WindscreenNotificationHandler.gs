@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.pmot
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  27/02/2015   pnair        Solvency II data quality remediation GWCC-36558
  *  14/08/2019   rpatel       Merged from heritage branch (INC-23528)
  *  23/03/2023   mokeefe      CR CM-15081 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class WindscreenNotificationHandler {
 
@@ -30,7 +31,7 @@ class WindscreenNotificationHandler {
     var amount = exposure.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (GWCC-6285)

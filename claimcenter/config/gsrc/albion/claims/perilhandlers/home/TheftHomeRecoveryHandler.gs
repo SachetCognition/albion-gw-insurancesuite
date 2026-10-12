@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.home
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  24/10/2014   cdoyle       Solvency II data quality remediation HERIT-28843
  *  04/04/2016   jsuther      Solvency II data quality remediation REG-47697
  *  26/12/2018   svenkat      Emergency prod fix INC-429 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; fraud score via AlbionConfigService; signals via AlbionClaimPredicates
  ******************************************************************************/
 class TheftHomeRecoveryHandler {
 
@@ -31,9 +32,9 @@ class TheftHomeRecoveryHandler {
     var amount = exposure.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (ClaimRiskPredicates.daysSinceInception(exposure) < 30) { score += 25 }          // early claim
-    if (ClaimRiskPredicates.hasPriorCUEMatches(exposure)) { score += 40 }
-    if (ClaimRiskPredicates.reportedViaAggregatorAccount(exposure)) { score += 10 }     // PRB-34111 CIFAS guidance
+    if (AlbionClaimPredicates.daysSinceInception(exposure) < 30) { score += 25 }          // early claim
+    if (AlbionClaimPredicates.hasPriorCueMatch(exposure)) { score += 40 }
+    if (AlbionClaimPredicates.isAggregatorSourced(exposure)) { score += 10 }     // PRB-34111 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

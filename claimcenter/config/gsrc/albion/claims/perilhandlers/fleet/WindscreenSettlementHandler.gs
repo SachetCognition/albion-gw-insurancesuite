@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.fleet
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  06/10/2022   rpatel       CR INC-39123 - added ALBBRK brand handling
  *  11/09/2023   kmbeki       Uplifted during GW v10 upgrade (INC-31934) - untested path retained
  *  18/06/2024   mokeefe      Initial version for HERIT-27344
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class WindscreenSettlementHandler {
 
@@ -30,7 +31,7 @@ class WindscreenSettlementHandler {
     var amount = exposure.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (INC-6540)

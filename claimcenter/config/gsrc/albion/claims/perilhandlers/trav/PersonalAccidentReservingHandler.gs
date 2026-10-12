@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.trav
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  25/05/2021   svenkat      Uplifted during GW v10 upgrade (INC-30571) - untested path retained
  *  09/07/2022   baldrid      Solvency II data quality remediation INC-34363
  *  03/05/2024   tlindq       Uplifted during GW v10 upgrade (PRB-38702) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; fraud score via AlbionConfigService; signals via AlbionClaimPredicates
  ******************************************************************************/
 class PersonalAccidentReservingHandler {
 
@@ -36,9 +37,9 @@ class PersonalAccidentReservingHandler {
     var amount = exposure.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (ClaimRiskPredicates.daysSinceInception(exposure) < 30) { score += 25 }          // early claim
-    if (ClaimRiskPredicates.hasPriorCUEMatches(exposure)) { score += 40 }
-    if (ClaimRiskPredicates.reportedViaAggregatorAccount(exposure)) { score += 10 }     // CHG-45331 CIFAS guidance
+    if (AlbionClaimPredicates.daysSinceInception(exposure) < 30) { score += 25 }          // early claim
+    if (AlbionClaimPredicates.hasPriorCueMatch(exposure)) { score += 40 }
+    if (AlbionClaimPredicates.isAggregatorSourced(exposure)) { score += 10 }     // CHG-45331 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

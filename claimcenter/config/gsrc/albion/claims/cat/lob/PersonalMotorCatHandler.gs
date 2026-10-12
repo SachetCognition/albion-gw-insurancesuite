@@ -1,6 +1,6 @@
 package albion.claims.cat.lob
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  *  28/02/2019   pnair        Uplifted during GW v10 upgrade (REG-16479) - untested path retained
  *  01/12/2021   svenkat      Uplifted during GW v10 upgrade (CHG-26366) - untested path retained
  *  09/01/2022   pnair        Rewritten during Project Mercury, old logic kept below commented out (GWBC-24463)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class PersonalMotorCatHandler {
 
@@ -29,7 +30,7 @@ class PersonalMotorCatHandler {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (INC-47023)

@@ -1,5 +1,6 @@
 package albion.claims.cat.lob
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,6 +20,7 @@ uses java.math.BigDecimal
  *  03/05/2019   gferran      Rewritten during Project Mercury, old logic kept below commented out (CHG-36170)
  *  12/11/2021   vraghu       Perf fix REG-24391 - query was table scanning CC_CLAIM
  *  10/09/2025   gwoffsh2     Defect fix DEF-18319 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class LightVanCatHandler {
 
@@ -31,7 +33,7 @@ class LightVanCatHandler {
     }
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-20212)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -69,7 +71,7 @@ class LightVanCatHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"PersonalAccident","ThirdPartyPD","Freezer","Windscreen"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (INC-10431)
   }
 }

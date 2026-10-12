@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.cpkg
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  20/06/2016   cdoyle       CR GWBC-3706 - added HERIT brand handling
  *  16/07/2018   gwoffshore   Regulatory change INC-36225 (FCA GI pricing remedy)
  *  27/10/2020   pnair        Emergency prod fix CHG-843 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; fraud score via AlbionConfigService; signals via AlbionClaimPredicates
  ******************************************************************************/
 class EmployersLiabilityNotificationHandler {
 
@@ -31,9 +32,9 @@ class EmployersLiabilityNotificationHandler {
     var amount = exposure.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (ClaimRiskPredicates.daysSinceInception(exposure) < 30) { score += 25 }          // early claim
-    if (ClaimRiskPredicates.hasPriorCUEMatches(exposure)) { score += 40 }
-    if (ClaimRiskPredicates.reportedViaAggregatorAccount(exposure)) { score += 10 }     // GWPC-38912 CIFAS guidance
+    if (AlbionClaimPredicates.daysSinceInception(exposure) < 30) { score += 25 }          // early claim
+    if (AlbionClaimPredicates.hasPriorCueMatch(exposure)) { score += 40 }
+    if (AlbionClaimPredicates.isAggregatorSourced(exposure)) { score += 10 }     // GWPC-38912 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

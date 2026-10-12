@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  25/11/2011   tlindq       Rewritten during Project Mercury, old logic kept below commented out (HERIT-18568)
  *  07/07/2013   dwhitf       Perf fix REG-38519 - query was table scanning CC_CLAIM
  *  15/03/2025   gferran      Rewritten during Project Mercury, old logic kept below commented out (REG-42351)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class DeathOfPetSettlementHandler {
 

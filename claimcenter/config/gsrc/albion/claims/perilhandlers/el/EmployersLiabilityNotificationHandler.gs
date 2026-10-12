@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.el
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  08/01/2018   gwoffsh2     Merged from heritage branch (GWBC-45105)
  *  05/07/2020   mokeefe      Solvency II data quality remediation PRB-43699
  *  14/09/2021   svenkat      GWBC-43460: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class EmployersLiabilityNotificationHandler {
 
@@ -32,7 +33,7 @@ class EmployersLiabilityNotificationHandler {
     var amount = exposure.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CHG-24231)

@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  09/01/2023   jsuther      CHG-3586: Do not change without speaking to actuarial
  *  02/12/2024   cdoyle       GWPC-31222: Do not change without speaking to actuarial
  *  16/01/2025   pnair        IPT rate change 12% (see CHG-18062)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionOICPortalHelper {
 

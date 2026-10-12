@@ -1,22 +1,21 @@
-package albion.claims
+package albion.claims.common
 
 uses java.math.BigDecimal
 uses java.util.concurrent.TimeUnit
 
 /**
- * Claim-level predicates shared by the FNOL, fraud and pricing-control evaluators.
+ * Claim-level predicates shared by the ClaimCenter FNOL, fraud, pricing-control and peril evaluators.
  *
  * Each predicate accepts the bean an evaluator was invoked with (Claim, Exposure, Incident, ClaimContact,
- * Activity or Check) and reads the owning Claim. When the data is not available the predicate returns the
- * value the evaluators used before these predicates read real data, so results do not change for incomplete
- * or non-claim beans.
+ * Activity or Check) and reads the owning Claim. Where data is missing the predicate returns the value the
+ * evaluators returned before these predicates read real data.
  */
-class ClaimRiskPredicates {
+class AlbionClaimPredicates {
 
   /** Returned when inception or loss/report date is unknown; 31 days keeps the claim outside the early-claim window. */
   public static final var UNKNOWN_DAYS_SINCE_INCEPTION : int = 31
 
-  /** Claim.SourceSystem_Ext value for claims notified through an aggregator account (POLARIS / GW / SSP / AGGR / MANUAL). */
+  /** SourceSystem_Ext value for claims notified through an aggregator account (POLARIS / GW / SSP / AGGR / MANUAL). */
   public static final var AGGREGATOR_SOURCE_SYSTEM : String = "AGGR"
 
   private construct() {
@@ -33,8 +32,8 @@ class ClaimRiskPredicates {
   }
 
   /**
-   * Whole days from policy inception (Claim.Policy.EffectiveDate) to the loss date, falling back to the reported
-   * date. Negative when the loss pre-dates inception.
+   * Whole days from policy inception (Claim.Policy.EffectiveDate) to Claim.LossDate, falling back to
+   * Claim.ReportedDate. Negative when the loss pre-dates inception; UNKNOWN_DAYS_SINCE_INCEPTION when unknown.
    */
   static function daysSinceInception(bean : Object) : int {
     var claim = claimOf(bean)
@@ -45,25 +44,33 @@ class ClaimRiskPredicates {
     return TimeUnit.MILLISECONDS.toDays(event.Time - inception.Time) as int
   }
 
-  /** True when the owning claim was notified through an aggregator account (Claim.SourceSystem_Ext = AGGR). */
-  static function reportedViaAggregatorAccount(bean : Object) : boolean {
+  /** True when the owning claim's SourceSystem_Ext is AGGREGATOR_SOURCE_SYSTEM. */
+  static function isAggregatorSourced(bean : Object) : boolean {
     var source = claimOf(bean)?.SourceSystem_Ext
     return source != null and AGGREGATOR_SOURCE_SYSTEM.equalsIgnoreCase(source.trim())
   }
 
   /**
-   * Prior CUE matches. ClaimCenter does not persist CUE enquiry results on any entity (the synchronous
-   * IF-CUE-002 response is not stored), so this returns false until a CUE result field exists.
+   * Data gap: no ClaimCenter entity holds a CUE enquiry result (IF-CUE-002 responses are not persisted).
+   * Returns false, the current production value.
    */
-  static function hasPriorCUEMatches(bean : Object) : boolean {
+  static function hasPriorCueMatch(bean : Object) : boolean {
     return false
   }
 
   /**
-   * Equivalent new-business price for the PS21/5 price-walk check. ClaimCenter holds no new-business price,
-   * so this returns null and the check does not fire here; the control is enforced in PolicyCenter renewal.
+   * Data gap: no ClaimCenter entity holds an equivalent new-business price for the PS21/5 check.
+   * Returns null (check does not fire), the current production value.
    */
   static function equivalentNewBusinessPrice(bean : Object) : BigDecimal {
     return null
+  }
+
+  /**
+   * Data gap: Exposure/Claim carry no PerilCode_Ext field and CoverageCode_*_Ext typelists have no peril category.
+   * Returns the handler's configured peril set, the current production value.
+   */
+  static function perilCodes(bean : Object, handlerPerils : List<String>) : List<String> {
+    return handlerPerils
   }
 }

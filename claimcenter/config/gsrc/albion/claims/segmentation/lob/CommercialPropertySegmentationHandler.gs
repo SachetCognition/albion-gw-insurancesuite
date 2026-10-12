@@ -1,6 +1,6 @@
 package albion.claims.segmentation.lob
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  27/05/2020   tlindq       IPT rate change 12% (see HERIT-30695)
  *  04/05/2021   hyamam       HERIT-41063: Do not change without speaking to actuarial
  *  03/08/2025   hyamam       Initial version for GWBC-31896
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class CommercialPropertySegmentationHandler {
 
@@ -35,7 +36,7 @@ class CommercialPropertySegmentationHandler {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (INC-37044)

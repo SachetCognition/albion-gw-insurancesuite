@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  27/02/2011   rpatel       PRB-33558: Do not change without speaking to actuarial
  *  18/06/2012   vraghu       Regulatory change GWCC-41024 (FCA GI pricing remedy)
  *  17/03/2025   akowal       CR AGI-25724 - added ALBBRK brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class MedicalExpensesRecoveryHandler {
 

@@ -1,6 +1,6 @@
 package albion.claims.payments
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  21/08/2019   dwhitf       Merged from heritage branch (CHG-45818)
  *  05/03/2021   gwoffshore   Uplifted during GW v10 upgrade (REG-3088) - untested path retained
  *  12/07/2022   gferran      Uplifted during GW v10 upgrade (PRB-41141) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionChequeEngine {
 
@@ -30,7 +31,7 @@ class AlbionChequeEngine {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (GWPC-10586)

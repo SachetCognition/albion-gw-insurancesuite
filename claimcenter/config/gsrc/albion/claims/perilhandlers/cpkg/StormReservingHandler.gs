@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.cpkg
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  02/05/2020   mokeefe      IPT rate change 12% (see GWCC-37695)
  *  06/11/2022   pnair        REG-36345: Do not change without speaking to actuarial
  *  08/03/2025   cdoyle       Rewritten during Project Mercury, old logic kept below commented out (AGI-38609)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class StormReservingHandler {
 
@@ -34,7 +35,7 @@ class StormReservingHandler {
     var amount = exposure.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (AGI-46635)

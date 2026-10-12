@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  24/02/2019   pnair        CR INC-36763 - added RETPLS brand handling
  *  11/07/2022   dwhitf       Merged from heritage branch (CHG-35566)
  *  23/01/2024   gwoffsh2     Solvency II data quality remediation DEF-38203
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AccidentalDamageSettlementHandler {
 

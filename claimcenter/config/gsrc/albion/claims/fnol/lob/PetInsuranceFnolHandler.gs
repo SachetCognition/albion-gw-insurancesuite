@@ -1,6 +1,6 @@
 package albion.claims.fnol.lob
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -15,6 +15,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  20/11/2019   gwoffshore   Defect fix CHG-6208 - null pointer when policy period not bound
  *  09/10/2025   mokeefe      IPT rate change 12% (see REG-30826)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class PetInsuranceFnolHandler {
 
@@ -28,7 +29,7 @@ class PetInsuranceFnolHandler {
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (REG-21899)

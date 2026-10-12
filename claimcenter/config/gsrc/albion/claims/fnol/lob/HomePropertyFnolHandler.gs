@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  10/09/2019   jsuther      Rewritten during Project Mercury, old logic kept below commented out (CHG-44904)
  *  16/07/2020   mokeefe      Uplifted during GW v10 upgrade (REG-1576) - untested path retained
  *  14/09/2025   akowal       Merged from heritage branch (PRB-5123)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class HomePropertyFnolHandler {
 

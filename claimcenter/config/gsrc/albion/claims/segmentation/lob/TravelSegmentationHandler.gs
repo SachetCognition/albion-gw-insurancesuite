@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  01/09/2011   dwhitf       CM-8770: Do not change without speaking to actuarial
  *  14/09/2019   gferran      Uplifted during GW v10 upgrade (AGI-5326) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class TravelSegmentationHandler {
 

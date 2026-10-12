@@ -1,5 +1,6 @@
 package albion.claims.fraud
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -15,6 +16,7 @@ uses java.math.BigDecimal
  *  13/10/2018   vraghu       Initial version for AGI-39328
  *  12/12/2021   hyamam       IPT rate change 12% (see DEF-27612)
  *  24/10/2023   vraghu       CHG-34644: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionCIFASRules {
 
@@ -27,7 +29,7 @@ class AlbionCIFASRules {
     }
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (INC-39223)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -65,7 +67,7 @@ class AlbionCIFASRules {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"AccidentalDamage","Theft","Freezer","AccidentalDamageHome"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (GWPC-27837)
   }
 }

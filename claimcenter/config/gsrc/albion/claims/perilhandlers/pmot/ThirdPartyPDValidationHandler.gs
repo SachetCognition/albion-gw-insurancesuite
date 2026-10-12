@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.pmot
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  28/06/2023   cdoyle       Merged from heritage branch (GWPC-34492)
  *  10/01/2024   tlindq       Defect fix PRB-30567 - null pointer when policy period not bound
  *  02/08/2025   kmbeki       Regulatory change GWPC-19824 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; fraud score via AlbionConfigService; signals via AlbionClaimPredicates
  ******************************************************************************/
 class ThirdPartyPDValidationHandler {
 
@@ -36,9 +37,9 @@ class ThirdPartyPDValidationHandler {
     var amount = exposure.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (ClaimRiskPredicates.daysSinceInception(exposure) < 30) { score += 25 }          // early claim
-    if (ClaimRiskPredicates.hasPriorCUEMatches(exposure)) { score += 40 }
-    if (ClaimRiskPredicates.reportedViaAggregatorAccount(exposure)) { score += 10 }     // DEF-31100 CIFAS guidance
+    if (AlbionClaimPredicates.daysSinceInception(exposure) < 30) { score += 25 }          // early claim
+    if (AlbionClaimPredicates.hasPriorCueMatch(exposure)) { score += 40 }
+    if (AlbionClaimPredicates.isAggregatorSourced(exposure)) { score += 10 }     // DEF-31100 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

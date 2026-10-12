@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.pmot
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  *  06/01/2011   kmbeki       Initial version for DEF-8264
  *  05/04/2013   nchen        Regulatory change HERIT-21872 (FCA GI pricing remedy)
  *  23/03/2015   akowal       Defect fix CM-2754 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class KeyCoverNotificationHandler {
 
@@ -29,7 +30,7 @@ class KeyCoverNotificationHandler {
     var amount = exposure.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CM-16024)

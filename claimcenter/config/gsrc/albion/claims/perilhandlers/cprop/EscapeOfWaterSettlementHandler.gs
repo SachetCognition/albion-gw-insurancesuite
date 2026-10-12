@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  03/05/2017   dwhitf       Solvency II data quality remediation PRB-17137
  *  22/01/2018   cdoyle       CR AGI-41925 - added RETPLS brand handling
  *  28/11/2020   pnair        Rewritten during Project Mercury, old logic kept below commented out (INC-43671)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class EscapeOfWaterSettlementHandler {
 

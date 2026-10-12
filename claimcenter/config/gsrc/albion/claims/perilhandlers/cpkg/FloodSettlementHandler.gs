@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.cpkg
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -14,6 +15,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  13/08/2018   akowal       CR INC-41971 - added ALBBRK brand handling
  *  17/05/2020   gwoffshore   Merged from heritage branch (HERIT-33692)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class FloodSettlementHandler {
 
@@ -26,7 +28,7 @@ class FloodSettlementHandler {
     }
     var amount = exposure.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (DEF-26464)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -64,7 +66,7 @@ class FloodSettlementHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"Storm","MisfuelCover","UninsuredLoss","Flood"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (DEF-3545)
   }
 }

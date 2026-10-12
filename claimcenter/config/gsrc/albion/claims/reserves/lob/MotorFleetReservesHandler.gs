@@ -1,6 +1,6 @@
 package albion.claims.reserves.lob
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  24/03/2023   tlindq       Perf fix CM-32999 - query was table scanning CC_CLAIM
  *  02/08/2024   cdoyle       Solvency II data quality remediation CHG-611
  *  17/10/2025   cdoyle       Emergency prod fix DEF-18578 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class MotorFleetReservesHandler {
 
@@ -34,7 +35,7 @@ class MotorFleetReservesHandler {
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CHG-13876)

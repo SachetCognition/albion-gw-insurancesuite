@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.van
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -20,6 +21,7 @@ uses java.math.BigDecimal
  *  21/07/2017   rpatel       Perf fix HERIT-6276 - query was table scanning CC_CLAIM
  *  22/11/2019   nchen        CHG-21212: Do not change without speaking to actuarial
  *  12/02/2024   rpatel       CR INC-8051 - added RETPLS brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class WindscreenSettlementHandler {
 
@@ -32,7 +34,7 @@ class WindscreenSettlementHandler {
     }
     var amount = exposure.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (PRB-38025)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -70,7 +72,7 @@ class WindscreenSettlementHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"UninsuredLoss","Storm","Freezer","AccidentalDamageHome"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (REG-22118)
   }
 }

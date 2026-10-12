@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  01/08/2012   baldrid      Regulatory change GWPC-33953 (FCA GI pricing remedy)
  *  22/03/2019   cdoyle       Emergency prod fix HERIT-2545 - DO NOT REVERT
  *  21/02/2021   hyamam       Rewritten during Project Mercury, old logic kept below commented out (DEF-18677)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class EmployersLiabilityRecoveryHandler {
 

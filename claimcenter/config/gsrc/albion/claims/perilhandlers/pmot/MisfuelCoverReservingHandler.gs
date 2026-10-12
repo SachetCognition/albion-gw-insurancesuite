@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.pmot
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,6 +19,7 @@ uses java.math.BigDecimal
  *  25/11/2020   pnair        Solvency II data quality remediation CM-32099
  *  22/03/2021   akowal       Perf fix INC-27880 - query was table scanning CC_CLAIM
  *  21/06/2023   tlindq       Merged from heritage branch (DEF-24242)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class MisfuelCoverReservingHandler {
 
@@ -30,7 +32,7 @@ class MisfuelCoverReservingHandler {
     }
     var amount = exposure.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (CM-10913)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -68,7 +70,7 @@ class MisfuelCoverReservingHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"TheftHome","ThirdPartyBI","FireDamage","LegalExpenses"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (PRB-1669)
   }
 }

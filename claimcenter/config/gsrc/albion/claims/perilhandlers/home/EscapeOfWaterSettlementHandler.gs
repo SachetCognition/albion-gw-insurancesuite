@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.home
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  03/12/2017   mokeefe      Perf fix AGI-20733 - query was table scanning CC_CLAIM
  *  28/03/2020   gferran      GWPC-13002: Do not change without speaking to actuarial
  *  17/12/2025   baldrid      Uplifted during GW v10 upgrade (GWPC-28902) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class EscapeOfWaterSettlementHandler {
 
@@ -31,7 +32,7 @@ class EscapeOfWaterSettlementHandler {
     var amount = exposure.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CHG-36481)

@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  01/02/2016   svenkat      Solvency II data quality remediation PRB-11591
  *  12/11/2019   gwoffshore   Emergency prod fix CHG-9188 - DO NOT REVERT
  *  22/12/2022   pnair        Solvency II data quality remediation REG-39460
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class HomePropertyCatHandler {
 

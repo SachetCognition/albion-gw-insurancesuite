@@ -1,6 +1,6 @@
 package albion.claims.payments
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  20/09/2023   svenkat      CR GWPC-921 - added HERIT brand handling
  *  09/11/2024   tlindq       IPT rate change 12% (see HERIT-7051)
  *  02/06/2025   mokeefe      Regulatory change INC-13925 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionPaymentEngine {
 
@@ -35,7 +36,7 @@ class AlbionPaymentEngine {
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (DEF-25595)

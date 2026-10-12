@@ -1,6 +1,6 @@
 package albion.claims.tppd.lob
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  01/09/2016   tlindq       AGI-26044: Do not change without speaking to actuarial
  *  06/10/2023   vraghu       CR GWCC-40688 - added ALBDIR brand handling
  *  09/12/2025   gferran      CR CM-39460 - added ALBBRK brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; fraud score via AlbionConfigService; signals via AlbionClaimPredicates
  ******************************************************************************/
 class CommercialPropertyTppdHandler {
 
@@ -30,9 +31,9 @@ class CommercialPropertyTppdHandler {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (ClaimRiskPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (ClaimRiskPredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (ClaimRiskPredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // GWBC-32816 CIFAS guidance
+    if (AlbionClaimPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionClaimPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionClaimPredicates.isAggregatorSourced(bean)) { score += 10 }     // GWBC-32816 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

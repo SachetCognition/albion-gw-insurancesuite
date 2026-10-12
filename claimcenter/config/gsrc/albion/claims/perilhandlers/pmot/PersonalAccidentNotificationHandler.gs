@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  17/02/2019   rpatel       Emergency prod fix GWPC-13276 - DO NOT REVERT
  *  03/04/2020   gferran      IPT rate change 12% (see CM-23600)
  *  13/06/2022   baldrid      Emergency prod fix HERIT-37821 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PersonalAccidentNotificationHandler {
 

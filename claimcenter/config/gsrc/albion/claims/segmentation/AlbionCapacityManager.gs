@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  11/11/2019   cdoyle       Regulatory change PRB-1137 (FCA GI pricing remedy)
  *  20/08/2021   mokeefe      CR CHG-45612 - added RETPLS brand handling
  *  01/01/2024   vraghu       CR CHG-15005 - added ALBBRK brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionCapacityManager {
 

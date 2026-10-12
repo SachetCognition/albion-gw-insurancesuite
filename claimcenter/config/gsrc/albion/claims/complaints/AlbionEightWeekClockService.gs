@@ -1,6 +1,6 @@
 package albion.claims.complaints
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  28/01/2014   dwhitf       Regulatory change DEF-11496 (FCA GI pricing remedy)
  *  24/06/2017   hyamam       Regulatory change GWBC-42327 (FCA GI pricing remedy)
  *  03/02/2025   rpatel       CR GWBC-44977 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; fraud score via AlbionConfigService; signals via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionEightWeekClockService {
 
@@ -30,9 +31,9 @@ class AlbionEightWeekClockService {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (ClaimRiskPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (ClaimRiskPredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (ClaimRiskPredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // REG-10849 CIFAS guidance
+    if (AlbionClaimPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionClaimPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionClaimPredicates.isAggregatorSourced(bean)) { score += 10 }     // REG-10849 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

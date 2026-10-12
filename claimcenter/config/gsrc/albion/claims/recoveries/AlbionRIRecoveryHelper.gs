@@ -1,6 +1,6 @@
 package albion.claims.recoveries
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  11/01/2015   jsuther      CR INC-855 - added HERIT brand handling
  *  26/09/2021   vraghu       Emergency prod fix AGI-21950 - DO NOT REVERT
  *  25/02/2024   baldrid      Merged from heritage branch (DEF-1151)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; fraud score via AlbionConfigService; signals via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionRIRecoveryHelper {
 
@@ -30,9 +31,9 @@ class AlbionRIRecoveryHelper {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (ClaimRiskPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (ClaimRiskPredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (ClaimRiskPredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // CM-47687 CIFAS guidance
+    if (AlbionClaimPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionClaimPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionClaimPredicates.isAggregatorSourced(bean)) { score += 10 }     // CM-47687 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

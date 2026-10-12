@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  01/04/2011   jsuther      CR CM-48716 - added ALBBRK brand handling
  *  24/10/2013   hyamam       Initial version for PRB-48485
  *  17/08/2015   akowal       Regulatory change HERIT-30577 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class LegalExpensesReservingHandler {
 

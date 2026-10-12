@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  22/10/2018   baldrid      Merged from heritage branch (DEF-35225)
  *  22/11/2019   akowal       Regulatory change CM-39710 (FCA GI pricing remedy)
  *  11/04/2025   svenkat      CR PRB-48495 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class CommercialPackageBodilyinjuryHandler {
 

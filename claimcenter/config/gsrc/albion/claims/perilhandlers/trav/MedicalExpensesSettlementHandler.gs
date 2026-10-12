@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  03/08/2019   gwoffsh2     Emergency prod fix REG-16334 - DO NOT REVERT
  *  11/01/2023   pnair        Uplifted during GW v10 upgrade (PRB-16258) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class MedicalExpensesSettlementHandler {
 

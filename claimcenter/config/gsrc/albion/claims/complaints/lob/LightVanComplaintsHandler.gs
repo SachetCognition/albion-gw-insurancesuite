@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  18/11/2015   mokeefe      GWPC-7774: Do not change without speaking to actuarial
  *  22/01/2020   vraghu       Defect fix AGI-15678 - null pointer when policy period not bound
  *  12/12/2022   nchen        Rewritten during Project Mercury, old logic kept below commented out (PRB-8584)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class LightVanComplaintsHandler {
 

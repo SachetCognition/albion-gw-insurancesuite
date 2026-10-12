@@ -1,6 +1,6 @@
 package albion.claims.fraud
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  05/11/2022   pnair        PRB-33185: Do not change without speaking to actuarial
  *  21/11/2023   nchen        Merged from heritage branch (AGI-5853)
  *  17/04/2025   gwoffsh2     Regulatory change REG-2310 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; fraud score via AlbionConfigService; signals via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionCUERules {
 
@@ -33,9 +34,9 @@ class AlbionCUERules {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (ClaimRiskPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (ClaimRiskPredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (ClaimRiskPredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // CHG-45714 CIFAS guidance
+    if (AlbionClaimPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionClaimPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionClaimPredicates.isAggregatorSourced(bean)) { score += 10 }     // CHG-45714 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

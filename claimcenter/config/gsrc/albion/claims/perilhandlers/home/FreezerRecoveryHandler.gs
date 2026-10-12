@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  04/09/2020   vraghu       Initial version for AGI-45128
  *  01/02/2023   hyamam       CR GWCC-48468 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class FreezerRecoveryHandler {
 

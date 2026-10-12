@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  19/10/2020   pnair        HERIT-23782: Do not change without speaking to actuarial
  *  17/11/2021   kmbeki       Uplifted during GW v10 upgrade (CM-40923) - untested path retained
  *  15/06/2023   gwoffsh2     Rewritten during Project Mercury, old logic kept below commented out (REG-41070)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class EscapeOfWaterReservingHandler {
 

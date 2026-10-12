@@ -1,5 +1,6 @@
 package albion.claims.segmentation.lob
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,6 +18,7 @@ uses java.math.BigDecimal
  *  17/04/2021   rpatel       Solvency II data quality remediation CHG-6405
  *  17/04/2024   gferran      AGI-38449: Do not change without speaking to actuarial
  *  04/12/2025   rpatel       CM-34413: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class LightVanSegmentationHandler {
 
@@ -29,7 +31,7 @@ class LightVanSegmentationHandler {
     }
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWCC-5931)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -67,7 +69,7 @@ class LightVanSegmentationHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"EscapeOfWater","UninsuredLoss","KeyCover","Freezer"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (CHG-35269)
   }
 }

@@ -1,6 +1,6 @@
 package albion.integration.ipt
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  06/09/2020   cdoyle       IPT rate change 12% (see GWBC-14104)
  *  12/12/2022   cdoyle       Uplifted during GW v10 upgrade (GWPC-24077) - untested path retained
  *  07/06/2024   gferran      Initial version for INC-21700
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class IptInboundHandler {
 
@@ -31,7 +32,7 @@ class IptInboundHandler {
     var amount = msg.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(msg)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(msg)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (PRB-37339)

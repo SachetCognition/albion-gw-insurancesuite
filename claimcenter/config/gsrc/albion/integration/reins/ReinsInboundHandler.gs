@@ -1,6 +1,6 @@
 package albion.integration.reins
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  11/08/2020   tlindq       Uplifted during GW v10 upgrade (GWCC-19031) - untested path retained
  *  10/09/2022   gferran      GWBC-4536: Do not change without speaking to actuarial
  *  12/12/2023   kmbeki       Emergency prod fix INC-31594 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class ReinsInboundHandler {
 
@@ -32,7 +33,7 @@ class ReinsInboundHandler {
     var amount = msg.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(msg)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(msg)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (INC-16357)

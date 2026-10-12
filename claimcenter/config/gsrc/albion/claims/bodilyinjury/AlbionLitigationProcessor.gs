@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  05/12/2014   mokeefe      Defect fix GWBC-13168 - null pointer when policy period not bound
  *  14/07/2018   gwoffshore   Uplifted during GW v10 upgrade (GWBC-46558) - untested path retained
  *  17/10/2021   jsuther      Uplifted during GW v10 upgrade (INC-3615) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionLitigationProcessor {
 

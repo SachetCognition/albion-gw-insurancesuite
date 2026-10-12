@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  01/10/2014   baldrid      IPT rate change 12% (see HERIT-37801)
  *  09/09/2023   dwhitf       Rewritten during Project Mercury, old logic kept below commented out (PRB-17648)
  *  20/01/2024   gwoffsh2     Rewritten during Project Mercury, old logic kept below commented out (GWCC-10798)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class EmployersLiabilityReservingHandler {
 

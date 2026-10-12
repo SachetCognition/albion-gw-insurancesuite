@@ -17,6 +17,7 @@ uses java.text.SimpleDateFormat
  *  01/09/2019   pnair        Initial version for REG-26242
  *  13/07/2022   dwhitf       Emergency prod fix REG-22587 - DO NOT REVERT
  *  22/09/2024   kmbeki       Perf fix CM-13474 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService
  */
 class PolarisPartyRecordBuilder {
 

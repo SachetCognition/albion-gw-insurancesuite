@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  02/02/2015   vraghu       Uplifted during GW v10 upgrade (DEF-19306) - untested path retained
  *  20/10/2016   gwoffshore   Uplifted during GW v10 upgrade (DEF-37375) - untested path retained
  *  23/02/2021   dwhitf       Initial version for GWPC-7599
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class DeathOfPetReservingHandler {
 

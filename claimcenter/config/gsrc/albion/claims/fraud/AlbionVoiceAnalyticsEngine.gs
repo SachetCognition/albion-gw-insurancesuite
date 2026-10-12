@@ -1,5 +1,6 @@
 package albion.claims.fraud
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -21,6 +22,7 @@ uses java.math.BigDecimal
  *  15/11/2022   baldrid      Regulatory change REG-40970 (FCA GI pricing remedy)
  *  02/07/2023   cdoyle       CM-16980: Do not change without speaking to actuarial
  *  06/06/2024   baldrid      Regulatory change GWCC-5961 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionVoiceAnalyticsEngine {
 
@@ -33,7 +35,7 @@ class AlbionVoiceAnalyticsEngine {
     }
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWPC-42206)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -71,7 +73,7 @@ class AlbionVoiceAnalyticsEngine {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"TheftHome","EscapeOfWater","FireDamage","Windscreen"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (CHG-32344)
   }
 }

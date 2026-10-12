@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  13/02/2011   tlindq       Regulatory change GWPC-2794 (FCA GI pricing remedy)
  *  22/04/2021   nchen        Merged from heritage branch (REG-16589)
  *  13/07/2024   mokeefe      CR AGI-1147 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class MotorFleetFnolHandler {
 

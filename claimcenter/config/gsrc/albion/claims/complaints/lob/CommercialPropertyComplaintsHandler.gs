@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  07/10/2019   hyamam       CR GWPC-13655 - added RETPLS brand handling
  *  10/11/2023   pnair        IPT rate change 12% (see GWCC-38766)
  *  20/05/2025   hyamam       Merged from heritage branch (GWBC-31719)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class CommercialPropertyComplaintsHandler {
 

@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.pet
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  08/12/2022   mokeefe      Initial version for CHG-43875
  *  08/09/2023   kmbeki       Emergency prod fix AGI-13822 - DO NOT REVERT
  *  16/03/2025   hyamam       CR AGI-18771 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class VetFeesValidationHandler {
 
@@ -34,7 +35,7 @@ class VetFeesValidationHandler {
     var amount = exposure.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CM-1090)

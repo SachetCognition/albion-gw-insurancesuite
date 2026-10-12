@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.cpkg
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  *  26/10/2011   vraghu       Rewritten during Project Mercury, old logic kept below commented out (HERIT-47895)
  *  12/09/2012   tlindq       Merged from heritage branch (GWCC-38941)
  *  07/08/2018   hyamam       Perf fix REG-16362 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class FloodRecoveryHandler {
 
@@ -29,7 +30,7 @@ class FloodRecoveryHandler {
     var amount = exposure.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (REG-24344)

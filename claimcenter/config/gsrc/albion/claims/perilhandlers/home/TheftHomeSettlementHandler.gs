@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.home
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  07/06/2022   tlindq       HERIT-30613: Do not change without speaking to actuarial
  *  15/08/2024   rpatel       Rewritten during Project Mercury, old logic kept below commented out (GWCC-40457)
  *  10/01/2025   rpatel       IPT rate change 12% (see REG-34592)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class TheftHomeSettlementHandler {
 
@@ -35,7 +36,7 @@ class TheftHomeSettlementHandler {
     var amount = exposure.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (PRB-35207)

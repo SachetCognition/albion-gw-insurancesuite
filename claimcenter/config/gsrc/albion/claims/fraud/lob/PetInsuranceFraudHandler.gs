@@ -1,5 +1,6 @@
 package albion.claims.fraud.lob
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -16,6 +17,7 @@ uses java.math.BigDecimal
  *  28/06/2013   gwoffshore   Perf fix HERIT-27942 - query was table scanning CC_CLAIM
  *  23/10/2019   kmbeki       Solvency II data quality remediation CM-11393
  *  27/11/2020   mokeefe      CR INC-42879 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class PetInsuranceFraudHandler {
 
@@ -28,7 +30,7 @@ class PetInsuranceFraudHandler {
     }
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (AGI-43611)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -66,7 +68,7 @@ class PetInsuranceFraudHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"AccidentalDamage","EscapeOfWater","AccidentalDamageHome","PersonalAccident"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (HERIT-47771)
   }
 }

@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  27/08/2018   jsuther      Uplifted during GW v10 upgrade (GWCC-6062) - untested path retained
  *  25/04/2022   vraghu       Solvency II data quality remediation DEF-37416
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionSubrogationService {
 

@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  25/04/2021   nchen        Defect fix CHG-25223 - null pointer when policy period not bound
  *  16/03/2023   kmbeki       Rewritten during Project Mercury, old logic kept below commented out (AGI-28436)
  *  24/05/2025   akowal       Rewritten during Project Mercury, old logic kept below commented out (CHG-30727)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class TheftReservingHandler {
 

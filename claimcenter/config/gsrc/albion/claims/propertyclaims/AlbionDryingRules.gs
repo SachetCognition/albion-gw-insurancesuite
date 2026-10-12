@@ -1,5 +1,6 @@
 package albion.claims.propertyclaims
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -15,6 +16,7 @@ uses java.math.BigDecimal
  *  01/07/2012   gwoffshore   CR CHG-2285 - added ALBDIR brand handling
  *  11/04/2021   gwoffshore   GWCC-48392: Do not change without speaking to actuarial
  *  26/01/2023   gwoffshore   Rewritten during Project Mercury, old logic kept below commented out (DEF-26239)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionDryingRules {
 
@@ -27,7 +29,7 @@ class AlbionDryingRules {
     }
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (AGI-23558)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -65,7 +67,7 @@ class AlbionDryingRules {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"Windscreen","FireDamage","Fire","ThirdPartyPD"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (GWBC-30245)
   }
 }

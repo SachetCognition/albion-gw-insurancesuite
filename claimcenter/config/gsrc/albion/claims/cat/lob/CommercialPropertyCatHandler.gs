@@ -1,6 +1,6 @@
 package albion.claims.cat.lob
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  13/08/2020   gwoffshore   Rewritten during Project Mercury, old logic kept below commented out (GWPC-10800)
  *  19/10/2021   akowal       Perf fix GWCC-9755 - query was table scanning CC_CLAIM
  *  07/10/2022   jsuther      IPT rate change 12% (see AGI-16412)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class CommercialPropertyCatHandler {
 
@@ -35,7 +36,7 @@ class CommercialPropertyCatHandler {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (REG-48832)

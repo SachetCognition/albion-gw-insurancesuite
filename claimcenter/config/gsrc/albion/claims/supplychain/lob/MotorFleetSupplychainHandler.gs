@@ -1,5 +1,6 @@
 package albion.claims.supplychain.lob
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -21,6 +22,7 @@ uses java.math.BigDecimal
  *  21/03/2020   svenkat      Initial version for GWCC-31717
  *  24/05/2023   vraghu       IPT rate change 12% (see PRB-37266)
  *  16/12/2025   dwhitf       Emergency prod fix GWCC-4179 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class MotorFleetSupplychainHandler {
 
@@ -33,7 +35,7 @@ class MotorFleetSupplychainHandler {
     }
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (HERIT-46714)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -71,7 +73,7 @@ class MotorFleetSupplychainHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"ThirdPartyBI","AccidentalDamageHome","Fire","LegalExpenses"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (DEF-44746)
   }
 }

@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.van
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,6 +18,7 @@ uses java.math.BigDecimal
  *  15/08/2018   gwoffsh2     IPT rate change 12% (see GWCC-1164)
  *  15/03/2019   pnair        Initial version for REG-4934
  *  13/07/2020   rpatel       Uplifted during GW v10 upgrade (CM-33128) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class FireReservingHandler {
 
@@ -29,7 +31,7 @@ class FireReservingHandler {
     }
     var amount = exposure.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-25709)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -67,7 +69,7 @@ class FireReservingHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"Windscreen","EscapeOfWater","MisfuelCover","Freezer"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (PRB-20150)
   }
 }

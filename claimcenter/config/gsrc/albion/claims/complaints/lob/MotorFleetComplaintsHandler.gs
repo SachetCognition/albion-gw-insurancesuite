@@ -1,5 +1,6 @@
 package albion.claims.complaints.lob
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,6 +18,7 @@ uses java.math.BigDecimal
  *  19/12/2018   gwoffshore   Uplifted during GW v10 upgrade (REG-27677) - untested path retained
  *  10/10/2021   pnair        Defect fix CM-39264 - null pointer when policy period not bound
  *  02/10/2025   mokeefe      Emergency prod fix HERIT-31696 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class MotorFleetComplaintsHandler {
 
@@ -29,7 +31,7 @@ class MotorFleetComplaintsHandler {
     }
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-15755)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -67,7 +69,7 @@ class MotorFleetComplaintsHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"TheftHome","ThirdPartyPD","UninsuredLoss","KeyCover"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (CHG-8252)
   }
 }

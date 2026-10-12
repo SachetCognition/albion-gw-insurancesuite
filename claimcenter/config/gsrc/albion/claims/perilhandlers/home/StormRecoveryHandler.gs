@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  21/03/2012   mokeefe      Defect fix DEF-17848 - null pointer when policy period not bound
  *  20/09/2016   kmbeki       Rewritten during Project Mercury, old logic kept below commented out (REG-1799)
  *  17/06/2025   kmbeki       IPT rate change 12% (see GWPC-23666)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class StormRecoveryHandler {
 

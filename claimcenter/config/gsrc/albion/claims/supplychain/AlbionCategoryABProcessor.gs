@@ -1,6 +1,6 @@
 package albion.claims.supplychain
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  23/03/2019   rpatel       IPT rate change 12% (see HERIT-41309)
  *  01/08/2022   akowal       Initial version for INC-6076
  *  18/04/2025   dwhitf       CR DEF-46735 - added ALBBRK brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionCategoryABProcessor {
 
@@ -31,7 +32,7 @@ class AlbionCategoryABProcessor {
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (INC-15361)

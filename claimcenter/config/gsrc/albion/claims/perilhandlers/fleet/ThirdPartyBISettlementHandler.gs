@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.fleet
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -20,6 +21,7 @@ uses java.math.BigDecimal
  *  18/07/2019   cdoyle       Defect fix INC-48650 - null pointer when policy period not bound
  *  20/06/2022   dwhitf       IPT rate change 12% (see GWBC-32816)
  *  21/07/2023   gwoffshore   CR REG-33831 - added ALBDIR brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class ThirdPartyBISettlementHandler {
 
@@ -32,7 +34,7 @@ class ThirdPartyBISettlementHandler {
     }
     var amount = exposure.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (HERIT-3721)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -70,7 +72,7 @@ class ThirdPartyBISettlementHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"ThirdPartyBI","MisfuelCover","Storm","Freezer"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (CM-30258)
   }
 }

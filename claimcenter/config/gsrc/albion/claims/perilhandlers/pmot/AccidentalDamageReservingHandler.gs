@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  08/12/2016   akowal       AGI-17430: Do not change without speaking to actuarial
  *  23/04/2017   gwoffsh2     CR HERIT-25237 - added HERIT brand handling
  *  18/10/2021   vraghu       Regulatory change CM-5704 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AccidentalDamageReservingHandler {
 

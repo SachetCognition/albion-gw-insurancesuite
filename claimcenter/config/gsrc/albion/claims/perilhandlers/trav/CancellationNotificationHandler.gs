@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.trav
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -15,6 +16,7 @@ uses java.math.BigDecimal
  *  10/12/2021   akowal       Perf fix AGI-44006 - query was table scanning CC_CLAIM
  *  19/08/2023   gwoffshore   Emergency prod fix CHG-37007 - DO NOT REVERT
  *  06/12/2024   hyamam       CHG-22116: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class CancellationNotificationHandler {
 
@@ -27,7 +29,7 @@ class CancellationNotificationHandler {
     }
     var amount = exposure.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-17927)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -65,7 +67,7 @@ class CancellationNotificationHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"LegalExpenses","Fire","FireDamage","TheftHome"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (AGI-47050)
   }
 }

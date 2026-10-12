@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  10/01/2015   nchen        Defect fix CM-47480 - null pointer when policy period not bound
  *  24/07/2020   dwhitf       Rewritten during Project Mercury, old logic kept below commented out (REG-23053)
  *  19/12/2023   jsuther      CR GWPC-39563 - added ALBDIR brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PublicLiabilityValidationHandler {
 

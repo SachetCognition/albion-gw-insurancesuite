@@ -1,6 +1,6 @@
 package albion.claims.fraud.lob
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  18/05/2022   gwoffshore   Rewritten during Project Mercury, old logic kept below commented out (REG-44496)
  *  22/12/2023   gferran      Initial version for REG-29311
  *  16/03/2024   gwoffshore   IPT rate change 12% (see AGI-6913)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class LightVanFraudHandler {
 
@@ -33,7 +34,7 @@ class LightVanFraudHandler {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (INC-803)

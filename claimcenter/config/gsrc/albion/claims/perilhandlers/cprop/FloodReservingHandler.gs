@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  22/12/2020   pnair        Regulatory change GWBC-18701 (FCA GI pricing remedy)
  *  23/10/2023   gwoffshore   Merged from heritage branch (GWBC-824)
  *  26/11/2025   gferran      GWCC-43962: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class FloodReservingHandler {
 

@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  08/06/2012   nchen        CR GWBC-22162 - added RETPLS brand handling
  *  01/09/2014   jsuther      Uplifted during GW v10 upgrade (REG-14673) - untested path retained
  *  25/02/2015   dwhitf       Uplifted during GW v10 upgrade (INC-11719) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class CommercialPropertyFnolHandler {
 

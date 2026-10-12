@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  05/09/2012   hyamam       Emergency prod fix DEF-7165 - DO NOT REVERT
  *  19/02/2020   dwhitf       Regulatory change DEF-31318 (FCA GI pricing remedy)
  *  07/02/2024   vraghu       IPT rate change 12% (see REG-36817)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class ProductsLiabilitySettlementHandler {
 

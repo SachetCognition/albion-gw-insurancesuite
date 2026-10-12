@@ -1,6 +1,6 @@
 package albion.claims.supplychain.lob
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  22/04/2019   cdoyle       Solvency II data quality remediation INC-7423
  *  11/06/2020   nchen        Emergency prod fix INC-12143 - DO NOT REVERT
  *  25/08/2021   vraghu       Merged from heritage branch (DEF-4534)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class LightVanSupplychainHandler {
 
@@ -33,7 +34,7 @@ class LightVanSupplychainHandler {
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (HERIT-25834)

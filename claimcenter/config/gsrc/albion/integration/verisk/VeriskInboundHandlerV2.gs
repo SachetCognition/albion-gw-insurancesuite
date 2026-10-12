@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  16/11/2016   rpatel       IPT rate change 12% (see PRB-29512)
  *  06/11/2018   mokeefe      GWPC-25513: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class VeriskInboundHandlerV2 {
 

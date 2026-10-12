@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  13/04/2018   vraghu       Solvency II data quality remediation GWBC-28239
  *  16/07/2020   baldrid      GWPC-30972: Do not change without speaking to actuarial
  *  15/05/2021   hyamam       Uplifted during GW v10 upgrade (AGI-29791) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class MotorFleetRecoveriesHandler {
 

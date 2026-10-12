@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.fleet
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  18/12/2021   kmbeki       Perf fix DEF-27185 - query was table scanning CC_CLAIM
  *  04/07/2023   gwoffsh2     Solvency II data quality remediation HERIT-30390
  *  07/06/2025   jsuther      CR REG-5790 - added RETPLS brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class ThirdPartyPDNotificationHandler {
 
@@ -30,7 +31,7 @@ class ThirdPartyPDNotificationHandler {
     var amount = exposure.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (GWBC-10120)

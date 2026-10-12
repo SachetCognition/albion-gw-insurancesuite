@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  26/02/2021   mokeefe      Emergency prod fix GWPC-42262 - DO NOT REVERT
  *  02/03/2023   nchen        Perf fix AGI-47220 - query was table scanning CC_CLAIM
  *  07/07/2024   rpatel       CR AGI-30957 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionAltAccomManager {
 

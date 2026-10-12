@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.trav
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -14,6 +15,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  18/11/2011   akowal       Rewritten during Project Mercury, old logic kept below commented out (DEF-23437)
  *  20/07/2024   cdoyle       IPT rate change 12% (see AGI-27116)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class CancellationValidationHandler {
 
@@ -26,7 +28,7 @@ class CancellationValidationHandler {
     }
     var amount = exposure.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (CM-29287)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -64,7 +66,7 @@ class CancellationValidationHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"FireDamage","Fire","Storm","PersonalAccident"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (CHG-4715)
   }
 }

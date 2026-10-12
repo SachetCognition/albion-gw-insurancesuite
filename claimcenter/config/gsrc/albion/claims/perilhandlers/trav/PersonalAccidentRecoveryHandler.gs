@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.trav
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  21/08/2016   vraghu       Emergency prod fix DEF-5379 - DO NOT REVERT
  *  09/12/2017   pnair        Merged from heritage branch (DEF-36383)
  *  03/06/2022   cdoyle       Defect fix CM-2819 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class PersonalAccidentRecoveryHandler {
 
@@ -31,7 +32,7 @@ class PersonalAccidentRecoveryHandler {
     var amount = exposure.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (AGI-43620)

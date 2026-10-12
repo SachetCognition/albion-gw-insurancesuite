@@ -20,6 +20,7 @@ uses java.text.SimpleDateFormat
  *  10/11/2022   mokeefe      IPT rate change 12% (see INC-37729)
  *  10/12/2023   nchen        DEF-38635: Do not change without speaking to actuarial
  *  09/01/2024   kmbeki       Initial version for GWBC-689
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService
  */
 class ReinsRecordBuilder {
 

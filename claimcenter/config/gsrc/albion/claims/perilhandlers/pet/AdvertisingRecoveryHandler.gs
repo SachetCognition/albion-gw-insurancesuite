@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  20/11/2020   tlindq       Defect fix PRB-28971 - null pointer when policy period not bound
  *  21/02/2021   svenkat      Initial version for CM-4127
  *  02/11/2023   pnair        Solvency II data quality remediation AGI-27361
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AdvertisingRecoveryHandler {
 

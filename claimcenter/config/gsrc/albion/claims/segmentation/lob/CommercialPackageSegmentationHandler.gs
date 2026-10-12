@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  27/11/2022   cdoyle       Initial version for HERIT-23910
  *  05/07/2023   baldrid      CM-2737: Do not change without speaking to actuarial
  *  15/03/2025   jsuther      Perf fix CM-45468 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class CommercialPackageSegmentationHandler {
 

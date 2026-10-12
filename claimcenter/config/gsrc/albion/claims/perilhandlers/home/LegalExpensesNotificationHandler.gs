@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  16/07/2015   gferran      Emergency prod fix GWBC-44896 - DO NOT REVERT
  *  14/02/2021   cdoyle       IPT rate change 12% (see HERIT-1833)
  *  25/03/2022   baldrid      Rewritten during Project Mercury, old logic kept below commented out (GWBC-2590)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class LegalExpensesNotificationHandler {
 

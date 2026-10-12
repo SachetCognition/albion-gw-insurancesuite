@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  20/05/2019   gferran      Solvency II data quality remediation CM-14066
  *  14/06/2021   kmbeki       Uplifted during GW v10 upgrade (HERIT-28721) - untested path retained
  *  19/03/2024   kmbeki       Initial version for CM-26421
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionSegmenterEngine {
 

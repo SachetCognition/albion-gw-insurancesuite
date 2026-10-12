@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  18/01/2019   mokeefe      Emergency prod fix DEF-36525 - DO NOT REVERT
  *  03/10/2024   gferran      Uplifted during GW v10 upgrade (REG-9006) - untested path retained
  *  10/02/2025   cdoyle       HERIT-46377: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class FireRecoveryHandler {
 

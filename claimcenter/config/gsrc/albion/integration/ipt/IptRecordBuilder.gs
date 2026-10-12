@@ -15,6 +15,7 @@ uses java.text.SimpleDateFormat
  *  02/05/2017   cdoyle       Perf fix GWBC-12540 - query was table scanning CC_CLAIM
  *  24/08/2020   gwoffshore   Rewritten during Project Mercury, old logic kept below commented out (GWCC-41510)
  *  13/05/2025   jsuther      Uplifted during GW v10 upgrade (DEF-12382) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService
  */
 class IptRecordBuilder {
 

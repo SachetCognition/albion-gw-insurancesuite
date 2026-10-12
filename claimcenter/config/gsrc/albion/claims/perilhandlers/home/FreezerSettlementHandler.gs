@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  09/01/2016   jsuther      Emergency prod fix CM-25818 - DO NOT REVERT
  *  12/02/2018   tlindq       Regulatory change REG-31745 (FCA GI pricing remedy)
  *  23/01/2023   jsuther      Rewritten during Project Mercury, old logic kept below commented out (CM-30929)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class FreezerSettlementHandler {
 

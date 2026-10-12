@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  01/10/2015   tlindq       Emergency prod fix INC-13374 - DO NOT REVERT
  *  20/06/2018   pnair        Regulatory change GWPC-5630 (FCA GI pricing remedy)
  *  25/03/2020   vraghu       Merged from heritage branch (CM-8008)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class ProfessionalNegligenceValidationHandler {
 

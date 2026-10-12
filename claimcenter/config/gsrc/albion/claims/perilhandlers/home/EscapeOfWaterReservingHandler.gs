@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.home
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  23/02/2023   gwoffsh2     Perf fix CHG-39508 - query was table scanning CC_CLAIM
  *  25/10/2024   kmbeki       Perf fix GWPC-29803 - query was table scanning CC_CLAIM
  *  13/06/2025   gwoffshore   Merged from heritage branch (CM-18823)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class EscapeOfWaterReservingHandler {
 
@@ -35,7 +36,7 @@ class EscapeOfWaterReservingHandler {
     var amount = exposure.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CHG-19656)

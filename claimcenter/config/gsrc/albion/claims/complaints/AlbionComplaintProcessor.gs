@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  05/07/2021   baldrid      AGI-37293: Do not change without speaking to actuarial
  *  01/01/2022   pnair        Perf fix CM-26234 - query was table scanning CC_CLAIM
  *  12/09/2024   kmbeki       Perf fix DEF-43405 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionComplaintProcessor {
 

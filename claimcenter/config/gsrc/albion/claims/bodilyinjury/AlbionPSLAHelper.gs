@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  22/12/2012   vraghu       Emergency prod fix GWCC-43376 - DO NOT REVERT
  *  26/08/2019   baldrid      Defect fix CHG-48360 - null pointer when policy period not bound
  *  13/06/2021   hyamam       Uplifted during GW v10 upgrade (GWPC-10368) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionPSLAHelper {
 

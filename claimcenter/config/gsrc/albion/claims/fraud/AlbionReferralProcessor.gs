@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  05/01/2014   hyamam       Perf fix GWPC-35813 - query was table scanning CC_CLAIM
  *  03/10/2015   nchen        Perf fix INC-25427 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionReferralProcessor {
 

@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  09/05/2019   tlindq       Uplifted during GW v10 upgrade (AGI-13590) - untested path retained
  *  24/07/2025   rpatel       Solvency II data quality remediation REG-28760
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class ThirdPartyPDValidationHandler {
 

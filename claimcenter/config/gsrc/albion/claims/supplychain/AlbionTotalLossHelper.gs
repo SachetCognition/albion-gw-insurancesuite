@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  22/05/2023   rpatel       Defect fix CHG-27388 - null pointer when policy period not bound
  *  03/09/2024   gferran      Perf fix AGI-32173 - query was table scanning CC_CLAIM
  *  18/11/2025   jsuther      Solvency II data quality remediation HERIT-38977
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionTotalLossHelper {
 

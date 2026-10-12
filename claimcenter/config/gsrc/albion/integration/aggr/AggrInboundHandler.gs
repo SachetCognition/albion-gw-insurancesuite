@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  08/07/2023   pnair        Solvency II data quality remediation PRB-20062
  *  20/06/2024   jsuther      Defect fix DEF-20019 - null pointer when policy period not bound
  *  02/12/2025   gwoffsh2     Uplifted during GW v10 upgrade (CM-34344) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AggrInboundHandler {
 

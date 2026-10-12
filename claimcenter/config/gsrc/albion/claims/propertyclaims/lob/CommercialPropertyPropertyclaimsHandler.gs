@@ -1,6 +1,6 @@
 package albion.claims.propertyclaims.lob
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  08/04/2017   kmbeki       Regulatory change GWPC-11916 (FCA GI pricing remedy)
  *  19/09/2023   cdoyle       Initial version for PRB-13344
  *  21/02/2024   gwoffshore   Emergency prod fix PRB-43253 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class CommercialPropertyPropertyclaimsHandler {
 
@@ -31,7 +32,7 @@ class CommercialPropertyPropertyclaimsHandler {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (PRB-20577)

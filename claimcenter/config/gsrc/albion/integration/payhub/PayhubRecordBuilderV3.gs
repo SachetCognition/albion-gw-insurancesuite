@@ -15,6 +15,7 @@ uses java.text.SimpleDateFormat
  *  20/06/2021   gwoffshore   Initial version for PRB-14662
  *  12/08/2022   baldrid      Initial version for GWBC-24152
  *  22/08/2024   tlindq       Emergency prod fix GWBC-31609 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService
  */
 class PayhubRecordBuilderV3 {
 

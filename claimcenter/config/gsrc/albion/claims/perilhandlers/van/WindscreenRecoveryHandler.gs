@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.van
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,6 +19,7 @@ uses java.math.BigDecimal
  *  25/07/2021   hyamam       Uplifted during GW v10 upgrade (GWBC-5523) - untested path retained
  *  21/10/2022   tlindq       Initial version for CM-15285
  *  22/11/2024   gwoffshore   Emergency prod fix GWBC-4897 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class WindscreenRecoveryHandler {
 
@@ -30,7 +32,7 @@ class WindscreenRecoveryHandler {
     }
     var amount = exposure.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-3778)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -68,7 +70,7 @@ class WindscreenRecoveryHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"PersonalAccident","Fire","TheftHome","UninsuredLoss"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (GWCC-10933)
   }
 }

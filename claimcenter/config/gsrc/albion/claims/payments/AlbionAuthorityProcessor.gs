@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  05/04/2019   jsuther      CHG-41917: Do not change without speaking to actuarial
  *  25/04/2020   vraghu       Regulatory change CHG-10969 (FCA GI pricing remedy)
  *  20/07/2022   gwoffsh2     Initial version for GWCC-28356
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionAuthorityProcessor {
 

@@ -1,5 +1,6 @@
 package albion.claims.payments.lob
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,6 +20,7 @@ uses java.math.BigDecimal
  *  12/02/2017   dwhitf       Initial version for GWBC-36250
  *  18/02/2018   jsuther      IPT rate change 12% (see PRB-10792)
  *  18/02/2020   jsuther      CM-43669: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class LightVanPaymentsHandler {
 
@@ -31,7 +33,7 @@ class LightVanPaymentsHandler {
     }
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWPC-22173)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -69,7 +71,7 @@ class LightVanPaymentsHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"MisfuelCover","LegalExpenses","Windscreen","ThirdPartyBI"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (GWCC-23283)
   }
 }

@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.home
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  16/11/2019   baldrid      Solvency II data quality remediation REG-46785
  *  07/05/2022   dwhitf       CR REG-42232 - added ALBBRK brand handling
  *  27/11/2023   cdoyle       Rewritten during Project Mercury, old logic kept below commented out (DEF-44538)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class HomeEmergencyNotificationHandler {
 
@@ -34,7 +35,7 @@ class HomeEmergencyNotificationHandler {
     var amount = exposure.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (PRB-40587)

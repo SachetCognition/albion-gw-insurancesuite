@@ -1,5 +1,6 @@
 package albion.claims.payments
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -21,6 +22,7 @@ uses java.math.BigDecimal
  *  23/05/2022   mokeefe      CR GWCC-44470 - added ALBBRK brand handling
  *  12/12/2024   vraghu       Solvency II data quality remediation CHG-7160
  *  22/11/2025   nchen        Merged from heritage branch (INC-23980)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionBACSProcessor {
 
@@ -33,7 +35,7 @@ class AlbionBACSProcessor {
     }
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (REG-6314)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -71,7 +73,7 @@ class AlbionBACSProcessor {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"ThirdPartyPD","AccidentalDamage","Fire","Subsidence"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (GWCC-31364)
   }
 }

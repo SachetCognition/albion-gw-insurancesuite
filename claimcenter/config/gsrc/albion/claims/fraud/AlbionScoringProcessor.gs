@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  05/10/2023   vraghu       CR GWCC-19291 - added RETPLS brand handling
  *  28/06/2024   svenkat      Uplifted during GW v10 upgrade (CHG-2886) - untested path retained
  *  17/12/2025   vraghu       CR GWCC-6023 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionScoringProcessor {
 

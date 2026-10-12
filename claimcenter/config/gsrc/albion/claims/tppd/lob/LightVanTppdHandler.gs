@@ -1,6 +1,6 @@
 package albion.claims.tppd.lob
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  06/12/2014   gwoffshore   AGI-29869: Do not change without speaking to actuarial
  *  06/08/2017   gwoffshore   Uplifted during GW v10 upgrade (CHG-497) - untested path retained
  *  14/04/2023   mokeefe      Emergency prod fix DEF-45662 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class LightVanTppdHandler {
 
@@ -30,7 +31,7 @@ class LightVanTppdHandler {
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (AGI-11174)

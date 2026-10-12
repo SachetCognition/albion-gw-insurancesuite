@@ -14,6 +14,7 @@ uses java.text.SimpleDateFormat
  *  08/02/2013   jsuther      CR CM-19670 - added HERIT brand handling
  *  06/10/2015   tlindq       IPT rate change 12% (see GWBC-47907)
  *  26/05/2020   vraghu       Perf fix PRB-17598 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService
  */
 class AggrRecordBuilder {
 

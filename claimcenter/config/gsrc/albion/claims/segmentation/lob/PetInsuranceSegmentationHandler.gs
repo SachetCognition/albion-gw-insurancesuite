@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  07/06/2013   tlindq       Regulatory change AGI-46596 (FCA GI pricing remedy)
  *  02/06/2014   gferran      Solvency II data quality remediation CHG-47527
  *  27/04/2021   baldrid      Defect fix REG-48693 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PetInsuranceSegmentationHandler {
 

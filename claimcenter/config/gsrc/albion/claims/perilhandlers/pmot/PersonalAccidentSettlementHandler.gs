@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  19/09/2020   vraghu       Regulatory change CHG-32160 (FCA GI pricing remedy)
  *  21/06/2022   jsuther      Merged from heritage branch (PRB-35387)
  *  11/07/2025   jsuther      REG-7353: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PersonalAccidentSettlementHandler {
 

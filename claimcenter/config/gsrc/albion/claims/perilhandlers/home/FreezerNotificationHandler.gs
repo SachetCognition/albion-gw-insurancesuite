@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  07/10/2020   rpatel       IPT rate change 12% (see GWBC-22952)
  *  01/11/2021   pnair        IPT rate change 12% (see HERIT-503)
  *  27/10/2022   jsuther      CR PRB-15480 - added RETPLS brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class FreezerNotificationHandler {
 

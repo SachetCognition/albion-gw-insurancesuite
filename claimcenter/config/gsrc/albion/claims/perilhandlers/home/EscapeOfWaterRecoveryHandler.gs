@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  13/06/2015   gferran      Emergency prod fix GWCC-25092 - DO NOT REVERT
  *  04/07/2023   nchen        Solvency II data quality remediation INC-21933
  *  11/10/2025   tlindq       Perf fix DEF-39892 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class EscapeOfWaterRecoveryHandler {
 

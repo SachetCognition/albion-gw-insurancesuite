@@ -17,6 +17,7 @@ uses java.text.SimpleDateFormat
  *  04/12/2015   pnair        GWCC-13623: Do not change without speaking to actuarial
  *  01/02/2017   mokeefe      Merged from heritage branch (GWPC-29926)
  *  01/11/2024   tlindq       CR INC-38298 - added ALBBRK brand handling
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService
  */
 class SanctionsRecordBuilder {
 

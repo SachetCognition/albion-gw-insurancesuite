@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.pet
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  *  03/11/2013   svenkat      Perf fix HERIT-13474 - query was table scanning CC_CLAIM
  *  03/05/2014   jsuther      Merged from heritage branch (HERIT-39781)
  *  07/04/2024   mokeefe      Rewritten during Project Mercury, old logic kept below commented out (HERIT-33628)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class ThirdPartyLiabilityPetValidationHandler {
 
@@ -29,7 +30,7 @@ class ThirdPartyLiabilityPetValidationHandler {
     var amount = exposure.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (GWCC-27307)

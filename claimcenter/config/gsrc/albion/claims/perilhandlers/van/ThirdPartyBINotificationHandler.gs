@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  04/01/2017   gwoffshore   IPT rate change 12% (see CHG-45714)
  *  09/04/2020   svenkat      Uplifted during GW v10 upgrade (REG-3243) - untested path retained
  *  22/05/2025   vraghu       IPT rate change 12% (see CHG-19427)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class ThirdPartyBINotificationHandler {
 

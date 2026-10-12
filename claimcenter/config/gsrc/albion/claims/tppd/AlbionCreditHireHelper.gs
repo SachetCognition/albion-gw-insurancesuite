@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  10/06/2021   cdoyle       Solvency II data quality remediation DEF-17025
  *  28/09/2024   tlindq       Regulatory change REG-4004 (FCA GI pricing remedy)
  *  27/08/2025   jsuther      Initial version for DEF-21949
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionCreditHireHelper {
 

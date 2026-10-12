@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  08/01/2021   kmbeki       IPT rate change 12% (see GWBC-7216)
  *  26/05/2022   rpatel       Initial version for CHG-27236
  *  23/03/2023   gwoffshore   Rewritten during Project Mercury, old logic kept below commented out (PRB-22790)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AccidentalDamageSettlementHandler {
 

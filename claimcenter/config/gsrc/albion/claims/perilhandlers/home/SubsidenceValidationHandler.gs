@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.home
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -15,6 +16,7 @@ uses java.math.BigDecimal
  *  16/02/2011   vraghu       Defect fix GWBC-3683 - null pointer when policy period not bound
  *  11/10/2018   hyamam       Defect fix GWPC-2370 - null pointer when policy period not bound
  *  09/11/2019   hyamam       CR GWBC-15769 - added ALBDIR brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class SubsidenceValidationHandler {
 
@@ -27,7 +29,7 @@ class SubsidenceValidationHandler {
     }
     var amount = exposure.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (PRB-18563)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -65,7 +67,7 @@ class SubsidenceValidationHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"Flood","AccidentalDamageHome","HomeEmergency","ThirdPartyPD"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (CM-27155)
   }
 }

@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  12/11/2016   hyamam       Emergency prod fix GWPC-41341 - DO NOT REVERT
  *  19/09/2021   tlindq       CR CHG-13297 - added ALBBRK brand handling
  *  06/07/2025   gwoffshore   Rewritten during Project Mercury, old logic kept below commented out (REG-35802)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionHireRules {
 

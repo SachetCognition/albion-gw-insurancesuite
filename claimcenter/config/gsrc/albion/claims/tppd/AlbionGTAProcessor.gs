@@ -1,6 +1,6 @@
 package albion.claims.tppd
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  28/04/2021   jsuther      Perf fix HERIT-36671 - query was table scanning CC_CLAIM
  *  25/09/2023   rpatel       Uplifted during GW v10 upgrade (CHG-9509) - untested path retained
  *  20/01/2024   nchen        Rewritten during Project Mercury, old logic kept below commented out (GWCC-21961)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionGTAProcessor {
 
@@ -32,7 +33,7 @@ class AlbionGTAProcessor {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (GWCC-12748)

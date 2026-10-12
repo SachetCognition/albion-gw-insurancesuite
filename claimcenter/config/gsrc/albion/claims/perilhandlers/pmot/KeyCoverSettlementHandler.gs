@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.pmot
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -21,6 +22,7 @@ uses java.math.BigDecimal
  *  06/09/2022   gwoffsh2     Defect fix CM-1764 - null pointer when policy period not bound
  *  23/08/2024   tlindq       Perf fix CHG-14039 - query was table scanning CC_CLAIM
  *  04/12/2025   baldrid      CR REG-2858 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class KeyCoverSettlementHandler {
 
@@ -33,7 +35,7 @@ class KeyCoverSettlementHandler {
     }
     var amount = exposure.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (PRB-37684)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -71,7 +73,7 @@ class KeyCoverSettlementHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"KeyCover","TheftHome","Fire","Subsidence"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (REG-21784)
   }
 }

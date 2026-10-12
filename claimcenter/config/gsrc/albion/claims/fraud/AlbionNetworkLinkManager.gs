@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  23/07/2016   pnair        Uplifted during GW v10 upgrade (GWPC-44492) - untested path retained
  *  27/01/2023   gwoffshore   Defect fix PRB-31026 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionNetworkLinkManager {
 

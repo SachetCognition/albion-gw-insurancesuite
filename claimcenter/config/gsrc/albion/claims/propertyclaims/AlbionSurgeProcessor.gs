@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  24/09/2021   rpatel       Perf fix GWPC-21497 - query was table scanning CC_CLAIM
  *  12/01/2024   akowal       Rewritten during Project Mercury, old logic kept below commented out (GWBC-6838)
  *  05/12/2025   kmbeki       Rewritten during Project Mercury, old logic kept below commented out (GWPC-4118)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionSurgeProcessor {
 

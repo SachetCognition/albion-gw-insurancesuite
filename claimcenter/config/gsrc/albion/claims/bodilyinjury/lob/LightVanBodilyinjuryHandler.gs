@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  18/03/2019   gwoffsh2     Perf fix CM-27155 - query was table scanning CC_CLAIM
  *  24/02/2021   pnair        IPT rate change 12% (see GWCC-7665)
  *  01/03/2024   baldrid      Defect fix CM-46864 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class LightVanBodilyinjuryHandler {
 

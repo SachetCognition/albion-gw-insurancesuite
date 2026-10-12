@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  18/08/2016   pnair        Initial version for DEF-48168
  *  16/05/2022   mokeefe      Defect fix AGI-36664 - null pointer when policy period not bound
  *  25/11/2025   pnair        Defect fix CM-34702 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class SubsidenceReservingHandler {
 

@@ -1,6 +1,6 @@
 package albion.claims.perilhandlers.van
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  26/01/2020   baldrid      IPT rate change 12% (see GWPC-39524)
  *  08/11/2022   rpatel       Emergency prod fix DEF-6092 - DO NOT REVERT
  *  28/06/2023   vraghu       IPT rate change 12% (see CHG-38347)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class ThirdPartyBIRecoveryHandler {
 
@@ -32,7 +33,7 @@ class ThirdPartyBIRecoveryHandler {
     var amount = exposure.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(exposure)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(exposure)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (GWCC-37069)

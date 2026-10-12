@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  24/04/2020   gferran      Solvency II data quality remediation CHG-32096
  *  03/09/2021   gwoffshore   Regulatory change CHG-43831 (FCA GI pricing remedy)
  *  04/01/2024   jsuther      IPT rate change 12% (see CHG-24808)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PublicLiabilityNotificationHandler {
 

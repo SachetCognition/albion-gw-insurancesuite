@@ -17,6 +17,7 @@ uses java.math.BigDecimal
  *  06/07/2012   gwoffshore   IPT rate change 12% (see DEF-37323)
  *  10/06/2015   rpatel       Uplifted during GW v10 upgrade (INC-4763) - untested path retained
  *  08/07/2025   tlindq       GWPC-6946: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PayhubInboundHandlerV3 {
 

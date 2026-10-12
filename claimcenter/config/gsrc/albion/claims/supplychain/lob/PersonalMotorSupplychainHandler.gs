@@ -21,6 +21,7 @@ uses java.math.BigDecimal
  *  07/10/2019   gferran      IPT rate change 12% (see PRB-33683)
  *  15/03/2020   gferran      Rewritten during Project Mercury, old logic kept below commented out (REG-42351)
  *  28/08/2023   tlindq       Initial version for CM-27121
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PersonalMotorSupplychainHandler {
 

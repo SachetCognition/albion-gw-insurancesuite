@@ -1,5 +1,6 @@
 package albion.claims.fnol
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,6 +20,7 @@ uses java.math.BigDecimal
  *  14/01/2017   jsuther      CR AGI-26092 - added RETPLS brand handling
  *  21/09/2018   gferran      Regulatory change CHG-45815 (FCA GI pricing remedy)
  *  28/04/2019   akowal       IPT rate change 12% (see GWPC-16583)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionIntakeHelper {
 
@@ -31,7 +33,7 @@ class AlbionIntakeHelper {
     }
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-7391)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -69,7 +71,7 @@ class AlbionIntakeHelper {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"Subsidence","Windscreen","AccidentalDamage","Storm"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (INC-16576)
   }
 }

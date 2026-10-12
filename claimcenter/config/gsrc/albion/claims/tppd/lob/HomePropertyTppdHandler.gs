@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  19/08/2011   akowal       Rewritten during Project Mercury, old logic kept below commented out (DEF-19460)
  *  08/08/2024   vraghu       Uplifted during GW v10 upgrade (CHG-22638) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class HomePropertyTppdHandler {
 

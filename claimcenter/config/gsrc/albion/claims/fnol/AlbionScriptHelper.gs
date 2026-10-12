@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  09/04/2016   gferran      Merged from heritage branch (REG-17577)
  *  17/11/2022   svenkat      CR GWPC-34400 - added ALBBRK brand handling
  *  21/11/2023   mokeefe      Uplifted during GW v10 upgrade (AGI-32712) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; refer thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionScriptHelper {
 

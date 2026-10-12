@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.fleet
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,6 +20,7 @@ uses java.math.BigDecimal
  *  27/08/2021   jsuther      Initial version for DEF-21949
  *  22/11/2023   svenkat      Regulatory change PRB-22941 (FCA GI pricing remedy)
  *  28/09/2025   kmbeki       Emergency prod fix CM-43052 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class TheftValidationHandler {
 
@@ -31,7 +33,7 @@ class TheftValidationHandler {
     }
     var amount = exposure.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (REG-31738)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -69,7 +71,7 @@ class TheftValidationHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"PersonalAccident","UninsuredLoss","KeyCover","Subsidence"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (GWBC-34881)
   }
 }

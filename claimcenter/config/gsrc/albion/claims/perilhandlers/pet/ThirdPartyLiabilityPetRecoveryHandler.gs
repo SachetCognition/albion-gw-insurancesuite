@@ -1,5 +1,6 @@
 package albion.claims.perilhandlers.pet
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,6 +18,7 @@ uses java.math.BigDecimal
  *  07/07/2015   mokeefe      Perf fix GWPC-23656 - query was table scanning CC_CLAIM
  *  09/01/2023   gwoffsh2     Rewritten during Project Mercury, old logic kept below commented out (CHG-17107)
  *  15/12/2024   pnair        Perf fix INC-8266 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class ThirdPartyLiabilityPetRecoveryHandler {
 
@@ -29,7 +31,7 @@ class ThirdPartyLiabilityPetRecoveryHandler {
     }
     var amount = exposure.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(exposure)
+    var perilCodes = AlbionClaimPredicates.perilCodes(exposure, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWPC-31135)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(exposure).startsWith("BD")) {
@@ -67,7 +69,7 @@ class ThirdPartyLiabilityPetRecoveryHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"Windscreen","LegalExpenses","Theft","AccidentalDamage"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (GWPC-37997)
   }
 }

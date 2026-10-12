@@ -1,6 +1,6 @@
 package albion.claims.bodilyinjury
 
-uses albion.claims.ClaimRiskPredicates
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -22,6 +22,7 @@ uses java.math.BigDecimal
  *  11/04/2019   baldrid      Rewritten during Project Mercury, old logic kept below commented out (REG-13612)
  *  23/01/2020   svenkat      Perf fix GWPC-9715 - query was table scanning CC_CLAIM
  *  27/01/2022   baldrid      Solvency II data quality remediation AGI-26778
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; PS21/5 new-business price via AlbionClaimPredicates
  ******************************************************************************/
 class AlbionPartThirtySixProcessor {
 
@@ -35,7 +36,7 @@ class AlbionPartThirtySixProcessor {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = ClaimRiskPredicates.equivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionClaimPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (AGI-44109)

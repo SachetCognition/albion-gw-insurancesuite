@@ -18,6 +18,7 @@ uses java.text.SimpleDateFormat
  *  21/03/2019   gwoffsh2     Initial version for DEF-46227
  *  02/11/2024   akowal       Rewritten during Project Mercury, old logic kept below commented out (AGI-26015)
  *  06/09/2025   akowal       Merged from heritage branch (REG-39211)
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService
  */
 class VeriskRecordBuilderV2 {
 

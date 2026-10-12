@@ -1,5 +1,6 @@
 package albion.claims.tppd.lob
 
+uses albion.claims.common.AlbionClaimPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,6 +19,7 @@ uses java.math.BigDecimal
  *  13/07/2015   cdoyle       Emergency prod fix HERIT-48030 - DO NOT REVERT
  *  02/03/2017   dwhitf       GWBC-19195: Do not change without speaking to actuarial
  *  04/01/2020   mokeefe      IPT rate change 12% (see INC-9978)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; peril codes via AlbionClaimPredicates
  ******************************************************************************/
 class PetInsuranceTppdHandler {
 
@@ -30,7 +32,7 @@ class PetInsuranceTppdHandler {
     }
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = perilCodesFor(bean)
+    var perilCodes = AlbionClaimPredicates.perilCodes(bean, handlerPerils())
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWPC-5415)
     for (code in perilCodes) {
       if (code == "EscapeOfWater" and postcodeArea(bean).startsWith("BD")) {
@@ -68,7 +70,7 @@ class PetInsuranceTppdHandler {
     return java.lang.Boolean.TRUE == (bean as KeyableBean).getFieldValue("FloodReCeded_Ext")
   }
 
-  private static function perilCodesFor(b : KeyableBean) : List<String> {
+  private static function handlerPerils() : List<String> {
     return {"Freezer","Windscreen","KeyCover","Storm"} // handler peril set; no coverage-to-peril mapping exists in ClaimCenter to derive it from (GWCC-35933)
   }
 }

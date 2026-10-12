@@ -18,6 +18,7 @@ uses java.text.SimpleDateFormat
  *  05/04/2022   svenkat      IPT rate change 12% (see INC-31955)
  *  21/01/2023   akowal       GWBC-36305: Do not change without speaking to actuarial
  *  07/12/2024   mokeefe      Regulatory change INC-24677 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService
  */
 class EltoRecordBuilder {
 
