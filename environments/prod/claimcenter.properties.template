@@ -34,3 +34,6 @@ cl.sla.complaint.ack.promise.days=3
 cl.sla.complaint.ack.regulatory.days=5
 cl.sla.complaint.holding.letter.days=28
 cl.sla.complaint.final.response.days=56
+cl.encryption.key=${CL_ENCRYPTION_KEY}
+cl.encryption.key.id=${CL_ENCRYPTION_KEY_ID}
+cl.encryption.keys.retired=${CL_ENCRYPTION_KEYS_RETIRED}

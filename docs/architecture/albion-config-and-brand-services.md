@@ -14,7 +14,8 @@ canonical implementation (ClaimCenter) and a byte-identical copy in every centre
 | `albion/config/AlbionConfigService.gs` | `claimcenter/config/gsrc` | `policycenter/config/gsrc` | `billingcenter/config/gsrc` | `contactmanager/modules/configuration/gsrc` |
 | `albion/integration/common/BrandMappingService.gs` | same | same | same | same |
 | `albion/config/AlbionCentre.gs` (**only per-centre file**) | `CODE="cc"`, `PROPERTY_PREFIX="cl"` | `"pc"`, `"po"` | `"bc"`, `"bi"` | `"cm"`, `"co"` |
-| GUnit: `gtest/albion/config/AlbionConfigServiceTest.gs`, `gtest/albion/integration/common/BrandMappingServiceTest.gs` | same | same | same | same |
+| `albion/security/AlbionAesEncryptionPlugin.gs` | same | same | same | same |
+| GUnit: `gtest/albion/config/AlbionConfigServiceTest.gs`, `gtest/albion/integration/common/BrandMappingServiceTest.gs`, `gtest/albion/security/AlbionAesEncryptionPluginTest.gs` | same | same | same | same |
 
 To change a service: edit the ClaimCenter copy, copy it to the other three centres, run the drift check.
 
@@ -112,6 +113,66 @@ loadable but are hidden from new selections. Their original `desc` text is kept 
 retired; `ALBHNW` stays active (212 live policies). Bare `&` in two descriptions was escaped to `&amp;` (the files were
 not well-formed XML); the displayed text is unchanged. `brand_xref.csv` was not changed.
 
+## Encryption at rest (`albion.security`)
+
+Every centre registers `albion.security.AlbionAesEncryptionPlugin` as its `IEncryption` plugin
+(`<config>/plugin/registry/IEncryption.gwp`). Guidewire calls it for every column marked
+`<columnParam name="encryption" value="true"/>`:
+
+| Centre | Encrypted columns |
+|---|---|
+| cc | `Claim.NINumber_Ext` |
+| pc | `PolicyContactRole.NINumber_Ext` |
+| cm | `ABContact.NINumber_Ext`, `BankAccount.AccountNumber`, `BankAccount.RoutingNumber`, `EFTData.BankAccountNumber`, `EFTData.BankRoutingNumber` |
+| bc | none yet (plugin registered so new encrypted columns work immediately) |
+
+**Format.** AES-256-GCM (`javax.crypto`), a fresh random 96-bit IV per value, 128-bit tag. Stored value is
+`<keyId>:<Base64(IV || ciphertext || tag)>`; the key id is also bound into the tag, so a value cannot be relabelled to
+another key. The same input encrypts differently every time. Tampered values, unknown key ids and missing keys throw
+`IllegalStateException`: the plugin fails closed and never stores or returns plaintext.
+
+**Transparent on read.** Entities hold plaintext in memory; the platform encrypts on write and decrypts on read. Gosu,
+PCFs and the fixed-width record builders (`getFieldValue("NINumber_Ext")` in the CIFAS, CRIF, CUE, Verisk, IPT, ELTO,
+Payhub, DWH and POLARIS builders) see the same 9-character NI number as before, so record layouts, padding and lengths
+(POLARIS 512-byte records included) are unchanged.
+
+**Key provisioning (CyberArk).** Keys never appear in git. Each centre template carries three tokens, rendered from
+the environment's CyberArk safe (see `environments/README.txt`):
+
+```
+cl.encryption.key=${CL_ENCRYPTION_KEY}                  # Base64 of 32 random bytes, e.g. openssl rand -base64 32
+cl.encryption.key.id=${CL_ENCRYPTION_KEY_ID}            # [A-Za-z0-9._-], max 16 chars, e.g. k2026a
+cl.encryption.keys.retired=${CL_ENCRYPTION_KEYS_RETIRED} # <keyId>:<Base64 key>,...  empty until first rotation
+```
+
+(`po.` / `bi.` / `co.` with `PO_` / `BI_` / `CO_` tokens in the other centres.) Use a different key per environment;
+never copy production keys into lower environments. The keys are read through `AlbionConfigService`
+(`KEY_ENCRYPTION_*`), have no defaults, and the drift check requires all three in every env/centre template.
+
+**Key rotation.**
+1. Generate a new key and a new key id in CyberArk.
+2. Append the current `<id>:<key>` pair to `<P>_ENCRYPTION_KEYS_RETIRED`; set `<P>_ENCRYPTION_KEY` / `_KEY_ID` to the new pair.
+3. Deploy and restart. New writes use the new id; existing rows keep decrypting under their retired id and move to
+   the new id when next saved.
+4. Remove a retired key only when no row still starts with `<oldId>:` (count it in SQL with `LIKE '<oldId>:%'` on each
+   encrypted column). Dropping a key that is still in use makes those rows unreadable.
+
+**Database upgrade on change.** Turning encryption on for an existing column, or changing the encryption plugin,
+makes the Guidewire database upgrader run an encryption pass over every existing row on the next server start. This
+release does both: CC/PC `NINumber_Ext` and the CM bank columns are encrypted for the first time, and CM's already
+flagged columns move from the base-product sample plugin to this one. Plan the pass in the change window: size it on a
+production-sized copy, take a backup first, follow the Guidewire procedure for changing the encryption plugin on CM,
+make sure the keys are in CyberArk before the first start, and hold the Control-M schedule until the upgrade completes.
+
+**Query limits.** An encrypted column cannot be used in a database `compare`, sort, filter or index (random IV, so
+equal inputs never match). No `Query.make`/`compare`/index use exists on the NI columns or on the newly encrypted
+bank columns. Known exceptions and deliberate omissions:
+- CM `EFTData.etx` unique index `eftaccountnumber` includes `BankAccountNumber` (encrypted before this change). With a
+  random IV the index no longer stops a contact holding the same account twice.
+- CM `Person.LicenseNumber` and `TaxID` stay unencrypted: duplicate matching (`PersonQueryBuilderBase.hasEqualLicenseNumber`,
+  `PersonDuplicateFinder`) and `search/search-config.xml` match them with database equality. Encrypting them needs a
+  keyed-hash lookup column first.
+
 ## Drift check
 
 ```
@@ -121,7 +182,7 @@ python3 tools/scripts/check_brand_config_drift.py [--root <repo>]
 Python 3 stdlib only, no Guidewire distribution needed; exit 1 on drift. Fails when: the four typelists differ; a CSV
 `GW_TYPECODE` is missing from or retired in the typelist; the service tables differ from the typelist or CSV (or roles
 are inconsistent with the CSV notes); any per-centre service/test copy is not byte-identical; `AlbionCentre` prefix does
-not match the env files; or any of the 40 env/centre property files lacks a business key. Per env/centre it checks
+not match the env files; or any of the 40 env/centre property files lacks a business or encryption key. Per env/centre it checks
 `environments/<env>/<centre>.properties.template` when present, else `<centre>.properties`, and fails if neither exists.
 Not yet wired into the `Jenkinsfile` (planned for the CI wave).
 

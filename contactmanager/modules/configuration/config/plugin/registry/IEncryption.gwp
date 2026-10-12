@@ -3,5 +3,5 @@
   interface="IEncryption"
   name="IEncryption">
   <plugin-gosu
-    gosuclass="gw.plugin.encryption.EncryptionByReversePlugin"/>
+    gosuclass="albion.security.AlbionAesEncryptionPlugin"/>
 </plugin>

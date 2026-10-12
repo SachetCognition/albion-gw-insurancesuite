@@ -12,6 +12,7 @@
   </column>
   <column desc="The routing number is a nine digit bank code used in the United States" name="BankRoutingNumber" nullok="true" type="varchar">
     <columnParam name="size" value="20"/>
+    <columnParam name="encryption" value="true"/>
   </column>
   <column desc="Indicates if this is the primary EFT record for the contact" name="IsPrimary" nullok="true" type="bit"/>
 </extension>

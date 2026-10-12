@@ -28,6 +28,11 @@ Sensitive values are replaced by ${PREFIX_KEY_NAME} tokens (key uppercased, '.' 
   <p>.sanctions.worldcheck.url                    sanctions-screening partner endpoint
   <p>.paragon.sftp.host                           Paragon print SFTP host
   <p>.novabank.callback.url                       legacy partner callback (partner exited 2019)
+  <p>.encryption.key                              AES-256 column-encryption key, Base64 of 32 random bytes
+  <p>.encryption.key.id                           id of that key, stamped on every value it encrypts
+                                                  ([A-Za-z0-9._-], max 16 chars, e.g. k2026a)
+  <p>.encryption.keys.retired                     <keyId>:<Base64 key>,... earlier keys kept for decrypt
+                                                  after rotation; the safe object must exist (may be empty)
   <p>.integration.spool.dir                       outbound flat-file spool directory (bi/cl/co/po only;
                                                   not secret, value supplied at deploy time)
 

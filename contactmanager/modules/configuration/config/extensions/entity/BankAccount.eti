@@ -34,6 +34,9 @@
     <columnParam
       name="validator"
       value="RoutingNumber"/>
+    <columnParam
+      name="encryption"
+      value="true"/>
   </column>
   <column
     desc="Account number"
@@ -43,6 +46,9 @@
     <columnParam
       name="size"
       value="20"/>
+    <columnParam
+      name="encryption"
+      value="true"/>
   </column>
   <typekey
     desc="Type of bank account"

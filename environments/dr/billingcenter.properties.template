@@ -34,3 +34,6 @@ bi.sla.complaint.ack.promise.days=3
 bi.sla.complaint.ack.regulatory.days=5
 bi.sla.complaint.holding.letter.days=28
 bi.sla.complaint.final.response.days=56
+bi.encryption.key=${BI_ENCRYPTION_KEY}
+bi.encryption.key.id=${BI_ENCRYPTION_KEY_ID}
+bi.encryption.keys.retired=${BI_ENCRYPTION_KEYS_RETIRED}

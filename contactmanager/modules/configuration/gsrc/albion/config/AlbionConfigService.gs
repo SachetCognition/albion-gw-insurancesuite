@@ -13,6 +13,9 @@ uses java.util.concurrent.locks.ReentrantLock
  * AlbionConfigService - typed access to the non-sensitive Albion business constants held in
  * environments/<env>/<centre>.properties (keys are prefixed per centre, see AlbionCentre.PROPERTY_PREFIX).
  *
+ * The KEY_ENCRYPTION_* keys are the exception: they carry CyberArk-rendered key material for
+ * albion.security.AlbionAesEncryptionPlugin. They have no defaults, are not BUSINESS_KEYS and must never be logged.
+ *
  * One canonical implementation, copied byte-for-byte into every centre's gsrc (cc, pc, bc, cm).
  * Copies are enforced identical by tools/scripts/check_brand_config_drift.py.
  * Consumer guide: docs/architecture/albion-config-and-brand-services.md
@@ -39,6 +42,13 @@ class AlbionConfigService {
   public static final var KEY_SLA_COMPLAINT_ACK_REGULATORY_DAYS : String = "sla.complaint.ack.regulatory.days"
   public static final var KEY_SLA_COMPLAINT_HOLDING_LETTER_DAYS : String = "sla.complaint.holding.letter.days"
   public static final var KEY_SLA_COMPLAINT_FINAL_RESPONSE_DAYS : String = "sla.complaint.final.response.days"
+
+  /** Current AES-256 key, Base64 of 32 bytes. CyberArk token; no default. */
+  public static final var KEY_ENCRYPTION_KEY : String = "encryption.key"
+  /** Id written in front of every value encrypted with KEY_ENCRYPTION_KEY. CyberArk token; no default. */
+  public static final var KEY_ENCRYPTION_KEY_ID : String = "encryption.key.id"
+  /** Earlier keys kept for decryption after rotation: <keyId>:<Base64 key>,... CyberArk token; empty until first rotation. */
+  public static final var KEY_ENCRYPTION_KEYS_RETIRED : String = "encryption.keys.retired"
 
   public static final var DEFAULT_FRAUD_REFER_SCORE : int = 55
   public static final var DEFAULT_REFER_THRESHOLD_ALBDIR : BigDecimal = 10000bd

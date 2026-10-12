@@ -12,9 +12,11 @@ Checks:
   4. BrandMappingService POLARIS_XREF block == brand_xref.csv (code, typecode, description) in order, with a
      role consistent with the CSV (RETIRED notes -> RETIRED, empty typecode -> SENTINEL, at most one OUTBOUND
      per typecode).
-  5. Per-centre copies of AlbionConfigService, BrandMappingService and their GUnit tests are byte-identical.
+  5. Per-centre copies of AlbionConfigService, BrandMappingService, AlbionAesEncryptionPlugin and their GUnit tests
+     are byte-identical.
   6. AlbionCentre.PROPERTY_PREFIX matches the prefix used in each env property file, and every env property file
-     defines every business-constant key declared in AlbionConfigService. Per env/centre the committed
+     defines every key declared in AlbionConfigService (business constants and the CyberArk-rendered
+     encryption.key / encryption.key.id / encryption.keys.retired tokens). Per env/centre the committed
      environments/<env>/<centre>.properties.template is checked when present, else <centre>.properties
      (drift if neither exists).
 
@@ -46,6 +48,8 @@ COPIED_FILES = [
     "gsrc/albion/integration/common/BrandMappingService.gs",
     "gtest/albion/config/AlbionConfigServiceTest.gs",
     "gtest/albion/integration/common/BrandMappingServiceTest.gs",
+    "gsrc/albion/security/AlbionAesEncryptionPlugin.gs",
+    "gtest/albion/security/AlbionAesEncryptionPluginTest.gs",
 ]
 BRAND_SERVICE = "gsrc/albion/integration/common/BrandMappingService.gs"
 CONFIG_SERVICE = "gsrc/albion/config/AlbionConfigService.gs"
