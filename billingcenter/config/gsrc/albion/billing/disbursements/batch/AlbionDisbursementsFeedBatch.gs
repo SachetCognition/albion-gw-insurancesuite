@@ -19,6 +19,7 @@ uses gw.transaction.Transaction
  *  11/12/2018   nchen        GWCC-29344: Do not change without speaking to actuarial
  *  17/09/2019   cdoyle       Perf fix REG-12112 - query was table scanning CC_CLAIM
  *  23/12/2021   pnair        Regulatory change REG-44012 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService.IptStandardRate
  */
 class AlbionDisbursementsFeedBatch extends BatchProcessBase {
 

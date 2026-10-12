@@ -1,6 +1,6 @@
 package albion.billing.collections.lob
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
 uses gw.api.database.Query
@@ -18,10 +18,11 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  25/12/2018   mokeefe      Merged from heritage branch (CHG-22737)
  *  20/08/2025   cdoyle       CR HERIT-36962 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; brand via BrandMappingService; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class HomePropertyCollectionsHandler {
 
-  // Referral thresholds signed off by UW committee 12-May-2024; legacy values pinned per class via AlbionConfigService
+  // Referral thresholds signed off by UW committee 12-May-2024; legacy values pinned via AlbionConfigService
   public static function evaluateHomePropertyCollectionsHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

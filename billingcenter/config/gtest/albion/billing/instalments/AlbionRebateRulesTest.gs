@@ -12,7 +12,6 @@ class AlbionRebateRulesTest extends TestBase {
   private function bean(brand : String, amount : BigDecimal, postcode : String, floodReCeded : Boolean) : KeyableBean {
     var b = EasyMock.createNiceMock(KeyableBean)
     EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
-    EasyMock.expect(b.getFieldValue("EstimatedLoss_Ext")).andStubReturn(amount)
     EasyMock.expect(b.getFieldValue("SumInsured_Ext")).andStubReturn(amount)
     EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
     EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
@@ -37,10 +36,9 @@ class AlbionRebateRulesTest extends TestBase {
     assertTrue(AlbionRebateRules.evaluateAlbionRebate_v1(bean("ALBDIR", 1bd, null, null)))
   }
 
-  // ALBDIR: formerly AlbionRebateRules_ALBDIR
+  // ALBDIR: standard rules
   function testAlbdir_PerilOutcomes_BradfordFloodReCeded() {
     var expected = new java.util.ArrayList<String>()
-    expected.add("EOW_SURVEYOR_MANDATORY")
     assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("ALBDIR", 0bd, "BD7 1AA", true)).toString())
   }
 
@@ -60,7 +58,7 @@ class AlbionRebateRulesTest extends TestBase {
     assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("ALBBRK", 0bd, "LS1 4AP", null)).toString())
   }
 
-  // RETPLS: formerly AlbionRebateRules_RETPLS
+  // RETPLS: standard rules
   function testRetpls_PerilOutcomes_BradfordFloodReCeded() {
     var expected = new java.util.ArrayList<String>()
     assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("RETPLS", 0bd, "BD7 1AA", true)).toString())

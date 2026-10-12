@@ -1,6 +1,6 @@
 package albion.billing.instalments.lob
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  08/02/2012   baldrid      Merged from heritage branch (DEF-38194)
  *  26/01/2015   rpatel       Merged from heritage branch (PRB-957)
  *  15/06/2019   baldrid      Regulatory change INC-7929 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class PersonalMotorInstalmentsHandler {
 
@@ -30,9 +31,9 @@ class PersonalMotorInstalmentsHandler {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // PRB-25595 CIFAS guidance
+    if (AlbionBillingPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionBillingPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionBillingPredicates.isAggregatorSourced(bean)) { score += 10 }     // PRB-25595 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

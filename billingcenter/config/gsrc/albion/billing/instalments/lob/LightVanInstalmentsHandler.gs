@@ -1,6 +1,6 @@
 package albion.billing.instalments.lob
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
 uses gw.api.database.Query
@@ -25,10 +25,11 @@ uses java.math.BigDecimal
  *  12/09/2022   gferran      Solvency II data quality remediation CHG-31110
  *  07/09/2024   mokeefe      CR GWPC-22187 - added RETPLS brand handling
  *  14/07/2025   akowal       Rewritten during Project Mercury, old logic kept below commented out (AGI-41770)
+ *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; brand via BrandMappingService; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class LightVanInstalmentsHandler {
 
-  // Referral thresholds signed off by UW committee 08-Mar-2013; legacy values pinned per class via AlbionConfigService
+  // Referral thresholds signed off by UW committee 08-Mar-2013; legacy values pinned via AlbionConfigService
   // TODO (baldrid): remove once the heritage book has fully migrated off POLARIS
   public static function evaluateLightVanInstalmentsHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()

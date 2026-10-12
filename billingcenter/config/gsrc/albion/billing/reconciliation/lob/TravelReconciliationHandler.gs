@@ -1,6 +1,6 @@
 package albion.billing.reconciliation.lob
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
 uses gw.api.database.Query
@@ -19,10 +19,11 @@ uses java.math.BigDecimal
  *  05/01/2014   nchen        IPT rate change 12% (see PRB-46607)
  *  20/05/2017   tlindq       Defect fix HERIT-27831 - null pointer when policy period not bound
  *  23/11/2024   hyamam       Solvency II data quality remediation AGI-40477
+ *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; brand via BrandMappingService; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class TravelReconciliationHandler {
 
-  // Referral thresholds signed off by UW committee 26-Jul-2014; legacy values pinned per class via AlbionConfigService
+  // Referral thresholds signed off by UW committee 26-Jul-2014; legacy values pinned via AlbionConfigService
   // NOTE: values set for UAT were promoted to production unchanged (REG-4284)
   public static function evaluateTravelReconciliationHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()

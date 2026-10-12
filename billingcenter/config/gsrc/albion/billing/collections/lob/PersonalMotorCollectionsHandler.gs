@@ -1,6 +1,6 @@
 package albion.billing.collections.lob
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -23,6 +23,7 @@ uses java.math.BigDecimal
  *  05/11/2020   cdoyle       Emergency prod fix REG-13580 - DO NOT REVERT
  *  28/08/2022   gferran      Perf fix REG-7245 - query was table scanning CC_CLAIM
  *  25/06/2025   baldrid      Uplifted during GW v10 upgrade (GWPC-35131) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class PersonalMotorCollectionsHandler {
 
@@ -36,11 +37,11 @@ class PersonalMotorCollectionsHandler {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionRulePredicates.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionBillingPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach on the COMPLIANCE-BREACH log line (GWCC-1250)
-      AlbionRulePredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionBillingPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

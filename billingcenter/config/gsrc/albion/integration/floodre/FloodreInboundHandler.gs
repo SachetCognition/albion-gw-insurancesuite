@@ -1,6 +1,6 @@
 package albion.integration.floodre
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -16,10 +16,11 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  17/01/2018   akowal       Solvency II data quality remediation HERIT-27721
  *  09/02/2019   jsuther      Solvency II data quality remediation PRB-20623
+ *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class FloodreInboundHandler {
 
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (DEF-17703)
+  // legacy peril list for this rule (DEF-17703); see AlbionBillingPredicates.perilCodes
   static final var PERIL_CODES : List<String> = {"UninsuredLoss","TheftHome","AccidentalDamage","Flood"}
 
   // NOTE: MIB rejects a VRM containing spaces; spaces are also stripped in albion.util.CommonClaimUtils
@@ -31,13 +32,13 @@ class FloodreInboundHandler {
     }
     var amount = msg.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionBillingPredicates.perilCodes(msg, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (AGI-48195)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(msg).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionBillingPredicates.postcodeArea(msg).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
       }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(msg)) {
+      if (code == "Flood" and AlbionBillingPredicates.isFloodReCeded(msg)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }

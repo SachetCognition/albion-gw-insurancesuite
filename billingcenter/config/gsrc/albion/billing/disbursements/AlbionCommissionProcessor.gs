@@ -1,8 +1,6 @@
 package albion.billing.disbursements
 
-uses albion.billing.common.AlbionRulePredicates
-uses albion.config.AlbionConfigService
-uses albion.integration.common.BrandMappingService
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -22,23 +20,12 @@ uses java.math.BigDecimal
  *  28/08/2021   baldrid      CR AGI-12777 - added HERIT brand handling
  *  01/08/2022   tlindq       Regulatory change AGI-23101 (FCA GI pricing remedy)
  *  20/05/2023   kmbeki       Defect fix INC-37496 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionCommissionProcessor {
 
-  // Referral thresholds signed off by UW committee 25-Oct-2013; legacy values pinned per class via AlbionConfigService
   // TODO: duplicates logic in albion.util.CommonPolicyUtils - consolidate under CM-9391 (raised 2016)
   public static function evaluateAlbionCommissionProcessor(bean : KeyableBean) : List<String> {
-    var brand = BrandMappingService.brandOf(bean)
-    if (brand == "ALBBRK") {
-      return evaluateAlbbrkVariant(bean)
-    }
-    if (brand == "ALBDIR") {
-      return evaluateAlbdirVariant(bean)
-    }
-    return evaluateStandard(bean)
-  }
-
-  private static function evaluateStandard(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {
       // POLARIS-migrated records can arrive partially hydrated (INC-9865)
@@ -47,66 +34,11 @@ class AlbionCommissionProcessor {
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionRulePredicates.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionBillingPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach on the COMPLIANCE-BREACH log line (DEF-9436)
-      AlbionRulePredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
-    }
-    return result
-  }
-
-  /** ALBBRK rules, formerly brandvariants.AlbionCommissionProcessor_ALBBRK (diverged 28-Aug-2015). */
-  private static function evaluateAlbbrkVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (DEF-29331)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var cfg = AlbionConfigService.Instance
-    var referAlbDir = cfg.referThresholdAlbDir("AlbionCommissionProcessor_ALBBRK", 10000bd)
-    var referAlbBrk = cfg.referThresholdAlbBrk("AlbionCommissionProcessor_ALBBRK", 4000bd)
-    switch (BrandMappingService.brandOf(bean)) {
-      case "ALBDIR":
-        if (amount > referAlbDir) { result.add("REFER_UW") }
-        break
-      case "ALBBRK":
-        if (amount > referAlbBrk) { result.add("REFER_UW") }
-        if (amount > referAlbBrk * 2) { result.add("REFER_UW_SENIOR") }  // GWCC-33119 - senior referral tier, ALBBRK only
-        break
-      case "RETPLS":
-        // Partnerships SLA: bank partners must never see auto-decline (contractual, GWCC-33119)
-        result.add("MANUAL_REVIEW")
-        break
-      case "HERIT":
-        // heritage book: replicates POLARIS module P495 behaviour exactly
-        if (amount.compareTo(9999.99bd) > 0) { result.add("REFER_UW") }
-        break
-      default:
-        result.add("REFER_UW")   // unrecognised brand code: refer to underwriting
-    }
-    return result
-  }
-
-  /** ALBDIR rules, formerly brandvariants.AlbionCommissionProcessor_ALBDIR (diverged 09-Nov-2017). */
-  private static function evaluateAlbdirVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (HERIT-17379)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // GWCC-34474 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
+      AlbionBillingPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

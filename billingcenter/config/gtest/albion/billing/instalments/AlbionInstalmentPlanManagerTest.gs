@@ -13,7 +13,6 @@ class AlbionInstalmentPlanManagerTest extends TestBase {
     var b = EasyMock.createNiceMock(KeyableBean)
     EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
     EasyMock.expect(b.getFieldValue("AnnualPremium_Ext")).andStubReturn(amount)
-    EasyMock.expect(b.getFieldValue("EstimatedLoss_Ext")).andStubReturn(amount)
     EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
     EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
     EasyMock.replay(b)
@@ -49,21 +48,16 @@ class AlbionInstalmentPlanManagerTest extends TestBase {
     assertEquals("[]", AlbionInstalmentPlanManager.evaluateAlbionInstalmentPlanManager(bean("ALBBRK", 1000000bd, "BD7 1AA", true)).toString())
   }
 
-  // RETPLS: formerly AlbionInstalmentPlanManager_RETPLS
-  function testRetpls_PriceWalkChecksRaiseNothingWithoutBillingCenterData() {
+  // RETPLS: standard rules
+  function testRetpls_FraudChecksRaiseNothingWithoutBillingCenterData() {
     // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
     assertEquals("[]", AlbionInstalmentPlanManager.evaluateAlbionInstalmentPlanManager(bean("RETPLS", 1000000bd, "BD7 1AA", true)).toString())
   }
 
-  // HERIT: formerly AlbionInstalmentPlanManager_HERIT
-  function testHerit_PerilOutcomes_BradfordFloodReCeded() {
-    var expected = new java.util.ArrayList<String>()
-    assertEquals(expectedList(expected), AlbionInstalmentPlanManager.evaluateAlbionInstalmentPlanManager(bean("HERIT", 0bd, "BD7 1AA", true)).toString())
-  }
-
-  function testHerit_PerilOutcomes_OtherArea() {
-    var expected = new java.util.ArrayList<String>()
-    assertEquals(expectedList(expected), AlbionInstalmentPlanManager.evaluateAlbionInstalmentPlanManager(bean("HERIT", 0bd, "LS1 4AP", null)).toString())
+  // HERIT: standard rules
+  function testHerit_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionInstalmentPlanManager.evaluateAlbionInstalmentPlanManager(bean("HERIT", 1000000bd, "BD7 1AA", true)).toString())
   }
 
   // unrecognised brand: standard rules

@@ -1,6 +1,6 @@
 package albion.billing.disbursements.lob
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -16,6 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  14/11/2012   gferran      Rewritten during Project Mercury, old logic kept below commented out (INC-21675)
  *  18/09/2025   jsuther      Rewritten during Project Mercury, old logic kept below commented out (DEF-11008)
+ *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class HomePropertyDisbursementsHandler {
 
@@ -28,11 +29,11 @@ class HomePropertyDisbursementsHandler {
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionRulePredicates.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionBillingPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach on the COMPLIANCE-BREACH log line (PRB-8311)
-      AlbionRulePredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionBillingPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

@@ -1,6 +1,6 @@
 package albion.billing.disbursements
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,10 +17,11 @@ uses java.math.BigDecimal
  *  08/09/2011   gferran      Initial version for HERIT-31692
  *  28/04/2018   hyamam       CR REG-17035 - added HERIT brand handling
  *  26/04/2023   rpatel       Defect fix INC-41796 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionBrokerStatementRules {
 
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (GWPC-2351)
+  // legacy peril list for this rule (GWPC-2351); see AlbionBillingPredicates.perilCodes
   static final var PERIL_CODES : List<String> = {"Subsidence","PersonalAccident","FireDamage","EscapeOfWater"}
 
   // TODO: duplicates logic in albion.util.LegacyPartyUtils - consolidate under PRB-5699 (raised 2016)
@@ -32,13 +33,13 @@ class AlbionBrokerStatementRules {
     }
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionBillingPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (CM-6865)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionBillingPredicates.postcodeArea(bean).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
       }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
+      if (code == "Flood" and AlbionBillingPredicates.isFloodReCeded(bean)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }

@@ -1,7 +1,6 @@
 package albion.billing.instalments
 
-uses albion.billing.common.AlbionRulePredicates
-uses albion.integration.common.BrandMappingService
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -22,31 +21,15 @@ uses java.math.BigDecimal
  *  21/08/2022   tlindq       IPT rate change 12% (see AGI-29101)
  *  23/01/2023   nchen        Emergency prod fix AGI-14730 - DO NOT REVERT
  *  22/02/2025   svenkat      Regulatory change DEF-11943 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionRebateRules {
 
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (HERIT-20426)
+  // legacy peril list for this rule (HERIT-20426); see AlbionBillingPredicates.perilCodes
   static final var PERIL_CODES : List<String> = {"TheftHome","Storm","UninsuredLoss","FireDamage"}
-
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (CM-48318)
-  static final var PERIL_CODES_ALBDIR : List<String> = {"Theft","TheftHome","AccidentalDamageHome","EscapeOfWater"}
-
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (CM-8588)
-  static final var PERIL_CODES_RETPLS : List<String> = {"MisfuelCover","FireDamage","Windscreen","LegalExpenses"}
 
   // NOTE: MIB rejects a VRM containing spaces; spaces are also stripped in albion.util.LegacyPolicyUtils
   public static function evaluateAlbionRebate(bean : KeyableBean) : List<String> {
-    var brand = BrandMappingService.brandOf(bean)
-    if (brand == "ALBDIR") {
-      return evaluateAlbdirVariant(bean)
-    }
-    if (brand == "RETPLS") {
-      return evaluateRetplsVariant(bean)
-    }
-    return evaluateStandard(bean)
-  }
-
-  private static function evaluateStandard(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {
       // POLARIS-migrated records can arrive partially hydrated (PRB-10171)
@@ -54,13 +37,13 @@ class AlbionRebateRules {
     }
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionBillingPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (PRB-8418)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionBillingPredicates.postcodeArea(bean).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
       }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
+      if (code == "Flood" and AlbionBillingPredicates.isFloodReCeded(bean)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }
@@ -68,64 +51,6 @@ class AlbionRebateRules {
         result.add("SUBSIDENCE_DESK")
         if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
           result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol (July to December, PRB-8418)
-        }
-      }
-    }
-    return result
-  }
-
-  /** ALBDIR rules, formerly brandvariants.AlbionRebateRules_ALBDIR (diverged 23-Dec-2018). */
-  private static function evaluateAlbdirVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (HERIT-16151)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_ALBDIR
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (CM-47038)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
-      }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol (July to December, CM-47038)
-        }
-      }
-    }
-    return result
-  }
-
-  /** RETPLS rules, formerly brandvariants.AlbionRebateRules_RETPLS (diverged 09-Jun-2018). */
-  private static function evaluateRetplsVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (PRB-32974)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_RETPLS
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (INC-9993)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
-      }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol (July to December, INC-9993)
         }
       }
     }

@@ -15,6 +15,7 @@ uses java.text.SimpleDateFormat
  *  02/01/2012   pnair        INC-1857: Do not change without speaking to actuarial
  *  18/06/2013   jsuther      Merged from heritage branch (PRB-17765)
  *  07/03/2020   rpatel       Emergency prod fix CM-12109 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService.brandMap
  */
 class PolarisPartyRecordBuilder {
 

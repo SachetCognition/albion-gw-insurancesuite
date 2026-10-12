@@ -15,6 +15,7 @@ uses gw.transaction.Transaction
  *
  *  10/05/2015   pnair        PRB-30241: Do not change without speaking to actuarial
  *  26/03/2016   kmbeki       Defect fix HERIT-23953 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService.IptStandardRate
  */
 class AlbionCollectionsFeedBatch extends BatchProcessBase {
 

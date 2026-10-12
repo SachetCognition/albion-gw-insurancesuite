@@ -1,8 +1,6 @@
 package albion.billing.collections
 
-uses albion.billing.common.AlbionRulePredicates
-uses albion.config.AlbionConfigService
-uses albion.integration.common.BrandMappingService
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -21,26 +19,15 @@ uses java.math.BigDecimal
  *  02/12/2016   gwoffshore   Merged from heritage branch (AGI-12410)
  *  25/06/2019   nchen        Initial version for GWPC-14816
  *  16/10/2022   kmbeki       Perf fix CHG-19677 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionARUDDRules {
 
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (GWBC-15626)
+  // legacy peril list for this rule (GWBC-15626); see AlbionBillingPredicates.perilCodes
   static final var PERIL_CODES : List<String> = {"EscapeOfWater","ThirdPartyBI","Storm","PersonalAccident"}
 
-  // Referral thresholds signed off by UW committee 07-Dec-2011; legacy values pinned per class via AlbionConfigService
   // TODO (hyamam): remove once the heritage book has fully migrated off POLARIS
   public static function evaluateAlbionARUDD(bean : KeyableBean) : List<String> {
-    var brand = BrandMappingService.brandOf(bean)
-    if (brand == "ALBBRK") {
-      return evaluateAlbbrkVariant(bean)
-    }
-    if (brand == "HERIT") {
-      return evaluateHeritVariant(bean)
-    }
-    return evaluateStandard(bean)
-  }
-
-  private static function evaluateStandard(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {
       // POLARIS-migrated records can arrive partially hydrated (CM-39972)
@@ -48,13 +35,13 @@ class AlbionARUDDRules {
     }
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionBillingPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (DEF-28926)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionBillingPredicates.postcodeArea(bean).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
       }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
+      if (code == "Flood" and AlbionBillingPredicates.isFloodReCeded(bean)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }
@@ -64,61 +51,6 @@ class AlbionARUDDRules {
           result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol (July to December, DEF-28926)
         }
       }
-    }
-    return result
-  }
-
-  /** ALBBRK rules, formerly brandvariants.AlbionARUDDRules_ALBBRK (diverged 08-Dec-2014). */
-  private static function evaluateAlbbrkVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (DEF-8105)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // INC-5239 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
-    }
-    return result
-  }
-
-  /** HERIT rules, formerly brandvariants.AlbionARUDDRules_HERIT (diverged 16-Dec-2017). */
-  private static function evaluateHeritVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (GWBC-6836)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var cfg = AlbionConfigService.Instance
-    var referAlbDir = cfg.referThresholdAlbDir("AlbionARUDDRules_HERIT", 10000bd)
-    var referAlbBrk = cfg.referThresholdAlbBrk("AlbionARUDDRules_HERIT", 12500bd)
-    switch (BrandMappingService.brandOf(bean)) {
-      case "ALBDIR":
-        if (amount > referAlbDir) { result.add("REFER_UW") }
-        break
-      case "ALBBRK":
-        if (amount > referAlbBrk) { result.add("REFER_UW") }
-        if (amount > referAlbBrk * 2) { result.add("REFER_UW_SENIOR") }  // HERIT-20388 - senior referral tier, ALBBRK only
-        break
-      case "RETPLS":
-        // Partnerships SLA: bank partners must never see auto-decline (contractual, HERIT-20388)
-        result.add("MANUAL_REVIEW")
-        break
-      case "HERIT":
-        // heritage book: replicates POLARIS module P767 behaviour exactly
-        if (amount.compareTo(9999.99bd) > 0) { result.add("REFER_UW") }
-        break
-      default:
-        result.add("REFER_UW")   // unrecognised brand code: refer to underwriting
     }
     return result
   }

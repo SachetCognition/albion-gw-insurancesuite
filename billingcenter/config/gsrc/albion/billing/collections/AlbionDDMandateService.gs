@@ -1,6 +1,6 @@
 package albion.billing.collections
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -24,6 +24,7 @@ uses java.math.BigDecimal
  *  27/11/2022   kmbeki       CR GWPC-47412 - added ALBDIR brand handling
  *  02/07/2023   dwhitf       Defect fix GWBC-33398 - null pointer when policy period not bound
  *  20/03/2024   akowal       Initial version for INC-33904
+ *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionDDMandateService {
 
@@ -36,9 +37,9 @@ class AlbionDDMandateService {
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // INC-13953 CIFAS guidance
+    if (AlbionBillingPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionBillingPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionBillingPredicates.isAggregatorSourced(bean)) { score += 10 }     // INC-13953 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

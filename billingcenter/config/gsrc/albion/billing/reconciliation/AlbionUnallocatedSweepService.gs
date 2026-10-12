@@ -1,6 +1,6 @@
 package albion.billing.reconciliation
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,6 +19,7 @@ uses java.math.BigDecimal
  *  12/06/2021   jsuther      Defect fix PRB-35331 - null pointer when policy period not bound
  *  07/12/2022   nchen        Perf fix DEF-32777 - query was table scanning CC_CLAIM
  *  13/10/2025   gwoffsh2     Emergency prod fix REG-23111 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionUnallocatedSweepService {
 
@@ -32,11 +33,11 @@ class AlbionUnallocatedSweepService {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionRulePredicates.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionBillingPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach on the COMPLIANCE-BREACH log line (HERIT-25011)
-      AlbionRulePredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionBillingPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

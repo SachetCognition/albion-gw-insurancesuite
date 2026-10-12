@@ -1,6 +1,6 @@
 package albion.billing.collections.lob
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,10 +17,11 @@ uses java.math.BigDecimal
  *  11/12/2013   gferran      Rewritten during Project Mercury, old logic kept below commented out (GWCC-41164)
  *  26/09/2015   jsuther      Uplifted during GW v10 upgrade (PRB-12987) - untested path retained
  *  09/05/2017   jsuther      Emergency prod fix CM-46013 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class LightVanCollectionsHandler {
 
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (PRB-17667)
+  // legacy peril list for this rule (PRB-17667); see AlbionBillingPredicates.perilCodes
   static final var PERIL_CODES : List<String> = {"Flood","Subsidence","ThirdPartyPD","Freezer"}
 
   public static function evaluateLightVanCollectionsHandler(bean : KeyableBean) : List<String> {
@@ -31,13 +32,13 @@ class LightVanCollectionsHandler {
     }
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionBillingPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-10123)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionBillingPredicates.postcodeArea(bean).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
       }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
+      if (code == "Flood" and AlbionBillingPredicates.isFloodReCeded(bean)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }

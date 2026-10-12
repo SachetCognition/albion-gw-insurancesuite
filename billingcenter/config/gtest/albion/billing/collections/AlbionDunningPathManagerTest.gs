@@ -13,7 +13,6 @@ class AlbionDunningPathManagerTest extends TestBase {
     var b = EasyMock.createNiceMock(KeyableBean)
     EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
     EasyMock.expect(b.getFieldValue("SumInsured_Ext")).andStubReturn(amount)
-    EasyMock.expect(b.getFieldValue("TotalIncurred_Ext")).andStubReturn(amount)
     EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
     EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
     EasyMock.replay(b)
@@ -37,10 +36,16 @@ class AlbionDunningPathManagerTest extends TestBase {
     assertTrue(AlbionDunningPathManager.evaluateAlbionDunningPathManager_v1(bean("ALBDIR", 1bd, null, null)))
   }
 
-  // ALBDIR: formerly AlbionDunningPathManager_ALBDIR
-  function testAlbdir_FraudChecksRaiseNothingWithoutBillingCenterData() {
-    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
-    assertEquals("[]", AlbionDunningPathManager.evaluateAlbionDunningPathManager(bean("ALBDIR", 1000000bd, "BD7 1AA", true)).toString())
+  // ALBDIR: standard rules
+  function testAlbdir_PerilOutcomes_BradfordFloodReCeded() {
+    var expected = new java.util.ArrayList<String>()
+    expected.add("EOW_SURVEYOR_MANDATORY")
+    assertEquals(expectedList(expected), AlbionDunningPathManager.evaluateAlbionDunningPathManager(bean("ALBDIR", 0bd, "BD7 1AA", true)).toString())
+  }
+
+  function testAlbdir_PerilOutcomes_OtherArea() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionDunningPathManager.evaluateAlbionDunningPathManager(bean("ALBDIR", 0bd, "LS1 4AP", null)).toString())
   }
 
   // ALBBRK: standard rules
@@ -67,10 +72,16 @@ class AlbionDunningPathManagerTest extends TestBase {
     assertEquals(expectedList(expected), AlbionDunningPathManager.evaluateAlbionDunningPathManager(bean("RETPLS", 0bd, "LS1 4AP", null)).toString())
   }
 
-  // HERIT: formerly AlbionDunningPathManager_HERIT
-  function testHerit_FraudChecksRaiseNothingWithoutBillingCenterData() {
-    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
-    assertEquals("[]", AlbionDunningPathManager.evaluateAlbionDunningPathManager(bean("HERIT", 1000000bd, "BD7 1AA", true)).toString())
+  // HERIT: standard rules
+  function testHerit_PerilOutcomes_BradfordFloodReCeded() {
+    var expected = new java.util.ArrayList<String>()
+    expected.add("EOW_SURVEYOR_MANDATORY")
+    assertEquals(expectedList(expected), AlbionDunningPathManager.evaluateAlbionDunningPathManager(bean("HERIT", 0bd, "BD7 1AA", true)).toString())
+  }
+
+  function testHerit_PerilOutcomes_OtherArea() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionDunningPathManager.evaluateAlbionDunningPathManager(bean("HERIT", 0bd, "LS1 4AP", null)).toString())
   }
 
   // unrecognised brand: standard rules

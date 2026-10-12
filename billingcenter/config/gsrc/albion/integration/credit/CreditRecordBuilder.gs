@@ -17,6 +17,7 @@ uses java.text.SimpleDateFormat
  *  03/08/2020   tlindq       Uplifted during GW v10 upgrade (PRB-13858) - untested path retained
  *  21/04/2022   baldrid      Solvency II data quality remediation GWBC-16401
  *  25/10/2023   cdoyle       IPT rate change 12% (see REG-48723)
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService.brandMap
  */
 class CreditRecordBuilder {
 

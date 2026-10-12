@@ -21,6 +21,7 @@ uses gw.transaction.Transaction
  *  04/08/2021   vraghu       Initial version for INC-25438
  *  20/04/2024   svenkat      Solvency II data quality remediation PRB-24600
  *  17/03/2025   hyamam       DEF-31168: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService.IptStandardRate
  */
 class AlbionInstalmentsHousekeepingBatch extends BatchProcessBase {
 

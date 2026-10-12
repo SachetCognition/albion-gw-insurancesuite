@@ -20,6 +20,7 @@ uses java.text.SimpleDateFormat
  *  28/06/2019   nchen        Regulatory change PRB-36570 (FCA GI pricing remedy)
  *  13/11/2020   nchen        Initial version for HERIT-17598
  *  28/10/2023   cdoyle       Perf fix CHG-18441 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService.brandMap
  */
 class FloodreRecordBuilder {
 

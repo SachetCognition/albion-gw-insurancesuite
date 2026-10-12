@@ -1,6 +1,6 @@
 package albion.billing.collections
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
 uses gw.api.database.Query
@@ -20,29 +20,13 @@ uses java.math.BigDecimal
  *  01/06/2014   tlindq       Initial version for DEF-10162
  *  09/11/2016   baldrid      Merged from heritage branch (GWBC-15108)
  *  22/03/2017   mokeefe      Rewritten during Project Mercury, old logic kept below commented out (GWPC-13606)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionDefaultNoticeManager {
 
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (DEF-39431)
-  static final var PERIL_CODES_ALBDIR : List<String> = {"AccidentalDamageHome","MisfuelCover","TheftHome","Storm"}
-
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (CHG-35851)
-  static final var PERIL_CODES_RETPLS : List<String> = {"AccidentalDamageHome","Freezer","ThirdPartyPD","HomeEmergency"}
-
-  // Referral thresholds signed off by UW committee 14-Apr-2012; legacy values pinned per class via AlbionConfigService
+  // Referral thresholds signed off by UW committee 14-Apr-2012; legacy values pinned via AlbionConfigService
   // TODO (kmbeki): remove once the heritage book has fully migrated off POLARIS
   public static function evaluateAlbionDefaultNoticeManager(bean : KeyableBean) : List<String> {
-    var brand = BrandMappingService.brandOf(bean)
-    if (brand == "ALBDIR") {
-      return evaluateAlbdirVariant(bean)
-    }
-    if (brand == "RETPLS") {
-      return evaluateRetplsVariant(bean)
-    }
-    return evaluateStandard(bean)
-  }
-
-  private static function evaluateStandard(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {
       // POLARIS-migrated records can arrive partially hydrated (AGI-41446)
@@ -71,64 +55,6 @@ class AlbionDefaultNoticeManager {
         break
       default:
         result.add("REFER_UW")   // unrecognised brand code: refer to underwriting
-    }
-    return result
-  }
-
-  /** ALBDIR rules, formerly brandvariants.AlbionDefaultNoticeManager_ALBDIR (diverged 26-Jan-2014). */
-  private static function evaluateAlbdirVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (PRB-20851)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_ALBDIR
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (HERIT-26713)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
-      }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol (July to December, HERIT-26713)
-        }
-      }
-    }
-    return result
-  }
-
-  /** RETPLS rules, formerly brandvariants.AlbionDefaultNoticeManager_RETPLS (diverged 09-May-2017). */
-  private static function evaluateRetplsVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (AGI-43359)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_RETPLS
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (DEF-15380)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
-      }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol (July to December, DEF-15380)
-        }
-      }
     }
     return result
   }

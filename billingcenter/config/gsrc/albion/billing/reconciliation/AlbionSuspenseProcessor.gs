@@ -1,6 +1,6 @@
 package albion.billing.reconciliation
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
 uses gw.api.database.Query
@@ -19,10 +19,11 @@ uses java.math.BigDecimal
  *  18/12/2013   akowal       Rewritten during Project Mercury, old logic kept below commented out (HERIT-13439)
  *  17/04/2014   gwoffshore   Merged from heritage branch (PRB-18129)
  *  23/09/2025   baldrid      Solvency II data quality remediation GWPC-22292
+ *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; brand via BrandMappingService; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionSuspenseProcessor {
 
-  // Referral thresholds signed off by UW committee 06-Apr-2016; legacy values pinned per class via AlbionConfigService
+  // Referral thresholds signed off by UW committee 06-Apr-2016; legacy values pinned via AlbionConfigService
   // TODO: use the typelist once the PROD typelist is corrected (CM-39559)
   public static function evaluateAlbionSuspenseProcessor(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()

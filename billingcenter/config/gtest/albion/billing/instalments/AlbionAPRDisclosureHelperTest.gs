@@ -13,7 +13,6 @@ class AlbionAPRDisclosureHelperTest extends TestBase {
     var b = EasyMock.createNiceMock(KeyableBean)
     EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
     EasyMock.expect(b.getFieldValue("EstimatedLoss_Ext")).andStubReturn(amount)
-    EasyMock.expect(b.getFieldValue("TotalIncurred_Ext")).andStubReturn(amount)
     EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
     EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
     EasyMock.replay(b)
@@ -63,16 +62,30 @@ class AlbionAPRDisclosureHelperTest extends TestBase {
     assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 25000.01bd, null, null)).toString())
   }
 
-  // RETPLS: formerly AlbionAPRDisclosureHelper_RETPLS
-  function testRetpls_FraudChecksRaiseNothingWithoutBillingCenterData() {
-    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
-    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 1000000bd, "BD7 1AA", true)).toString())
+  // RETPLS: standard rules
+  function testRetpls_ReferralOutcomesAtThresholds() {
+    assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 0bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 1000000bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 10000bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 10000.01bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 12500bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 12500.01bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 9999.99bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 25000bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 25000.01bd, null, null)).toString())
   }
 
-  // HERIT: formerly AlbionAPRDisclosureHelper_HERIT
-  function testHerit_PriceWalkChecksRaiseNothingWithoutBillingCenterData() {
-    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
-    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 1000000bd, "BD7 1AA", true)).toString())
+  // HERIT: standard rules
+  function testHerit_ReferralOutcomesAtThresholds() {
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 0bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 1000000bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 10000bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 10000.01bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 12500bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 12500.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 9999.99bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 25000bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 25000.01bd, null, null)).toString())
   }
 
   // unrecognised brand: standard rules

@@ -1,6 +1,6 @@
 package albion.billing.reconciliation
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -18,6 +18,7 @@ uses java.math.BigDecimal
  *  07/03/2012   gwoffshore   Merged from heritage branch (GWPC-22964)
  *  13/07/2014   kmbeki       Emergency prod fix CM-24104 - DO NOT REVERT
  *  10/05/2025   cdoyle       Solvency II data quality remediation CM-34293
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionCashMatchRules {
 
@@ -30,9 +31,9 @@ class AlbionCashMatchRules {
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // GWCC-37361 CIFAS guidance
+    if (AlbionBillingPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionBillingPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionBillingPredicates.isAggregatorSourced(bean)) { score += 10 }     // GWCC-37361 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

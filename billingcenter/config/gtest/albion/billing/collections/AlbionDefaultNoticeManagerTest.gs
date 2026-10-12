@@ -13,7 +13,6 @@ class AlbionDefaultNoticeManagerTest extends TestBase {
     var b = EasyMock.createNiceMock(KeyableBean)
     EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
     EasyMock.expect(b.getFieldValue("SumInsured_Ext")).andStubReturn(amount)
-    EasyMock.expect(b.getFieldValue("TotalIncurred_Ext")).andStubReturn(amount)
     EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
     EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
     EasyMock.replay(b)
@@ -37,15 +36,18 @@ class AlbionDefaultNoticeManagerTest extends TestBase {
     assertTrue(AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager_v1(bean("ALBDIR", 1bd, null, null)))
   }
 
-  // ALBDIR: formerly AlbionDefaultNoticeManager_ALBDIR
-  function testAlbdir_PerilOutcomes_BradfordFloodReCeded() {
-    var expected = new java.util.ArrayList<String>()
-    assertEquals(expectedList(expected), AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 0bd, "BD7 1AA", true)).toString())
-  }
-
-  function testAlbdir_PerilOutcomes_OtherArea() {
-    var expected = new java.util.ArrayList<String>()
-    assertEquals(expectedList(expected), AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 0bd, "LS1 4AP", null)).toString())
+  // ALBDIR: standard rules
+  function testAlbdir_ReferralOutcomesAtThresholds() {
+    assertEquals("[]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 0bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 1000000bd, null, null)).toString())
+    assertEquals("[]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 7500bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 7500.01bd, null, null)).toString())
+    assertEquals("[]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 4000bd, null, null)).toString())
+    assertEquals("[]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 4000.01bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 9999.99bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 10000.00bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 8000bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 8000.01bd, null, null)).toString())
   }
 
   // ALBBRK: standard rules
@@ -62,15 +64,18 @@ class AlbionDefaultNoticeManagerTest extends TestBase {
     assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBBRK", 8000.01bd, null, null)).toString())
   }
 
-  // RETPLS: formerly AlbionDefaultNoticeManager_RETPLS
-  function testRetpls_PerilOutcomes_BradfordFloodReCeded() {
-    var expected = new java.util.ArrayList<String>()
-    assertEquals(expectedList(expected), AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 0bd, "BD7 1AA", true)).toString())
-  }
-
-  function testRetpls_PerilOutcomes_OtherArea() {
-    var expected = new java.util.ArrayList<String>()
-    assertEquals(expectedList(expected), AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 0bd, "LS1 4AP", null)).toString())
+  // RETPLS: standard rules
+  function testRetpls_ReferralOutcomesAtThresholds() {
+    assertEquals("[MANUAL_REVIEW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 0bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 1000000bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 7500bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 7500.01bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 4000bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 4000.01bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 9999.99bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 10000.00bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 8000bd, null, null)).toString())
+    assertEquals("[MANUAL_REVIEW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("RETPLS", 8000.01bd, null, null)).toString())
   }
 
   // HERIT: standard rules
@@ -103,6 +108,28 @@ class AlbionDefaultNoticeManagerTest extends TestBase {
 
   function testMissingBrandIsTreatedAsAlbdir() {
     assertEquals(AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 1000000bd, "BD7 1AA", true)).toString(), AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean(null, 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  function testAlbdirReferThresholdCanBeOverriddenPerClass() {
+    var values = new java.util.HashMap<String, String>()
+    values.put(AlbionCentre.PROPERTY_PREFIX + ".refer.threshold.albdir.AlbionDefaultNoticeManager", "100")
+    AlbionConfigService.setInstance(new AlbionConfigService(AlbionCentre.PROPERTY_PREFIX, values))
+    try {
+      assertEquals("[REFER_UW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 100.01bd, null, null)).toString())
+      assertEquals("[]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 100bd, null, null)).toString())
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
+  }
+
+  function testAlbdirReferThresholdDefaultsToLegacyValue() {
+    AlbionConfigService.setInstance(new AlbionConfigService(AlbionCentre.PROPERTY_PREFIX, new java.util.HashMap<String, String>()))
+    try {
+      assertEquals("[]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 7500bd, null, null)).toString())
+      assertEquals("[REFER_UW]", AlbionDefaultNoticeManager.evaluateAlbionDefaultNoticeManager(bean("ALBDIR", 7500.01bd, null, null)).toString())
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
 }

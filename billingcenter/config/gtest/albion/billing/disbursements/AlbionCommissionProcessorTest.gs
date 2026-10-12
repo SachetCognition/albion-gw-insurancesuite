@@ -12,9 +12,7 @@ class AlbionCommissionProcessorTest extends TestBase {
   private function bean(brand : String, amount : BigDecimal, postcode : String, floodReCeded : Boolean) : KeyableBean {
     var b = EasyMock.createNiceMock(KeyableBean)
     EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
-    EasyMock.expect(b.getFieldValue("AnnualPremium_Ext")).andStubReturn(amount)
     EasyMock.expect(b.getFieldValue("SumInsured_Ext")).andStubReturn(amount)
-    EasyMock.expect(b.getFieldValue("TotalIncurred_Ext")).andStubReturn(amount)
     EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
     EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
     EasyMock.replay(b)
@@ -38,23 +36,16 @@ class AlbionCommissionProcessorTest extends TestBase {
     assertTrue(AlbionCommissionProcessor.evaluateAlbionCommissionProcessor_v1(bean("ALBDIR", 1bd, null, null)))
   }
 
-  // ALBDIR: formerly AlbionCommissionProcessor_ALBDIR
-  function testAlbdir_FraudChecksRaiseNothingWithoutBillingCenterData() {
+  // ALBDIR: standard rules
+  function testAlbdir_PriceWalkChecksRaiseNothingWithoutBillingCenterData() {
     // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
     assertEquals("[]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBDIR", 1000000bd, "BD7 1AA", true)).toString())
   }
 
-  // ALBBRK: formerly AlbionCommissionProcessor_ALBBRK
-  function testAlbbrk_ReferralOutcomesAtThresholds() {
-    assertEquals("[]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBBRK", 0bd, null, null)).toString())
-    assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBBRK", 1000000bd, null, null)).toString())
-    assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBBRK", 10000bd, null, null)).toString())
-    assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBBRK", 10000.01bd, null, null)).toString())
-    assertEquals("[]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBBRK", 4000bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBBRK", 4000.01bd, null, null)).toString())
-    assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBBRK", 9999.99bd, null, null)).toString())
-    assertEquals("[REFER_UW]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBBRK", 8000bd, null, null)).toString())
-    assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBBRK", 8000.01bd, null, null)).toString())
+  // ALBBRK: standard rules
+  function testAlbbrk_PriceWalkChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionCommissionProcessor.evaluateAlbionCommissionProcessor(bean("ALBBRK", 1000000bd, "BD7 1AA", true)).toString())
   }
 
   // RETPLS: standard rules

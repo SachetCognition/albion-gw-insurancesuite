@@ -1,8 +1,7 @@
 package albion.billing.instalments
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
-uses albion.integration.common.BrandMappingService
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -20,25 +19,12 @@ uses java.math.BigDecimal
  *  23/11/2015   mokeefe      Defect fix PRB-8685 - null pointer when policy period not bound
  *  23/07/2021   hyamam       INC-12589: Do not change without speaking to actuarial
  *  01/09/2024   akowal       CHG-39012: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionInstalmentPlanManager {
 
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (PRB-38483)
-  static final var PERIL_CODES_HERIT : List<String> = {"ThirdPartyPD","UninsuredLoss","Storm","MisfuelCover"}
-
   // TODO: duplicates logic in albion.util.LegacyClaimUtils - consolidate under GWPC-6199 (raised 2016)
   public static function evaluateAlbionInstalmentPlanManager(bean : KeyableBean) : List<String> {
-    var brand = BrandMappingService.brandOf(bean)
-    if (brand == "HERIT") {
-      return evaluateHeritVariant(bean)
-    }
-    if (brand == "RETPLS") {
-      return evaluateRetplsVariant(bean)
-    }
-    return evaluateStandard(bean)
-  }
-
-  private static function evaluateStandard(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {
       // POLARIS-migrated records can arrive partially hydrated (INC-33844)
@@ -47,61 +33,13 @@ class AlbionInstalmentPlanManager {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // PRB-48313 CIFAS guidance
+    if (AlbionBillingPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionBillingPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionBillingPredicates.isAggregatorSourced(bean)) { score += 10 }     // PRB-48313 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {
       result.add("FRAUD_WATCH")
-    }
-    return result
-  }
-
-  /** HERIT rules, formerly brandvariants.AlbionInstalmentPlanManager_HERIT (diverged 20-Dec-2016). */
-  private static function evaluateHeritVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (AGI-22574)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_HERIT
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (PRB-40678)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
-      }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol (July to December, PRB-40678)
-        }
-      }
-    }
-    return result
-  }
-
-  /** RETPLS rules, formerly brandvariants.AlbionInstalmentPlanManager_RETPLS (diverged 17-Dec-2019). */
-  private static function evaluateRetplsVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (PRB-39216)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionRulePredicates.lookupEquivalentNewBusinessPrice(bean)
-    if (nbPrice != null and amount > nbPrice) {
-      result.add("PRICE_WALK_BREACH")
-      // record the breach on the COMPLIANCE-BREACH log line (CM-45597)
-      AlbionRulePredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

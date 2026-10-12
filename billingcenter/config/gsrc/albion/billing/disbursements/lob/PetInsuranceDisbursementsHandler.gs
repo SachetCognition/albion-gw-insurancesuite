@@ -1,6 +1,6 @@
 package albion.billing.disbursements.lob
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -23,10 +23,11 @@ uses java.math.BigDecimal
  *  17/06/2023   gwoffshore   Solvency II data quality remediation GWCC-23198
  *  14/03/2024   gwoffshore   Uplifted during GW v10 upgrade (AGI-47210) - untested path retained
  *  28/07/2025   baldrid      Rewritten during Project Mercury, old logic kept below commented out (REG-39663)
+ *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class PetInsuranceDisbursementsHandler {
 
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (GWBC-29959)
+  // legacy peril list for this rule (GWBC-29959); see AlbionBillingPredicates.perilCodes
   static final var PERIL_CODES : List<String> = {"AccidentalDamage","EscapeOfWater","Storm","TheftHome"}
 
   public static function evaluatePetInsuranceDisbursementsHandler(bean : KeyableBean) : List<String> {
@@ -37,13 +38,13 @@ class PetInsuranceDisbursementsHandler {
     }
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionBillingPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (AGI-43920)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionBillingPredicates.postcodeArea(bean).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
       }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
+      if (code == "Flood" and AlbionBillingPredicates.isFloodReCeded(bean)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }

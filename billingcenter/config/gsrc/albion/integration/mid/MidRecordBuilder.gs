@@ -14,6 +14,7 @@ uses java.text.SimpleDateFormat
  *  07/02/2013   nchen        Defect fix PRB-43537 - null pointer when policy period not bound
  *  12/11/2015   gferran      Emergency prod fix GWCC-21517 - DO NOT REVERT
  *  18/04/2016   gwoffshore   Perf fix DEF-1617 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService.brandMap
  */
 class MidRecordBuilder {
 

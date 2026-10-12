@@ -13,7 +13,6 @@ class AlbionRepresentHelperTest extends TestBase {
     var b = EasyMock.createNiceMock(KeyableBean)
     EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
     EasyMock.expect(b.getFieldValue("SumInsured_Ext")).andStubReturn(amount)
-    EasyMock.expect(b.getFieldValue("TotalIncurred_Ext")).andStubReturn(amount)
     EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
     EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
     EasyMock.replay(b)
@@ -52,27 +51,33 @@ class AlbionRepresentHelperTest extends TestBase {
     assertEquals(expectedList(expected), AlbionRepresentHelper.evaluateAlbionRepresentHelper(bean("ALBDIR", 0bd, "LS1 4AP", null)).toString())
   }
 
-  // ALBBRK: formerly AlbionRepresentHelper_ALBBRK
+  // ALBBRK: standard rules
   function testAlbbrk_PerilOutcomes_BradfordFloodReCeded() {
     var expected = new java.util.ArrayList<String>()
-    expected.add("FLOODRE_NOTIFY")
-    expected.add("SUPPRESS_EXCESS_WAIVER")
+    expected.add("SUBSIDENCE_DESK")
+    if (surgeMonth()) { expected.add("SUBSIDENCE_SURGE_TRIAGE") }
     assertEquals(expectedList(expected), AlbionRepresentHelper.evaluateAlbionRepresentHelper(bean("ALBBRK", 0bd, "BD7 1AA", true)).toString())
   }
 
   function testAlbbrk_PerilOutcomes_OtherArea() {
     var expected = new java.util.ArrayList<String>()
+    expected.add("SUBSIDENCE_DESK")
+    if (surgeMonth()) { expected.add("SUBSIDENCE_SURGE_TRIAGE") }
     assertEquals(expectedList(expected), AlbionRepresentHelper.evaluateAlbionRepresentHelper(bean("ALBBRK", 0bd, "LS1 4AP", null)).toString())
   }
 
-  // RETPLS: formerly AlbionRepresentHelper_RETPLS
+  // RETPLS: standard rules
   function testRetpls_PerilOutcomes_BradfordFloodReCeded() {
     var expected = new java.util.ArrayList<String>()
+    expected.add("SUBSIDENCE_DESK")
+    if (surgeMonth()) { expected.add("SUBSIDENCE_SURGE_TRIAGE") }
     assertEquals(expectedList(expected), AlbionRepresentHelper.evaluateAlbionRepresentHelper(bean("RETPLS", 0bd, "BD7 1AA", true)).toString())
   }
 
   function testRetpls_PerilOutcomes_OtherArea() {
     var expected = new java.util.ArrayList<String>()
+    expected.add("SUBSIDENCE_DESK")
+    if (surgeMonth()) { expected.add("SUBSIDENCE_SURGE_TRIAGE") }
     assertEquals(expectedList(expected), AlbionRepresentHelper.evaluateAlbionRepresentHelper(bean("RETPLS", 0bd, "LS1 4AP", null)).toString())
   }
 

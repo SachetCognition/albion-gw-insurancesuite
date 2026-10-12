@@ -1,6 +1,6 @@
 package albion.billing.disbursements.lob
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  05/01/2019   nchen        Solvency II data quality remediation GWBC-32364
  *  25/07/2021   hyamam       Regulatory change GWCC-39565 (FCA GI pricing remedy)
  *  18/09/2022   nchen        Solvency II data quality remediation DEF-10279
+ *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class LightVanDisbursementsHandler {
 
@@ -33,9 +34,9 @@ class LightVanDisbursementsHandler {
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // GWCC-27565 CIFAS guidance
+    if (AlbionBillingPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionBillingPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionBillingPredicates.isAggregatorSourced(bean)) { score += 10 }     // GWCC-27565 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

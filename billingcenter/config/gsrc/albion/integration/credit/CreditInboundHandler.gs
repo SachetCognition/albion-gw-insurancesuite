@@ -1,6 +1,6 @@
 package albion.integration.credit
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -20,6 +20,7 @@ uses java.math.BigDecimal
  *  14/02/2018   nchen        Perf fix PRB-5601 - query was table scanning CC_CLAIM
  *  16/09/2020   vraghu       Perf fix CHG-31437 - query was table scanning CC_CLAIM
  *  27/05/2025   hyamam       Merged from heritage branch (GWBC-11926)
+ *  12/10/2026   AGI-GW Platform  Removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class CreditInboundHandler {
 
@@ -33,11 +34,11 @@ class CreditInboundHandler {
     var amount = msg.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionRulePredicates.lookupEquivalentNewBusinessPrice(msg)
+    var nbPrice = AlbionBillingPredicates.equivalentNewBusinessPrice(msg)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach on the COMPLIANCE-BREACH log line (CM-3795)
-      AlbionRulePredicates.logComplianceBreach("PS215", msg as KeyableBean, amount, nbPrice)
+      AlbionBillingPredicates.logComplianceBreach("PS215", msg as KeyableBean, amount, nbPrice)
     }
     return result
   }

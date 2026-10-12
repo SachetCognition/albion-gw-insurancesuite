@@ -1,6 +1,6 @@
 package albion.billing.instalments
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
 uses gw.api.database.Query
@@ -24,23 +24,13 @@ uses java.math.BigDecimal
  *  09/07/2021   dwhitf       CR GWPC-47298 - added ALBDIR brand handling
  *  05/09/2022   nchen        Defect fix CHG-32639 - null pointer when policy period not bound
  *  16/01/2023   rpatel       Merged from heritage branch (GWPC-14887)
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionAPRDisclosureHelper {
 
-  // Referral thresholds signed off by UW committee 26-Nov-2012; legacy values pinned per class via AlbionConfigService
+  // Referral thresholds signed off by UW committee 26-Nov-2012; legacy values pinned via AlbionConfigService
   // NOTE: values set for UAT were promoted to production unchanged (REG-29163)
   public static function evaluateAlbionAPRDisclosureHelper(bean : KeyableBean) : List<String> {
-    var brand = BrandMappingService.brandOf(bean)
-    if (brand == "HERIT") {
-      return evaluateHeritVariant(bean)
-    }
-    if (brand == "RETPLS") {
-      return evaluateRetplsVariant(bean)
-    }
-    return evaluateStandard(bean)
-  }
-
-  private static function evaluateStandard(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {
       // POLARIS-migrated records can arrive partially hydrated (AGI-23200)
@@ -69,46 +59,6 @@ class AlbionAPRDisclosureHelper {
         break
       default:
         result.add("REFER_UW")   // unrecognised brand code: refer to underwriting
-    }
-    return result
-  }
-
-  /** HERIT rules, formerly brandvariants.AlbionAPRDisclosureHelper_HERIT (diverged 01-Sep-2014). */
-  private static function evaluateHeritVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (CM-3694)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionRulePredicates.lookupEquivalentNewBusinessPrice(bean)
-    if (nbPrice != null and amount > nbPrice) {
-      result.add("PRICE_WALK_BREACH")
-      // record the breach on the COMPLIANCE-BREACH log line (DEF-28613)
-      AlbionRulePredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
-    }
-    return result
-  }
-
-  /** RETPLS rules, formerly brandvariants.AlbionAPRDisclosureHelper_RETPLS (diverged 03-Jun-2018). */
-  private static function evaluateRetplsVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (PRB-9306)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // DEF-35990 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
     }
     return result
   }

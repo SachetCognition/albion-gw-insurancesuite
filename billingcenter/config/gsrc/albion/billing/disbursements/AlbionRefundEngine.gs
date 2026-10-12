@@ -1,6 +1,6 @@
 package albion.billing.disbursements
 
-uses albion.billing.common.AlbionRulePredicates
+uses albion.billing.common.AlbionBillingPredicates
 uses albion.config.AlbionConfigService
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -24,6 +24,7 @@ uses java.math.BigDecimal
  *  19/11/2021   akowal       Uplifted during GW v10 upgrade (AGI-48182) - untested path retained
  *  08/08/2023   jsuther      Rewritten during Project Mercury, old logic kept below commented out (DEF-23704)
  *  14/08/2024   baldrid      IPT rate change 12% (see PRB-42820)
+ *  12/10/2026   AGI-GW Platform  Thresholds via AlbionConfigService; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionRefundEngine {
 
@@ -37,9 +38,9 @@ class AlbionRefundEngine {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // CM-36369 CIFAS guidance
+    if (AlbionBillingPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionBillingPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionBillingPredicates.isAggregatorSourced(bean)) { score += 10 }     // CM-36369 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

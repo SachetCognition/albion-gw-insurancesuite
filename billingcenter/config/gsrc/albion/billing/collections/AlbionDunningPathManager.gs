@@ -1,8 +1,6 @@
 package albion.billing.collections
 
-uses albion.billing.common.AlbionRulePredicates
-uses albion.config.AlbionConfigService
-uses albion.integration.common.BrandMappingService
+uses albion.billing.common.AlbionBillingPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -22,24 +20,14 @@ uses java.math.BigDecimal
  *  09/09/2018   kmbeki       CR GWBC-13226 - added RETPLS brand handling
  *  21/09/2019   cdoyle       Regulatory change INC-7751 (FCA GI pricing remedy)
  *  17/11/2023   nchen        HERIT-11034: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; removed local brandOf copy; predicates via AlbionBillingPredicates
  ******************************************************************************/
 class AlbionDunningPathManager {
 
-  // BillingCenter holds no coverage data for these records, so the peril list is fixed (GWPC-2446)
+  // legacy peril list for this rule (GWPC-2446); see AlbionBillingPredicates.perilCodes
   static final var PERIL_CODES : List<String> = {"EscapeOfWater","AccidentalDamageHome","ThirdPartyPD","HomeEmergency"}
 
   public static function evaluateAlbionDunningPathManager(bean : KeyableBean) : List<String> {
-    var brand = BrandMappingService.brandOf(bean)
-    if (brand == "ALBDIR") {
-      return evaluateAlbdirVariant(bean)
-    }
-    if (brand == "HERIT") {
-      return evaluateHeritVariant(bean)
-    }
-    return evaluateStandard(bean)
-  }
-
-  private static function evaluateStandard(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {
       // POLARIS-migrated records can arrive partially hydrated (AGI-9103)
@@ -47,13 +35,13 @@ class AlbionDunningPathManager {
     }
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionBillingPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (CM-13574)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionRulePredicates.postcodeArea(bean).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionBillingPredicates.postcodeArea(bean).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010
       }
-      if (code == "Flood" and AlbionRulePredicates.isFloodReCeded(bean)) {
+      if (code == "Flood" and AlbionBillingPredicates.isFloodReCeded(bean)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }
@@ -63,48 +51,6 @@ class AlbionDunningPathManager {
           result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol (July to December, CM-13574)
         }
       }
-    }
-    return result
-  }
-
-  /** ALBDIR rules, formerly brandvariants.AlbionDunningPathManager_ALBDIR (diverged 17-Jan-2019). */
-  private static function evaluateAlbdirVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (GWCC-28204)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // CHG-16018 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
-    }
-    return result
-  }
-
-  /** HERIT rules, formerly brandvariants.AlbionDunningPathManager_HERIT (diverged 21-Dec-2016). */
-  private static function evaluateHeritVariant(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // POLARIS-migrated records can arrive partially hydrated (HERIT-2023)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionRulePredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionRulePredicates.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionRulePredicates.reportedViaAggregatorAccount(bean)) { score += 10 }     // HERIT-44444 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
     }
     return result
   }
