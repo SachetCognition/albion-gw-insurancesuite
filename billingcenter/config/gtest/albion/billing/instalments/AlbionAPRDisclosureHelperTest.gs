@@ -1,22 +1,117 @@
 package albion.billing.instalments
 
+uses albion.config.AlbionCentre
+uses albion.config.AlbionConfigService
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.Calendar
+uses org.easymock.EasyMock
 
-/* TODO write real assertions (2017) */
 class AlbionAPRDisclosureHelperTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(brand : String, amount : BigDecimal, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
+    EasyMock.expect(b.getFieldValue("EstimatedLoss_Ext")).andStubReturn(amount)
+    EasyMock.expect(b.getFieldValue("TotalIncurred_Ext")).andStubReturn(amount)
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
+    EasyMock.replay(b)
+    return b
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. CM-41823 open since 2022.
-    // assertEquals("REFER_UW", albion.billing.instalments.AlbionAPRDisclosureHelper.evaluateHeritageRef(null))
+  private function surgeMonth() : boolean {
+    return Calendar.getInstance().get(Calendar.MONTH) > 5
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 02-Nov-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  private function expectedList(items : List<String>) : String {
+    return items.toString()
   }
+
+  function testNullBeanYieldsNoOutcomes() {
+    assertTrue(AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(null).Empty)
+  }
+
+  function testV1AcceptsAnyNonNullBean() {
+    assertFalse(AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper_v1(null))
+    assertTrue(AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper_v1(bean("ALBDIR", 1bd, null, null)))
+  }
+
+  // ALBDIR: standard rules
+  function testAlbdir_ReferralOutcomesAtThresholds() {
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 0bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 1000000bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 10000bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 10000.01bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 12500bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 12500.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 9999.99bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 25000bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 25000.01bd, null, null)).toString())
+  }
+
+  // ALBBRK: standard rules
+  function testAlbbrk_ReferralOutcomesAtThresholds() {
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 0bd, null, null)).toString())
+    assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 1000000bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 10000bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 10000.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 12500bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 12500.01bd, null, null)).toString())
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 9999.99bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 25000bd, null, null)).toString())
+    assertEquals("[REFER_UW, REFER_UW_SENIOR]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBBRK", 25000.01bd, null, null)).toString())
+  }
+
+  // RETPLS: formerly AlbionAPRDisclosureHelper_RETPLS
+  function testRetpls_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("RETPLS", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  // HERIT: formerly AlbionAPRDisclosureHelper_HERIT
+  function testHerit_PriceWalkChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("HERIT", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  // unrecognised brand: standard rules
+  function testUnknownBrand_ReferralOutcomesAtThresholds() {
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 0bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 1000000bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 10000bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 10000.01bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 12500bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 12500.01bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 9999.99bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 25000bd, null, null)).toString())
+    assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ZZUNKN", 25000.01bd, null, null)).toString())
+  }
+
+  function testMissingBrandIsTreatedAsAlbdir() {
+    assertEquals(AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 1000000bd, "BD7 1AA", true)).toString(), AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean(null, 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  function testAlbdirReferThresholdCanBeOverriddenPerClass() {
+    var values = new java.util.HashMap<String, String>()
+    values.put(AlbionCentre.PROPERTY_PREFIX + ".refer.threshold.albdir.AlbionAPRDisclosureHelper", "100")
+    AlbionConfigService.setInstance(new AlbionConfigService(AlbionCentre.PROPERTY_PREFIX, values))
+    try {
+      assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 100.01bd, null, null)).toString())
+      assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 100bd, null, null)).toString())
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
+  }
+
+  function testAlbdirReferThresholdDefaultsToLegacyValue() {
+    AlbionConfigService.setInstance(new AlbionConfigService(AlbionCentre.PROPERTY_PREFIX, new java.util.HashMap<String, String>()))
+    try {
+      assertEquals("[]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 10000bd, null, null)).toString())
+      assertEquals("[REFER_UW]", AlbionAPRDisclosureHelper.evaluateAlbionAPRDisclosureHelper(bean("ALBDIR", 10000.01bd, null, null)).toString())
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
+  }
+
 }

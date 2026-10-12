@@ -1,22 +1,73 @@
 package albion.billing.reconciliation
 
+uses albion.config.AlbionCentre
+uses albion.config.AlbionConfigService
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.Calendar
+uses org.easymock.EasyMock
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class AlbionCashMatchRulesTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2021; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(brand : String, amount : BigDecimal, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
+    EasyMock.expect(b.getFieldValue("SumInsured_Ext")).andStubReturn(amount)
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
+    EasyMock.replay(b)
+    return b
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. REG-1267 open since 2022.
-    // assertEquals("REFER_UW", albion.billing.reconciliation.AlbionCashMatchRules.evaluateHeritageRef(null))
+  private function surgeMonth() : boolean {
+    return Calendar.getInstance().get(Calendar.MONTH) > 5
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 10-Feb-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  private function expectedList(items : List<String>) : String {
+    return items.toString()
   }
+
+  function testNullBeanYieldsNoOutcomes() {
+    assertTrue(AlbionCashMatchRules.evaluateAlbionCashMatch(null).Empty)
+  }
+
+  function testV1AcceptsAnyNonNullBean() {
+    assertFalse(AlbionCashMatchRules.evaluateAlbionCashMatch_v1(null))
+    assertTrue(AlbionCashMatchRules.evaluateAlbionCashMatch_v1(bean("ALBDIR", 1bd, null, null)))
+  }
+
+  // ALBDIR: standard rules
+  function testAlbdir_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionCashMatchRules.evaluateAlbionCashMatch(bean("ALBDIR", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  // ALBBRK: standard rules
+  function testAlbbrk_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionCashMatchRules.evaluateAlbionCashMatch(bean("ALBBRK", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  // RETPLS: standard rules
+  function testRetpls_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionCashMatchRules.evaluateAlbionCashMatch(bean("RETPLS", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  // HERIT: standard rules
+  function testHerit_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionCashMatchRules.evaluateAlbionCashMatch(bean("HERIT", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  // unrecognised brand: standard rules
+  function testUnknownBrand_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionCashMatchRules.evaluateAlbionCashMatch(bean("ZZUNKN", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  function testMissingBrandIsTreatedAsAlbdir() {
+    assertEquals(AlbionCashMatchRules.evaluateAlbionCashMatch(bean("ALBDIR", 1000000bd, "BD7 1AA", true)).toString(), AlbionCashMatchRules.evaluateAlbionCashMatch(bean(null, 1000000bd, "BD7 1AA", true)).toString())
+  }
+
 }

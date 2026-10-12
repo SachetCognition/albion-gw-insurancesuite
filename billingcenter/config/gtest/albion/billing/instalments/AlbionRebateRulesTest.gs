@@ -1,22 +1,100 @@
 package albion.billing.instalments
 
+uses albion.config.AlbionCentre
+uses albion.config.AlbionConfigService
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.Calendar
+uses org.easymock.EasyMock
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class AlbionRebateRulesTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(brand : String, amount : BigDecimal, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
+    EasyMock.expect(b.getFieldValue("EstimatedLoss_Ext")).andStubReturn(amount)
+    EasyMock.expect(b.getFieldValue("SumInsured_Ext")).andStubReturn(amount)
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
+    EasyMock.replay(b)
+    return b
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWBC-27265 open since 2022.
-    // assertEquals("REFER_UW", albion.billing.instalments.AlbionRebateRules.evaluateThresholds(null))
+  private function surgeMonth() : boolean {
+    return Calendar.getInstance().get(Calendar.MONTH) > 5
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 05-Sep-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  private function expectedList(items : List<String>) : String {
+    return items.toString()
   }
+
+  function testNullBeanYieldsNoOutcomes() {
+    assertTrue(AlbionRebateRules.evaluateAlbionRebate(null).Empty)
+  }
+
+  function testV1AcceptsAnyNonNullBean() {
+    assertFalse(AlbionRebateRules.evaluateAlbionRebate_v1(null))
+    assertTrue(AlbionRebateRules.evaluateAlbionRebate_v1(bean("ALBDIR", 1bd, null, null)))
+  }
+
+  // ALBDIR: formerly AlbionRebateRules_ALBDIR
+  function testAlbdir_PerilOutcomes_BradfordFloodReCeded() {
+    var expected = new java.util.ArrayList<String>()
+    expected.add("EOW_SURVEYOR_MANDATORY")
+    assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("ALBDIR", 0bd, "BD7 1AA", true)).toString())
+  }
+
+  function testAlbdir_PerilOutcomes_OtherArea() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("ALBDIR", 0bd, "LS1 4AP", null)).toString())
+  }
+
+  // ALBBRK: standard rules
+  function testAlbbrk_PerilOutcomes_BradfordFloodReCeded() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("ALBBRK", 0bd, "BD7 1AA", true)).toString())
+  }
+
+  function testAlbbrk_PerilOutcomes_OtherArea() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("ALBBRK", 0bd, "LS1 4AP", null)).toString())
+  }
+
+  // RETPLS: formerly AlbionRebateRules_RETPLS
+  function testRetpls_PerilOutcomes_BradfordFloodReCeded() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("RETPLS", 0bd, "BD7 1AA", true)).toString())
+  }
+
+  function testRetpls_PerilOutcomes_OtherArea() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("RETPLS", 0bd, "LS1 4AP", null)).toString())
+  }
+
+  // HERIT: standard rules
+  function testHerit_PerilOutcomes_BradfordFloodReCeded() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("HERIT", 0bd, "BD7 1AA", true)).toString())
+  }
+
+  function testHerit_PerilOutcomes_OtherArea() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("HERIT", 0bd, "LS1 4AP", null)).toString())
+  }
+
+  // unrecognised brand: standard rules
+  function testUnknownBrand_PerilOutcomes_BradfordFloodReCeded() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("ZZUNKN", 0bd, "BD7 1AA", true)).toString())
+  }
+
+  function testUnknownBrand_PerilOutcomes_OtherArea() {
+    var expected = new java.util.ArrayList<String>()
+    assertEquals(expectedList(expected), AlbionRebateRules.evaluateAlbionRebate(bean("ZZUNKN", 0bd, "LS1 4AP", null)).toString())
+  }
+
+  function testMissingBrandIsTreatedAsAlbdir() {
+    assertEquals(AlbionRebateRules.evaluateAlbionRebate(bean("ALBDIR", 1000000bd, "BD7 1AA", true)).toString(), AlbionRebateRules.evaluateAlbionRebate(bean(null, 1000000bd, "BD7 1AA", true)).toString())
+  }
+
 }
