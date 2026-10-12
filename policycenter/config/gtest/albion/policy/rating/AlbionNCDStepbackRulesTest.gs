@@ -1,22 +1,43 @@
 package albion.policy.rating
 
+uses albion.config.AlbionConfigService
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
+uses java.util.Map
 
-/* TODO write real assertions (2017) */
 class AlbionNCDStepbackRulesTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2020; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(AlbionNCDStepbackRules.evaluateAlbionNCDStepback(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. CM-1586 open since 2020.
-    // assertEquals("REFER_UW", albion.policy.rating.AlbionNCDStepbackRules.evaluateIPTCalc(null))
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 16-Aug-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(AlbionNCDStepbackRules.evaluateAlbionNCDStepback_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(AlbionNCDStepbackRules.evaluateAlbionNCDStepback_v1(null))
+  }
+
+  function testPerilOutcomesForBradfordFloodReRisk() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"RiskPostcode_Ext" -> "bd7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}), null))
+  }
+
+  function testPerilOutcomesOutsideBradfordWithoutFloodRe() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"RiskPostcode_Ext" -> "LS1 4AP", "FloodReCeded_Ext" -> Boolean.FALSE}), null))
+  }
+
+  function testPerilOutcomesWithoutPostcode() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean(null), null))
+  }
+
+  function testPerilListIsTheLegacyList() {
+    assertEquals("ThirdPartyPD,LegalExpenses,Freezer,TheftHome", String.join(",", AlbionNCDStepbackRules.PERIL_CODES))
   }
 }

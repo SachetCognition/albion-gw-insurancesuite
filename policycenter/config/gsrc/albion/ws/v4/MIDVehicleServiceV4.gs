@@ -6,9 +6,9 @@ uses gw.xml.ws.annotation.WsiWebService
  * MIDVehicleServiceV4 (interface version 4)
  *
  * Consumers (known): Paragon, SAS actuarial pull, complaints workflow (Pega)
- * Consumers (suspected): at least one Excel macro in Finance polls this hourly.
+ * Consumers (unconfirmed): a Finance spreadsheet is believed to poll this endpoint.
  *
- * Versioning policy: we never retire an endpoint because we cannot prove nothing calls it.
+ * Versioning policy: endpoint versions are not retired while consumers cannot be confirmed.
  * v1..v4 all remain live. Only v4 is documented. v2 has a field misspelling
  * ("Premuim") that is now part of the contract.
  *
@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  09/12/2019   svenkat      Emergency prod fix REG-2146 - DO NOT REVERT
  *  16/01/2020   gwoffshore   GWBC-25152: Do not change without speaking to actuarial
  *  10/07/2025   pnair        Defect fix HERIT-45317 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/midvehicle/v4")
 class MIDVehicleServiceV4 {
@@ -26,7 +27,7 @@ class MIDVehicleServiceV4 {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
     }
     var norm = policyNumber.replaceAll("[^A-Za-z0-9]", "").toUpperCase()
-    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout, mid-morning it WILL time out
+    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout (timeouts are common at peak load)
     if (norm.matches("^[A-Z]{2}[0-9]{8}[A-Z]$")) {
       return albion.integration.polaris.PolarisCICSGateway.enquire("AG83", norm, brandCode)
     }
@@ -42,7 +43,7 @@ class MIDVehicleServiceV4 {
     sb.append("<Premuim>0.00</Premuim>")  // sic - see class comment
     sb.append("<Status>OK</Status>")
     sb.append("</VehicleSubmissionStatusResponse>")
-    return sb.toString()   // string-built XML since 2012. gw.xml exists. we know.
+    return sb.toString()   // string-built XML since 2012; the response bytes are part of the contract
   }
 
   private function errorXml(code : String, msg : String) : String {

@@ -2,21 +2,25 @@ package albion.ws.v1
 
 uses gw.testharness.TestBase
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class PartyLookupServiceV1Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2019; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testShortOrMissingReferenceReturnsErrorXml() {
+    var expected = "<Error><Code>AGI-4001</Code><Msg>Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)</Msg></Error>"
+    assertEquals(expected, new PartyLookupServiceV1().getPartyDetails(null, "ALBDIR"))
+    assertEquals(expected, new PartyLookupServiceV1().getPartyDetails("AB12", "ALBDIR"))
   }
 
-  function testBrandRouting_DISABLED() {
-    // @Reason: fails intermittently on the build box only. PRB-15875 open since 2020.
-    // assertEquals("REFER_UW", albion.ws.v1.PartyLookupServiceV1.evaluateBrandRouting(null))
+  function testReferenceIsNormalisedAndBrandDefaultsToAlbDir() {
+    var xml = new PartyLookupServiceV1().getPartyDetails("ab-123 45", null)
+    assertTrue(xml.startsWith("<?xml version=\"1.0\"?><PartyDetailsResponse xmlns=\"http://albiongeneral.co.uk/ws/partylookup/v1\">"))
+    assertTrue(xml.contains("<Ref>AB12345</Ref><Brand>ALBDIR</Brand>"))
+    assertTrue(xml.contains("<Premuim>0.00</Premuim>"))
+    assertTrue(xml.contains("<Status>OK</Status>"))
+    assertTrue(xml.endsWith("</PartyDetailsResponse>"))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 19-Jun-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testBrandIsEchoedUnchanged() {
+    assertTrue(new PartyLookupServiceV1().getPartyDetails("GW12345678", "ALBBRK").contains("<Brand>ALBBRK</Brand>"))
+    assertTrue(new PartyLookupServiceV1().getPartyDetails("GW12345678", "NOVABK").contains("<Brand>NOVABK</Brand>"))
   }
 }

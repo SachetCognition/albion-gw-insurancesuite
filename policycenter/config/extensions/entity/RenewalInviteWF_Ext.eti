@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subtype xmlns="http://guidewire.com/datamodel" entity="RenewalInviteWF_Ext" supertype="Workflow" desc="Renewal invite incl. PS21/5 gate">
+  <column name="AutoRenewWindowEntered_Ext" type="datetime" desc="Time the workflow entered the AutoRenewWindow step" nullok="true"/>
+  <column name="GenerateInviteEntered_Ext" type="datetime" desc="Time the workflow entered the GenerateInvite step" nullok="true"/>
+  <column name="LapseCheckEntered_Ext" type="datetime" desc="Time the workflow entered the LapseCheck step" nullok="true"/>
+  <column name="ParagonSpoolEntered_Ext" type="datetime" desc="Time the workflow entered the ParagonSpool step" nullok="true"/>
+  <column name="PriceWalkCheckEntered_Ext" type="datetime" desc="Time the workflow entered the PriceWalkCheck step" nullok="true"/>
+</subtype>

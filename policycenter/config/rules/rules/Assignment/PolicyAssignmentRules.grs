@@ -1,0 +1,14 @@
+package rules.Assignment
+
+@gw.rules.RuleName("PolicyAssignmentRules")
+@gw.rules.RuleSetDescription("Routes policy periods to the Albion review queues. Rules run in legacy priority order (highest first); each queues the period for the outbound feed and raises a review activity.")
+@gw.lang.Export
+class PolicyAssignmentRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.PolicyPeriod) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.PolicyPeriod) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "PolicyAssignmentRules", PolicyAssignmentRules)
+  }
+}

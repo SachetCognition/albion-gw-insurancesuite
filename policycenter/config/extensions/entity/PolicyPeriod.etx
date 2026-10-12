@@ -3,7 +3,12 @@
   <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (GWBC-35424) -->
   <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
   <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
-  <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
-  <column name="SchemeFlag_Ext" type="varchar" desc="added 27-Oct-2022 for CM-13058; meaning disputed between MI and Finance" nullok="true"/>
-  <column name="SchemeRef_Ext" type="varchar" desc="added 03-Dec-2023 for CM-43311; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="Time the last Albion batch processed this record" nullok="true"/>
+  <column name="SchemeFlag_Ext" type="varchar" desc="added 27-Oct-2022 for CM-13058" nullok="true"/>
+  <column name="SchemeRef_Ext" type="varchar" desc="added 03-Dec-2023 for CM-43311" nullok="true"/>
+  <column name="FeedStatus_Ext" type="varchar" desc="Outbound feed state: PENDING / SENT / ACK / NAK / ESCALATED" nullok="true"/>
+  <typekey name="BrandCode_Ext" typelist="BrandCode_Ext" desc="Albion trading brand that wrote the policy" nullok="true"/>
+  <column name="ChannelRef_Ext" type="varchar" desc="Sales channel reference captured at quote" nullok="true"/>
+  <column name="CampaignCode_Ext" type="varchar" desc="Marketing campaign code captured at quote" nullok="true"/>
+  <column name="VulnerabilityNoted_Ext" type="bit" desc="Customer has been identified as vulnerable (FCA FG21/1)" nullok="true"/>
 </extension>

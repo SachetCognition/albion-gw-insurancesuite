@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subtype xmlns="http://guidewire.com/datamodel" entity="NonPaymentDunningWF_Ext" supertype="Workflow" desc="DD failure dunning ladder">
+  <column name="ARUDDReceiveEntered_Ext" type="datetime" desc="Time the workflow entered the ARUDDReceive step" nullok="true"/>
+  <column name="CancelPolicyEntered_Ext" type="datetime" desc="Time the workflow entered the CancelPolicy step" nullok="true"/>
+  <column name="DebtReferEntered_Ext" type="datetime" desc="Time the workflow entered the DebtRefer step" nullok="true"/>
+  <column name="DefaultNoticeEntered_Ext" type="datetime" desc="Time the workflow entered the DefaultNotice step" nullok="true"/>
+  <column name="RepresentEntered_Ext" type="datetime" desc="Time the workflow entered the Represent step" nullok="true"/>
+  <column name="SevenDayLetterEntered_Ext" type="datetime" desc="Time the workflow entered the SevenDayLetter step" nullok="true"/>
+</subtype>

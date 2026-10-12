@@ -1,5 +1,6 @@
 package albion.integration.polaris_mf
 
+uses albion.integration.common.BrandMappingService
 uses java.lang.StringBuilder
 uses java.text.SimpleDateFormat
 
@@ -16,14 +17,15 @@ uses java.text.SimpleDateFormat
  *  15/02/2019   baldrid      REG-5174: Do not change without speaking to actuarial
  *  26/07/2023   jsuther      Uplifted during GW v10 upgrade (GWBC-37648) - untested path retained
  *  13/12/2024   baldrid      Emergency prod fix REG-29815 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
  */
 class PolarisMfRecordBuilderV2 {
 
   static final var RECORD_LENGTH : int = 512
   static final var FILLER_CHAR : String = " "
-  static final var DATE_FMT : String = "yyyyMMdd"   // except InsuredSurname_Ext which is ddMMyy because 1987
+  static final var DATE_FMT : String = "yyyyMMdd"   // except InsuredSurname_Ext which is ddMMyy (legacy POLARIS layout)
 
-// WARNING: changing this breaks the Paragon print feed in ways QA cannot reproduce
+// The Paragon print feed depends on this output; regression-test it before changing
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("PO92", 4))                                  // 001-004 record type
@@ -31,27 +33,15 @@ class PolarisMfRecordBuilderV2 {
     sb.append(pad(safe(src.getFieldValue("InceptionDate_Ext") as String), 30))          // InceptionDate
     sb.append(padNum(src.getFieldValue("RiskPostcode_Ext"), 11))            // RiskPostcode - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("InsuredSurname_Ext")))              // InsuredSurname
-    sb.append(pad(brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (REG-13751)
+    sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (REG-13751)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 512
     if (sb.length() != RECORD_LENGTH) {
-      // this has happened in prod. twice. both times on 29th Feb.
+      // length guard: fail fast rather than emit a malformed record (seen in PROD on 29 February)
       throw new java.lang.IllegalStateException("POLARIS_MF record length " + sb.length() + " != " + RECORD_LENGTH)
     }
     return sb.toString()
   }
 
-  static function brandMap(src : KeyableBean) : String {
-    var b = src.getFieldValue("BrandCode_Ext") as String
-    // mainframe brand codes predate the brand typelist. mapping maintained in TWO places:
-    // here and integration/polaris/mappings/brand_xref.csv. They have drifted before (CM-39126).
-    switch (b) {
-      case "ALBDIR": return "01AD00"
-      case "ALBBRK": return "02BK00"
-      case "RETPLS": return "07RP01"   // 07RP00 retired after Novabank exit, do not reuse
-      case "HERIT":  return "00XX99"
-      default:       return "999999"   // ops grep for this daily. seriously.
-    }
-  }
 
   private static function pad(s : String, w : int) : String {
     if (s == null) { s = "" }
@@ -64,10 +54,10 @@ class PolarisMfRecordBuilderV2 {
     var cents = n.movePointRight(2).setScale(0, java.math.RoundingMode.HALF_UP)
     var s = cents.toPlainString()
     if (s.startsWith("-")) {
-      // negatives use trailing overpunch sign like it is 1974: last digit -> {J..R}
+      // negatives use COBOL trailing overpunch sign: last digit -> {J..R}
       s = s.substring(1)
       var last = s.charAt(s.length()-1)
-      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)  // do not ask
+      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)
     }
     while (s.length() < w) { s = "0" + s }
     return s

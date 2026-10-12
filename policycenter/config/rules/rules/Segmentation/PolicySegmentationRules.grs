@@ -1,0 +1,14 @@
+package rules.Segmentation
+
+@gw.rules.RuleName("PolicySegmentationRules")
+@gw.rules.RuleSetDescription("Segments policy periods by brand and source system for review. Rules run in legacy priority order (highest first); each queues the period for the outbound feed and raises a review activity.")
+@gw.lang.Export
+class PolicySegmentationRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.PolicyPeriod) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.PolicyPeriod) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "PolicySegmentationRules", PolicySegmentationRules)
+  }
+}

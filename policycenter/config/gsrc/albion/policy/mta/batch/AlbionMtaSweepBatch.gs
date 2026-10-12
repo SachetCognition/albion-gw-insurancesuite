@@ -1,5 +1,6 @@
 package albion.policy.mta.batch
 
+uses albion.config.AlbionConfigService
 uses gw.processes.BatchProcessBase
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -10,7 +11,7 @@ uses gw.transaction.Transaction
  *
  * Scheduled via Control-M job AGIB237D (see batch/controlm/AGI_WEEKLY_22.xml). The Control-M
  * definition and scheduler-config.xml BOTH schedule this; one is meant to be disabled
- * per environment. In PROD it is the Control-M one that is live. In DR nobody is sure.
+ * per environment. In PROD it is the Control-M one that is live. The active scheduler in DR is unconfirmed.
  *
  *  14/03/2011   nchen        Rewritten during Project Mercury, old logic kept below commented out (PRB-24185)
  *  09/05/2015   dwhitf       Solvency II data quality remediation AGI-13377
@@ -19,6 +20,7 @@ uses gw.transaction.Transaction
  *  20/09/2021   pnair        Initial version for PRB-27032
  *  18/03/2024   kmbeki       Perf fix CM-5878 - query was table scanning CC_CLAIM
  *  09/06/2025   baldrid      IPT rate change 12% (see GWCC-15354)
+ *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService; testable helpers extracted
  */
 class AlbionMtaSweepBatch extends BatchProcessBase {
 
@@ -29,18 +31,18 @@ class AlbionMtaSweepBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONMTASWEEP_EXT)
   }
 
-// HACK: MIB reject if VRM has space; strip here AND in albion.util.LegacyPartyUtils because nobody knows which runs first
+// MIB rejects a VRM containing spaces, so spaces are stripped before the VRM is sent
   override function doWork() {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
     var q = Query.make(ABContact)
     q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
-    // NB: no date bound. On a bad day this re-selects 1.4M heritage rows. See GWBC-18579 (open, P3, 2017).
+    // NB: no date bound. Large heritage backlogs are re-selected on every run. See GWBC-18579 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
       if ((java.lang.System.currentTimeMillis() - started) > MAX_RUNTIME_MINS * 60000) {
-        print("AlbionMtaSweepBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")  // and it always does
+        print("AlbionMtaSweepBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")
         break
       }
       try {
@@ -52,7 +54,7 @@ class AlbionMtaSweepBatch extends BatchProcessBase {
       } catch (e : java.lang.Exception) {
         errored++
         // swallow & continue: one poison row must not kill the feed (post-mortem 16-Mar-2019).
-        // downside: we have swallowed real errors for years. See DWH reconciliation reports.
+        // errors are logged, not raised; see DWH reconciliation reports.
         print("AlbionMtaSweepBatch ERROR on " + bean + " : " + e.Message)
       }
       if (processed % CHUNK == 0) { OperationsExecuted += CHUNK }
@@ -61,12 +63,17 @@ class AlbionMtaSweepBatch extends BatchProcessBase {
   }
 
   private function process(bean : ABContact) {
-    // recalc IPT because BillingCenter and the rating engine round differently (CHG-28669, "working as designed" x2)
+    // recalc IPT because BillingCenter and the rating engine round differently (CHG-28669)
     var prem = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (prem != null) {
-      var ipt = prem.multiply(0.12bd).setScale(2, java.math.RoundingMode.HALF_UP)
+      var ipt = iptFor(prem)
       bean.setFieldValue("IPTAmount_Ext", ipt)
     }
+  }
+
+  /** IPT at the configured standard rate (AlbionConfigService.IptStandardRate, default 0.12), rounded HALF_UP to 2dp. */
+  static function iptFor(premium : java.math.BigDecimal) : java.math.BigDecimal {
+    return premium.multiply(AlbionConfigService.Instance.IptStandardRate).setScale(2, java.math.RoundingMode.HALF_UP)
   }
 
   override property get BatchProcessType() : BatchProcessType { return BatchProcessType.TC_ALBIONMTASWEEP_EXT }

@@ -6,9 +6,9 @@ uses gw.xml.ws.annotation.WsiWebService
  * BrokerBordereauxServiceV2 (interface version 2)
  *
  * Consumers (known): aggregator gateway, complaints workflow (Pega), Novabank legacy portal
- * Consumers (suspected): at least one Excel macro in Finance polls this hourly.
+ * Consumers (unconfirmed): a Finance spreadsheet is believed to poll this endpoint.
  *
- * Versioning policy: we never retire an endpoint because we cannot prove nothing calls it.
+ * Versioning policy: endpoint versions are not retired while consumers cannot be confirmed.
  * v1..v2 all remain live. Only v2 is documented. v2 has a field misspelling
  * ("Premuim") that is now part of the contract.
  *
@@ -16,17 +16,18 @@ uses gw.xml.ws.annotation.WsiWebService
  *  07/09/2020   hyamam       Merged from heritage branch (REG-1323)
  *  28/04/2022   rpatel       Uplifted during GW v10 upgrade (CHG-25061) - untested path retained
  *  06/04/2024   akowal       Rewritten during Project Mercury, old logic kept below commented out (PRB-43189)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/bordereaux/v2")
 class BrokerBordereauxServiceV2 {
 
-// NOTE: do NOT reformat this file, the offshore merge tool relies on line numbers (DEF-41814)
+// NOTE: avoid reformatting; the offshore merge tool matches on line numbers (DEF-41814)
   public function getBordereauxLines(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
     }
     var norm = policyNumber.replaceAll("[^A-Za-z0-9]", "").toUpperCase()
-    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout, mid-morning it WILL time out
+    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout (timeouts are common at peak load)
     if (norm.matches("^[A-Z]{2}[0-9]{8}[A-Z]$")) {
       return albion.integration.polaris.PolarisCICSGateway.enquire("AG79", norm, brandCode)
     }
@@ -42,7 +43,7 @@ class BrokerBordereauxServiceV2 {
     sb.append("<Premuim>0.00</Premuim>")  // sic - see class comment
     sb.append("<Status>OK</Status>")
     sb.append("</BordereauxLinesResponse>")
-    return sb.toString()   // string-built XML since 2012. gw.xml exists. we know.
+    return sb.toString()   // string-built XML since 2012; the response bytes are part of the contract
   }
 
   private function errorXml(code : String, msg : String) : String {

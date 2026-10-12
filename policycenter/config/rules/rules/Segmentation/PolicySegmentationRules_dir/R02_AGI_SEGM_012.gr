@@ -1,0 +1,20 @@
+package rules.Segmentation.PolicySegmentationRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_SEGM_012 - Queue brands other than ALBDIR, not sourced from POLARIS policy periods for review")
+internal class R02_AGI_SEGM_012 {
+  static function doCondition(policyPeriod : entity.PolicyPeriod) : boolean {
+/*start00rule*/
+return policyPeriod.BrandCode_Ext != BrandCode_Ext.TC_ALBDIR and
+       policyPeriod.SourceSystem_Ext != "POLARIS"
+/*end00rule*/
+}
+
+  static function doAction(policyPeriod : entity.PolicyPeriod, actions : gw.rules.Action) {
+/*start00rule*/
+policyPeriod.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_segm_012", "Queue brands other than ALBDIR, not sourced from POLARIS pol")
+/*end00rule*/
+  }
+}

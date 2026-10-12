@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<typelistextension xmlns="http://guidewire.com/typelists" desc="Albion batch processes" name="BatchProcessType">
+  <typecode code="AlbionCancellation_Ext" desc="Cancellation housekeeping (AlbionCancellationHousekeepingBatch)" name="Cancellation housekeeping">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionComplianceEs_Ext" desc="Compliance escalation (AlbionComplianceEscalationBatch)" name="Compliance escalation">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionDocumentsHou_Ext" desc="Documents housekeeping (AlbionDocumentsHousekeepingBatch)" name="Documents housekeeping">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionMtaSweep_Ext" desc="MTA sweep (AlbionMtaSweepBatch)" name="MTA sweep">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionNewbusinessH_Ext" desc="New business housekeeping (AlbionNewbusinessHousekeepingBatch)" name="New business housekeeping">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionRatingEscala_Ext" desc="Rating escalation (AlbionRatingEscalationBatch)" name="Rating escalation">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionRenewalFeed_Ext" desc="Renewal feed (AlbionRenewalFeedBatch)" name="Renewal feed">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionSchemesEscal_Ext" desc="Schemes escalation (AlbionSchemesEscalationBatch)" name="Schemes escalation">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionUnderwriting_Ext" desc="Underwriting feed (AlbionUnderwritingFeedBatch)" name="Underwriting feed">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+</typelistextension>

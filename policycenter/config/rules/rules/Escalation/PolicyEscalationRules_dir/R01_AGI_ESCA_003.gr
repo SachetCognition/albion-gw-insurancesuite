@@ -1,0 +1,19 @@
+package rules.Escalation.PolicyEscalationRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_ESCA_003 - Queue POLARIS-migrated policy periods for review")
+internal class R01_AGI_ESCA_003 {
+  static function doCondition(policyPeriod : entity.PolicyPeriod) : boolean {
+/*start00rule*/
+return policyPeriod.SourceSystem_Ext == "POLARIS"
+/*end00rule*/
+}
+
+  static function doAction(policyPeriod : entity.PolicyPeriod, actions : gw.rules.Action) {
+/*start00rule*/
+policyPeriod.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_esca_003", "Queue POLARIS-migrated policy periods for review")
+/*end00rule*/
+  }
+}

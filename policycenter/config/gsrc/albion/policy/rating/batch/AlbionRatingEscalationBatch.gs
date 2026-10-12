@@ -24,7 +24,7 @@ class AlbionRatingEscalationBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONRATINGESCALA_EXT)
   }
 
-// FIXME: brand check copy-pasted 14 times across codebase, see AGI-41319
+// TODO(AGI-41319): brand check duplicated across the codebase; consolidate on BrandMappingService
   override function doWork() {
     var processed = 0
     var errored = 0

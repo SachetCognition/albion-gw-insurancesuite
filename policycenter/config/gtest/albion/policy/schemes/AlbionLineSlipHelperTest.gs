@@ -1,22 +1,43 @@
 package albion.policy.schemes
 
+uses albion.config.AlbionConfigService
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
+uses java.util.Map
 
-/* TODO write real assertions (2017) */
 class AlbionLineSlipHelperTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2019; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(AlbionLineSlipHelper.evaluateAlbionLineSlipHelper(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. AGI-9842 open since 2023.
-    // assertEquals("REFER_UW", albion.policy.schemes.AlbionLineSlipHelper.evaluateIPTCalc(null))
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 15-Mar-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(AlbionLineSlipHelper.evaluateAlbionLineSlipHelper_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(AlbionLineSlipHelper.evaluateAlbionLineSlipHelper_v1(null))
+  }
+
+  function testPerilOutcomesForBradfordFloodReRisk() {
+    assertEquals("EOW_SURVEYOR_MANDATORY,FLOODRE_NOTIFY,SUPPRESS_EXCESS_WAIVER", run(AlbionPolicyTestBeans.bean({"RiskPostcode_Ext" -> "bd7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}), null))
+  }
+
+  function testPerilOutcomesOutsideBradfordWithoutFloodRe() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"RiskPostcode_Ext" -> "LS1 4AP", "FloodReCeded_Ext" -> Boolean.FALSE}), null))
+  }
+
+  function testPerilOutcomesWithoutPostcode() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean(null), null))
+  }
+
+  function testPerilListIsTheLegacyList() {
+    assertEquals("PersonalAccident,EscapeOfWater,Flood,AccidentalDamage", String.join(",", AlbionLineSlipHelper.PERIL_CODES))
   }
 }

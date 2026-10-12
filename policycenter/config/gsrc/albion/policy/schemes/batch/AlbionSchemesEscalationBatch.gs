@@ -10,7 +10,7 @@ uses gw.transaction.Transaction
  *
  * Scheduled via Control-M job AGIP138D (see batch/controlm/AGI_EOM_39.xml). The Control-M
  * definition and scheduler-config.xml BOTH schedule this; one is meant to be disabled
- * per environment. In PROD it is the Control-M one that is live. In DR nobody is sure.
+ * per environment. In PROD it is the Control-M one that is live. The active scheduler in DR is unconfirmed.
  *
  *  27/09/2014   dwhitf       Uplifted during GW v10 upgrade (AGI-36242) - untested path retained
  *  05/03/2015   cdoyle       Regulatory change CHG-303 (FCA GI pricing remedy)
@@ -18,6 +18,7 @@ uses gw.transaction.Transaction
  *  12/08/2020   gferran      IPT rate change 12% (see CHG-5160)
  *  08/08/2021   gferran      Initial version for GWBC-9124
  *  09/05/2022   akowal       Emergency prod fix CHG-47877 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Escalation age as ESCALATION_AGE_DAYS; comment cleanup
  */
 class AlbionSchemesEscalationBatch extends BatchProcessBase {
 
@@ -28,18 +29,18 @@ class AlbionSchemesEscalationBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONSCHEMESESCAL_EXT)
   }
 
-// HACK: MIB reject if VRM has space; strip here AND in albion.util.AlbionClaimUtils because nobody knows which runs first
+// MIB rejects a VRM containing spaces, so spaces are stripped before the VRM is sent
   override function doWork() {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
     var q = Query.make(ABContact)
     q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
-    // NB: no date bound. On a bad day this re-selects 1.4M heritage rows. See CM-33328 (open, P3, 2017).
+    // NB: no date bound. Large heritage backlogs are re-selected on every run. See CM-33328 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
       if ((java.lang.System.currentTimeMillis() - started) > MAX_RUNTIME_MINS * 60000) {
-        print("AlbionSchemesEscalationBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")  // and it always does
+        print("AlbionSchemesEscalationBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")
         break
       }
       try {
@@ -51,7 +52,7 @@ class AlbionSchemesEscalationBatch extends BatchProcessBase {
       } catch (e : java.lang.Exception) {
         errored++
         // swallow & continue: one poison row must not kill the feed (post-mortem 21-Jun-2023).
-        // downside: we have swallowed real errors for years. See DWH reconciliation reports.
+        // errors are logged, not raised; see DWH reconciliation reports.
         print("AlbionSchemesEscalationBatch ERROR on " + bean + " : " + e.Message)
       }
       if (processed % CHUNK == 0) { OperationsExecuted += CHUNK }
@@ -61,10 +62,17 @@ class AlbionSchemesEscalationBatch extends BatchProcessBase {
 
   private function process(bean : ABContact) {
     var days = gw.api.util.DateUtil.daysBetween(bean.getFieldValue("CreateTime") as java.util.Date, gw.api.util.DateUtil.currentDate())
-    if (days > 5) {
+    if (isAged(days)) {
       bean.setFieldValue("FeedStatus_Ext", "ESCALATED")
       albion.util.AlbionActivityUtils.raiseActivity(bean, "escalation_pet", "Aged item breach - " + days + " days")
     }
+  }
+
+  static final var ESCALATION_AGE_DAYS : int = 5
+
+  /** Items older than ESCALATION_AGE_DAYS days are escalated (FeedStatus_Ext = ESCALATED). */
+  static function isAged(days : int) : boolean {
+    return days > ESCALATION_AGE_DAYS
   }
 
   override property get BatchProcessType() : BatchProcessType { return BatchProcessType.TC_ALBIONSCHEMESESCAL_EXT }

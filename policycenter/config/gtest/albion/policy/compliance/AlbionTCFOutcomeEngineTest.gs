@@ -1,22 +1,65 @@
 package albion.policy.compliance
 
+uses albion.config.AlbionConfigService
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
+uses java.util.Map
 
-/* TODO write real assertions (2017) */
 class AlbionTCFOutcomeEngineTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(AlbionTCFOutcomeEngine.evaluateAlbionTCFOutcomeEngine(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWPC-30384 open since 2021.
-    // assertEquals("REFER_UW", albion.policy.compliance.AlbionTCFOutcomeEngine.evaluateIPTCalc(null))
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 10-Aug-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(AlbionTCFOutcomeEngine.evaluateAlbionTCFOutcomeEngine_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(AlbionTCFOutcomeEngine.evaluateAlbionTCFOutcomeEngine_v1(null))
+  }
+
+  function testAlbDirRefersAboveLegacyThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 10000bd}), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 10000.01bd}), null))
+  }
+
+  function testAlbBrkRefersAndSeniorTierAboveTwiceThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 4000bd}), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 4000.01bd}), null))
+    assertEquals("REFER_UW,REFER_UW_SENIOR", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 8000.01bd}), null))
+  }
+
+  function testRetPlsAlwaysManualReview() {
+    assertEquals("MANUAL_REVIEW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "RETPLS"}), null))
+  }
+
+  function testHeritageUsesPolarisThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 9999.99bd}), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 10000bd}), null))
+  }
+
+  function testMissingBrandDefaultsToAlbDir() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"TotalIncurred_Ext" -> 10000.01bd}), null))
+    assertEquals("", run(AlbionPolicyTestBeans.bean(null), null))
+  }
+
+  function testUnrecognisedBrandRefers() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBHNW"}), null))
+  }
+
+  function testScopedConfigOverridesLegacyThreshold() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 2bd}), {"po.refer.threshold.albdir.AlbionTCFOutcomeEngine" -> "1"}))
+    assertEquals("REFER_UW,REFER_UW_SENIOR", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 3bd}), {"po.refer.threshold.albbrk.AlbionTCFOutcomeEngine" -> "1"}))
+  }
+
+  function testUnscopedConfigDoesNotMoveLegacyThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 2bd}), {"po.refer.threshold.albdir" -> "1"}))
   }
 }

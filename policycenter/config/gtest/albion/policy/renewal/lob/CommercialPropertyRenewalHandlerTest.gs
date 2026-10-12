@@ -1,0 +1,65 @@
+package albion.policy.renewal.lob
+
+uses albion.config.AlbionConfigService
+uses albion.policy.common.AlbionPolicyTestBeans
+uses gw.testharness.TestBase
+uses java.util.Map
+
+class CommercialPropertyRenewalHandlerTest extends TestBase {
+
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(CommercialPropertyRenewalHandler.evaluateCommercialPropertyRenewalHandler(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
+  }
+
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
+  }
+
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(CommercialPropertyRenewalHandler.evaluateCommercialPropertyRenewalHandler_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(CommercialPropertyRenewalHandler.evaluateCommercialPropertyRenewalHandler_v1(null))
+  }
+
+  function testAlbDirRefersAboveLegacyThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 10000bd}), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 10000.01bd}), null))
+  }
+
+  function testAlbBrkRefersAndSeniorTierAboveTwiceThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 4000bd}), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 4000.01bd}), null))
+    assertEquals("REFER_UW,REFER_UW_SENIOR", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 8000.01bd}), null))
+  }
+
+  function testRetPlsAlwaysManualReview() {
+    assertEquals("MANUAL_REVIEW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "RETPLS"}), null))
+  }
+
+  function testHeritageUsesPolarisThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 9999.99bd}), null))
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 10000bd}), null))
+  }
+
+  function testMissingBrandDefaultsToAlbDir() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"TotalIncurred_Ext" -> 10000.01bd}), null))
+    assertEquals("", run(AlbionPolicyTestBeans.bean(null), null))
+  }
+
+  function testUnrecognisedBrandRefers() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBHNW"}), null))
+  }
+
+  function testScopedConfigOverridesLegacyThreshold() {
+    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 2bd}), {"po.refer.threshold.albdir.CommercialPropertyRenewalHandler" -> "1"}))
+    assertEquals("REFER_UW,REFER_UW_SENIOR", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBBRK", "TotalIncurred_Ext" -> 3bd}), {"po.refer.threshold.albbrk.CommercialPropertyRenewalHandler" -> "1"}))
+  }
+
+  function testUnscopedConfigDoesNotMoveLegacyThreshold() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 2bd}), {"po.refer.threshold.albdir" -> "1"}))
+  }
+}

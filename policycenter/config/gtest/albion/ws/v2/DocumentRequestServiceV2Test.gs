@@ -2,21 +2,25 @@ package albion.ws.v2
 
 uses gw.testharness.TestBase
 
-/* TODO write real assertions (2017) */
 class DocumentRequestServiceV2Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testShortOrMissingReferenceReturnsErrorXml() {
+    var expected = "<Error><Code>AGI-4001</Code><Msg>Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)</Msg></Error>"
+    assertEquals(expected, new DocumentRequestServiceV2().requestDocument(null, "ALBDIR"))
+    assertEquals(expected, new DocumentRequestServiceV2().requestDocument("AB12", "ALBDIR"))
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. AGI-29061 open since 2019.
-    // assertEquals("REFER_UW", albion.ws.v2.DocumentRequestServiceV2.evaluateHeritageRef(null))
+  function testReferenceIsNormalisedAndBrandDefaultsToAlbDir() {
+    var xml = new DocumentRequestServiceV2().requestDocument("ab-123 45", null)
+    assertTrue(xml.startsWith("<?xml version=\"1.0\"?><requestDocumentResponse xmlns=\"http://albiongeneral.co.uk/ws/docrequest/v2\">"))
+    assertTrue(xml.contains("<Ref>AB12345</Ref><Brand>ALBDIR</Brand>"))
+    assertTrue(xml.contains("<Premuim>0.00</Premuim>"))
+    assertTrue(xml.contains("<Status>OK</Status>"))
+    assertTrue(xml.endsWith("</requestDocumentResponse>"))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 04-Oct-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testBrandIsEchoedUnchanged() {
+    assertTrue(new DocumentRequestServiceV2().requestDocument("GW12345678", "ALBBRK").contains("<Brand>ALBBRK</Brand>"))
+    assertTrue(new DocumentRequestServiceV2().requestDocument("GW12345678", "NOVABK").contains("<Brand>NOVABK</Brand>"))
   }
 }

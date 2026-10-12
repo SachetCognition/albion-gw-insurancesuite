@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- AlbionScreeningLV.pcf : cloned from base OOTB screen then diverged. Do NOT diff against base; upgrade team gave up in v9->v10 (PRB-3762). -->
+<!-- AlbionScreeningLV.pcf : cloned from the base OOTB screen and since diverged; not re-based during the v9->v10 upgrade (PRB-3762). -->
 <PCF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <ListView
     id="AlbionScreeningLV">

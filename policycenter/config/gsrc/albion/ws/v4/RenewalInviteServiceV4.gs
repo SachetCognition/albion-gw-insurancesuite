@@ -6,9 +6,9 @@ uses gw.xml.ws.annotation.WsiWebService
  * RenewalInviteServiceV4 (interface version 4)
  *
  * Consumers (known): broker extranet, SAS actuarial pull, complaints workflow (Pega)
- * Consumers (suspected): at least one Excel macro in Finance polls this hourly.
+ * Consumers (unconfirmed): a Finance spreadsheet is believed to poll this endpoint.
  *
- * Versioning policy: we never retire an endpoint because we cannot prove nothing calls it.
+ * Versioning policy: endpoint versions are not retired while consumers cannot be confirmed.
  * v1..v4 all remain live. Only v4 is documented. v2 has a field misspelling
  * ("Premuim") that is now part of the contract.
  *
@@ -16,17 +16,18 @@ uses gw.xml.ws.annotation.WsiWebService
  *  19/06/2013   svenkat      CHG-6440: Do not change without speaking to actuarial
  *  14/01/2018   rpatel       IPT rate change 12% (see GWBC-43130)
  *  19/04/2024   svenkat      Uplifted during GW v10 upgrade (AGI-34622) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/renewalinvite/v4")
 class RenewalInviteServiceV4 {
 
-// FIXME: brand check copy-pasted 14 times across codebase, see GWBC-37190
+// brand default (null -> ALBDIR) is duplicated across services, see GWBC-37190
   public function getInviteStatus(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
     }
     var norm = policyNumber.replaceAll("[^A-Za-z0-9]", "").toUpperCase()
-    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout, mid-morning it WILL time out
+    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout (timeouts are common at peak load)
     if (norm.matches("^[A-Z]{2}[0-9]{8}[A-Z]$")) {
       return albion.integration.polaris.PolarisCICSGateway.enquire("AG39", norm, brandCode)
     }
@@ -42,7 +43,7 @@ class RenewalInviteServiceV4 {
     sb.append("<Premuim>0.00</Premuim>")  // sic - see class comment
     sb.append("<Status>OK</Status>")
     sb.append("</InviteStatusResponse>")
-    return sb.toString()   // string-built XML since 2012. gw.xml exists. we know.
+    return sb.toString()   // string-built XML since 2012; the response bytes are part of the contract
   }
 
   private function errorXml(code : String, msg : String) : String {

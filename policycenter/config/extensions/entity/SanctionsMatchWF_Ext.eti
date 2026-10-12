@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subtype xmlns="http://guidewire.com/datamodel" entity="SanctionsMatchWF_Ext" supertype="Workflow" desc="Sanctions potential-match handling">
+  <column name="FreezePartyEntered_Ext" type="datetime" desc="Time the workflow entered the FreezeParty step" nullok="true"/>
+  <column name="L1ReviewEntered_Ext" type="datetime" desc="Time the workflow entered the L1Review step" nullok="true"/>
+  <column name="L2ReviewEntered_Ext" type="datetime" desc="Time the workflow entered the L2Review step" nullok="true"/>
+  <column name="OFSIReportEntered_Ext" type="datetime" desc="Time the workflow entered the OFSIReport step" nullok="true"/>
+  <column name="UnfreezeEntered_Ext" type="datetime" desc="Time the workflow entered the Unfreeze step" nullok="true"/>
+</subtype>

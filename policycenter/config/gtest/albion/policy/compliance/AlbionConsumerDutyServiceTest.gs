@@ -1,22 +1,43 @@
 package albion.policy.compliance
 
+uses albion.config.AlbionConfigService
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
+uses java.util.Map
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class AlbionConsumerDutyServiceTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(AlbionConsumerDutyService.evaluateAlbionConsumerDutyService(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. HERIT-16482 open since 2023.
-    // assertEquals("REFER_UW", albion.policy.compliance.AlbionConsumerDutyService.evaluateHeritageRef(null))
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 09-Nov-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(AlbionConsumerDutyService.evaluateAlbionConsumerDutyService_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(AlbionConsumerDutyService.evaluateAlbionConsumerDutyService_v1(null))
+  }
+
+  function testPerilOutcomesForBradfordFloodReRisk() {
+    assertEquals("FLOODRE_NOTIFY,SUPPRESS_EXCESS_WAIVER", run(AlbionPolicyTestBeans.bean({"RiskPostcode_Ext" -> "bd7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}), null))
+  }
+
+  function testPerilOutcomesOutsideBradfordWithoutFloodRe() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"RiskPostcode_Ext" -> "LS1 4AP", "FloodReCeded_Ext" -> Boolean.FALSE}), null))
+  }
+
+  function testPerilOutcomesWithoutPostcode() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean(null), null))
+  }
+
+  function testPerilListIsTheLegacyList() {
+    assertEquals("Flood,TheftHome,Storm,LegalExpenses", String.join(",", AlbionConsumerDutyService.PERIL_CODES))
   }
 }

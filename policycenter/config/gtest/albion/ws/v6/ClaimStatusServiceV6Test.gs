@@ -2,21 +2,25 @@ package albion.ws.v6
 
 uses gw.testharness.TestBase
 
-/* TODO write real assertions (2017) */
 class ClaimStatusServiceV6Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testShortOrMissingReferenceReturnsErrorXml() {
+    var expected = "<Error><Code>AGI-4001</Code><Msg>Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)</Msg></Error>"
+    assertEquals(expected, new ClaimStatusServiceV6().getClaimStatus(null, "ALBDIR"))
+    assertEquals(expected, new ClaimStatusServiceV6().getClaimStatus("AB12", "ALBDIR"))
   }
 
-  function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. INC-15529 open since 2021.
-    // assertEquals("REFER_UW", albion.ws.v6.ClaimStatusServiceV6.evaluateIPTCalc(null))
+  function testReferenceIsNormalisedAndBrandDefaultsToAlbDir() {
+    var xml = new ClaimStatusServiceV6().getClaimStatus("ab-123 45", null)
+    assertTrue(xml.startsWith("<?xml version=\"1.0\"?><ClaimStatusResponse xmlns=\"http://albiongeneral.co.uk/ws/claimstatus/v6\">"))
+    assertTrue(xml.contains("<Ref>AB12345</Ref><Brand>ALBDIR</Brand>"))
+    assertTrue(xml.contains("<Premuim>0.00</Premuim>"))
+    assertTrue(xml.contains("<Status>OK</Status>"))
+    assertTrue(xml.endsWith("</ClaimStatusResponse>"))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 02-Feb-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testBrandIsEchoedUnchanged() {
+    assertTrue(new ClaimStatusServiceV6().getClaimStatus("GW12345678", "ALBBRK").contains("<Brand>ALBBRK</Brand>"))
+    assertTrue(new ClaimStatusServiceV6().getClaimStatus("GW12345678", "NOVABK").contains("<Brand>NOVABK</Brand>"))
   }
 }

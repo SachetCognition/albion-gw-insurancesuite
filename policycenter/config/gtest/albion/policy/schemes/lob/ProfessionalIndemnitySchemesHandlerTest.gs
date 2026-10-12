@@ -1,22 +1,43 @@
 package albion.policy.schemes.lob
 
+uses albion.config.AlbionConfigService
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
+uses java.util.Map
 
-/* TODO write real assertions (2017) */
 class ProfessionalIndemnitySchemesHandlerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2020; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function run(bean : KeyableBean, config : Map<String, String>) : String {
+    AlbionPolicyTestBeans.useConfig(config)
+    try {
+      return AlbionPolicyTestBeans.outcomes(ProfessionalIndemnitySchemesHandler.evaluateProfessionalIndemnitySchemesHandler(bean))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. CM-46404 open since 2022.
-    // assertEquals("REFER_UW", albion.policy.schemes.lob.ProfessionalIndemnitySchemesHandler.evaluateHeritageRef(null))
+  function testNullBeanHasNoOutcomes() {
+    assertEquals("", run(null, null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 13-Aug-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1SignatureAcceptsAnyNonNullRecord() {
+    assertTrue(ProfessionalIndemnitySchemesHandler.evaluateProfessionalIndemnitySchemesHandler_v1(AlbionPolicyTestBeans.bean(null)))
+    assertFalse(ProfessionalIndemnitySchemesHandler.evaluateProfessionalIndemnitySchemesHandler_v1(null))
+  }
+
+  function testPerilOutcomesForBradfordFloodReRisk() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"RiskPostcode_Ext" -> "bd7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}), null))
+  }
+
+  function testPerilOutcomesOutsideBradfordWithoutFloodRe() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"RiskPostcode_Ext" -> "LS1 4AP", "FloodReCeded_Ext" -> Boolean.FALSE}), null))
+  }
+
+  function testPerilOutcomesWithoutPostcode() {
+    assertEquals("", run(AlbionPolicyTestBeans.bean(null), null))
+  }
+
+  function testPerilListIsTheLegacyList() {
+    assertEquals("Freezer,Storm,UninsuredLoss,HomeEmergency", String.join(",", ProfessionalIndemnitySchemesHandler.PERIL_CODES))
   }
 }
