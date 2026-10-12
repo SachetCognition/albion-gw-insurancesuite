@@ -199,7 +199,8 @@ SELF = os.path.realpath(__file__)
 
 def audit_tells(scope):
     tell_re = re.compile(r'DOES_NOT_EXIST|works because|nobody knows|no one knows|peak 20\d\d|gave up|do not diff|'
-                         r'meaning disputed|purpose partially|classloader alias|\bFIXME\b|\bHACK\b', re.I)
+                         r'meaning disputed|purpose partially|classloader alias|\bFIXME\b|\bHACK\b|'
+                         r'(?-i:\bSession [A-H]\b|\bWave [1-3]\b)', re.I)
     for d, _, fs in os.walk(os.path.join(root, scope)):
         if '/.git' in d or d.endswith('.git') or '__pycache__' in d:
             continue

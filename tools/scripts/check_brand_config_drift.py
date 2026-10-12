@@ -51,7 +51,7 @@ BRAND_SERVICE = "gsrc/albion/integration/common/BrandMappingService.gs"
 CONFIG_SERVICE = "gsrc/albion/config/AlbionConfigService.gs"
 CENTRE_FILE = "gsrc/albion/config/AlbionCentre.gs"
 NS = "{http://guidewire.com/typelists}"
-# Keys AlbionConfigService reads but which already existed before Session A (not required to be added).
+# Keys AlbionConfigService reads but which already existed before the shared config service was introduced (not required to be added).
 PRE_EXISTING_KEYS = {"ipt.rate"}
 
 
