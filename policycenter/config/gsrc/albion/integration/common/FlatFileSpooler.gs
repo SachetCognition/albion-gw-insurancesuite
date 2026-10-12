@@ -20,13 +20,17 @@ uses java.nio.charset.StandardCharsets
  *  19/02/2022   rpatel       Defect fix AGI-9697 - null pointer when policy period not bound
  *  24/11/2023   akowal       Initial version for AGI-24388
  *  06/10/2024   mokeefe      Uplifted during GW v10 upgrade (CHG-17444) - untested path retained
- *  12/10/2026   AGI-GW Platform  Reduced to spool; unused placeholder helpers removed
+ *  12/10/2026   AGI-GW Platform  Reduced to spool (dir from integration.spool.dir); unused placeholder helpers removed
  */
 class FlatFileSpooler {
 
-  /** Spool directory: po.spool.dir when set, otherwise the JVM temporary directory. */
+  /** Config key (centre-prefixed, e.g. po.integration.spool.dir) of the outbound spool directory. */
+  public static final var SPOOL_DIR_KEY : String = "integration.spool.dir"
+  public static final var DEFAULT_SPOOL_DIR : String = "/var/agi/spool/outbound"
+
+  /** Spool directory: integration.spool.dir when set, otherwise /var/agi/spool/outbound. */
   static property get SpoolDirectory() : File {
-    return new File(AlbionConfigService.Instance.getString("spool.dir", System.getProperty("java.io.tmpdir")))
+    return new File(AlbionConfigService.Instance.getString(SPOOL_DIR_KEY, DEFAULT_SPOOL_DIR))
   }
 
   /** Spool file of an interface: <SpoolDirectory>/<SYSTEM>.dat */
