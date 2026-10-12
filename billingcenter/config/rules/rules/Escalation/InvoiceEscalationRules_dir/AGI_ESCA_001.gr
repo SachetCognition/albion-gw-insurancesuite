@@ -1,0 +1,20 @@
+package rules.Escalation.InvoiceEscalationRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_ESCA_001: hold invoices where feed status is not PENDING for escalation review")
+internal class AGI_ESCA_001 {
+  static function doCondition(invoice  :  entity.Invoice) : boolean {
+/*start00rule*/
+return invoice.FeedStatus_Ext != "PENDING"
+/*end00rule*/
+}
+
+  static function doAction(invoice  :  entity.Invoice, actions : gw.rules.Action) {
+/*start00rule*/
+// priority 873; sets the invoice back to PENDING and raises the AGI_ESCA_001 review activity
+invoice.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_esca_001", "Escalation review: feed status is not PENDING")
+/*end00rule*/
+  }
+}

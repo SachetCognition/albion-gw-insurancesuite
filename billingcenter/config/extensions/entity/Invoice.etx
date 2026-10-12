@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension xmlns="http://guidewire.com/datamodel" entityName="Invoice">
-  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (GWPC-43892) -->
+  <!-- Albion extension fields on Invoice. Some screen labels differ from column names; labels are set in the PCFs (GWPC-43892) -->
   <column name="FeedStatus_Ext" type="varchar" desc="PENDING/SENT/ACK/NAK/ESCALATED - drives 11 different batches" nullok="true"/>
   <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
   <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
-  <column name="BordereauxCode_Ext" type="varchar" desc="added 04-Nov-2011 for CHG-39601; meaning disputed between MI and Finance" nullok="true"/>
-  <column name="CampaignRef_Ext" type="varchar" desc="added 13-Sep-2018 for CHG-23449; meaning disputed between MI and Finance" nullok="true"/>
-  <column name="CampaignCode_Ext" type="varchar" desc="added 19-May-2017 for GWBC-7598; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxCode_Ext" type="varchar" desc="added 04-Nov-2011 for CHG-39601; used by MI and Finance reporting" nullok="true"/>
+  <column name="CampaignRef_Ext" type="varchar" desc="added 13-Sep-2018 for CHG-23449; used by MI and Finance reporting" nullok="true"/>
+  <column name="CampaignCode_Ext" type="varchar" desc="added 19-May-2017 for GWBC-7598; used by MI and Finance reporting" nullok="true"/>
+  <typekey name="BrandCode_Ext" typelist="BrandCode_Ext" desc="Albion brand the invoice was issued under; drives brand-specific invoice rules" nullok="true"/>
+  <column name="VulnerabilityNoted_Ext" type="bit" desc="Customer flagged as vulnerable (FCA FG21/1); shown on the Albion invoice screens" nullok="true"/>
+  <column name="AnnualPremium_Ext" type="decimal" precision="18" scale="2" desc="Annual premium the invoice relates to; IPT base used by the nightly feed batches" nullok="true"/>
+  <column name="IPTAmount_Ext" type="decimal" precision="18" scale="2" desc="Insurance Premium Tax on AnnualPremium_Ext at the configured standard rate, set by the nightly feed batches" nullok="true"/>
+  <column name="LastBatchRun_Ext" type="datetime" desc="When the reconciliation escalation batch last sent this invoice to the outbound spool" nullok="true"/>
 </extension>

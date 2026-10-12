@@ -1,22 +1,73 @@
 package albion.billing.collections
 
+uses albion.config.AlbionCentre
+uses albion.config.AlbionConfigService
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.Calendar
+uses org.easymock.EasyMock
 
-/* TODO write real assertions (2017) */
 class AlbionDDMandateServiceTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2019; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(brand : String, amount : BigDecimal, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andStubReturn(brand)
+    EasyMock.expect(b.getFieldValue("TotalIncurred_Ext")).andStubReturn(amount)
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andStubReturn(postcode)
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andStubReturn(floodReCeded)
+    EasyMock.replay(b)
+    return b
   }
 
-  function testBrandRouting_DISABLED() {
-    // @Reason: fails intermittently on the build box only. INC-34699 open since 2019.
-    // assertEquals("REFER_UW", albion.billing.collections.AlbionDDMandateService.evaluateBrandRouting(null))
+  private function surgeMonth() : boolean {
+    return Calendar.getInstance().get(Calendar.MONTH) > 5
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 16-Sep-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  private function expectedList(items : List<String>) : String {
+    return items.toString()
   }
+
+  function testNullBeanYieldsNoOutcomes() {
+    assertTrue(AlbionDDMandateService.evaluateAlbionDDMandateService(null).Empty)
+  }
+
+  function testV1AcceptsAnyNonNullBean() {
+    assertFalse(AlbionDDMandateService.evaluateAlbionDDMandateService_v1(null))
+    assertTrue(AlbionDDMandateService.evaluateAlbionDDMandateService_v1(bean("ALBDIR", 1bd, null, null)))
+  }
+
+  // ALBDIR: standard rules
+  function testAlbdir_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionDDMandateService.evaluateAlbionDDMandateService(bean("ALBDIR", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  // ALBBRK: standard rules
+  function testAlbbrk_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionDDMandateService.evaluateAlbionDDMandateService(bean("ALBBRK", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  // RETPLS: standard rules
+  function testRetpls_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionDDMandateService.evaluateAlbionDDMandateService(bean("RETPLS", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  // HERIT: standard rules
+  function testHerit_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionDDMandateService.evaluateAlbionDDMandateService(bean("HERIT", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  // unrecognised brand: standard rules
+  function testUnknownBrand_FraudChecksRaiseNothingWithoutBillingCenterData() {
+    // no inception date, aggregator source, CUE history or new-business price is resolvable for this bean
+    assertEquals("[]", AlbionDDMandateService.evaluateAlbionDDMandateService(bean("ZZUNKN", 1000000bd, "BD7 1AA", true)).toString())
+  }
+
+  function testMissingBrandIsTreatedAsAlbdir() {
+    assertEquals(AlbionDDMandateService.evaluateAlbionDDMandateService(bean("ALBDIR", 1000000bd, "BD7 1AA", true)).toString(), AlbionDDMandateService.evaluateAlbionDDMandateService(bean(null, 1000000bd, "BD7 1AA", true)).toString())
+  }
+
 }

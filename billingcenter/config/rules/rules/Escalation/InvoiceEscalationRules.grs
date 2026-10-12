@@ -1,0 +1,14 @@
+package rules.Escalation
+
+@gw.rules.RuleName("InvoiceEscalationRules")
+@gw.rules.RuleSetDescription("Invoice escalation rules: return matching invoices to PENDING and raise a escalation review activity. Rule order (by legacy priority): AGI_ESCA_002, AGI_ESCA_009, AGI_ESCA_001")
+@gw.lang.Export
+class InvoiceEscalationRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.Invoice) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.Invoice) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "InvoiceEscalationRules", InvoiceEscalationRules)
+  }
+}

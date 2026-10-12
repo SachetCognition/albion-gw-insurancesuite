@@ -1,5 +1,6 @@
 package albion.billing.instalments.batch
 
+uses albion.config.AlbionConfigService
 uses gw.processes.BatchProcessBase
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -10,7 +11,7 @@ uses gw.transaction.Transaction
  *
  * Scheduled via Control-M job AGIP722D (see batch/controlm/AGI_EOM_20.xml). The Control-M
  * definition and scheduler-config.xml BOTH schedule this; one is meant to be disabled
- * per environment. In PROD it is the Control-M one that is live. In DR nobody is sure.
+ * per environment. In PROD it is the Control-M one that is live. The DR setting is unconfirmed.
  *
  *  22/12/2012   pnair        CR HERIT-41402 - added HERIT brand handling
  *  02/06/2013   mokeefe      CR DEF-35094 - added ALBDIR brand handling
@@ -20,6 +21,7 @@ uses gw.transaction.Transaction
  *  04/08/2021   vraghu       Initial version for INC-25438
  *  20/04/2024   svenkat      Solvency II data quality remediation PRB-24600
  *  17/03/2025   hyamam       DEF-31168: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService.IptStandardRate
  */
 class AlbionInstalmentsHousekeepingBatch extends BatchProcessBase {
 
@@ -35,13 +37,13 @@ class AlbionInstalmentsHousekeepingBatch extends BatchProcessBase {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
-    // NB: no date bound. On a bad day this re-selects 1.4M heritage rows. See PRB-26771 (open, P3, 2017).
+    var q = Query.make(Invoice)
+    q.compare(Invoice#FeedStatus_Ext, Relop.Equals, "PENDING")
+    // NB: no date bound, so a large PENDING backlog (including heritage rows) is re-selected in full (PRB-26771, raised 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
       if ((java.lang.System.currentTimeMillis() - started) > MAX_RUNTIME_MINS * 60000) {
-        print("AlbionInstalmentsHousekeepingBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")  // and it always does
+        print("AlbionInstalmentsHousekeepingBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")
         break
       }
       try {
@@ -53,7 +55,7 @@ class AlbionInstalmentsHousekeepingBatch extends BatchProcessBase {
       } catch (e : java.lang.Exception) {
         errored++
         // swallow & continue: one poison row must not kill the feed (post-mortem 07-Jul-2019).
-        // downside: we have swallowed real errors for years. See DWH reconciliation reports.
+        // failed rows are logged and skipped; the DWH reconciliation reports list them.
         print("AlbionInstalmentsHousekeepingBatch ERROR on " + bean + " : " + e.Message)
       }
       if (processed % CHUNK == 0) { OperationsExecuted += CHUNK }
@@ -61,12 +63,17 @@ class AlbionInstalmentsHousekeepingBatch extends BatchProcessBase {
     print("AlbionInstalmentsHousekeepingBatch complete processed=" + processed + " errored=" + errored)
   }
 
-  private function process(bean : ABContact) {
-    // recalc IPT because BillingCenter and the rating engine round differently (DEF-35957, "working as designed" x2)
-    var prem = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
+  /** IPT on a premium at the configured standard rate, rounded HALF_UP to 2dp. */
+  static function iptFor(premium : java.math.BigDecimal) : java.math.BigDecimal {
+    return premium.multiply(AlbionConfigService.Instance.IptStandardRate).setScale(2, java.math.RoundingMode.HALF_UP)
+  }
+
+  private function process(bean : Invoice) {
+    // recalc IPT because BillingCenter and the rating engine round differently (DEF-35957)
+    var prem = bean.AnnualPremium_Ext
     if (prem != null) {
-      var ipt = prem.multiply(0.12bd).setScale(2, java.math.RoundingMode.HALF_UP)
-      bean.setFieldValue("IPTAmount_Ext", ipt)
+      var ipt = iptFor(prem)
+      bean.IPTAmount_Ext = ipt
     }
   }
 

@@ -1,0 +1,14 @@
+package rules.Preupdate
+
+@gw.rules.RuleName("InvoicePreupdateRules")
+@gw.rules.RuleSetDescription("Invoice preupdate rules: return matching invoices to PENDING and raise a preupdate review activity. Rule order (by legacy priority): AGI_PREU_001, AGI_PREU_007, AGI_PREU_006, AGI_PREU_010")
+@gw.lang.Export
+class InvoicePreupdateRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.Invoice) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.Invoice) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "InvoicePreupdateRules", InvoicePreupdateRules)
+  }
+}

@@ -1,0 +1,20 @@
+package rules.Assignment.InvoiceAssignmentRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_ASSI_001: hold invoices where brand is ALBDIR for assignment review")
+internal class AGI_ASSI_001 {
+  static function doCondition(invoice  :  entity.Invoice) : boolean {
+/*start00rule*/
+return invoice.BrandCode_Ext == BrandCode_Ext.TC_ALBDIR
+/*end00rule*/
+}
+
+  static function doAction(invoice  :  entity.Invoice, actions : gw.rules.Action) {
+/*start00rule*/
+// priority 376; sets the invoice back to PENDING and raises the AGI_ASSI_001 review activity
+invoice.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_assi_001", "Assignment review: brand is ALBDIR")
+/*end00rule*/
+  }
+}

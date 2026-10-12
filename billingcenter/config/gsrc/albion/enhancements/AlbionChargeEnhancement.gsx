@@ -24,7 +24,7 @@ enhancement AlbionChargeEnhancement : entity.Charge {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// FIXME: hardcoded for UAT, parameterise before go-live  <-- went live like this (CM-21184)
+// TODO(CM-21184): value was set for UAT; move it to AlbionConfigService
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

@@ -1,0 +1,14 @@
+package rules.Validation
+
+@gw.rules.RuleName("InvoiceValidationRules")
+@gw.rules.RuleSetDescription("Invoice validation rules: return matching invoices to PENDING and raise a validation review activity. Rule order (by legacy priority): AGI_VALI_012, AGI_VALI_007, AGI_VALI_011, AGI_VALI_001, AGI_VALI_008")
+@gw.lang.Export
+class InvoiceValidationRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.Invoice) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.Invoice) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "InvoiceValidationRules", InvoiceValidationRules)
+  }
+}

@@ -1,0 +1,20 @@
+package rules.Preupdate.InvoicePreupdateRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_PREU_001: hold invoices where brand is not ALBDIR for preupdate review")
+internal class AGI_PREU_001 {
+  static function doCondition(invoice  :  entity.Invoice) : boolean {
+/*start00rule*/
+return invoice.BrandCode_Ext != BrandCode_Ext.TC_ALBDIR
+/*end00rule*/
+}
+
+  static function doAction(invoice  :  entity.Invoice, actions : gw.rules.Action) {
+/*start00rule*/
+// priority 55; sets the invoice back to PENDING and raises the AGI_PREU_001 review activity
+invoice.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_preu_001", "Preupdate review: brand is not ALBDIR")
+/*end00rule*/
+  }
+}

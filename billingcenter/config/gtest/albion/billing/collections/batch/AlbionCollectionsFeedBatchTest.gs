@@ -1,22 +1,45 @@
 package albion.billing.collections.batch
 
+uses albion.config.AlbionCentre
+uses albion.config.AlbionConfigService
 uses gw.testharness.TestBase
 
-/* TODO write real assertions (2017) */
 class AlbionCollectionsFeedBatchTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2020; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function useConfig(values : java.util.Map<String, String>) {
+    AlbionConfigService.setInstance(new AlbionConfigService(AlbionCentre.PROPERTY_PREFIX, values))
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. HERIT-23795 open since 2023.
-    // assertEquals("REFER_UW", albion.billing.collections.batch.AlbionCollectionsFeedBatch.evaluateHeritageRef(null))
+  function testIptUsesStandardRateOf12PercentByDefault() {
+    useConfig(new java.util.HashMap<String, String>())
+    try {
+      assertEquals(12.00bd, AlbionCollectionsFeedBatch.iptFor(100bd))
+      assertEquals(0.01bd, AlbionCollectionsFeedBatch.iptFor(0.05bd))   // 0.006 rounds HALF_UP
+      assertEquals(0.00bd, AlbionCollectionsFeedBatch.iptFor(0.04bd))   // 0.0048 rounds down
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 13-Jul-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testIptFollowsConfiguredStandardRate() {
+    var values = new java.util.HashMap<String, String>()
+    values.put(AlbionCentre.PROPERTY_PREFIX + ".ipt.standard.rate", "0.2")
+    useConfig(values)
+    try {
+      assertEquals(20.00bd, AlbionCollectionsFeedBatch.iptFor(100bd))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
+  }
+
+  function testIptFallsBackToLegacyIptRateKey() {
+    var values = new java.util.HashMap<String, String>()
+    values.put(AlbionCentre.PROPERTY_PREFIX + ".ipt.rate", "0.1")
+    useConfig(values)
+    try {
+      assertEquals(10.00bd, AlbionCollectionsFeedBatch.iptFor(100bd))
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 }

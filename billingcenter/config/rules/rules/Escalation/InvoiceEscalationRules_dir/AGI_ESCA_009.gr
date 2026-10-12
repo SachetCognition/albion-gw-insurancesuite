@@ -1,0 +1,20 @@
+package rules.Escalation.InvoiceEscalationRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_ESCA_009: hold every invoice for escalation review")
+internal class AGI_ESCA_009 {
+  static function doCondition(invoice  :  entity.Invoice) : boolean {
+/*start00rule*/
+return true
+/*end00rule*/
+}
+
+  static function doAction(invoice  :  entity.Invoice, actions : gw.rules.Action) {
+/*start00rule*/
+// priority 199; sets the invoice back to PENDING and raises the AGI_ESCA_009 review activity
+invoice.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_esca_009", "Escalation review: every invoice")
+/*end00rule*/
+  }
+}

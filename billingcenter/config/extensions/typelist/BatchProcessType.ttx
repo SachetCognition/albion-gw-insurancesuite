@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<typelistextension
+  xmlns="http://guidewire.com/typelists"
+  desc="Types of batch processes"
+  name="BatchProcessType">
+  <!-- Albion BillingCenter batch processes -->
+  <typecode
+    code="AlbionCollectionsF_Ext"
+    desc="Nightly DD collections feed: recalculates IPT on PENDING invoices (AlbionCollectionsFeedBatch)"
+    name="Albion Collections Feed">
+    <category
+      code="Schedulable"
+      typelist="BatchProcessTypeUsage"/>
+    <category
+      code="UIRunnable"
+      typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode
+    code="AlbionDisbursement_Ext"
+    desc="Nightly disbursements feed: recalculates IPT on PENDING invoices (AlbionDisbursementsFeedBatch)"
+    name="Albion Disbursements Feed">
+    <category
+      code="Schedulable"
+      typelist="BatchProcessTypeUsage"/>
+    <category
+      code="UIRunnable"
+      typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode
+    code="AlbionInstalmentsH_Ext"
+    desc="Nightly instalments housekeeping: recalculates IPT on PENDING invoices (AlbionInstalmentsHousekeepingBatch)"
+    name="Albion Instalments Housekeeping">
+    <category
+      code="Schedulable"
+      typelist="BatchProcessTypeUsage"/>
+    <category
+      code="UIRunnable"
+      typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode
+    code="AlbionReconciliati_Ext"
+    desc="Nightly reconciliation escalation: spools PENDING invoices to the POLARIS party feed and marks them SENT (AlbionReconciliationEscalationBatch)"
+    name="Albion Reconciliation Escalation">
+    <category
+      code="Schedulable"
+      typelist="BatchProcessTypeUsage"/>
+    <category
+      code="UIRunnable"
+      typelist="BatchProcessTypeUsage"/>
+  </typecode>
+</typelistextension>

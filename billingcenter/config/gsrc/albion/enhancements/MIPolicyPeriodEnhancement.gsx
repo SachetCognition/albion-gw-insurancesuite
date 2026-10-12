@@ -24,7 +24,7 @@ enhancement MIPolicyPeriodEnhancement : entity.PolicyPeriod {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// FIXME: brand check copy-pasted 14 times across codebase, see CHG-16227
+// NOTE: the same raw brand-code check is repeated in other enhancements (CHG-16227)
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }
