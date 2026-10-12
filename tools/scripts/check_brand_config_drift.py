@@ -12,13 +12,15 @@ Checks:
   4. BrandMappingService POLARIS_XREF block == brand_xref.csv (code, typecode, description) in order, with a
      role consistent with the CSV (RETIRED notes -> RETIRED, empty typecode -> SENTINEL, at most one OUTBOUND
      per typecode).
-  5. Per-centre copies of AlbionConfigService, BrandMappingService, AlbionAesEncryptionPlugin and their GUnit tests
-     are byte-identical.
+  5. Per-centre copies of AlbionConfigService, BrandMappingService, AlbionAesEncryptionPlugin, the strangler shadow
+     scaffold (albion.integration.shadow) and their GUnit tests are byte-identical.
   6. AlbionCentre.PROPERTY_PREFIX matches the prefix used in each env property file, and every env property file
      defines every key declared in AlbionConfigService (business constants and the CyberArk-rendered
      encryption.key / encryption.key.id / encryption.keys.retired tokens). Per env/centre the committed
      environments/<env>/<centre>.properties.template is checked when present, else <centre>.properties
      (drift if neither exists).
+  7. The strangler shadow switch <prefix>.feature.shadow.enabled is false in every committed env property file: the
+     scaffold ships dormant until an owner changes this check together with the value.
 
 Usage: python3 tools/scripts/check_brand_config_drift.py [--root <repo root>]
 """
@@ -50,6 +52,16 @@ COPIED_FILES = [
     "gtest/albion/integration/common/BrandMappingServiceTest.gs",
     "gsrc/albion/security/AlbionAesEncryptionPlugin.gs",
     "gtest/albion/security/AlbionAesEncryptionPluginTest.gs",
+    "gsrc/albion/integration/shadow/FixedWidthRecordWriter.gs",
+    "gsrc/albion/integration/shadow/InMemoryShadowDiffRecorder.gs",
+    "gsrc/albion/integration/shadow/LoggingShadowDiffRecorder.gs",
+    "gsrc/albion/integration/shadow/ReconciliationResult.gs",
+    "gsrc/albion/integration/shadow/ShadowDiffRecorder.gs",
+    "gsrc/albion/integration/shadow/ShadowRecordFacade.gs",
+    "gsrc/albion/integration/shadow/ShadowRunner.gs",
+    "gsrc/albion/integration/shadow/ShadowTolerance.gs",
+    "gtest/albion/integration/shadow/ShadowRecordFacadeTest.gs",
+    "gtest/albion/integration/shadow/ShadowRunnerTest.gs",
 ]
 BRAND_SERVICE = "gsrc/albion/integration/common/BrandMappingService.gs"
 CONFIG_SERVICE = "gsrc/albion/config/AlbionConfigService.gs"
@@ -57,6 +69,8 @@ CENTRE_FILE = "gsrc/albion/config/AlbionCentre.gs"
 NS = "{http://guidewire.com/typelists}"
 # Keys AlbionConfigService reads but which already existed before the shared config service was introduced (not required to be added).
 PRE_EXISTING_KEYS = {"ipt.rate"}
+# Strangler switches that must hold this value in every committed env property file (check 7).
+DORMANT_FLAGS = {"feature.shadow.enabled": "false"}
 
 
 def env_property_file(root, env, env_name):
@@ -198,6 +212,10 @@ def main():
             for k in keys:
                 if f"{prefix}.{k}" not in props:
                     err(f"{p}: missing {prefix}.{k}")
+            for k, dormant in DORMANT_FLAGS.items():
+                value = props.get(f"{prefix}.{k}")
+                if value is not None and value.split("#")[0].strip().lower() != dormant:
+                    err(f"{p}: {prefix}.{k}={value.strip()} - must be {dormant} (strangler scaffold ships dormant)")
 
     if err.errors:
         for e in err.errors:
