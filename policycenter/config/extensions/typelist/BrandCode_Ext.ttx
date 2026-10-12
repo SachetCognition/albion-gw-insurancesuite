@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- BrandCode_Ext | maintained by hand across 10 environments; PROD has 3 codes not in source control (AGI-35347) -->
-<!-- Reconciled across CC/PC/BC/CM (Session A foundation): all four centres now carry this identical typelist.
+<!-- Reconciled across CC/PC/BC/CM (AGI-GW Platform brand reconciliation): all four centres now carry this identical typelist.
      TMP65 (INC-15529, BC only) and TMP69 (INC-45565, CM only) are retired rather than deleted because live rows may
      still reference them; they are present in every centre so the lists cannot drift again.
      Canonical POLARIS cross-reference: integration/polaris/mappings/brand_xref.csv.

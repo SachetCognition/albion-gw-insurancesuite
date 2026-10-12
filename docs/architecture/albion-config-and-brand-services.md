@@ -1,6 +1,6 @@
 # Albion config and brand services (consumer guide)
 
-Session A foundation for the centre clean-up waves (B–E). Two services replace the hardcoded business constants and the
+Shared configuration foundation for the centre clean-up programme. Two services replace the hardcoded business constants and the
 duplicated private `brandMap()` / `brandOf()` helpers found across ClaimCenter, PolicyCenter, BillingCenter and
 ContactManager. **Behaviour is pinned to production, quirks included**: swapping a call site must not change any output.
 
