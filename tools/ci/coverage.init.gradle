@@ -1,0 +1,38 @@
+// Gradle init script for CI test runs: `sh ./gwb test -Dcenter=<cc|pc|bc|cm> --init-script tools/ci/coverage.init.gradle`
+// Writes JUnit XML and a JaCoCo XML report to per-centre paths so that sequential centre runs do not
+// overwrite each other and Jenkins/SonarQube can pick them up from fixed locations:
+//   build/test-results/<centre>/**/*.xml
+//   build/reports/jacoco/<centre>/jacocoTestReport.xml
+def centre = System.getProperty('center') ?: 'all'
+
+def setOutput = { report, File target ->
+  if (report.hasProperty('outputLocation')) {
+    report.outputLocation.set(target)
+  } else {
+    report.destination = target
+  }
+}
+def setEnabled = { report, boolean value ->
+  if (report.hasProperty('required')) {
+    report.required.set(value)
+  } else {
+    report.enabled = value
+  }
+}
+
+allprojects { Project p ->
+  p.plugins.withType(JavaPlugin) {
+    p.pluginManager.apply('jacoco')
+
+    p.tasks.withType(Test).configureEach { Test t ->
+      setOutput(t.reports.junitXml, p.rootProject.file("build/test-results/${centre}/${p.name}/${t.name}"))
+      t.finalizedBy(p.tasks.named('jacocoTestReport'))
+    }
+
+    p.tasks.named('jacocoTestReport').configure { r ->
+      setEnabled(r.reports.xml, true)
+      setEnabled(r.reports.html, false)
+      setOutput(r.reports.xml, p.rootProject.file("build/reports/jacoco/${centre}/jacocoTestReport.xml"))
+    }
+  }
+}
