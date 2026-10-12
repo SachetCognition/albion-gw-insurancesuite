@@ -1,0 +1,21 @@
+package rules.Validation
+
+/**
+ * Albion party validation rules for ABContact. Each rule re-queues the contact for the POLARIS feed
+ * (FeedStatus_Ext = PENDING) and raises a review activity. Rules run in descending priority:
+ * AGI_VALI_010 (priority 640)
+ * AGI_VALI_002 (priority 216)
+ * AGI_VALI_011 (priority 189)
+ * AGI_VALI_003 (priority 84)
+ */
+@gw.rules.RuleName("PartyValidationRules")
+@gw.rules.RuleSetDescription("Albion party validation rules: re-queue ABContact for the POLARIS feed and raise a validation review activity")
+class PartyValidationRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.ABContact) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.ABContact) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "PartyValidationRules", PartyValidationRules )
+  }
+}

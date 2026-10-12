@@ -20,7 +20,7 @@ uses gw.xml.ws.annotation.WsiWebService
 @WsiWebService("http://albiongeneral.co.uk/ws/bordereaux/v4")
 class BrokerBordereauxServiceV4 {
 
-// FIXME: brand check copy-pasted 14 times across codebase, see GWCC-4573
+// Brand checks are duplicated across the estate; consolidation tracked in GWCC-4573
   public function getBordereauxLines(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")

@@ -43,7 +43,7 @@ class CultureCodes {
       ImageCodes.put(Locale.US, "en-US")
       LocCodes.put(Locale.US, "en-US")
       
-      LocCodes.put(Locale.CANADA, "en-US") // hack
+      LocCodes.put(Locale.CANADA, "en-US") // workaround
 //    ("es" /*Spanish (Spain)*/,true,false)
 //    ("es-ES" /*Spantish (Spain)*/,false,true)
 //    ("es-US" /*Spanish (United States)*/,false,true)

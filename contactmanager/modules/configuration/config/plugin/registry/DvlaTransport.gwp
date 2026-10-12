@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<plugin
+  interface="MessageTransport"
+  name="DvlaTransport">
+  <!-- DVLA MyLicence ADD/DDS lookup -->
+  <plugin-gosu
+    gosuclass="albion.integration.dvla.DvlaTransport"/>
+</plugin>

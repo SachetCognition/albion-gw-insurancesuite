@@ -1,0 +1,20 @@
+package rules.Preupdate
+
+/**
+ * Albion party preupdate rules for ABContact. Each rule re-queues the contact for the POLARIS feed
+ * (FeedStatus_Ext = PENDING) and raises a review activity. Rules run in descending priority:
+ * AGI_PREU_003 (priority 871)
+ * AGI_PREU_007 (priority 557)
+ * AGI_PREU_006 (priority 284)
+ */
+@gw.rules.RuleName("PartyPreupdateRules")
+@gw.rules.RuleSetDescription("Albion party preupdate rules: re-queue ABContact for the POLARIS feed and raise a preupdate review activity")
+class PartyPreupdateRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.ABContact) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.ABContact) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "PartyPreupdateRules", PartyPreupdateRules )
+  }
+}

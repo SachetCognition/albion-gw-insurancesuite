@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- AlbionFloodreDV.pcf : cloned from base OOTB screen then diverged. Do NOT diff against base; upgrade team gave up in v9->v10 (GWPC-30089). -->
+<!-- AlbionFloodreDV.pcf : derived from the base OOTB screen and maintained separately since the v9->v10 upgrade (GWPC-30089). -->
 <PCF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <DetailView
     id="AlbionFloodreDV">

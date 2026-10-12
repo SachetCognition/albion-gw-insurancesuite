@@ -1,22 +1,23 @@
 package albion.integration.cifas
 
-uses gw.testharness.TestBase
+uses albion.integration.testsupport.RecordBuilderCharacterizationTestBase
 
-/* TODO write real assertions (2017) */
-class CifasRecordBuilderV3Test extends TestBase {
+class CifasRecordBuilderV3Test extends RecordBuilderCharacterizationTestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testGoldenMasterMatrix() {
+    // Layout as built today (padding, truncation, overpunch signs and brand codes are production behaviour).
+    characterize(\ src -> CifasRecordBuilderV3.buildRecord(src), "CI36", 250,
+        "PolicyNumber_Ext", 10, "NINumber_Ext", 30,
+        "RiskPostcode_Ext", 13, "InsuredSurname_Ext")
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. REG-40877 open since 2019.
-    // assertEquals("REFER_UW", albion.integration.cifas.CifasRecordBuilderV3.evaluateHeritageRef(null))
+  function testNegativeOverpunch() {
+    characterizeNegativeOverpunch(\ src -> CifasRecordBuilderV3.buildRecord(src), "CI36", 250,
+        "PolicyNumber_Ext", 10, "NINumber_Ext", 30,
+        "RiskPostcode_Ext", 13, "InsuredSurname_Ext")
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 03-Jun-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testRecordLength() {
+    assertEquals(250, CifasRecordBuilderV3.RECORD_LENGTH)
   }
 }

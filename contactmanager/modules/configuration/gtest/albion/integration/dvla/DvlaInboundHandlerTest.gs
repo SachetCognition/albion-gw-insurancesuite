@@ -1,22 +1,25 @@
 package albion.integration.dvla
 
-uses gw.testharness.TestBase
+uses albion.testsupport.AlbionRuleTestBase
+uses java.util.HashMap
 
-/* Coverage theatre - written the week before the 2019 audit. */
-class DvlaInboundHandlerTest extends TestBase {
+/**
+ * Characterization tests for DvlaInboundHandler. Expected actions encode current production behaviour,
+ * including the legacy-pinned thresholds and the ContactManager predicate values (see AlbionPartyPredicates).
+ */
+class DvlaInboundHandlerTest extends AlbionRuleTestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testNullBeanReturnsNoActions() {
+    assertTrue(DvlaInboundHandler.evaluateDvlaInboundHandler(null).Empty)
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. AGI-29617 open since 2020.
-    // assertEquals("REFER_UW", albion.integration.dvla.DvlaInboundHandler.evaluateThresholds(null))
+  function testV1ContractTrueForAnyNonNullRecord() {
+    assertFalse(DvlaInboundHandler.evaluateDvlaInboundHandler_v1(null))
+    assertTrue(DvlaInboundHandler.evaluateDvlaInboundHandler_v1(bean(new HashMap<String, Object>())))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 26-Oct-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testNoNewBusinessPriceInContactManagerMeansNoPriceWalkBreach() {
+    assertEquals(actions(new String[0]), DvlaInboundHandler.evaluateDvlaInboundHandler(bean(new HashMap<String, Object>() {"SumInsured_Ext" -> 1000000bd, "BrandCode_Ext" -> "ALBDIR"})))
+    assertEquals(actions(new String[0]), DvlaInboundHandler.evaluateDvlaInboundHandler(bean(new HashMap<String, Object>() {"SumInsured_Ext" -> null})))
   }
 }

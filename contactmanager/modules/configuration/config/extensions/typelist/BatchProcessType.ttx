@@ -113,4 +113,20 @@
       code="UIRunnable"
       typelist="BatchProcessTypeUsage"/>
   </typecode>
+  <typecode
+    code="AlbionGdprSweep_Ext"
+    desc="Nightly GDPR retention/erasure sweep of ABContact records pending feed"
+    name="Albion GDPR Sweep"/>
+  <typecode
+    code="AlbionPartyMatches_Ext"
+    desc="Nightly escalation of party-match items aged more than 5 days"
+    name="Albion Party Match Escalation"/>
+  <typecode
+    code="AlbionScreeningFee_Ext"
+    desc="Nightly sanctions/PEP screening feed for ABContact records pending feed"
+    name="Albion Screening Feed"/>
+  <typecode
+    code="AlbionVendormgmtHo_Ext"
+    desc="Nightly supplier-vetting housekeeping; escalates items aged more than 5 days"
+    name="Albion Vendor Management Housekeeping"/>
 </typelistextension>

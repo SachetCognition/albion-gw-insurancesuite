@@ -24,7 +24,7 @@ enhancement AlbionABContactContactEnhancement : entity.ABContactContact {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// FIXME: brand check copy-pasted 14 times across codebase, see INC-1295
+// Brand checks are duplicated across the estate; consolidation tracked in INC-1295
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

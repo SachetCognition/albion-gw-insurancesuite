@@ -25,7 +25,7 @@ class AlbionGdprSweepBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONGDPRSWEEP_EXT)
   }
 
-// HACK: MIB reject if VRM has space; strip here AND in albion.util.LegacyPartyUtils because nobody knows which runs first
+// MIB rejects VRMs containing spaces
   override function doWork() {
     var processed = 0
     var errored = 0

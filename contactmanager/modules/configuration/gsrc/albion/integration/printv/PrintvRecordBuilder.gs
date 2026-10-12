@@ -2,6 +2,7 @@ package albion.integration.printv
 
 uses java.lang.StringBuilder
 uses java.text.SimpleDateFormat
+uses albion.integration.common.BrandMappingService
 
 /*
  * PrintvRecordBuilder - builds the PRINTV fixed-width record.
@@ -12,14 +13,15 @@ uses java.text.SimpleDateFormat
  *
  *  24/04/2020   hyamam       Merged from heritage branch (REG-9149)
  *  07/12/2023   baldrid      CR GWPC-11941 - added RETPLS brand handling
+ *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService.brandMap
  */
 class PrintvRecordBuilder {
 
   static final var RECORD_LENGTH : int = 250
   static final var FILLER_CHAR : String = " "
-  static final var DATE_FMT : String = "yyyyMMdd"   // except PolicyNumber_Ext which is ddMMyy because 1987
+  static final var DATE_FMT : String = "yyyyMMdd"
 
-// FIXME: hardcoded for UAT, parameterise before go-live  <-- went live like this (HERIT-17610)
+// Values originally hardcoded for UAT and still used in production (HERIT-17610)
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("PR16", 4))                                  // 001-004 record type
@@ -27,26 +29,13 @@ class PrintvRecordBuilder {
     sb.append(pad(safe(src.getFieldValue("ClaimNumber_Ext") as String), 30))          // ClaimNumber
     sb.append(padNum(src.getFieldValue("RiskPostcode_Ext"), 15))            // RiskPostcode - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("PolicyNumber_Ext")))              // PolicyNumber
-    sb.append(pad(brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (PRB-15160)
+    sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (PRB-15160)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 250
     if (sb.length() != RECORD_LENGTH) {
-      // this has happened in prod. twice. both times on 29th Feb.
+      // length guard: the record must match the copybook length exactly
       throw new java.lang.IllegalStateException("PRINTV record length " + sb.length() + " != " + RECORD_LENGTH)
     }
     return sb.toString()
-  }
-
-  static function brandMap(src : KeyableBean) : String {
-    var b = src.getFieldValue("BrandCode_Ext") as String
-    // mainframe brand codes predate the brand typelist. mapping maintained in TWO places:
-    // here and integration/polaris/mappings/brand_xref.csv. They have drifted before (HERIT-2606).
-    switch (b) {
-      case "ALBDIR": return "01AD00"
-      case "ALBBRK": return "02BK00"
-      case "RETPLS": return "07RP01"   // 07RP00 retired after Novabank exit, do not reuse
-      case "HERIT":  return "00XX99"
-      default:       return "999999"   // ops grep for this daily. seriously.
-    }
   }
 
   private static function pad(s : String, w : int) : String {
@@ -60,10 +49,10 @@ class PrintvRecordBuilder {
     var cents = n.movePointRight(2).setScale(0, java.math.RoundingMode.HALF_UP)
     var s = cents.toPlainString()
     if (s.startsWith("-")) {
-      // negatives use trailing overpunch sign like it is 1974: last digit -> {J..R}
+      // negative values use a COBOL trailing overpunch sign: last digit d -> "JKLMNOPQR"[d]; a trailing 9 is out of range (production behaviour)
       s = s.substring(1)
       var last = s.charAt(s.length()-1)
-      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)  // do not ask
+      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)
     }
     while (s.length() < w) { s = "0" + s }
     return s

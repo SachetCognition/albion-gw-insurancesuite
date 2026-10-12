@@ -2,21 +2,20 @@ package albion.ws.v4
 
 uses gw.testharness.TestBase
 
-/* TODO write real assertions (2017) */
+/** Pins the PartyLookupServiceV4 response contract, including the "Premuim" element name that consumers depend on. */
 class PartyLookupServiceV4Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2019; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testShortOrMissingPolicyNumberReturnsAGI4001() {
+    var svc = new PartyLookupServiceV4()
+    assertTrue(svc.getPartyDetails(null, "ALBDIR").startsWith("<Error><Code>AGI-4001</Code><Msg>"))
+    assertTrue(svc.getPartyDetails("1234", "ALBDIR").startsWith("<Error><Code>AGI-4001</Code><Msg>"))
   }
 
-  function testBrandRouting_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWCC-22344 open since 2019.
-    // assertEquals("REFER_UW", albion.ws.v4.PartyLookupServiceV4.evaluateBrandRouting(null))
+  function testReferenceIsNormalisedAndEchoed() {
+    assertEquals("<?xml version=\"1.0\"?><PartyDetailsResponse xmlns=\"http://albiongeneral.co.uk/ws/partylookup/v4\"><Ref>AB12345</Ref><Brand>ALBBRK</Brand><Premuim>0.00</Premuim><Status>OK</Status></PartyDetailsResponse>", new PartyLookupServiceV4().getPartyDetails("ab-123 45", "ALBBRK"))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 02-Jul-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testMissingBrandDefaultsToAlbdir() {
+    assertEquals("<?xml version=\"1.0\"?><PartyDetailsResponse xmlns=\"http://albiongeneral.co.uk/ws/partylookup/v4\"><Ref>1234567890</Ref><Brand>ALBDIR</Brand><Premuim>0.00</Premuim><Status>OK</Status></PartyDetailsResponse>", new PartyLookupServiceV4().getPartyDetails("1234567890", null))
   }
 }

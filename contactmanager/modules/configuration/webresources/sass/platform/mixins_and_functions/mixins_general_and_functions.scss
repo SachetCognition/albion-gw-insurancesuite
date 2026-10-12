@@ -2,7 +2,7 @@
 // ie: @include gw-ie11Only{color: blue}
 // the css will only appear on IE11, and will be ignored by modern browsers
 @mixin gw-ie11Only() {
-  *::-ms-backdrop, & { //ignore this, it's just part of the hack that ensures the css is only respected by ie11
+  *::-ms-backdrop, & { //ignore this, it's just part of the workaround that ensures the css is only respected by ie11
     @content;
   }
 }

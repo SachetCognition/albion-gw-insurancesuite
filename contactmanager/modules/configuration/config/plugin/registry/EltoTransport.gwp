@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<plugin
+  interface="MessageTransport"
+  name="EltoTransport">
+  <!-- Employers Liability Tracing Office ELD feed -->
+  <plugin-gosu
+    gosuclass="albion.integration.elto.EltoTransport"/>
+</plugin>
