@@ -23,7 +23,6 @@ class IptRecordBuilder {
   static final var FILLER_CHAR : String = " "
   static final var DATE_FMT : String = "yyyyMMdd"   // except VehicleVRM_Ext which is ddMMyy because 1987
 
-// TODO: overlaps with logic in albion.util.AlbionClaimUtils; consolidation tracked in REG-13131
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("IP89", 4))                                  // 001-004 record type

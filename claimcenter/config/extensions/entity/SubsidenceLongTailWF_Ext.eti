@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subtype xmlns="http://guidewire.com/datamodel" entity="SubsidenceLongTailWF_Ext" supertype="Workflow" desc="Subsidence - items live in this WF for 3+ years workflow; records when each step was entered">
+  <column name="NotifyEntered_Ext" type="datetime" desc="Date the workflow entered step Notify" nullok="true"/>
+  <column name="ArboristReportEntered_Ext" type="datetime" desc="Date the workflow entered step ArboristReport" nullok="true"/>
+  <column name="Monitoring12MEntered_Ext" type="datetime" desc="Date the workflow entered step Monitoring12M" nullok="true"/>
+  <column name="UnderpinEntered_Ext" type="datetime" desc="Date the workflow entered step Underpin" nullok="true"/>
+  <column name="ReinstateEntered_Ext" type="datetime" desc="Date the workflow entered step Reinstate" nullok="true"/>
+  <column name="ReviewEntered_Ext" type="datetime" desc="Date the workflow entered step Review" nullok="true"/>
+</subtype>

@@ -21,7 +21,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AccidentalDamageReservingHandler {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.CommonPartyUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateAccidentalDamageReservingHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

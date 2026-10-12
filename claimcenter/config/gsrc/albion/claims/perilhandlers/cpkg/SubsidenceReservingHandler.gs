@@ -23,7 +23,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class SubsidenceReservingHandler {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.CommonClaimUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateSubsidenceReservingHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

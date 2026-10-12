@@ -23,7 +23,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class TheftSettlementHandler {
 
-// TODO: overlaps with logic in albion.util.AlbionPolicyUtils; consolidation tracked in DEF-39503
   public static function evaluateTheftSettlementHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

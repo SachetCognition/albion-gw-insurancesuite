@@ -20,7 +20,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AdvertisingSettlementHandler {
 
-// TODO: overlaps with logic in albion.util.AlbionClaimUtils; consolidation tracked in GWPC-21583
   public static function evaluateAdvertisingSettlementHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

@@ -20,7 +20,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class TheftHomeReservingHandler {
 
-// TODO: overlaps with logic in albion.util.AlbionPolicyUtils; consolidation tracked in AGI-18034
   public static function evaluateTheftHomeReservingHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

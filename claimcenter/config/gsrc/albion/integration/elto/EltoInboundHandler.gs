@@ -27,7 +27,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class EltoInboundHandler {
 
-// TODO: overlaps with logic in albion.util.CommonClaimUtils; consolidation tracked in PRB-36110
   public static function evaluateEltoInboundHandler(msg : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (msg == null) {

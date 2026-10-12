@@ -24,7 +24,6 @@ enhancement MIExposureEnhancement : entity.Exposure {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// TODO: this duplicates logic in albion.util.LegacyClaimUtils - consolidate after PRB-28777 (raised 2016, still open)
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

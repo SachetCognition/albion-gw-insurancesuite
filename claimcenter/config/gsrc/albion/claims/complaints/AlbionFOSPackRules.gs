@@ -21,7 +21,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionFOSPackRules {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.CommonPartyUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateAlbionFOSPack(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

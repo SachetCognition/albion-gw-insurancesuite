@@ -25,7 +25,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class TheftHomeReservingHandler {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.AlbionPolicyUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateTheftHomeReservingHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

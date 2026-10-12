@@ -29,7 +29,7 @@ class ProductsLiabilitySettlementHandler {
     return AlbionConfigService.Instance.referThresholdAlbBrk("ProductsLiabilitySettlementHandler", 4000bd)
   }
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.LegacyClaimUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateProductsLiabilitySettlementHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

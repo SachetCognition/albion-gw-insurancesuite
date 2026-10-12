@@ -20,7 +20,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class SubsidenceNotificationHandler {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.AlbionClaimUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateSubsidenceNotificationHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

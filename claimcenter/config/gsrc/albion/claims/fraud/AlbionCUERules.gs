@@ -24,7 +24,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionCUERules {
 
-// TODO: overlaps with logic in albion.util.AlbionClaimUtils; consolidation tracked in GWBC-27413
   public static function evaluateAlbionCUE(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

@@ -1,0 +1,18 @@
+package rules.Segmentation.ClaimSegmentationRules_dir
+
+@gw.rules.RuleName("AGI_SEGM_010 Segmentation review for claims where source system is not POLARIS")
+internal class R03_AGI_SEGM_010 {
+  static function doCondition(claim  :  entity.Claim) : boolean {
+/*start00rule*/
+return claim.SourceSystem_Ext != "POLARIS"
+/*end00rule*/
+}
+
+  static function doAction(claim  :  entity.Claim, actions : gw.rules.Action) {
+/*start00rule*/
+// Legacy rule AGI_SEGM_010 (priority 629, CM-17043): set feed status to PENDING and raise a segmentation review activity.
+claim.FeedStatus_Ext = "PENDING"
+albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_segm_010", "Segmentation review: source system is not POLARIS")
+/*end00rule*/
+  }
+}

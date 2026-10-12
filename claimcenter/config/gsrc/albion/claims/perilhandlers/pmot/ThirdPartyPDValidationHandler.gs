@@ -27,7 +27,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class ThirdPartyPDValidationHandler {
 
-// TODO: overlaps with logic in albion.util.AlbionPartyUtils; consolidation tracked in DEF-7229
   public static function evaluateThirdPartyPDValidationHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

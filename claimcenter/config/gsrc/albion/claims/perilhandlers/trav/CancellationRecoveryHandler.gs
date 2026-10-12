@@ -26,7 +26,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class CancellationRecoveryHandler {
 
-// TODO: overlaps with logic in albion.util.CommonPolicyUtils; consolidation tracked in AGI-33786
   public static function evaluateCancellationRecoveryHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

@@ -28,7 +28,6 @@ class ThirdPartyPDValidationHandler {
     return AlbionConfigService.Instance.referThresholdAlbBrk("ThirdPartyPDValidationHandler", 2500bd)
   }
 
-// TODO: overlaps with logic in albion.util.AlbionPartyUtils; consolidation tracked in INC-39946
   public static function evaluateThirdPartyPDValidationHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

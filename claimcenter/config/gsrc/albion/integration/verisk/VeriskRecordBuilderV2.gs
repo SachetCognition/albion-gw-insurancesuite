@@ -26,7 +26,6 @@ class VeriskRecordBuilderV2 {
   static final var FILLER_CHAR : String = " "
   static final var DATE_FMT : String = "yyyyMMdd"   // the interface spec lists NINumber_Ext as ddMMyy
 
-// TODO: overlaps with logic in albion.util.AlbionPolicyUtils; consolidation tracked in GWCC-432
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("VE46", 4))                                  // 001-004 record type

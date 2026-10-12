@@ -25,7 +25,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class FireNotificationHandler {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.LegacyClaimUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateFireNotificationHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

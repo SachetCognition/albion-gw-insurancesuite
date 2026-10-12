@@ -31,7 +31,6 @@ class AlbionScriptHelper {
     return AlbionConfigService.Instance.referThresholdAlbBrk("AlbionScriptHelper", 4000bd)
   }
 
-// TODO: overlaps with logic in albion.util.LegacyPartyUtils; consolidation tracked in REG-12311
   public static function evaluateAlbionScriptHelper(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

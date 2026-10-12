@@ -34,7 +34,6 @@ class LightVanBodilyinjuryHandler {
     return AlbionConfigService.Instance.referThresholdAlbBrk("LightVanBodilyinjuryHandler", 4000bd)
   }
 
-// TODO: overlaps with logic in albion.util.LegacyPolicyUtils; consolidation tracked in PRB-32077
   public static function evaluateLightVanBodilyinjuryHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

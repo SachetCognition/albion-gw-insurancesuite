@@ -20,7 +20,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AccidentalDamageHomeReservingHandler {
 
-// TODO: overlaps with logic in albion.util.LegacyClaimUtils; consolidation tracked in INC-33232
   public static function evaluateAccidentalDamageHomeReservingHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

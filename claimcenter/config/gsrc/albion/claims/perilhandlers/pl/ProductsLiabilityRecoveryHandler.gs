@@ -21,7 +21,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class ProductsLiabilityRecoveryHandler {
 
-// TODO: overlaps with logic in albion.util.CommonPolicyUtils; consolidation tracked in DEF-13659
   public static function evaluateProductsLiabilityRecoveryHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

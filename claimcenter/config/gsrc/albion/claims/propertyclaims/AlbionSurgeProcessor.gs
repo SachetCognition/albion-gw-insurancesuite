@@ -35,7 +35,6 @@ class AlbionSurgeProcessor {
     return AlbionConfigService.Instance.referThresholdAlbBrk("AlbionSurgeProcessor", 2500bd)
   }
 
-// TODO: overlaps with logic in albion.util.CommonPartyUtils; consolidation tracked in REG-10516
   public static function evaluateAlbionSurgeProcessor(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

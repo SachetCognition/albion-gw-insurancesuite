@@ -20,7 +20,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionDryingRules {
 
-// TODO: overlaps with logic in albion.util.LegacyPartyUtils; consolidation tracked in GWCC-33802
   public static function evaluateAlbionDrying(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

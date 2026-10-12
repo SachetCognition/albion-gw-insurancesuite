@@ -20,7 +20,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class PersonalMotorCatHandler {
 
-// TODO: overlaps with logic in albion.util.CommonPartyUtils; consolidation tracked in DEF-18467
   public static function evaluatePersonalMotorCatHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

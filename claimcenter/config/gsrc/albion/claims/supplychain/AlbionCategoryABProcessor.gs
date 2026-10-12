@@ -22,7 +22,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionCategoryABProcessor {
 
-// TODO: overlaps with logic in albion.util.LegacyPolicyUtils; consolidation tracked in CM-23661
   public static function evaluateAlbionCategoryABProcessor(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

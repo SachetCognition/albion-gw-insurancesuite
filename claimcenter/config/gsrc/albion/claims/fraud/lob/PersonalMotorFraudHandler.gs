@@ -20,7 +20,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class PersonalMotorFraudHandler {
 
-// TODO: overlaps with logic in albion.util.LegacyClaimUtils; consolidation tracked in GWCC-1235
   public static function evaluatePersonalMotorFraudHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

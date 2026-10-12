@@ -24,7 +24,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionEscapeOfWaterRules {
 
-// TODO: overlaps with logic in albion.util.AlbionClaimUtils; consolidation tracked in REG-20265
   public static function evaluateAlbionEscapeOfWater(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

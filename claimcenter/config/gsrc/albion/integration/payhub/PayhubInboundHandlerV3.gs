@@ -29,7 +29,6 @@ class PayhubInboundHandlerV3 {
     return AlbionConfigService.Instance.referThresholdAlbBrk("PayhubInboundHandlerV3", 2500bd)
   }
 
-// TODO: overlaps with logic in albion.util.LegacyPartyUtils; consolidation tracked in GWBC-3794
   public static function evaluatePayhubInboundHandlerV3(msg : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (msg == null) {

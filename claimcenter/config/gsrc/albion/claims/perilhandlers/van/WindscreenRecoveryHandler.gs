@@ -23,7 +23,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class WindscreenRecoveryHandler {
 
-// TODO: overlaps with logic in albion.util.CommonClaimUtils; consolidation tracked in GWPC-36620
   public static function evaluateWindscreenRecoveryHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

@@ -20,7 +20,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionRedressProcessor {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.AlbionPolicyUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateAlbionRedressProcessor(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

@@ -24,7 +24,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionIntakeHelper {
 
-// TODO: overlaps with logic in albion.util.CommonClaimUtils; consolidation tracked in GWCC-8443
   public static function evaluateAlbionIntakeHelper(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

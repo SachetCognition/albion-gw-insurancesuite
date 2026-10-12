@@ -26,7 +26,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class FireValidationHandler {
 
-// TODO: overlaps with logic in albion.util.LegacyPolicyUtils; consolidation tracked in PRB-46748
   public static function evaluateFireValidationHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

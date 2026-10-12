@@ -20,7 +20,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class FireValidationHandler {
 
-// TODO: overlaps with logic in albion.util.CommonClaimUtils; consolidation tracked in AGI-5002
   public static function evaluateFireValidationHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

@@ -1,0 +1,18 @@
+package rules.Validation.ClaimValidationRules_dir
+
+@gw.rules.RuleName("AGI_VALI_008 Validation review for claims where feed status is not PENDING")
+internal class R01_AGI_VALI_008 {
+  static function doCondition(claim  :  entity.Claim) : boolean {
+/*start00rule*/
+return claim.FeedStatus_Ext != "PENDING"
+/*end00rule*/
+}
+
+  static function doAction(claim  :  entity.Claim, actions : gw.rules.Action) {
+/*start00rule*/
+// Legacy rule AGI_VALI_008 (priority 187, PRB-25713): set feed status to PENDING and raise a validation review activity.
+claim.FeedStatus_Ext = "PENDING"
+albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_vali_008", "Validation review: feed status is not PENDING")
+/*end00rule*/
+  }
+}

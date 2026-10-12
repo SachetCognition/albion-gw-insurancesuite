@@ -1,0 +1,18 @@
+package rules.Escalation.ClaimEscalationRules_dir
+
+@gw.rules.RuleName("AGI_ESCA_009 Escalation review for claims where brand is not ALBBRK, feed status is not PENDING")
+internal class R02_AGI_ESCA_009 {
+  static function doCondition(claim  :  entity.Claim) : boolean {
+/*start00rule*/
+return claim.BrandCode_Ext != BrandCode_Ext.TC_ALBBRK and claim.FeedStatus_Ext != "PENDING"
+/*end00rule*/
+}
+
+  static function doAction(claim  :  entity.Claim, actions : gw.rules.Action) {
+/*start00rule*/
+// Legacy rule AGI_ESCA_009 (priority 776, REG-415): set feed status to PENDING and raise a escalation review activity.
+claim.FeedStatus_Ext = "PENDING"
+albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_esca_009", "Escalation review: brand is not ALBBRK, feed status is not PENDING")
+/*end00rule*/
+  }
+}

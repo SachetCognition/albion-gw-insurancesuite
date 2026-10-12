@@ -27,7 +27,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class TravelFnolHandler {
 
-// TODO: overlaps with logic in albion.util.AlbionPartyUtils; consolidation tracked in PRB-15838
   public static function evaluateTravelFnolHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

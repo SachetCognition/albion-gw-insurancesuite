@@ -19,7 +19,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionAggregationProcessor {
 
-// TODO: overlaps with logic in albion.util.CommonPartyUtils; consolidation tracked in AGI-16240
   public static function evaluateAlbionAggregationProcessor(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

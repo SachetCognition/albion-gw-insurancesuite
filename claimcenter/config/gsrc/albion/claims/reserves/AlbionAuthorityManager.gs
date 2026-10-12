@@ -26,7 +26,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionAuthorityManager {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.AlbionClaimUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateAlbionAuthorityManager(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

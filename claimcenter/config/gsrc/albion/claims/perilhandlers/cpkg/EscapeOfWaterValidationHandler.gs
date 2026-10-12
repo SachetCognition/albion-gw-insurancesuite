@@ -19,7 +19,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class EscapeOfWaterValidationHandler {
 
-// TODO: overlaps with logic in albion.util.LegacyPartyUtils; consolidation tracked in PRB-21138
   public static function evaluateEscapeOfWaterValidationHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

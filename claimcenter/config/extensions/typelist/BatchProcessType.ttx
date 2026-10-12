@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typelistextension xmlns="http://guidewire.com/typelists" name="BatchProcessType" desc="Albion ClaimCenter batch processes">
+  <typecode code="AlbionBodilyinjury_Ext" name="Albion Bodilyinjury Escalation" desc="Nightly bodilyinjury batch (BI / OIC portal / litigation) (AlbionBodilyinjuryEscalationBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionCatEscalatio_Ext" name="Albion Cat Escalation" desc="Nightly cat batch (Catastrophe / surge events) (AlbionCatEscalationBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionComplaintsHo_Ext" name="Albion Complaints Housekeeping" desc="Nightly complaints batch (FCA DISP complaints) (AlbionComplaintsHousekeepingBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionFnolEscalati_Ext" name="Albion Fnol Escalation" desc="Nightly fnol batch (First Notification of Loss intake) (AlbionFnolEscalationBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionFraudEscalat_Ext" name="Albion Fraud Escalation" desc="Nightly fraud batch (SIU / counter-fraud) (AlbionFraudEscalationBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionPaymentsSwee_Ext" name="Albion Payments Sweep" desc="Nightly payments batch (Claim payments &amp; recoveries) (AlbionPaymentsSweepBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionPropertyclai_Ext" name="Albion Propertyclaims Feed" desc="Nightly propertyclaims batch (Property perils handling) (AlbionPropertyclaimsFeedBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionRecoveriesSw_Ext" name="Albion Recoveries Sweep" desc="Nightly recoveries batch (Recoveries &amp; reinsurance) (AlbionRecoveriesSweepBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionReservesEsca_Ext" name="Albion Reserves Escalation" desc="Nightly reserves batch (Reserving &amp; authority) (AlbionReservesEscalationBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionSegmentation_Ext" name="Albion Segmentation Escalation" desc="Nightly segmentation batch (Claim segmentation &amp; routing) (AlbionSegmentationEscalationBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionSupplychainS_Ext" name="Albion Supplychain Sweep" desc="Nightly supplychain batch (Supplier &amp; repair network) (AlbionSupplychainSweepBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+  <typecode code="AlbionTppdFeed_Ext" name="Albion Tppd Feed" desc="Nightly tppd batch (Third party intervention) (AlbionTppdFeedBatch)">
+    <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
+</typelistextension>

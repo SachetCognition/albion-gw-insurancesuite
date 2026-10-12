@@ -24,7 +24,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class PublicLiabilitySettlementHandler {
 
-// TODO: overlaps with logic in albion.util.AlbionPolicyUtils; consolidation tracked in GWBC-13373
   public static function evaluatePublicLiabilitySettlementHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

@@ -22,7 +22,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class PetInsuranceReservesHandler {
 
-// TODO: overlaps with logic in albion.util.LegacyClaimUtils; consolidation tracked in INC-33232
   public static function evaluatePetInsuranceReservesHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

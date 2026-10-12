@@ -27,7 +27,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class HomeEmergencyValidationHandler {
 
-// TODO: overlaps with logic in albion.util.AlbionPolicyUtils; consolidation tracked in HERIT-23621
   public static function evaluateHomeEmergencyValidationHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

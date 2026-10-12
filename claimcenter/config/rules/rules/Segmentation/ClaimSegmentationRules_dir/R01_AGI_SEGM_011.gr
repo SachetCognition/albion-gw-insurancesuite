@@ -1,0 +1,18 @@
+package rules.Segmentation.ClaimSegmentationRules_dir
+
+@gw.rules.RuleName("AGI_SEGM_011 Segmentation review for claims where brand is not ALBDIR, source system is not POLARIS")
+internal class R01_AGI_SEGM_011 {
+  static function doCondition(claim  :  entity.Claim) : boolean {
+/*start00rule*/
+return claim.BrandCode_Ext != BrandCode_Ext.TC_ALBDIR and claim.SourceSystem_Ext != "POLARIS"
+/*end00rule*/
+}
+
+  static function doAction(claim  :  entity.Claim, actions : gw.rules.Action) {
+/*start00rule*/
+// Legacy rule AGI_SEGM_011 (priority 138, CM-12788): set feed status to PENDING and raise a segmentation review activity.
+claim.FeedStatus_Ext = "PENDING"
+albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_segm_011", "Segmentation review: brand is not ALBDIR, source system is not POLARIS")
+/*end00rule*/
+  }
+}

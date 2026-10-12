@@ -22,7 +22,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class IptInboundHandler {
 
-// TODO: overlaps with logic in albion.util.CommonPartyUtils; consolidation tracked in GWCC-41968
   public static function evaluateIptInboundHandler(msg : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (msg == null) {

@@ -21,7 +21,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class TravelReservesHandler {
 
-// TODO: overlaps with logic in albion.util.CommonClaimUtils; consolidation tracked in GWBC-19378
   public static function evaluateTravelReservesHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

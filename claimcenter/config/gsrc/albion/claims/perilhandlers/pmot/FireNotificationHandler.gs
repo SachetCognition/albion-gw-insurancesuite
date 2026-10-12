@@ -23,7 +23,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class FireNotificationHandler {
 
-// TODO: overlaps with logic in albion.util.CommonClaimUtils; consolidation tracked in DEF-14783
   public static function evaluateFireNotificationHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

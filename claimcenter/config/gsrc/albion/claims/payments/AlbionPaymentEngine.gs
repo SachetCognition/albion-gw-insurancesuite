@@ -26,7 +26,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionPaymentEngine {
 
-// TODO: overlaps with logic in albion.util.CommonPolicyUtils; consolidation tracked in CM-46337
   public static function evaluateAlbionPaymentEngine(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

@@ -24,7 +24,6 @@ enhancement AlbionClaimContactEnhancement : entity.ClaimContact {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// TODO: this duplicates logic in albion.util.AlbionPolicyUtils - consolidate after GWCC-25243 (raised 2016, still open)
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

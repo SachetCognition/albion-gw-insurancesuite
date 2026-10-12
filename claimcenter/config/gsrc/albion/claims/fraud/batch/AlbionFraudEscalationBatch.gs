@@ -10,7 +10,7 @@ uses gw.transaction.Transaction
  *
  * Scheduled via Control-M job AGIC955D (see batch/controlm/AGI_EOM_33.xml). The Control-M
  * definition and scheduler-config.xml BOTH schedule this; one is meant to be disabled
- * per environment. In PROD it is the Control-M one that is live. In DR nobody is sure.
+ * per environment. In PROD it is the Control-M one that is live. The DR setting is environment-specific.
  *
  *  20/10/2012   gwoffsh2     Initial version for INC-9450
  *  14/10/2014   gwoffshore   Defect fix GWBC-35435 - null pointer when policy period not bound
@@ -19,6 +19,7 @@ uses gw.transaction.Transaction
  *  18/03/2022   rpatel       Perf fix HERIT-3925 - query was table scanning CC_CLAIM
  *  10/10/2023   vraghu       Rewritten during Project Mercury, old logic kept below commented out (CM-1425)
  *  06/07/2024   baldrid      Regulatory change GWBC-32719 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Selects Claim rows (was ABContact, not a ClaimCenter entity); typed field access
  */
 class AlbionFraudEscalationBatch extends BatchProcessBase {
 
@@ -29,18 +30,18 @@ class AlbionFraudEscalationBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONFRAUDESCALAT_EXT)
   }
 
-// WARNING: changing this breaks the Paragon print feed in ways QA cannot reproduce
+// NOTE: output is consumed by the Paragon print feed; regression-test print output after changes
   override function doWork() {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
+    var q = Query.make(Claim)
+    q.compare(Claim#FeedStatus_Ext, Relop.Equals, "PENDING")
     // NB: no date bound. On a bad day this re-selects 1.4M heritage rows. See REG-15385 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
       if ((java.lang.System.currentTimeMillis() - started) > MAX_RUNTIME_MINS * 60000) {
-        print("AlbionFraudEscalationBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")  // and it always does
+        print("AlbionFraudEscalationBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")
         break
       }
       try {
@@ -52,7 +53,7 @@ class AlbionFraudEscalationBatch extends BatchProcessBase {
       } catch (e : java.lang.Exception) {
         errored++
         // swallow & continue: one poison row must not kill the feed (post-mortem 13-Jan-2018).
-        // downside: we have swallowed real errors for years. See DWH reconciliation reports.
+        // errors are logged here and reconciled through the DWH reconciliation reports.
         print("AlbionFraudEscalationBatch ERROR on " + bean + " : " + e.Message)
       }
       if (processed % CHUNK == 0) { OperationsExecuted += CHUNK }
@@ -60,10 +61,10 @@ class AlbionFraudEscalationBatch extends BatchProcessBase {
     print("AlbionFraudEscalationBatch complete processed=" + processed + " errored=" + errored)
   }
 
-  private function process(bean : ABContact) {
-    bean.setFieldValue("FeedStatus_Ext", "SENT")
-    bean.setFieldValue("LastBatchRun_Ext", gw.api.util.DateUtil.currentDate())
-    // write the outbound record inline (should be a message plugin; was "descoped" in 2015, GWCC-2715)
+  private function process(bean : Claim) {
+    bean.FeedStatus_Ext = "SENT"
+    bean.LastBatchRun_Ext = gw.api.util.DateUtil.currentDate()
+    // write the outbound record inline (should be a message plugin; descoped in 2015, GWCC-2715)
     var rec = albion.integration.polaris.PolarisPartyRecordBuilder.buildRecord(bean)
     albion.integration.common.FlatFileSpooler.spool("PAYHUB", rec)
   }

@@ -20,7 +20,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class PetInsurancePropertyclaimsHandler {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.CommonClaimUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluatePetInsurancePropertyclaimsHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

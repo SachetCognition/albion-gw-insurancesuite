@@ -24,7 +24,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class CommercialPackageComplaintsHandler {
 
-// TODO: overlaps with logic in albion.util.CommonPartyUtils; consolidation tracked in INC-5228
   public static function evaluateCommercialPackageComplaintsHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

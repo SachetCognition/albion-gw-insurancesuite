@@ -22,7 +22,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class TheftHomeRecoveryHandler {
 
-// TODO: overlaps with logic in albion.util.AlbionPolicyUtils; consolidation tracked in REG-35153
   public static function evaluateTheftHomeRecoveryHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

@@ -33,7 +33,7 @@ class AccidentalDamageSettlementHandler {
     return AlbionConfigService.Instance.referThresholdAlbBrk("AccidentalDamageSettlementHandler", 12500bd)
   }
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.CommonPolicyUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateAccidentalDamageSettlementHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

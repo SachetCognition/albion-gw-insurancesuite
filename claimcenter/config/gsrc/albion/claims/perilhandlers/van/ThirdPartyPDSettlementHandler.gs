@@ -22,7 +22,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class ThirdPartyPDSettlementHandler {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.CommonPolicyUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateThirdPartyPDSettlementHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

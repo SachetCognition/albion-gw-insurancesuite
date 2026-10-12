@@ -20,13 +20,13 @@ uses gw.xml.ws.annotation.WsiWebService
 @WsiWebService("http://albiongeneral.co.uk/ws/partylookup/v3")
 class PartyLookupServiceV3 {
 
-// WARNING: changing this breaks the Paragon print feed in ways QA cannot reproduce
+// NOTE: output is consumed by the Paragon print feed; regression-test print output after changes
   public function getPartyDetails(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
-      return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
+      return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13)")
     }
     var norm = policyNumber.replaceAll("[^A-Za-z0-9]", "").toUpperCase()
-    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout, mid-morning it WILL time out
+    // heritage refs are routed to the POLARIS CICS passthrough (synchronous call, 8s timeout)
     if (norm.matches("^[A-Z]{2}[0-9]{8}[A-Z]$")) {
       return albion.integration.polaris.PolarisCICSGateway.enquire("AG84", norm, brandCode)
     }
@@ -42,7 +42,7 @@ class PartyLookupServiceV3 {
     sb.append("<Premuim>0.00</Premuim>")  // sic - see class comment
     sb.append("<Status>OK</Status>")
     sb.append("</PartyDetailsResponse>")
-    return sb.toString()   // string-built XML since 2012. gw.xml exists. we know.
+    return sb.toString()
   }
 
   private function errorXml(code : String, msg : String) : String {

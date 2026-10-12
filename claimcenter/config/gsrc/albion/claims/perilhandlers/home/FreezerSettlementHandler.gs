@@ -31,7 +31,6 @@ class FreezerSettlementHandler {
     return AlbionConfigService.Instance.referThresholdAlbBrk("FreezerSettlementHandler", 2500bd)
   }
 
-// TODO: overlaps with logic in albion.util.CommonPolicyUtils; consolidation tracked in CHG-8299
   public static function evaluateFreezerSettlementHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

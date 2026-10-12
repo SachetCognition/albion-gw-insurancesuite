@@ -4,17 +4,20 @@ uses gw.testharness.TestBase
 
 class PolarisCICSGatewayTest extends TestBase {
 
-  function testRejectsMissingOrShortPolicyNumber() {
-    var svc = new PolarisCICSGateway()
-    assertTrue(svc.enquire(null, "ALBDIR").startsWith("<Error><Code>AGI-4001</Code>"))
-    assertTrue(svc.enquire("AB12", "ALBDIR").startsWith("<Error><Code>AGI-4001</Code>"))
+  static final var OK : String = "<?xml version=\"1.0\"?><enquireResponse xmlns=\"http://albiongeneral.co.uk/ws/polaris/v1\"><Ref>%s</Ref><Brand>%s</Brand><Premuim>0.00</Premuim><Status>OK</Status></enquireResponse>"
+
+  function testStaticEnquiryNormalisesHeritageReference() {
+    assertEquals(OK.format({"AB12345678C", "HERIT"}), PolarisCICSGateway.enquire("AG15", "ab-1234 5678c", "HERIT"))
   }
 
-  function testNormalisesReferenceAndDefaultsBrand() {
-    assertEquals("<?xml version=\"1.0\"?><enquireResponse xmlns=\"http://albiongeneral.co.uk/ws/polaris/v1\"><Ref>AB1234567</Ref><Brand>ALBDIR</Brand><Premuim>0.00</Premuim><Status>OK</Status></enquireResponse>", new PolarisCICSGateway().enquire("ab-123 4567", null))
+  function testStaticEnquiryValidatesInputs() {
+    assertTrue(PolarisCICSGateway.enquire("XX99", "AB12345678C", null).startsWith("<Error><Code>AGI-4002</Code>"))
+    assertTrue(PolarisCICSGateway.enquire("AG15", "AB12", null).startsWith("<Error><Code>AGI-4001</Code>"))
+    assertTrue(PolarisCICSGateway.enquire("AG15", null, null).startsWith("<Error><Code>AGI-4001</Code>"))
   }
 
-  function testEchoesBrandAndKeepsContractedPremuimElement() {
-    assertEquals("<?xml version=\"1.0\"?><enquireResponse xmlns=\"http://albiongeneral.co.uk/ws/polaris/v1\"><Ref>GW12345678</Ref><Brand>ALBBRK</Brand><Premuim>0.00</Premuim><Status>OK</Status></enquireResponse>", new PolarisCICSGateway().enquire("GW12345678", "ALBBRK"))
+  function testWebMethodDelegatesWithDefaultTransaction() {
+    assertEquals(PolarisCICSGateway.enquire(PolarisCICSGateway.DEFAULT_TRANSACTION, "GW12345678", null), new PolarisCICSGateway().enquire("GW12345678", null))
+    assertEquals(OK.format({"GW12345678", "ALBDIR"}), new PolarisCICSGateway().enquire("GW12345678", null))
   }
 }

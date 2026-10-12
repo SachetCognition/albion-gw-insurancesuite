@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- AlbionBordereauxScreen.pcf : cloned from base OOTB screen then diverged. Do NOT diff against base; upgrade team gave up in v9->v10 (DEF-14059). -->
+<!-- AlbionBordereauxScreen.pcf : cloned from the base OOTB screen and customised; not kept in step with the base screen since the v9->v10 upgrade (DEF-14059). -->
 <PCF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <Screen
     id="AlbionBordereauxScreen">

@@ -23,7 +23,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class ThirdPartyBIRecoveryHandler {
 
-// TODO: overlaps with logic in albion.util.AlbionPolicyUtils; consolidation tracked in REG-26141
   public static function evaluateThirdPartyBIRecoveryHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

@@ -23,7 +23,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class AlbionRootCauseService {
 
-// TODO: overlaps with logic in albion.util.AlbionPartyUtils; consolidation tracked in GWPC-30038
   public static function evaluateAlbionRootCauseService(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

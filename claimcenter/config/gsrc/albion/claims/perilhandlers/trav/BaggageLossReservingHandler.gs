@@ -23,7 +23,7 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class BaggageLossReservingHandler {
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.CommonPolicyUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateBaggageLossReservingHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

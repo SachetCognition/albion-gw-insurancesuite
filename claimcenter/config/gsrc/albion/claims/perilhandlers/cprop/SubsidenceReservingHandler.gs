@@ -31,7 +31,6 @@ class SubsidenceReservingHandler {
     return AlbionConfigService.Instance.referThresholdAlbBrk("SubsidenceReservingHandler", 2500bd)
   }
 
-// TODO: overlaps with logic in albion.util.AlbionClaimUtils; consolidation tracked in GWPC-44409
   public static function evaluateSubsidenceReservingHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

@@ -31,7 +31,6 @@ class AccidentalDamageReservingHandler {
     return AlbionConfigService.Instance.referThresholdAlbBrk("AccidentalDamageReservingHandler", 2500bd)
   }
 
-// TODO: overlaps with logic in albion.util.LegacyPolicyUtils; consolidation tracked in AGI-34838
   public static function evaluateAccidentalDamageReservingHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

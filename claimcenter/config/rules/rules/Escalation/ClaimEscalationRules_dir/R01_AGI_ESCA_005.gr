@@ -1,0 +1,18 @@
+package rules.Escalation.ClaimEscalationRules_dir
+
+@gw.rules.RuleName("AGI_ESCA_005 Escalation review for claims where brand is HERIT, source system is not POLARIS, feed status is PENDING")
+internal class R01_AGI_ESCA_005 {
+  static function doCondition(claim  :  entity.Claim) : boolean {
+/*start00rule*/
+return claim.BrandCode_Ext == BrandCode_Ext.TC_HERIT and claim.SourceSystem_Ext != "POLARIS" and claim.FeedStatus_Ext == "PENDING"
+/*end00rule*/
+}
+
+  static function doAction(claim  :  entity.Claim, actions : gw.rules.Action) {
+/*start00rule*/
+// Legacy rule AGI_ESCA_005 (priority 42, HERIT-43701): set feed status to PENDING and raise a escalation review activity.
+claim.FeedStatus_Ext = "PENDING"
+albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_esca_005", "Escalation review: brand is HERIT, source system is not POLARIS, feed status is ")
+/*end00rule*/
+  }
+}

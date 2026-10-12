@@ -21,7 +21,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class WindscreenNotificationHandler {
 
-// TODO: overlaps with logic in albion.util.LegacyPolicyUtils; consolidation tracked in AGI-26203
   public static function evaluateWindscreenNotificationHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

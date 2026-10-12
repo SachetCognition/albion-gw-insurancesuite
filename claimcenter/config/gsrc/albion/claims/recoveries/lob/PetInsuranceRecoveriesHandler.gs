@@ -19,7 +19,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class PetInsuranceRecoveriesHandler {
 
-// TODO: overlaps with logic in albion.util.CommonClaimUtils; consolidation tracked in INC-1418
   public static function evaluatePetInsuranceRecoveriesHandler(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

@@ -29,7 +29,7 @@ class AlbionOICPortalHelper {
     return AlbionConfigService.Instance.referThresholdAlbBrk("AlbionOICPortalHelper", 2500bd)
   }
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.LegacyPartyUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateAlbionOICPortalHelper(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

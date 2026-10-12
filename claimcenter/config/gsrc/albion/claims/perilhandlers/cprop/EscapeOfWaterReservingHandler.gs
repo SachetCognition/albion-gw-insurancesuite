@@ -35,7 +35,7 @@ class EscapeOfWaterReservingHandler {
     return AlbionConfigService.Instance.referThresholdAlbBrk("EscapeOfWaterReservingHandler", 4000bd)
   }
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.LegacyClaimUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateEscapeOfWaterReservingHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {

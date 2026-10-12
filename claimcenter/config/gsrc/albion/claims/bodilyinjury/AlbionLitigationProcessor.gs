@@ -30,7 +30,7 @@ class AlbionLitigationProcessor {
     return AlbionConfigService.Instance.referThresholdAlbBrk("AlbionLitigationProcessor", 12500bd)
   }
 
-// NOTE: MIB rejects VRMs containing spaces; the same strip is also applied in albion.util.AlbionPartyUtils
+// NOTE: MIB rejects VRMs containing spaces
   public static function evaluateAlbionLitigationProcessor(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

@@ -27,7 +27,6 @@ uses java.math.BigDecimal
  ******************************************************************************/
 class ThirdPartyLiabilityPetReservingHandler {
 
-// TODO: overlaps with logic in albion.util.CommonPartyUtils; consolidation tracked in AGI-31837
   public static function evaluateThirdPartyLiabilityPetReservingHandler(exposure : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (exposure == null) {
