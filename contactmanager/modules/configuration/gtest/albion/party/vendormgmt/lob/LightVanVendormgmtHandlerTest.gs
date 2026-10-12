@@ -1,22 +1,30 @@
 package albion.party.vendormgmt.lob
 
-uses gw.testharness.TestBase
+uses albion.testsupport.AlbionRuleTestBase
+uses java.util.HashMap
 
-/* TODO write real assertions (2017) */
-class LightVanVendormgmtHandlerTest extends TestBase {
+/**
+ * Characterization tests for LightVanVendormgmtHandler. Expected actions encode current production behaviour,
+ * including the legacy-pinned thresholds and the ContactManager predicate values (see AlbionPartyPredicates).
+ */
+class LightVanVendormgmtHandlerTest extends AlbionRuleTestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testNullBeanReturnsNoActions() {
+    assertTrue(LightVanVendormgmtHandler.evaluateLightVanVendormgmtHandler(null).Empty)
   }
 
-  function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. HERIT-16949 open since 2022.
-    // assertEquals("REFER_UW", albion.party.vendormgmt.lob.LightVanVendormgmtHandler.evaluateIPTCalc(null))
+  function testV1ContractTrueForAnyNonNullRecord() {
+    assertFalse(LightVanVendormgmtHandler.evaluateLightVanVendormgmtHandler_v1(null))
+    assertTrue(LightVanVendormgmtHandler.evaluateLightVanVendormgmtHandler_v1(bean(new HashMap<String, Object>())))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 12-Feb-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testPerilRulesForBradfordFloodReRisk() {
+    assertEquals(actions(new String[0]), LightVanVendormgmtHandler.evaluateLightVanVendormgmtHandler(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> true})))
+    assertEquals(actions(new String[0]), LightVanVendormgmtHandler.evaluateLightVanVendormgmtHandler(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> "bd7 1aa", "FloodReCeded_Ext" -> true})))
+  }
+
+  function testPerilRulesForOrdinaryRisk() {
+    assertEquals(actions(new String[0]), LightVanVendormgmtHandler.evaluateLightVanVendormgmtHandler(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> "LS1 4AP", "FloodReCeded_Ext" -> false})))
+    assertEquals(actions(new String[0]), LightVanVendormgmtHandler.evaluateLightVanVendormgmtHandler(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> null, "FloodReCeded_Ext" -> null})))
   }
 }

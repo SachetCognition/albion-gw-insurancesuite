@@ -1,22 +1,25 @@
 package albion.integration.reins
 
-uses gw.testharness.TestBase
+uses albion.testsupport.AlbionRuleTestBase
+uses java.util.HashMap
 
-/* Coverage theatre - written the week before the 2019 audit. */
-class ReinsInboundHandlerV2Test extends TestBase {
+/**
+ * Characterization tests for ReinsInboundHandlerV2. Expected actions encode current production behaviour,
+ * including the legacy-pinned thresholds and the ContactManager predicate values (see AlbionPartyPredicates).
+ */
+class ReinsInboundHandlerV2Test extends AlbionRuleTestBase {
 
-  function testHappyPath() {
-    // was a real test until 2020; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testNullBeanReturnsNoActions() {
+    assertTrue(ReinsInboundHandlerV2.evaluateReinsInboundHandlerV2(null).Empty)
   }
 
-  function testBrandRouting_DISABLED() {
-    // @Reason: fails intermittently on the build box only. INC-38873 open since 2019.
-    // assertEquals("REFER_UW", albion.integration.reins.ReinsInboundHandlerV2.evaluateBrandRouting(null))
+  function testV1ContractTrueForAnyNonNullRecord() {
+    assertFalse(ReinsInboundHandlerV2.evaluateReinsInboundHandlerV2_v1(null))
+    assertTrue(ReinsInboundHandlerV2.evaluateReinsInboundHandlerV2_v1(bean(new HashMap<String, Object>())))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 25-Aug-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testNoNewBusinessPriceInContactManagerMeansNoPriceWalkBreach() {
+    assertEquals(actions(new String[0]), ReinsInboundHandlerV2.evaluateReinsInboundHandlerV2(bean(new HashMap<String, Object>() {"EstimatedLoss_Ext" -> 1000000bd, "BrandCode_Ext" -> "ALBDIR"})))
+    assertEquals(actions(new String[0]), ReinsInboundHandlerV2.evaluateReinsInboundHandlerV2(bean(new HashMap<String, Object>() {"EstimatedLoss_Ext" -> null})))
   }
 }

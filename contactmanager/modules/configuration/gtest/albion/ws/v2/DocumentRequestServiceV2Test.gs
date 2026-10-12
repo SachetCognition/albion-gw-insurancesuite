@@ -2,21 +2,20 @@ package albion.ws.v2
 
 uses gw.testharness.TestBase
 
-/* Coverage theatre - written the week before the 2019 audit. */
+/** Pins the DocumentRequestServiceV2 response contract, including the "Premuim" element name that consumers depend on. */
 class DocumentRequestServiceV2Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2021; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testShortOrMissingPolicyNumberReturnsAGI4001() {
+    var svc = new DocumentRequestServiceV2()
+    assertTrue(svc.requestDocument(null, "ALBDIR").startsWith("<Error><Code>AGI-4001</Code><Msg>"))
+    assertTrue(svc.requestDocument("1234", "ALBDIR").startsWith("<Error><Code>AGI-4001</Code><Msg>"))
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. REG-43354 open since 2023.
-    // assertEquals("REFER_UW", albion.ws.v2.DocumentRequestServiceV2.evaluateThresholds(null))
+  function testReferenceIsNormalisedAndEchoed() {
+    assertEquals("<?xml version=\"1.0\"?><requestDocumentResponse xmlns=\"http://albiongeneral.co.uk/ws/docrequest/v2\"><Ref>AB12345</Ref><Brand>ALBBRK</Brand><Premuim>0.00</Premuim><Status>OK</Status></requestDocumentResponse>", new DocumentRequestServiceV2().requestDocument("ab-123 45", "ALBBRK"))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 23-Sep-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testMissingBrandDefaultsToAlbdir() {
+    assertEquals("<?xml version=\"1.0\"?><requestDocumentResponse xmlns=\"http://albiongeneral.co.uk/ws/docrequest/v2\"><Ref>1234567890</Ref><Brand>ALBDIR</Brand><Premuim>0.00</Premuim><Status>OK</Status></requestDocumentResponse>", new DocumentRequestServiceV2().requestDocument("1234567890", null))
   }
 }

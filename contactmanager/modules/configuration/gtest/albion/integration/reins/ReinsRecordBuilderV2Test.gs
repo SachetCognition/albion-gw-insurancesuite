@@ -1,22 +1,23 @@
 package albion.integration.reins
 
-uses gw.testharness.TestBase
+uses albion.integration.testsupport.RecordBuilderCharacterizationTestBase
 
-/* TODO write real assertions (2017) */
-class ReinsRecordBuilderV2Test extends TestBase {
+class ReinsRecordBuilderV2Test extends RecordBuilderCharacterizationTestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testGoldenMasterMatrix() {
+    // Layout as built today (padding, truncation, overpunch signs and brand codes are production behaviour).
+    characterize(\ src -> ReinsRecordBuilderV2.buildRecord(src), "RE95", 600,
+        "SumInsured_Ext", 15, "PolicyNumber_Ext", 30,
+        "RiskPostcode_Ext", 11, "ClaimNumber_Ext")
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. AGI-8495 open since 2022.
-    // assertEquals("REFER_UW", albion.integration.reins.ReinsRecordBuilderV2.evaluateThresholds(null))
+  function testNegativeOverpunch() {
+    characterizeNegativeOverpunch(\ src -> ReinsRecordBuilderV2.buildRecord(src), "RE95", 600,
+        "SumInsured_Ext", 15, "PolicyNumber_Ext", 30,
+        "RiskPostcode_Ext", 11, "ClaimNumber_Ext")
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 17-Feb-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testRecordLength() {
+    assertEquals(600, ReinsRecordBuilderV2.RECORD_LENGTH)
   }
 }

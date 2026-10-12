@@ -1,22 +1,30 @@
 package albion.party.gdpr
 
-uses gw.testharness.TestBase
+uses albion.testsupport.AlbionRuleTestBase
+uses java.util.HashMap
 
-/* TODO write real assertions (2017) */
-class AlbionLegalHoldProcessorTest extends TestBase {
+/**
+ * Characterization tests for AlbionLegalHoldProcessor. Expected actions encode current production behaviour,
+ * including the legacy-pinned thresholds and the ContactManager predicate values (see AlbionPartyPredicates).
+ */
+class AlbionLegalHoldProcessorTest extends AlbionRuleTestBase {
 
-  function testHappyPath() {
-    // was a real test until 2021; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testNullBeanReturnsNoActions() {
+    assertTrue(AlbionLegalHoldProcessor.evaluateAlbionLegalHoldProcessor(null).Empty)
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. CHG-18144 open since 2019.
-    // assertEquals("REFER_UW", albion.party.gdpr.AlbionLegalHoldProcessor.evaluateThresholds(null))
+  function testV1ContractTrueForAnyNonNullRecord() {
+    assertFalse(AlbionLegalHoldProcessor.evaluateAlbionLegalHoldProcessor_v1(null))
+    assertTrue(AlbionLegalHoldProcessor.evaluateAlbionLegalHoldProcessor_v1(bean(new HashMap<String, Object>())))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 28-Jun-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testPerilRulesForBradfordFloodReRisk() {
+    assertEquals(actions({"FLOODRE_NOTIFY", "SUPPRESS_EXCESS_WAIVER"}), AlbionLegalHoldProcessor.evaluateAlbionLegalHoldProcessor(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> true})))
+    assertEquals(actions({"FLOODRE_NOTIFY", "SUPPRESS_EXCESS_WAIVER"}), AlbionLegalHoldProcessor.evaluateAlbionLegalHoldProcessor(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> "bd7 1aa", "FloodReCeded_Ext" -> true})))
+  }
+
+  function testPerilRulesForOrdinaryRisk() {
+    assertEquals(actions(new String[0]), AlbionLegalHoldProcessor.evaluateAlbionLegalHoldProcessor(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> "LS1 4AP", "FloodReCeded_Ext" -> false})))
+    assertEquals(actions(new String[0]), AlbionLegalHoldProcessor.evaluateAlbionLegalHoldProcessor(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> null, "FloodReCeded_Ext" -> null})))
   }
 }

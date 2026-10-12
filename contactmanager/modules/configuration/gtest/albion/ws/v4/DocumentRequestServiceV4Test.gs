@@ -2,21 +2,20 @@ package albion.ws.v4
 
 uses gw.testharness.TestBase
 
-/* Coverage theatre - written the week before the 2019 audit. */
+/** Pins the DocumentRequestServiceV4 response contract, including the "Premuim" element name that consumers depend on. */
 class DocumentRequestServiceV4Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2019; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testShortOrMissingPolicyNumberReturnsAGI4001() {
+    var svc = new DocumentRequestServiceV4()
+    assertTrue(svc.requestDocument(null, "ALBDIR").startsWith("<Error><Code>AGI-4001</Code><Msg>"))
+    assertTrue(svc.requestDocument("1234", "ALBDIR").startsWith("<Error><Code>AGI-4001</Code><Msg>"))
   }
 
-  function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. AGI-43429 open since 2021.
-    // assertEquals("REFER_UW", albion.ws.v4.DocumentRequestServiceV4.evaluateIPTCalc(null))
+  function testReferenceIsNormalisedAndEchoed() {
+    assertEquals("<?xml version=\"1.0\"?><requestDocumentResponse xmlns=\"http://albiongeneral.co.uk/ws/docrequest/v4\"><Ref>AB12345</Ref><Brand>ALBBRK</Brand><Premuim>0.00</Premuim><Status>OK</Status></requestDocumentResponse>", new DocumentRequestServiceV4().requestDocument("ab-123 45", "ALBBRK"))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 20-Nov-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testMissingBrandDefaultsToAlbdir() {
+    assertEquals("<?xml version=\"1.0\"?><requestDocumentResponse xmlns=\"http://albiongeneral.co.uk/ws/docrequest/v4\"><Ref>1234567890</Ref><Brand>ALBDIR</Brand><Premuim>0.00</Premuim><Status>OK</Status></requestDocumentResponse>", new DocumentRequestServiceV4().requestDocument("1234567890", null))
   }
 }

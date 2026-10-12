@@ -1,22 +1,40 @@
 package albion.party.vendormgmt.lob
 
-uses gw.testharness.TestBase
+uses albion.testsupport.AlbionRuleTestBase
+uses java.util.HashMap
 
-/* TODO write real assertions (2017) */
-class PersonalMotorVendormgmtHandlerTest extends TestBase {
+/**
+ * Characterization tests for PersonalMotorVendormgmtHandler. Expected actions encode current production behaviour,
+ * including the legacy-pinned thresholds and the ContactManager predicate values (see AlbionPartyPredicates).
+ */
+class PersonalMotorVendormgmtHandlerTest extends AlbionRuleTestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testNullBeanReturnsNoActions() {
+    assertTrue(PersonalMotorVendormgmtHandler.evaluatePersonalMotorVendormgmtHandler(null).Empty)
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. INC-38813 open since 2023.
-    // assertEquals("REFER_UW", albion.party.vendormgmt.lob.PersonalMotorVendormgmtHandler.evaluateThresholds(null))
+  function testV1ContractTrueForAnyNonNullRecord() {
+    assertFalse(PersonalMotorVendormgmtHandler.evaluatePersonalMotorVendormgmtHandler_v1(null))
+    assertTrue(PersonalMotorVendormgmtHandler.evaluatePersonalMotorVendormgmtHandler_v1(bean(new HashMap<String, Object>())))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 08-Jul-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testNoFraudSignalsNoAction() {
+    assertEquals(actions(new String[0]), PersonalMotorVendormgmtHandler.evaluatePersonalMotorVendormgmtHandler(bean(new HashMap<String, Object>() {"SumInsured_Ext" -> 1000000bd})))
+  }
+
+  function testAggregatorSourceAloneStaysBelowWatchScore() {
+    assertEquals(actions(new String[0]), PersonalMotorVendormgmtHandler.evaluatePersonalMotorVendormgmtHandler(aggregatorContact(new HashMap<String, Object>() {"SumInsured_Ext" -> 1000000bd})))
+  }
+
+  function testConfiguredReferScoreIsApplied() {
+    withConfig(new HashMap<String, String>() {"co.fraud.refer.score" -> "10"}, \ -> {
+      assertEquals(actions({"SIU_REFER"}), PersonalMotorVendormgmtHandler.evaluatePersonalMotorVendormgmtHandler(aggregatorContact(new HashMap<String, Object>() {})))
+    })
+    withConfig(new HashMap<String, String>() {"co.fraud.refer.score" -> "10"}, \ -> {
+      assertEquals(actions(new String[0]), PersonalMotorVendormgmtHandler.evaluatePersonalMotorVendormgmtHandler(bean(new HashMap<String, Object>() {})))
+    })
+    withConfig(new HashMap<String, String>() {"co.fraud.refer.score" -> "0"}, \ -> {
+      assertEquals(actions({"SIU_REFER"}), PersonalMotorVendormgmtHandler.evaluatePersonalMotorVendormgmtHandler(bean(new HashMap<String, Object>() {})))
+    })
   }
 }

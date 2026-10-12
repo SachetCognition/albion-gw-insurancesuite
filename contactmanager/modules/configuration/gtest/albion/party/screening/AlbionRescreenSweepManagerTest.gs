@@ -1,22 +1,30 @@
 package albion.party.screening
 
-uses gw.testharness.TestBase
+uses albion.testsupport.AlbionRuleTestBase
+uses java.util.HashMap
 
-/* TODO write real assertions (2017) */
-class AlbionRescreenSweepManagerTest extends TestBase {
+/**
+ * Characterization tests for AlbionRescreenSweepManager. Expected actions encode current production behaviour,
+ * including the legacy-pinned thresholds and the ContactManager predicate values (see AlbionPartyPredicates).
+ */
+class AlbionRescreenSweepManagerTest extends AlbionRuleTestBase {
 
-  function testHappyPath() {
-    // was a real test until 2020; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testNullBeanReturnsNoActions() {
+    assertTrue(AlbionRescreenSweepManager.evaluateAlbionRescreenSweepManager(null).Empty)
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. AGI-22507 open since 2021.
-    // assertEquals("REFER_UW", albion.party.screening.AlbionRescreenSweepManager.evaluateHeritageRef(null))
+  function testV1ContractTrueForAnyNonNullRecord() {
+    assertFalse(AlbionRescreenSweepManager.evaluateAlbionRescreenSweepManager_v1(null))
+    assertTrue(AlbionRescreenSweepManager.evaluateAlbionRescreenSweepManager_v1(bean(new HashMap<String, Object>())))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 25-Feb-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testPerilRulesForBradfordFloodReRisk() {
+    assertEquals(actions({"FLOODRE_NOTIFY", "SUPPRESS_EXCESS_WAIVER", "EOW_SURVEYOR_MANDATORY", "SUBSIDENCE_DESK", "?SUBSIDENCE_SURGE_TRIAGE"}), AlbionRescreenSweepManager.evaluateAlbionRescreenSweepManager(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> true})))
+    assertEquals(actions({"FLOODRE_NOTIFY", "SUPPRESS_EXCESS_WAIVER", "EOW_SURVEYOR_MANDATORY", "SUBSIDENCE_DESK", "?SUBSIDENCE_SURGE_TRIAGE"}), AlbionRescreenSweepManager.evaluateAlbionRescreenSweepManager(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> "bd7 1aa", "FloodReCeded_Ext" -> true})))
+  }
+
+  function testPerilRulesForOrdinaryRisk() {
+    assertEquals(actions({"SUBSIDENCE_DESK", "?SUBSIDENCE_SURGE_TRIAGE"}), AlbionRescreenSweepManager.evaluateAlbionRescreenSweepManager(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> "LS1 4AP", "FloodReCeded_Ext" -> false})))
+    assertEquals(actions({"SUBSIDENCE_DESK", "?SUBSIDENCE_SURGE_TRIAGE"}), AlbionRescreenSweepManager.evaluateAlbionRescreenSweepManager(bean(new HashMap<String, Object>() {"RiskPostcode_Ext" -> null, "FloodReCeded_Ext" -> null})))
   }
 }
