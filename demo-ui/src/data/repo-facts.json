@@ -1,0 +1,2736 @@
+{
+  "generatedAt": "2026-10-12 23:42 UTC",
+  "commit": "54fe646",
+  "commitDate": "2026-10-12",
+  "checks": {
+    "drift": {
+      "command": "python3 tools/scripts/check_brand_config_drift.py",
+      "passed": true,
+      "output": "OK: 4 typelists identical (8 typecodes), 7 brand_xref rows consistent, 18 service files identical across 4 centres, 18 keys present in 40 env property files",
+      "typelists": 4,
+      "typecodes": 8,
+      "xrefRows": 7,
+      "serviceFiles": 18,
+      "centres": 4,
+      "keys": 18,
+      "envFiles": 40
+    },
+    "coherence": {
+      "command": "python3 tools/scripts/check_gw_coherence.py .",
+      "passed": true,
+      "totalFindings": 0,
+      "output": "TOTAL: 0 distinct findings",
+      "categories": []
+    }
+  },
+  "pipelineStages": [
+    "Brand config drift",
+    "Guidewire coherence",
+    "Compile CC",
+    "Compile PC",
+    "Compile BC",
+    "Compile CM",
+    "GUnit CC",
+    "GUnit PC",
+    "GUnit BC",
+    "GUnit CM",
+    "Sonar",
+    "Quality gate"
+  ],
+  "centres": [
+    {
+      "code": "cc",
+      "name": "ClaimCenter",
+      "purpose": "Claims: first notice of loss to settlement",
+      "path": "claimcenter",
+      "ruleSets": 5,
+      "rules": 10,
+      "ruleFamilies": [
+        {
+          "family": "Assignment",
+          "rules": 1
+        },
+        {
+          "family": "Escalation",
+          "rules": 2
+        },
+        {
+          "family": "Preupdate",
+          "rules": 1
+        },
+        {
+          "family": "Segmentation",
+          "rules": 3
+        },
+        {
+          "family": "Validation",
+          "rules": 3
+        }
+      ],
+      "legacyRuleIds": [
+        "AGI_ASSI_002",
+        "AGI_ESCA_005",
+        "AGI_ESCA_009",
+        "AGI_PREU_001",
+        "AGI_SEGM_003",
+        "AGI_SEGM_010",
+        "AGI_SEGM_011",
+        "AGI_VALI_002",
+        "AGI_VALI_008",
+        "AGI_VALI_013"
+      ],
+      "activityPatterns": 13,
+      "screens": 26,
+      "gosuClasses": 393,
+      "unitTests": 378,
+      "entityExtensions": 22,
+      "encryptedColumns": 1,
+      "pluginRegistrations": 11,
+      "encryptionPlugin": true,
+      "outboundDestinations": 10,
+      "transports": [
+        "CifasTransport",
+        "CueTransport",
+        "DvlaTransport",
+        "EltoTransport",
+        "FloodreTransport",
+        "IptTransport",
+        "MidTransport",
+        "PayhubTransport",
+        "PolarisMfTransport",
+        "SanctionsTransport"
+      ]
+    },
+    {
+      "code": "pc",
+      "name": "PolicyCenter",
+      "purpose": "Policies: new business, renewals, mid-term changes",
+      "path": "policycenter",
+      "ruleSets": 5,
+      "rules": 16,
+      "ruleFamilies": [
+        {
+          "family": "Assignment",
+          "rules": 4
+        },
+        {
+          "family": "Escalation",
+          "rules": 3
+        },
+        {
+          "family": "Preupdate",
+          "rules": 3
+        },
+        {
+          "family": "Segmentation",
+          "rules": 3
+        },
+        {
+          "family": "Validation",
+          "rules": 3
+        }
+      ],
+      "legacyRuleIds": [
+        "AGI_ASSI_001",
+        "AGI_ASSI_002",
+        "AGI_ASSI_006",
+        "AGI_ASSI_009",
+        "AGI_ESCA_003",
+        "AGI_ESCA_004",
+        "AGI_ESCA_013",
+        "AGI_PREU_001",
+        "AGI_PREU_006",
+        "AGI_PREU_011",
+        "AGI_SEGM_003",
+        "AGI_SEGM_004",
+        "AGI_SEGM_012",
+        "AGI_VALI_004",
+        "AGI_VALI_006",
+        "AGI_VALI_010"
+      ],
+      "activityPatterns": 20,
+      "screens": 30,
+      "gosuClasses": 198,
+      "unitTests": 166,
+      "entityExtensions": 20,
+      "encryptedColumns": 1,
+      "pluginRegistrations": 11,
+      "encryptionPlugin": true,
+      "outboundDestinations": 10,
+      "transports": [
+        "CifasTransport",
+        "CueTransport",
+        "DvlaTransport",
+        "EltoTransport",
+        "FloodreTransport",
+        "IptTransport",
+        "MidTransport",
+        "PayhubTransport",
+        "PolarisMfTransport",
+        "SanctionsTransport"
+      ]
+    },
+    {
+      "code": "bc",
+      "name": "BillingCenter",
+      "purpose": "Billing: Direct Debit collections, arrears, broker accounts",
+      "path": "billingcenter",
+      "ruleSets": 4,
+      "rules": 15,
+      "ruleFamilies": [
+        {
+          "family": "Assignment",
+          "rules": 3
+        },
+        {
+          "family": "Escalation",
+          "rules": 3
+        },
+        {
+          "family": "Preupdate",
+          "rules": 4
+        },
+        {
+          "family": "Validation",
+          "rules": 5
+        }
+      ],
+      "legacyRuleIds": [
+        "AGI_ASSI_001:",
+        "AGI_ASSI_008:",
+        "AGI_ASSI_010:",
+        "AGI_ESCA_001:",
+        "AGI_ESCA_002:",
+        "AGI_ESCA_009:",
+        "AGI_PREU_001:",
+        "AGI_PREU_006:",
+        "AGI_PREU_007:",
+        "AGI_PREU_010:",
+        "AGI_VALI_001:",
+        "AGI_VALI_007:",
+        "AGI_VALI_008:",
+        "AGI_VALI_011:",
+        "AGI_VALI_012:"
+      ],
+      "activityPatterns": 15,
+      "screens": 37,
+      "gosuClasses": 68,
+      "unitTests": 55,
+      "entityExtensions": 15,
+      "encryptedColumns": 0,
+      "pluginRegistrations": 11,
+      "encryptionPlugin": true,
+      "outboundDestinations": 10,
+      "transports": [
+        "CifasTransport",
+        "CueTransport",
+        "DvlaTransport",
+        "EltoTransport",
+        "FloodreTransport",
+        "IptTransport",
+        "MidTransport",
+        "PayhubTransport",
+        "PolarisMfTransport",
+        "SanctionsTransport"
+      ]
+    },
+    {
+      "code": "cm",
+      "name": "ContactManager",
+      "purpose": "Customers: the single party record shared by all systems",
+      "path": "contactmanager/modules/configuration",
+      "ruleSets": 14,
+      "rules": 84,
+      "ruleFamilies": [
+        {
+          "family": "Assignment",
+          "rules": 3
+        },
+        {
+          "family": "Escalation",
+          "rules": 2
+        },
+        {
+          "family": "EventMessage",
+          "rules": 21
+        },
+        {
+          "family": "Preupdate",
+          "rules": 39
+        },
+        {
+          "family": "Segmentation",
+          "rules": 4
+        },
+        {
+          "family": "Validation",
+          "rules": 15
+        }
+      ],
+      "legacyRuleIds": [
+        "ABContactContact",
+        "ABPU1000",
+        "ABPU1010",
+        "ABPU1020",
+        "ABPU1030",
+        "ABPU1040",
+        "ABPU2000",
+        "ABPU2010",
+        "ABPU2020",
+        "ABPU2021",
+        "ABPU3000",
+        "ABPU4000",
+        "AGI_ASSI_001",
+        "AGI_ASSI_004",
+        "AGI_ASSI_005",
+        "AGI_ESCA_001",
+        "AGI_ESCA_004",
+        "AGI_PREU_003",
+        "AGI_PREU_006",
+        "AGI_PREU_007",
+        "AGI_SEGM_001",
+        "AGI_SEGM_003",
+        "AGI_SEGM_009",
+        "AGI_SEGM_012",
+        "AGI_VALI_002",
+        "AGI_VALI_003",
+        "AGI_VALI_010",
+        "AGI_VALI_011",
+        "Async",
+        "BillingCenter\")",
+        "Cell",
+        "ClaimCenter\")",
+        "Contact",
+        "Contact\")",
+        "CreatedApproved\")",
+        "Default",
+        "Fax",
+        "Home",
+        "Name",
+        "Non-Person\")",
+        "Pending",
+        "PendingChangeRejected\")",
+        "Person\")",
+        "PolicyCenter\")",
+        "Primary",
+        "Region",
+        "Related",
+        "Remove\")",
+        "Require",
+        "Secondary",
+        "Set",
+        "Update\")",
+        "Work"
+      ],
+      "activityPatterns": 18,
+      "screens": 523,
+      "gosuClasses": 388,
+      "unitTests": 75,
+      "entityExtensions": 406,
+      "encryptedColumns": 3,
+      "pluginRegistrations": 58,
+      "encryptionPlugin": true,
+      "outboundDestinations": 15,
+      "transports": [
+        "BCBillingSystemTransport",
+        "CCClaimSystemTransport",
+        "CifasTransport",
+        "CueTransport",
+        "DvlaTransport",
+        "EltoTransport",
+        "FloodreTransport",
+        "IptTransport",
+        "MidTransport",
+        "PCPolicySystemTransport",
+        "PayhubTransport",
+        "PolarisMfTransport",
+        "SanctionsTransport",
+        "documentStoreTransport",
+        "emailMessageTransport"
+      ]
+    }
+  ],
+  "totals": {
+    "rules": 125,
+    "ruleSets": 28,
+    "activityPatterns": 66,
+    "screens": 616,
+    "gosuClasses": 1047,
+    "unitTests": 674,
+    "encryptedColumns": 5,
+    "outboundDestinations": 45,
+    "copybooks": 18,
+    "fieldMaps": 12,
+    "sampleMessages": 170,
+    "runbooks": 10,
+    "sqlFixes": 70
+  },
+  "interfaces": [
+    {
+      "id": "IF-AGGR-015",
+      "name": "AGGR",
+      "description": "Aggregator gateway (CTM/MSM/GoCo/Confused)",
+      "centre": "cc",
+      "copybook": "AGIAGGRRE.cpy",
+      "recordBuilder": "AggrRecordBuilder",
+      "transport": "Nightly SFTP; PGP",
+      "transportKind": "Secure file transfer",
+      "volume": "~162k/week",
+      "volumeK": 162,
+      "volumePeriod": "week",
+      "approxMonthlyK": 705,
+      "retry": "NAK queue reviewed by Norwich desktop Excel macro; automatic x3 then manual",
+      "recordWidth": 512,
+      "recordPrefix": "AG84",
+      "layout": [
+        {
+          "field": "AG84",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "RiskPostcode",
+          "format": null,
+          "width": 12
+        },
+        {
+          "field": "InceptionDate",
+          "format": null,
+          "width": 8
+        },
+        {
+          "field": "InsuredSurname",
+          "format": "cents",
+          "width": 11
+        },
+        {
+          "field": "VehicleVRM",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 12,
+      "samples": {
+        "nak": 4,
+        "prod_incident": 3,
+        "good": 1
+      },
+      "specVersions": 7
+    },
+    {
+      "id": "IF-CIFAS-007",
+      "name": "CIFAS",
+      "description": "CIFAS fraud database",
+      "centre": "cm",
+      "copybook": "AGICIFARE.cpy",
+      "recordBuilder": "CifasRecordBuilder",
+      "transport": "Connect:Direct",
+      "transportKind": "Connect:Direct file transfer",
+      "volume": "~216k/week",
+      "volumeK": 216,
+      "volumePeriod": "week",
+      "approxMonthlyK": 940,
+      "retry": "Daily ops NAK queue; automatic infinite retry",
+      "recordWidth": 750,
+      "recordPrefix": "CI87",
+      "layout": [
+        {
+          "field": "CI87",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "NINO",
+          "format": null,
+          "width": 12
+        },
+        {
+          "field": "SumInsured",
+          "format": null,
+          "width": 10
+        },
+        {
+          "field": "InceptionDate",
+          "format": "cents",
+          "width": 15
+        },
+        {
+          "field": "InsuredSurname",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 14,
+      "samples": {
+        "prod_incident": 4,
+        "edge": 3,
+        "nak": 2,
+        "good": 2
+      },
+      "specVersions": 5
+    },
+    {
+      "id": "IF-CREDIT-014",
+      "name": "CREDIT",
+      "description": "Experian credit & quote-manipulation checks",
+      "centre": "bc",
+      "copybook": "AGICREDRE.cpy",
+      "recordBuilder": "CreditRecordBuilder",
+      "transport": "MQ Series AGI.CREDIT.OUT; file-drop fallback now primary",
+      "transportKind": "Message queue (file drop in use)",
+      "volume": "~613k/month",
+      "volumeK": 613,
+      "volumePeriod": "month",
+      "approxMonthlyK": 613,
+      "retry": "Weekly NAK queue; automatic x3 then manual",
+      "recordWidth": 300,
+      "recordPrefix": "CR61",
+      "layout": [
+        {
+          "field": "CR61",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "RiskPostcode",
+          "format": null,
+          "width": 15
+        },
+        {
+          "field": "InceptionDate",
+          "format": null,
+          "width": 30
+        },
+        {
+          "field": "PolicyNumber",
+          "format": "cents",
+          "width": 15
+        },
+        {
+          "field": "SumInsured",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 13,
+      "samples": {
+        "good": 4,
+        "nak": 4,
+        "prod_incident": 2,
+        "edge": 2
+      },
+      "specVersions": 3
+    },
+    {
+      "id": "IF-CRIF-016",
+      "name": "CRIF",
+      "description": "CRIF claims history",
+      "centre": "pc",
+      "copybook": "AGICRIFRE.cpy",
+      "recordBuilder": "CrifRecordBuilder",
+      "transport": "Synchronous SOAP over site-to-site VPN; 8-second timeout",
+      "transportKind": "Real-time web service",
+      "volume": "~415k/week",
+      "volumeK": 415,
+      "volumePeriod": "week",
+      "approxMonthlyK": 1805,
+      "retry": "Daily ops NAK queue; manual retry only",
+      "recordWidth": 750,
+      "recordPrefix": "CR58",
+      "layout": [
+        {
+          "field": "CR58",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "NINO",
+          "format": null,
+          "width": 15
+        },
+        {
+          "field": "VRM",
+          "format": null,
+          "width": 30
+        },
+        {
+          "field": "AnnualPremium",
+          "format": "cents",
+          "width": 15
+        },
+        {
+          "field": "ClaimNumber",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 10,
+      "samples": {
+        "prod_incident": 5,
+        "good": 5,
+        "edge": 1
+      },
+      "specVersions": 4
+    },
+    {
+      "id": "IF-CUE-002",
+      "name": "CUE",
+      "description": "Claims & Underwriting Exchange enquiry/load",
+      "centre": "cm",
+      "copybook": "AGICUERE.cpy",
+      "recordBuilder": "CueRecordBuilder",
+      "transport": "Nightly SFTP; PGP",
+      "transportKind": "Secure file transfer",
+      "volume": "~126k/week",
+      "volumeK": 126,
+      "volumePeriod": "week",
+      "approxMonthlyK": 548,
+      "retry": "Daily ops NAK queue; automatic infinite retry",
+      "recordWidth": 400,
+      "recordPrefix": "CU86",
+      "layout": [
+        {
+          "field": "CU86",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "ERN",
+          "format": null,
+          "width": 12
+        },
+        {
+          "field": "NINO",
+          "format": null,
+          "width": 10
+        },
+        {
+          "field": "AnnualPremium",
+          "format": "cents",
+          "width": 11
+        },
+        {
+          "field": "SumInsured",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 9,
+      "samples": {
+        "good": 2,
+        "nak": 4,
+        "prod_incident": 4,
+        "edge": 2
+      },
+      "specVersions": 7
+    },
+    {
+      "id": "IF-DVLA-006",
+      "name": "DVLA",
+      "description": "DVLA MyLicence ADD/DDS lookup",
+      "centre": "cm",
+      "copybook": "AGIDVLARE.cpy",
+      "recordBuilder": "DvlaRecordBuilder",
+      "transport": "MQ Series AGI.DVLA.OUT; file-drop fallback now primary",
+      "transportKind": "Message queue (file drop in use)",
+      "volume": "~335k/month",
+      "volumeK": 335,
+      "volumePeriod": "month",
+      "approxMonthlyK": 335,
+      "retry": "NAK queue reviewed when remembered; automatic infinite retry",
+      "recordWidth": 400,
+      "recordPrefix": "DV29",
+      "layout": [
+        {
+          "field": "DV29",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "InceptionDate",
+          "format": null,
+          "width": 12
+        },
+        {
+          "field": "SumInsured",
+          "format": null,
+          "width": 8
+        },
+        {
+          "field": "RiskPostcode",
+          "format": "cents",
+          "width": 13
+        },
+        {
+          "field": "ERN",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 13,
+      "samples": {
+        "edge": 2,
+        "good": 2,
+        "prod_incident": 4,
+        "nak": 1
+      },
+      "specVersions": 3
+    },
+    {
+      "id": "IF-DWH-012",
+      "name": "DWH",
+      "description": "Group Data Warehouse (Teradata) extract",
+      "centre": "pc",
+      "copybook": "AGIDWHRE.cpy",
+      "recordBuilder": "DwhRecordBuilder",
+      "transport": "Connect:Direct",
+      "transportKind": "Connect:Direct file transfer",
+      "volume": "~429k/day",
+      "volumeK": 429,
+      "volumePeriod": "day",
+      "approxMonthlyK": 13042,
+      "retry": "Norwich desktop Excel-macro NAK queue; automatic infinite retry",
+      "recordWidth": 300,
+      "recordPrefix": "DW21",
+      "layout": [
+        {
+          "field": "DW21",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "SumInsured",
+          "format": null,
+          "width": 15
+        },
+        {
+          "field": "PolicyNumber",
+          "format": null,
+          "width": 10
+        },
+        {
+          "field": "NINO",
+          "format": "cents",
+          "width": 13
+        },
+        {
+          "field": "ERN",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 14,
+      "samples": {
+        "good": 3,
+        "edge": 4,
+        "nak": 2,
+        "prod_incident": 1
+      },
+      "specVersions": 6
+    },
+    {
+      "id": "IF-ELTO-003",
+      "name": "ELTO",
+      "description": "Employers Liability Tracing Office ELD feed",
+      "centre": "cc",
+      "copybook": "AGIELTORE.cpy",
+      "recordBuilder": "EltoRecordBuilder",
+      "transport": "Synchronous SOAP over site-to-site VPN; 8-second timeout",
+      "transportKind": "Real-time web service",
+      "volume": "~525k/month",
+      "volumeK": 525,
+      "volumePeriod": "month",
+      "approxMonthlyK": 525,
+      "retry": "Norwich desktop Excel-macro NAK queue; manual retry only",
+      "recordWidth": 400,
+      "recordPrefix": "EL82",
+      "layout": [
+        {
+          "field": "EL82",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "InceptionDate",
+          "format": null,
+          "width": 15
+        },
+        {
+          "field": "UPRN",
+          "format": null,
+          "width": 8
+        },
+        {
+          "field": "NINO",
+          "format": "cents",
+          "width": 13
+        },
+        {
+          "field": "ERN",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 11,
+      "samples": {
+        "prod_incident": 1,
+        "nak": 3
+      },
+      "specVersions": 3
+    },
+    {
+      "id": "IF-FLOODRE-004",
+      "name": "FLOODRE",
+      "description": "Flood Re cession & bordereaux",
+      "centre": "bc",
+      "copybook": "AGIFLOORE.cpy",
+      "recordBuilder": "FloodreRecordBuilder",
+      "transport": "MQ Series AGI.FLOODRE.OUT; file-drop fallback now primary",
+      "transportKind": "Message queue (file drop in use)",
+      "volume": "~140k/week",
+      "volumeK": 140,
+      "volumePeriod": "week",
+      "approxMonthlyK": 609,
+      "retry": "NAK queue reviewed when remembered; automatic infinite retry",
+      "recordWidth": 600,
+      "recordPrefix": "FL61",
+      "layout": [
+        {
+          "field": "FL61",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "ClaimNumber",
+          "format": null,
+          "width": 10
+        },
+        {
+          "field": "InceptionDate",
+          "format": null,
+          "width": 8
+        },
+        {
+          "field": "SumInsured",
+          "format": "cents",
+          "width": 11
+        },
+        {
+          "field": "NINO",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 9,
+      "samples": {
+        "good": 6,
+        "prod_incident": 1,
+        "edge": 2
+      },
+      "specVersions": 6
+    },
+    {
+      "id": "IF-IPT-008",
+      "name": "IPT",
+      "description": "Insurance Premium Tax calculation & HMRC returns",
+      "centre": "cc",
+      "copybook": "AGIIPTRE.cpy",
+      "recordBuilder": "IptRecordBuilder",
+      "transport": "Connect:Direct",
+      "transportKind": "Connect:Direct file transfer",
+      "volume": "~437k/day",
+      "volumeK": 437,
+      "volumePeriod": "day",
+      "approxMonthlyK": 13285,
+      "retry": "Daily ops NAK queue; automatic x3 then manual",
+      "recordWidth": 512,
+      "recordPrefix": "IP89",
+      "layout": [
+        {
+          "field": "IP89",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "ERN",
+          "format": null,
+          "width": 20
+        },
+        {
+          "field": "PolicyNumber",
+          "format": null,
+          "width": 30
+        },
+        {
+          "field": "NINO",
+          "format": "cents",
+          "width": 11
+        },
+        {
+          "field": "VRM",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 9,
+      "samples": {
+        "good": 3,
+        "nak": 2,
+        "edge": 1
+      },
+      "specVersions": 5
+    },
+    {
+      "id": "IF-MID-001",
+      "name": "MID",
+      "description": "Motor Insurance Database (MIB) vehicle feed",
+      "centre": "bc",
+      "copybook": "AGIMIDRE.cpy",
+      "recordBuilder": "MidRecordBuilder",
+      "transport": "Nightly SFTP; PGP",
+      "transportKind": "Secure file transfer",
+      "volume": "~743k/day",
+      "volumeK": 743,
+      "volumePeriod": "day",
+      "approxMonthlyK": 22587,
+      "retry": "Weekly NAK queue; automatic x3 then manual",
+      "recordWidth": 600,
+      "recordPrefix": "MI56",
+      "layout": [
+        {
+          "field": "MI56",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "PolicyNumber",
+          "format": null,
+          "width": 12
+        },
+        {
+          "field": "AnnualPremium",
+          "format": null,
+          "width": 8
+        },
+        {
+          "field": "UPRN",
+          "format": "cents",
+          "width": 13
+        },
+        {
+          "field": "SumInsured",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 9,
+      "samples": {
+        "prod_incident": 3,
+        "nak": 4,
+        "good": 3,
+        "edge": 2
+      },
+      "specVersions": 6
+    },
+    {
+      "id": "IF-PAYHUB-010",
+      "name": "PAYHUB",
+      "description": "Group Payment Hub (BACS/Direct Debit/Faster Payments)",
+      "centre": "cm",
+      "copybook": "AGIPAYHRE.cpy",
+      "recordBuilder": "PayhubRecordBuilder",
+      "transport": "Connect:Direct",
+      "transportKind": "Connect:Direct file transfer",
+      "volume": "~709k/week",
+      "volumeK": 709,
+      "volumePeriod": "week",
+      "approxMonthlyK": 3084,
+      "retry": "Weekly NAK queue; automatic infinite retry",
+      "recordWidth": 750,
+      "recordPrefix": "PA15",
+      "layout": [
+        {
+          "field": "PA15",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "InsuredSurname",
+          "format": null,
+          "width": 15
+        },
+        {
+          "field": "VRM",
+          "format": null,
+          "width": 8
+        },
+        {
+          "field": "UPRN",
+          "format": "cents",
+          "width": 13
+        },
+        {
+          "field": "ClaimNumber",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 12,
+      "samples": {
+        "good": 6,
+        "prod_incident": 2,
+        "edge": 2,
+        "nak": 2
+      },
+      "specVersions": 7
+    },
+    {
+      "id": "IF-POLARIS_MF-009",
+      "name": "POLARIS MF",
+      "description": "POLARIS mainframe policy admin (heritage book) nightly sync",
+      "centre": "cm",
+      "copybook": "AGIPOLARE.cpy",
+      "recordBuilder": "PolarisMfRecordBuilder",
+      "transport": "Connect:Direct",
+      "transportKind": "Connect:Direct file transfer",
+      "volume": "~185k/month",
+      "volumeK": 185,
+      "volumePeriod": "month",
+      "approxMonthlyK": 185,
+      "retry": "Daily ops NAK queue; automatic infinite retry",
+      "recordWidth": 512,
+      "recordPrefix": "PO99",
+      "layout": [
+        {
+          "field": "PO99",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "InsuredSurname",
+          "format": null,
+          "width": 12
+        },
+        {
+          "field": "VRM",
+          "format": null,
+          "width": 30
+        },
+        {
+          "field": "ClaimNumber",
+          "format": "cents",
+          "width": 15
+        },
+        {
+          "field": "InceptionDate",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 13,
+      "samples": {
+        "nak": 3,
+        "good": 3,
+        "edge": 2,
+        "prod_incident": 2
+      },
+      "specVersions": 4
+    },
+    {
+      "id": "IF-PRINTV-011",
+      "name": "PRINTV",
+      "description": "Print vendor (Paragon) document composition feed",
+      "centre": "cm",
+      "copybook": "AGIPRINRE.cpy",
+      "recordBuilder": "PrintvRecordBuilder",
+      "transport": "Synchronous SOAP over site-to-site VPN; 8-second timeout",
+      "transportKind": "Real-time web service",
+      "volume": "~500k/month",
+      "volumeK": 500,
+      "volumePeriod": "month",
+      "approxMonthlyK": 500,
+      "retry": "Daily ops NAK queue; automatic x3 then manual",
+      "recordWidth": 250,
+      "recordPrefix": "PR16",
+      "layout": [
+        {
+          "field": "PR16",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "InsuredSurname",
+          "format": null,
+          "width": 12
+        },
+        {
+          "field": "ClaimNumber",
+          "format": null,
+          "width": 30
+        },
+        {
+          "field": "RiskPostcode",
+          "format": "cents",
+          "width": 15
+        },
+        {
+          "field": "PolicyNumber",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 12,
+      "samples": {
+        "prod_incident": 2,
+        "nak": 2,
+        "edge": 2,
+        "good": 1
+      },
+      "specVersions": 4
+    },
+    {
+      "id": "IF-REINS-013",
+      "name": "REINS",
+      "description": "Reinsurance bordereaux (XL Cat programme)",
+      "centre": "cc",
+      "copybook": "AGIREINRE.cpy",
+      "recordBuilder": "ReinsRecordBuilder",
+      "transport": "Connect:Direct",
+      "transportKind": "Connect:Direct file transfer",
+      "volume": "~616k/month",
+      "volumeK": 616,
+      "volumePeriod": "month",
+      "approxMonthlyK": 616,
+      "retry": "Weekly NAK queue; automatic x3 then manual",
+      "recordWidth": 600,
+      "recordPrefix": "RE47",
+      "layout": [
+        {
+          "field": "RE47",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "AnnualPremium",
+          "format": null,
+          "width": 10
+        },
+        {
+          "field": "ClaimNumber",
+          "format": null,
+          "width": 30
+        },
+        {
+          "field": "ERN",
+          "format": "cents",
+          "width": 11
+        },
+        {
+          "field": "RiskPostcode",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 9,
+      "samples": {
+        "good": 2,
+        "edge": 1,
+        "prod_incident": 2,
+        "nak": 1
+      },
+      "specVersions": 3
+    },
+    {
+      "id": "IF-SANCTIONS-005",
+      "name": "SANCTIONS",
+      "description": "HMT/OFSI sanctions & PEP screening via WorldCheck",
+      "centre": "cc",
+      "copybook": "AGISANCRE.cpy",
+      "recordBuilder": "SanctionsRecordBuilder",
+      "transport": "MQ Series AGI.SANCTIONS.OUT; file-drop fallback now primary",
+      "transportKind": "Message queue (file drop in use)",
+      "volume": "~70k/week",
+      "volumeK": 70,
+      "volumePeriod": "week",
+      "approxMonthlyK": 304,
+      "retry": "NAK queue reviewed when remembered; manual retry only",
+      "recordWidth": 250,
+      "recordPrefix": "SA37",
+      "layout": [
+        {
+          "field": "SA37",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "PolicyNumber",
+          "format": null,
+          "width": 15
+        },
+        {
+          "field": "AnnualPremium",
+          "format": null,
+          "width": 8
+        },
+        {
+          "field": "UPRN",
+          "format": "cents",
+          "width": 13
+        },
+        {
+          "field": "RiskPostcode",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 13,
+      "samples": {
+        "good": 3,
+        "edge": 4,
+        "prod_incident": 2,
+        "nak": 3
+      },
+      "specVersions": 6
+    },
+    {
+      "id": "IF-SSP-018",
+      "name": "SSP",
+      "description": "Broker EDI (SSP/Acturis/OpenGI) messages",
+      "centre": "pc",
+      "copybook": "AGISSPRE.cpy",
+      "recordBuilder": "SspRecordBuilder",
+      "transport": "Connect:Direct",
+      "transportKind": "Connect:Direct file transfer",
+      "volume": "~408k/month",
+      "volumeK": 408,
+      "volumePeriod": "month",
+      "approxMonthlyK": 408,
+      "retry": "Weekly NAK queue; automatic x3 then manual",
+      "recordWidth": 750,
+      "recordPrefix": "SS84",
+      "layout": [
+        {
+          "field": "SS84",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "ClaimNumber",
+          "format": null,
+          "width": 15
+        },
+        {
+          "field": "VRM",
+          "format": null,
+          "width": 10
+        },
+        {
+          "field": "PolicyNumber",
+          "format": "cents",
+          "width": 11
+        },
+        {
+          "field": "AnnualPremium",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 12,
+      "samples": {
+        "nak": 2,
+        "edge": 6,
+        "prod_incident": 2
+      },
+      "specVersions": 5
+    },
+    {
+      "id": "IF-VERISK-017",
+      "name": "VERISK",
+      "description": "Verisk property data enrichment",
+      "centre": "pc",
+      "copybook": "AGIVERIRE.cpy",
+      "recordBuilder": "VeriskRecordBuilder",
+      "transport": "Connect:Direct",
+      "transportKind": "Connect:Direct file transfer",
+      "volume": "~418k/week",
+      "volumeK": 418,
+      "volumePeriod": "week",
+      "approxMonthlyK": 1818,
+      "retry": "NAK queue reviewed when remembered; manual retry only",
+      "recordWidth": 400,
+      "recordPrefix": "VE17",
+      "layout": [
+        {
+          "field": "VE17",
+          "format": null,
+          "width": 4
+        },
+        {
+          "field": "ERN",
+          "format": null,
+          "width": 12
+        },
+        {
+          "field": "ClaimNumber",
+          "format": null,
+          "width": 8
+        },
+        {
+          "field": "InceptionDate",
+          "format": "cents",
+          "width": 13
+        },
+        {
+          "field": "NINO",
+          "format": "yyyyMMdd",
+          "width": 8
+        },
+        {
+          "field": "brand",
+          "format": null,
+          "width": 6
+        }
+      ],
+      "copybookFields": 13,
+      "samples": {
+        "edge": 2,
+        "prod_incident": 2,
+        "good": 3,
+        "nak": 2
+      },
+      "specVersions": 5
+    }
+  ],
+  "batch": {
+    "application": "AGI-GWSUITE",
+    "jobs": [
+      {
+        "job": "AGIB137D",
+        "member": "AGIB137D",
+        "definition": "AGI_EOM_01.xml",
+        "area": "Billing",
+        "node": "agibatch02",
+        "description": "Group Payment Hub (BACS/Direct Debit/Faster Payments)",
+        "cadence": "Month-end",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIC618D",
+        "member": "AGIC618D",
+        "definition": "AGI_EOM_05.xml",
+        "area": "Billing",
+        "node": "agibatch02",
+        "description": "Aggregator gateway (CTM/MSM/GoCo/Confused)",
+        "cadence": "Month-end",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIC477D",
+        "member": "AGIC477D",
+        "definition": "AGI_EOM_09.xml",
+        "area": "Billing",
+        "node": "agibatch04",
+        "description": "Motor Insurance Database (MIB) vehicle feed",
+        "cadence": "Month-end",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIB615D",
+        "member": "AGIB615D",
+        "definition": "AGI_EOM_10.xml",
+        "area": "Billing",
+        "node": "agibatch03",
+        "description": "Claims & Underwriting Exchange enquiry/load",
+        "cadence": "Month-end",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIP789D",
+        "member": "AGIP789D",
+        "definition": "AGI_EOM_12.xml",
+        "area": "Claims",
+        "node": "agibatch02",
+        "description": "DVLA MyLicence ADD/DDS lookup",
+        "cadence": "Month-end",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIP709D",
+        "member": "AGIP709D",
+        "definition": "AGI_EOM_18.xml",
+        "area": "Claims",
+        "node": "agibatch03",
+        "description": "Print vendor (Paragon) document composition feed",
+        "cadence": "Month-end",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIB819D",
+        "member": "AGIB819D",
+        "definition": "AGI_NIGHTLY_03.xml",
+        "area": "Party",
+        "node": "agibatch03",
+        "description": "HMT/OFSI sanctions & PEP screening via WorldCheck",
+        "cadence": "Nightly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIB109D",
+        "member": "AGIB109D",
+        "definition": "AGI_NIGHTLY_04.xml",
+        "area": "Party",
+        "node": "agibatch04",
+        "description": "CIFAS fraud database",
+        "cadence": "Nightly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIC205D",
+        "member": "AGIC205D",
+        "definition": "AGI_NIGHTLY_06.xml",
+        "area": "Policy",
+        "node": "agibatch02",
+        "description": "Experian credit & quote-manipulation checks",
+        "cadence": "Nightly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIB253D",
+        "member": "AGIB253D",
+        "definition": "AGI_NIGHTLY_07.xml",
+        "area": "Policy",
+        "node": "agibatch03",
+        "description": "Verisk property data enrichment",
+        "cadence": "Nightly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIP632D",
+        "member": "AGIP632D",
+        "definition": "AGI_NIGHTLY_08.xml",
+        "area": "Policy",
+        "node": "agibatch04",
+        "description": "DVLA MyLicence ADD/DDS lookup",
+        "cadence": "Nightly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIB765D",
+        "member": "AGIB765D",
+        "definition": "AGI_NIGHTLY_13.xml",
+        "area": "Billing",
+        "node": "agibatch01",
+        "description": "Motor Insurance Database (MIB) vehicle feed",
+        "cadence": "Nightly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIC364D",
+        "member": "AGIC364D",
+        "definition": "AGI_NIGHTLY_17.xml",
+        "area": "Policy",
+        "node": "agibatch01",
+        "description": "Verisk property data enrichment",
+        "cadence": "Nightly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIC960D",
+        "member": "AGIC960D",
+        "definition": "AGI_WEEKLY_02.xml",
+        "area": "Party",
+        "node": "agibatch03",
+        "description": "Insurance Premium Tax calculation & HMRC returns",
+        "cadence": "Weekly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIB368D",
+        "member": "AGIB368D",
+        "definition": "AGI_WEEKLY_11.xml",
+        "area": "Party",
+        "node": "agibatch04",
+        "description": "Experian credit & quote-manipulation checks",
+        "cadence": "Weekly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIC679D",
+        "member": "AGIC679D",
+        "definition": "AGI_WEEKLY_14.xml",
+        "area": "Party",
+        "node": "agibatch01",
+        "description": "HMT/OFSI sanctions & PEP screening via WorldCheck",
+        "cadence": "Weekly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIC163D",
+        "member": "AGIC163D",
+        "definition": "AGI_WEEKLY_15.xml",
+        "area": "Party",
+        "node": "agibatch01",
+        "description": "HMT/OFSI sanctions & PEP screening via WorldCheck",
+        "cadence": "Weekly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      },
+      {
+        "job": "AGIC468D",
+        "member": "AGIC468D",
+        "definition": "AGI_WEEKLY_16.xml",
+        "area": "Party",
+        "node": "agibatch03",
+        "description": "CRIF claims history",
+        "cadence": "Weekly",
+        "conditions": [
+          "AGI-DB-BACKUP-OK",
+          "POLARIS-EOD-COMPLETE"
+        ]
+      }
+    ],
+    "scheduledJcl": 18,
+    "onRequestJcl": 13,
+    "nodes": [
+      "agibatch01",
+      "agibatch02",
+      "agibatch03",
+      "agibatch04"
+    ],
+    "externalConditions": [
+      "AGI-DB-BACKUP-OK",
+      "POLARIS-EOD-COMPLETE"
+    ],
+    "jobsWithJcl": 18
+  },
+  "environments": {
+    "environments": [
+      "dev",
+      "dev2",
+      "dr",
+      "perf",
+      "preprod",
+      "prod",
+      "sit",
+      "sit2",
+      "train",
+      "uat"
+    ],
+    "templates": 60,
+    "distinctVaultTokens": 82,
+    "vaultTokenReferences": 758,
+    "encryptionKeyTokens": [
+      "BI_ENCRYPTION_KEY",
+      "BI_ENCRYPTION_KEYS_RETIRED",
+      "BI_ENCRYPTION_KEY_ID",
+      "CL_ENCRYPTION_KEY",
+      "CL_ENCRYPTION_KEYS_RETIRED",
+      "CL_ENCRYPTION_KEY_ID",
+      "CO_ENCRYPTION_KEY",
+      "CO_ENCRYPTION_KEYS_RETIRED",
+      "CO_ENCRYPTION_KEY_ID",
+      "PO_ENCRYPTION_KEY",
+      "PO_ENCRYPTION_KEYS_RETIRED",
+      "PO_ENCRYPTION_KEY_ID"
+    ]
+  },
+  "brands": [
+    {
+      "polarisCode": "01AD00",
+      "brand": "ALBDIR",
+      "description": "Albion Direct",
+      "notes": ""
+    },
+    {
+      "polarisCode": "02BK00",
+      "brand": "ALBBRK",
+      "description": "Albion Broker",
+      "notes": ""
+    },
+    {
+      "polarisCode": "07RP00",
+      "brand": "RETPLS",
+      "description": "RetailPlus (Novabank)",
+      "notes": "RETIRED do not reuse"
+    },
+    {
+      "polarisCode": "07RP01",
+      "brand": "RETPLS",
+      "description": "RetailPlus",
+      "notes": ""
+    },
+    {
+      "polarisCode": "00XX99",
+      "brand": "HERIT",
+      "description": "Heritage",
+      "notes": ""
+    },
+    {
+      "polarisCode": "03DL00",
+      "brand": "ALBBRK",
+      "description": "Broker (delegated)",
+      "notes": "mapping disputed with MI since 2018"
+    },
+    {
+      "polarisCode": "999999",
+      "brand": "",
+      "description": "UNKNOWN",
+      "notes": "ops grep target"
+    }
+  ],
+  "brandLabels": {
+    "ALBDIR": "Albion Direct",
+    "ALBBRK": "Albion Broker",
+    "RETPLS": "RetailPlus Partnerships",
+    "HERIT": "Heritage Book"
+  },
+  "journeys": [
+    {
+      "id": "bereavement-notification",
+      "title": "Bereavement Notification – Cross-Product",
+      "lineOfBusiness": "All lines",
+      "brands": "Albion Direct, Albion Broker, Heritage Book",
+      "regulation": "Flood Re Scheme Rules, IPT (FA1994 s.51)",
+      "steps": [
+        {
+          "title": "Flag",
+          "detail": "Any channel; vulnerability marker POA/bereavement"
+        },
+        {
+          "title": "Suppress",
+          "detail": "Dunning + marketing suppression — 4 systems, 3 reliably"
+        },
+        {
+          "title": "Executor verification",
+          "detail": "Grant of probate doc capture"
+        },
+        {
+          "title": "Policy decisions",
+          "detail": "Motor: cover ends; Home: continues to renewal; Pet: transfers"
+        },
+        {
+          "title": "Sensitive close",
+          "detail": "Named-handler continuity"
+        }
+      ],
+      "systems": [
+        {
+          "system": "ContactManager",
+          "role": "suppression flags"
+        },
+        {
+          "system": "BillingCenter",
+          "role": "dunning suppression (see CancelReason DECEASED note)"
+        },
+        {
+          "system": "PolicyCenter",
+          "role": "cover decisions"
+        },
+        {
+          "system": "Print",
+          "role": "condolence template — brand logo bug applies"
+        }
+      ],
+      "knownIssues": "Suppression reaches the outbound dialler file via a nightly batch; a death notified after the 21:00 extract can still generate an arrears call next morning. PRB open since 2020.",
+      "lastVerified": "17-Sep-2023",
+      "changes": [
+        {
+          "date": "19-Nov-2015",
+          "ticket": "GWCC-32567",
+          "change": "Initial process onboarded from POLARIS ops manual ch.13"
+        },
+        {
+          "date": "22-Sep-2017",
+          "ticket": "HERIT-21544",
+          "change": "Mercury op-model re-segmentation"
+        },
+        {
+          "date": "27-Feb-2019",
+          "ticket": "CHG-45368",
+          "change": "Whiplash reform / OIC portal fork added"
+        },
+        {
+          "date": "25-Oct-2023",
+          "ticket": "INC-46306",
+          "change": "Consumer Duty outcome-testing checkpoints added"
+        }
+      ],
+      "source": "docs/business-journeys/bereavement-notification.md"
+    },
+    {
+      "id": "cat-event",
+      "title": "Cat Event – Named Storm Surge Mode",
+      "lineOfBusiness": "HomeProperty/CommercialProperty",
+      "brands": "Albion Direct, Albion Broker, RetailPlus Partnerships",
+      "regulation": "FCA ICOBS 8, PS21/5",
+      "steps": [
+        {
+          "title": "Event declare",
+          "detail": "Cat coordinator assigns event code within 4h of Met Office naming"
+        },
+        {
+          "title": "Bulk tag",
+          "detail": "Postcode-polygon claims auto-linked (polygon file maintained in MapInfo by one person)"
+        },
+        {
+          "title": "Surge triage",
+          "detail": "Fast-track thresholds doubled; segmentation overrides"
+        },
+        {
+          "title": "Field deploy",
+          "detail": "Loss adjuster panel surge contracts"
+        },
+        {
+          "title": "Daily MI",
+          "detail": "Exec dashboard = Excel refreshed from 4 SQL scripts in tools/sql-fixes"
+        },
+        {
+          "title": "Stand down",
+          "detail": "Thresholds revert — twice they haven't (see PRB-24274)"
+        }
+      ],
+      "systems": [
+        {
+          "system": "ClaimCenter",
+          "role": "event linking"
+        },
+        {
+          "system": "Reinsurance",
+          "role": "XL cat notify at 60% retention"
+        },
+        {
+          "system": "DWH",
+          "role": "event MI"
+        }
+      ],
+      "knownIssues": "Surge mode is toggled via a script_parameter changed directly in prod DB by DBAs under break-glass. It has been left on for up to 11 days after stand-down.",
+      "lastVerified": "13-Oct-2021",
+      "changes": [
+        {
+          "date": "27-Oct-2014",
+          "ticket": "CHG-4949",
+          "change": "Initial process onboarded from POLARIS ops manual ch.8"
+        },
+        {
+          "date": "03-Nov-2018",
+          "ticket": "CM-44022",
+          "change": "Mercury op-model re-segmentation"
+        },
+        {
+          "date": "14-Dec-2019",
+          "ticket": "DEF-12991",
+          "change": "Whiplash reform / OIC portal fork added"
+        },
+        {
+          "date": "27-Aug-2023",
+          "ticket": "PRB-23105",
+          "change": "Consumer Duty outcome-testing checkpoints added"
+        }
+      ],
+      "source": "docs/business-journeys/cat-event.md"
+    },
+    {
+      "id": "claims",
+      "title": "Claims – Sanctions Hit During Payment",
+      "lineOfBusiness": "All lines",
+      "brands": "Heritage Book, Albion Broker, RetailPlus Partnerships",
+      "regulation": "Flood Re Scheme Rules, IPT (FA1994 s.51)",
+      "steps": [
+        {
+          "title": "Screening",
+          "detail": "Payee screened at party create AND pre-payment (different services, different fuzzy thresholds)"
+        },
+        {
+          "title": "Freeze",
+          "detail": "TRUEMATCH freezes party + blocks Check writer"
+        },
+        {
+          "title": "L1/L2 review",
+          "detail": "Compliance queues; 6y evidence retention"
+        },
+        {
+          "title": "OFSI report",
+          "detail": "Manual template; 'automation' is a Word mail-merge"
+        },
+        {
+          "title": "Release",
+          "detail": "Override audit trail mandatory"
+        }
+      ],
+      "systems": [
+        {
+          "system": "ContactManager",
+          "role": "golden party + screening state"
+        },
+        {
+          "system": "WorldCheck",
+          "role": "vendor"
+        },
+        {
+          "system": "ClaimCenter",
+          "role": "payment block"
+        },
+        {
+          "system": "BillingCenter",
+          "role": "refund block — added 2 years after claims, gap window documented in REG-8817"
+        }
+      ],
+      "knownIssues": "The two screening services disagree on 'Ł' vs 'L' transliteration. Compliance manually re-screens Polish surnames. Known since 2019.",
+      "lastVerified": "08-Mar-2022",
+      "changes": [
+        {
+          "date": "05-Apr-2015",
+          "ticket": "GWCC-31450",
+          "change": "Initial process onboarded from POLARIS ops manual ch.15"
+        },
+        {
+          "date": "25-Jun-2016",
+          "ticket": "REG-1958",
+          "change": "Mercury op-model re-segmentation"
+        },
+        {
+          "date": "08-Jul-2019",
+          "ticket": "CM-31566",
+          "change": "Whiplash reform / OIC portal fork added"
+        },
+        {
+          "date": "09-Feb-2025",
+          "ticket": "REG-43444",
+          "change": "Consumer Duty outcome-testing checkpoints added"
+        }
+      ],
+      "source": "docs/business-journeys/claims.md"
+    },
+    {
+      "id": "commercial-fleet",
+      "title": "Commercial Fleet – Mid-Term Vehicle Schedule Change",
+      "lineOfBusiness": "MotorFleet",
+      "brands": "Heritage Book, Albion Direct, Albion Broker",
+      "regulation": "OIC Portal Rules, Civil Liability Act 2018",
+      "steps": [
+        {
+          "title": "Broker EDI in",
+          "detail": "SSP/Acturis message OR spreadsheet email"
+        },
+        {
+          "title": "Schedule diff",
+          "detail": "Vehicle adds/removes diffed against MID"
+        },
+        {
+          "title": "UW referral",
+          "detail": "Fleet >50 vehicles or hazardous goods → UW workbench"
+        },
+        {
+          "title": "MID update",
+          "detail": "Batch AND real-time paths exist; ordering bugs create MID NAKs"
+        },
+        {
+          "title": "Premium adjust",
+          "detail": "Pro-rata + minimum-premium floor + broker commission recalc"
+        }
+      ],
+      "systems": [
+        {
+          "system": "PolicyCenter",
+          "role": "MTA job"
+        },
+        {
+          "system": "SSP EDI",
+          "role": "inbound"
+        },
+        {
+          "system": "MID",
+          "role": "vehicle feed"
+        },
+        {
+          "system": "BillingCenter",
+          "role": "AP/RP"
+        }
+      ],
+      "knownIssues": "Spreadsheet-submitted schedules are re-keyed by an offshore team into a staging screen built in 2013; it validates VRMs against a regex that rejects new-format trade plates.",
+      "lastVerified": "24-Apr-2024",
+      "changes": [
+        {
+          "date": "24-Jul-2014",
+          "ticket": "DEF-38580",
+          "change": "Initial process onboarded from POLARIS ops manual ch.6"
+        },
+        {
+          "date": "20-Mar-2017",
+          "ticket": "HERIT-32408",
+          "change": "Mercury op-model re-segmentation"
+        },
+        {
+          "date": "15-Apr-2021",
+          "ticket": "AGI-38080",
+          "change": "Whiplash reform / OIC portal fork added"
+        },
+        {
+          "date": "17-May-2022",
+          "ticket": "CHG-22692",
+          "change": "Consumer Duty outcome-testing checkpoints added"
+        }
+      ],
+      "source": "docs/business-journeys/commercial-fleet.md"
+    },
+    {
+      "id": "complaint",
+      "title": "Complaint – DISP Eight-Week Clock with FOS Escalation",
+      "lineOfBusiness": "All lines",
+      "brands": "Albion Broker, RetailPlus Partnerships, Albion Direct",
+      "regulation": "FCA ICOBS 8, PS21/5",
+      "steps": [
+        {
+          "title": "Log",
+          "detail": "Complaint logged (5 entry channels, 3 create duplicate cases)"
+        },
+        {
+          "title": "Acknowledge",
+          "detail": "T+3 promise vs T+5 regulatory"
+        },
+        {
+          "title": "Investigate",
+          "detail": "Root cause taxonomy v2 — MI still reports v1"
+        },
+        {
+          "title": "Four-week holding letter",
+          "detail": "auto unless suppressed"
+        },
+        {
+          "title": "Final response",
+          "detail": "T+56 hard gate; redress calc + interest at 8% simple"
+        },
+        {
+          "title": "FOS pack",
+          "detail": "PDF bundle assembled from 6 systems, one is a shared drive"
+        }
+      ],
+      "systems": [
+        {
+          "system": "ClaimCenter",
+          "role": "complaint entity"
+        },
+        {
+          "system": "Pega",
+          "role": "group complaints workflow — dual-keyed"
+        },
+        {
+          "system": "Paragon",
+          "role": "letters"
+        },
+        {
+          "system": "DWH",
+          "role": "FCA complaints return"
+        }
+      ],
+      "knownIssues": "The 8-week clock calculation excludes weekends in GW and includes them in Pega. Quarterly FCA return is hand-adjusted to reconcile. Everyone knows.",
+      "lastVerified": "25-May-2023",
+      "changes": [
+        {
+          "date": "23-Jul-2013",
+          "ticket": "INC-48677",
+          "change": "Initial process onboarded from POLARIS ops manual ch.11"
+        },
+        {
+          "date": "10-Feb-2018",
+          "ticket": "CM-24781",
+          "change": "Mercury op-model re-segmentation"
+        },
+        {
+          "date": "09-May-2019",
+          "ticket": "GWBC-5025",
+          "change": "Whiplash reform / OIC portal fork added"
+        },
+        {
+          "date": "26-Jan-2022",
+          "ticket": "CM-38486",
+          "change": "Consumer Duty outcome-testing checkpoints added"
+        }
+      ],
+      "source": "docs/business-journeys/complaint.md"
+    },
+    {
+      "id": "home",
+      "title": "Home – Escape of Water end-to-end",
+      "lineOfBusiness": "HomeProperty",
+      "brands": "Heritage Book, Albion Broker, Albion Direct",
+      "regulation": "OIC Portal Rules, Civil Liability Act 2018",
+      "steps": [
+        {
+          "title": "FNOL",
+          "detail": "EOW is 40% of home claims by volume"
+        },
+        {
+          "title": "Triage",
+          "detail": "Postcode BD* forces surveyor (2010 freeze rule, still in force)"
+        },
+        {
+          "title": "Drying",
+          "detail": "IoT drying monitors feed readings via CSV email attachment (yes)"
+        },
+        {
+          "title": "Alternative accommodation",
+          "detail": "AA desk; long-running spend leakage reports monthly"
+        },
+        {
+          "title": "Scope & settle",
+          "detail": "Scope agreed in supplier portal, re-keyed into CC manually"
+        }
+      ],
+      "systems": [
+        {
+          "system": "ClaimCenter",
+          "role": "core"
+        },
+        {
+          "system": "Verisk",
+          "role": "property enrichment"
+        },
+        {
+          "system": "Paragon",
+          "role": "letters"
+        },
+        {
+          "system": "DWH",
+          "role": "leakage MI"
+        }
+      ],
+      "knownIssues": "The drying-vendor CSV has a column order change every time the vendor releases; parser has 6 format branches keyed off file header sniffing.",
+      "lastVerified": "10-Nov-2021",
+      "changes": [
+        {
+          "date": "22-Sep-2013",
+          "ticket": "AGI-19304",
+          "change": "Initial process onboarded from POLARIS ops manual ch.3"
+        },
+        {
+          "date": "21-Dec-2017",
+          "ticket": "AGI-38460",
+          "change": "Mercury op-model re-segmentation"
+        },
+        {
+          "date": "14-Jun-2020",
+          "ticket": "REG-34716",
+          "change": "Whiplash reform / OIC portal fork added"
+        },
+        {
+          "date": "21-Sep-2023",
+          "ticket": "INC-33982",
+          "change": "Consumer Duty outcome-testing checkpoints added"
+        }
+      ],
+      "source": "docs/business-journeys/home.md"
+    },
+    {
+      "id": "motor-fnol",
+      "title": "Motor FNOL – Fault Accident with Third Party Injury",
+      "lineOfBusiness": "PersonalMotor",
+      "brands": "Heritage Book, Albion Broker, Albion Direct",
+      "regulation": "Flood Re Scheme Rules, IPT (FA1994 s.51)",
+      "steps": [
+        {
+          "title": "Notification",
+          "detail": "Customer calls (or app FNOL, which creates a DIFFERENT activity pattern) — script pack v34"
+        },
+        {
+          "title": "CUE & fraud screen",
+          "detail": "Synchronous CUE enquiry; fraud model scores; SIU refer if ≥55"
+        },
+        {
+          "title": "Liability decision",
+          "detail": "Handler sets liability; disputed cases to TPPD hub"
+        },
+        {
+          "title": "OIC portal fork",
+          "detail": "Injury <£5k whiplash → OIC portal via A2A; else litigation track"
+        },
+        {
+          "title": "Repair deploy",
+          "detail": "Approved repairer network; total-loss to engineer + salvage (Cat A/B crush)"
+        },
+        {
+          "title": "Hire & intervention",
+          "detail": "TP capture attempts credit-hire mitigation within 3h SLA"
+        },
+        {
+          "title": "Settlement",
+          "detail": "Payments via BACS batch; recovery raised if non-fault"
+        }
+      ],
+      "systems": [
+        {
+          "system": "ClaimCenter",
+          "role": "intake, segmentation, reserves, payments"
+        },
+        {
+          "system": "ContactManager",
+          "role": "party dedupe — 3 Smiths problem"
+        },
+        {
+          "system": "CUE",
+          "role": "enquiry + load"
+        },
+        {
+          "system": "OIC A2A",
+          "role": "portal integration v2 AND v3 live"
+        },
+        {
+          "system": "POLARIS",
+          "role": "heritage motor still notified via mainframe bridge"
+        },
+        {
+          "system": "Paragon",
+          "role": "acknowledgement letters"
+        }
+      ],
+      "knownIssues": "App-originated FNOLs skip the vulnerability prompt (defect since 2022, accepted). Heritage motor book FNOL requires manual POLARIS enquiry — handlers keep a green-screen emulator open. The fraud score threshold differs between the model doc (65) and the code (55).",
+      "lastVerified": "01-Feb-2022",
+      "changes": [
+        {
+          "date": "16-Aug-2013",
+          "ticket": "CM-29527",
+          "change": "Initial process onboarded from POLARIS ops manual ch.8"
+        },
+        {
+          "date": "17-Aug-2016",
+          "ticket": "AGI-30537",
+          "change": "Mercury op-model re-segmentation"
+        },
+        {
+          "date": "27-Jul-2021",
+          "ticket": "AGI-15348",
+          "change": "Whiplash reform / OIC portal fork added"
+        },
+        {
+          "date": "25-Nov-2025",
+          "ticket": "CM-40680",
+          "change": "Consumer Duty outcome-testing checkpoints added"
+        }
+      ],
+      "source": "docs/business-journeys/motor-fnol.md"
+    },
+    {
+      "id": "renewal",
+      "title": "Renewal – FCA PS21/5 Price Walk Compliance",
+      "lineOfBusiness": "All personal lines",
+      "brands": "Heritage Book, Albion Direct, RetailPlus Partnerships",
+      "regulation": "FCA ICOBS 8, PS21/5",
+      "steps": [
+        {
+          "title": "T-45 extract",
+          "detail": "Renewal candidates extracted nightly"
+        },
+        {
+          "title": "Equivalent NB price",
+          "detail": "Dual rating run — old engine AND new engine, compare, alert if >2% variance (alerts ignored)"
+        },
+        {
+          "title": "PS21/5 gate",
+          "detail": "Renewal ≤ equivalent NB price or block + refer pricing"
+        },
+        {
+          "title": "Invite generation",
+          "detail": "Paragon spool T-28; email fallback T-25"
+        },
+        {
+          "title": "Auto-renew window",
+          "detail": "DD customers auto-renew T-0 unless opted out"
+        },
+        {
+          "title": "Lapse chase",
+          "detail": "Outbound dialler file T+3"
+        }
+      ],
+      "systems": [
+        {
+          "system": "PolicyCenter",
+          "role": "renewal jobs"
+        },
+        {
+          "system": "Rating engine x2",
+          "role": "dual-running since 2021 (introduced as an interim measure)"
+        },
+        {
+          "system": "BillingCenter",
+          "role": "instalment re-plan"
+        },
+        {
+          "system": "Paragon",
+          "role": "invites"
+        },
+        {
+          "system": "Experian",
+          "role": "re-score"
+        }
+      ],
+      "knownIssues": "Heritage book renewals run through a SEPARATE batch (HeritageRenewalInviteBatch) that reimplements ~70% of this journey with 2015-era rules. Its PS21/5 gate was retrofitted differently. Pricing insists both are compliant. Evidence pack differs.",
+      "lastVerified": "16-Jun-2023",
+      "changes": [
+        {
+          "date": "14-Jan-2014",
+          "ticket": "REG-5727",
+          "change": "Initial process onboarded from POLARIS ops manual ch.18"
+        },
+        {
+          "date": "05-Sep-2016",
+          "ticket": "DEF-39890",
+          "change": "Mercury op-model re-segmentation"
+        },
+        {
+          "date": "08-Sep-2020",
+          "ticket": "GWCC-6110",
+          "change": "Whiplash reform / OIC portal fork added"
+        },
+        {
+          "date": "10-Oct-2024",
+          "ticket": "CM-5378",
+          "change": "Consumer Duty outcome-testing checkpoints added"
+        }
+      ],
+      "source": "docs/business-journeys/renewal.md"
+    }
+  ],
+  "feedStatus": {
+    "source": "docs/architecture/FEEDSTATUS-STATE-MACHINE.md",
+    "baselineConsumers": 388,
+    "consumers": [
+      {
+        "type": "Gosu batch classes",
+        "count": 29,
+        "behaviour": "All query `PENDING`; 17 write `SENT` or `ESCALATED`; 12 leave the status unchanged"
+      },
+      {
+        "type": "Rules XML",
+        "count": 222,
+        "behaviour": "Every rule assigns `PENDING`; 177 also compare the status to a brand or source literal"
+      },
+      {
+        "type": "PCF files",
+        "count": 100,
+        "behaviour": "Display or expose the string on screens, list views, detail views, and popups"
+      },
+      {
+        "type": "Entity extensions",
+        "count": 14,
+        "behaviour": "Declare the field on several entities and describe `PENDING/SENT/ACK/NAK/ESCALATED`"
+      },
+      {
+        "type": "SQL data fixes",
+        "count": 20,
+        "behaviour": "Directly write `CLEAR`, `MATCHED`, `FIXED_BY_SQL`, or `SENT`"
+      }
+    ],
+    "literals": [
+      {
+        "literal": "PENDING",
+        "classification": "Intended workflow status",
+        "use": "Dominant queried state. All 29 batches select it; all 222 rules assign it; 52 rules compare it."
+      },
+      {
+        "literal": "SENT",
+        "classification": "Intended workflow status",
+        "use": "Written by seven batches and three SQL data fixes."
+      },
+      {
+        "literal": "ACK",
+        "classification": "Intended but undocumented workflow status",
+        "use": "Named in all 14 entity descriptions. No Gosu, rule, or SQL transition to it exists in this repository."
+      },
+      {
+        "literal": "NAK",
+        "classification": "Intended but undocumented workflow status",
+        "use": "Named in all 14 entity descriptions. No Gosu, rule, or SQL transition to it exists in this repository; NAK queues are described operationally in interface specs."
+      },
+      {
+        "literal": "ESCALATED",
+        "classification": "Intended workflow status",
+        "use": "Written by ten age-based batches; named in entity descriptions."
+      },
+      {
+        "literal": "CLEAR",
+        "classification": "Manual data-fix status",
+        "use": "Written by six SQL scripts. No batch or rule consumes it."
+      },
+      {
+        "literal": "MATCHED",
+        "classification": "Manual data-fix status",
+        "use": "Written by five SQL scripts. No batch or rule consumes it."
+      },
+      {
+        "literal": "FIXED_BY_SQL",
+        "classification": "Manual data-fix provenance value",
+        "use": "Written by six SQL scripts. No batch or rule consumes it."
+      },
+      {
+        "literal": "POLARIS",
+        "classification": "Source-system literal incorrectly/ambiguously compared as a status",
+        "use": "Compared against `FeedStatus_Ext` in 47 rules. Entity metadata defines it as a `SourceSystem_Ext` value."
+      },
+      {
+        "literal": "ALBDIR",
+        "classification": "Brand literal incorrectly/ambiguously compared as a status",
+        "use": "Compared against `FeedStatus_Ext` in 45 rules."
+      },
+      {
+        "literal": "ALBBRK",
+        "classification": "Brand literal incorrectly/ambiguously compared as a status",
+        "use": "Compared against `FeedStatus_Ext` in 53 rules."
+      },
+      {
+        "literal": "HERIT",
+        "classification": "Brand/source literal incorrectly/ambiguously compared as a status",
+        "use": "Compared against `FeedStatus_Ext` in 39 rules."
+      }
+    ]
+  },
+  "estate": {
+    "source": "docs/architecture/estate-overview.md",
+    "gaps": [
+      {
+        "title": "Claim data outside ClaimCenter.",
+        "detail": "BillingCenter and ContactManager do not hold claim data. Claim-amount thresholds read 0 in those centres, and the ClaimNumber slots in their outbound records are blank or filler; record lengths are unchanged."
+      },
+      {
+        "title": "Navigation.",
+        "detail": "The Albion screens in all four centres have no navigation entry point, because the base-product menus they hang from are not held in this repository."
+      },
+      {
+        "title": "Encryption.",
+        "detail": "NI numbers and ContactManager bank details are encrypted at rest by `albion.security.AlbionAesEncryptionPlugin` (AES-256-GCM, keys from CyberArk); see `albion-config-and-brand-services.md` (Encryption at rest). ContactManager `LicenseNumber` and `TaxID` stay unencrypted until a hashed lookup column replaces their database-equality duplicate matching."
+      },
+      {
+        "title": "Rules for business review.",
+        "detail": "- BillingCenter `AGI_ESCA_001`/`AGI_ESCA_002` and `AGI_PREU_001`/`AGI_PREU_006` have duplicate conditions. - BillingCenter `AGI_ESCA_009` and `AGI_PREU_007`, and ContactManager `vali_002`, fire on every record. - ContactManager `preu_006` duplicates `preu_003`."
+      },
+      {
+        "title": "POLARIS policyholder summary.",
+        "detail": "The summary is carried on `ABContact` in ContactManager."
+      },
+      {
+        "title": "Mainframe confirmation.",
+        "detail": "Program and dataset names in `AGIP709D` and `AGIC163D` are still to be confirmed against Endevor."
+      },
+      {
+        "title": "Unscheduled batch.",
+        "detail": "Some interface feeds have JCL in `batch/jcl/adhoc/` but no Control-M job. The POLARIS heritage nightly sync is the first candidate for scheduling. `AlbionShadowReconciliationBatch` (CC/PC/CM) has no Control-M job or JCL member either; it runs on demand from the batch process console while a feed is shadow-run."
+      }
+    ],
+    "systemicIssues": [
+      "Brand handling: typelist + varchar column + POLARIS codes (`integration/polaris/mappings/brand_xref.csv`) + XSLT logic — four sources of truth, checked by `tools/scripts/check_brand_config_drift.py`.",
+      "Three display-name formatters, three VRM normalisers, two rating engines, two complaint clocks.",
+      "`FeedStatus_Ext` drives the feed batches with no enforced state machine — see `FEEDSTATUS-STATE-MACHINE.md`.",
+      "IPT is computed in 4 places; month-end reconciliation is a runbook (`docs/runbooks/month-end-ipt-reconciliation.md`), not a control."
+    ]
+  },
+  "controls": {
+    "source": "docs/architecture/CONTROLS-AND-TOLERANCES.md",
+    "controls": [
+      "Reconciliation count tolerance",
+      "Strangler shadow reconciliation",
+      "POLARIS end-of-day gate",
+      "POLARIS knowledge prerequisite",
+      "Break-glass and bridge access",
+      "Failure-signature confirmation",
+      "Reconciliation-query selection",
+      "Shared MQ channel restart order",
+      "Dual incident records",
+      "Release-pipeline test enforcement",
+      "Legacy production-release validation"
+    ],
+    "reconciliationTolerance": null
+  },
+  "migration": {
+    "source": "tools/replay/evidence/replay-evidence.json",
+    "doc": "docs/migration/strangler-phase2-3.md",
+    "schema": "albion.shadow.replay/v1",
+    "status": "GREEN",
+    "tolerance": "exact",
+    "runtime": "open-source Gosu 1.17.5",
+    "negativeControl": "RED",
+    "generatedAt": "2026-10-12T23:36:30Z",
+    "fixtures": [
+      {
+        "path": "tools/replay/fixtures/ipt_cc.csv",
+        "cases": 17
+      },
+      {
+        "path": "tools/replay/fixtures/polaris_mf_pc.csv",
+        "cases": 16
+      },
+      {
+        "path": "tools/replay/fixtures/polaris_mf_cm.csv",
+        "cases": 12
+      }
+    ],
+    "runs": [
+      {
+        "centre": "cc",
+        "source": "offline-replay",
+        "status": "GREEN",
+        "totals": {
+          "compared": 17,
+          "matched": 17,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0
+        },
+        "feeds": [
+          "IPT"
+        ],
+        "brands": [
+          {
+            "feed": "IPT",
+            "brand": "ALBDIR",
+            "compared": 9,
+            "matched": 9,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "ALBBRK",
+            "compared": 2,
+            "matched": 2,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "RETPLS",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "HERIT",
+            "compared": 2,
+            "matched": 2,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "ALBHNW",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "NOVABK",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "IPT",
+            "brand": "SYNTST",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          }
+        ],
+        "outcomes": {
+          "MATCH": 17
+        }
+      },
+      {
+        "centre": "pc",
+        "source": "offline-replay",
+        "status": "GREEN",
+        "totals": {
+          "compared": 16,
+          "matched": 16,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0
+        },
+        "feeds": [
+          "POLARIS_MF"
+        ],
+        "brands": [
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBDIR",
+            "compared": 9,
+            "matched": 9,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBBRK",
+            "compared": 2,
+            "matched": 2,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "RETPLS",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "HERIT",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBHNW",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "NOVABK",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "SYNTST",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          }
+        ],
+        "outcomes": {
+          "MATCH": 16
+        }
+      },
+      {
+        "centre": "cm",
+        "source": "offline-replay",
+        "status": "GREEN",
+        "totals": {
+          "compared": 12,
+          "matched": 12,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0
+        },
+        "feeds": [
+          "POLARIS_MF"
+        ],
+        "brands": [
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBDIR",
+            "compared": 6,
+            "matched": 6,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBBRK",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "RETPLS",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "HERIT",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "ALBHNW",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "NOVABK",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          },
+          {
+            "feed": "POLARIS_MF",
+            "brand": "SYNTST",
+            "compared": 1,
+            "matched": 1,
+            "status": "GREEN"
+          }
+        ],
+        "outcomes": {
+          "MATCH": 12
+        }
+      }
+    ],
+    "totals": {
+      "compared": 45,
+      "matched": 45,
+      "withinTolerance": 0,
+      "breaches": 0,
+      "candidateErrors": 0,
+      "cutoverCandidateEmitted": 0,
+      "cutoverReverted": 0
+    },
+    "switches": {
+      "templates": 40,
+      "shadowEnabled": 0,
+      "shadowFeeds": 0,
+      "cutoverFeeds": 0
+    },
+    "reconBatchCentres": [
+      "cc",
+      "pc",
+      "cm"
+    ]
+  }
+}
