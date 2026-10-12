@@ -1,6 +1,6 @@
 package albion.policy.documents
 
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -23,7 +23,7 @@ uses java.math.BigDecimal
  *  13/10/2022   hyamam       Initial version for HERIT-2470
  *  12/12/2023   dwhitf       DEF-44057: Do not change without speaking to actuarial
  *  07/01/2025   kmbeki       CR DEF-45464 - added ALBBRK brand handling
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionReprintQueueHelper {
 
@@ -36,11 +36,11 @@ class AlbionReprintQueueHelper {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CM-38667)
-      AlbionPolicySignals.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionPolicyPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

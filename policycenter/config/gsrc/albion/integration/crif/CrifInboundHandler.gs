@@ -1,6 +1,6 @@
 package albion.integration.crif
 
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,7 +18,7 @@ uses java.math.BigDecimal
  *  12/01/2016   akowal       Merged from heritage branch (GWBC-48826)
  *  04/07/2018   hyamam       Merged from heritage branch (DEF-25441)
  *  26/07/2021   gwoffshore   Uplifted during GW v10 upgrade (CM-32676) - untested path retained
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class CrifInboundHandler {
 
@@ -30,13 +30,13 @@ class CrifInboundHandler {
     }
     var amount = msg.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionPolicyPredicates.perilCodes(msg, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWCC-26826)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(msg).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionPolicyPredicates.postcodeArea(msg).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
       }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(msg)) {
+      if (code == "Flood" and AlbionPolicyPredicates.isFloodReCeded(msg)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }

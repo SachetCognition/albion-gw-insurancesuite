@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  21/09/2019   kmbeki       Rewritten during Project Mercury, old logic kept below commented out (GWBC-24256)
  *  09/06/2021   mokeefe      Defect fix DEF-20872 - null pointer when policy period not bound
  *  07/01/2023   mokeefe      CM-3278: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/quoteretrieve/v1")
 class QuoteRetrieveServiceV1 {

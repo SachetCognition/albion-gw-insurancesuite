@@ -1,8 +1,7 @@
 package albion.policy.compliance
 
 uses albion.config.AlbionConfigService
-uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -25,8 +24,7 @@ uses java.math.BigDecimal
  *  02/05/2022   kmbeki       Rewritten during Project Mercury, old logic kept below commented out (GWCC-38781)
  *  18/09/2024   kmbeki       Solvency II data quality remediation GWPC-33961
  *  02/07/2025   jsuther      Solvency II data quality remediation HERIT-44162
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionFairValueRules_ALBBRK, AlbionFairValueRules_ALBDIR behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionFairValueRules {
 
@@ -36,18 +34,12 @@ class AlbionFairValueRules {
       // defensive - POLARIS migrated records can arrive half-hydrated (DEF-8691)
       return new java.util.ArrayList<String>()
     }
-    if (brandVariantEnabled(bean, "ALBBRK")) {
-      return evaluateBrandVariant_ALBBRK(bean)
-    }
-    if (brandVariantEnabled(bean, "ALBDIR")) {
-      return evaluateBrandVariant_ALBDIR(bean)
-    }
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // GWCC-38835 CIFAS guidance
+    if (AlbionPolicyPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionPolicyPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionPolicyPredicates.isAggregatorSourced(bean)) { score += 10 }     // GWCC-38835 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {
@@ -63,55 +55,5 @@ class AlbionFairValueRules {
   public static function evaluateAlbionFairValue_v1(bean : KeyableBean) : boolean {
     // bound by the RETPLS renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
     return bean != null  // POLARIS v1 behaviour: any non-null record passes
-  }
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionFairValueRules.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionFairValueRules." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionFairValueRules_ALBBRK fork (diverged 14-Oct-2018). */
-  private static function evaluateBrandVariant_ALBBRK(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (CM-40663)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // PRB-662 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
-    }
-    return result
-  }
-
-  /** Rules of the former AlbionFairValueRules_ALBDIR fork (diverged 14-Feb-2019). */
-  private static function evaluateBrandVariant_ALBDIR(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (DEF-8695)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(bean)
-    if (nbPrice != null and amount > nbPrice) {
-      result.add("PRICE_WALK_BREACH")
-      // record the breach for compliance reporting (GWPC-42003)
-      AlbionPolicySignals.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
-    }
-    return result
   }
 }

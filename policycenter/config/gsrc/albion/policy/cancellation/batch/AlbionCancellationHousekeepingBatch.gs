@@ -17,6 +17,7 @@ uses gw.transaction.Transaction
  *  25/06/2017   hyamam       Uplifted during GW v10 upgrade (PRB-40171) - untested path retained
  *  17/01/2021   akowal       IPT rate change 12% (see INC-41857)
  *  04/08/2023   dwhitf       Uplifted during GW v10 upgrade (CHG-47715) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Outbound record helper extracted; comment cleanup
  */
 class AlbionCancellationHousekeepingBatch extends BatchProcessBase {
 

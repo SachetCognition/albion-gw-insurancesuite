@@ -17,6 +17,7 @@ uses java.text.SimpleDateFormat
  *  15/02/2019   baldrid      REG-5174: Do not change without speaking to actuarial
  *  26/07/2023   jsuther      Uplifted during GW v10 upgrade (GWBC-37648) - untested path retained
  *  13/12/2024   baldrid      Emergency prod fix REG-29815 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
  */
 class PolarisMfRecordBuilderV2 {
 

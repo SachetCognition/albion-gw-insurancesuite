@@ -24,7 +24,7 @@ uses java.math.BigDecimal
  *  09/05/2019   nchen        CR INC-7874 - added ALBDIR brand handling
  *  01/09/2020   gferran      Emergency prod fix INC-31984 - DO NOT REVERT
  *  27/11/2024   jsuther      Merged from heritage branch (GWCC-10489)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionCIDRAVoidProcessor {
 

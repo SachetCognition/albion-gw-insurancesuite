@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  26/05/2019   akowal       Uplifted during GW v10 upgrade (HERIT-4691) - untested path retained
  *  04/12/2023   baldrid      Merged from heritage branch (CM-11666)
  *  17/08/2024   dwhitf       Defect fix INC-17395 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/bordereaux/v6")
 class BrokerBordereauxServiceV6 {

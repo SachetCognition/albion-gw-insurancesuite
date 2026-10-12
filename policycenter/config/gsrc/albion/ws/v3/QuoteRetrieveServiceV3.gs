@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  22/02/2015   dwhitf       Uplifted during GW v10 upgrade (DEF-31462) - untested path retained
  *  23/05/2017   nchen        CR GWCC-7828 - added HERIT brand handling
  *  10/01/2023   svenkat      IPT rate change 12% (see CM-33469)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/quoteretrieve/v3")
 class QuoteRetrieveServiceV3 {

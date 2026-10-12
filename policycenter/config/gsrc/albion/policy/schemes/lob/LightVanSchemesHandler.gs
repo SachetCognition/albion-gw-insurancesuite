@@ -18,7 +18,7 @@ uses java.math.BigDecimal
  *  23/01/2011   cdoyle       GWPC-6479: Do not change without speaking to actuarial
  *  17/12/2012   akowal       CR CHG-3179 - added ALBDIR brand handling
  *  27/10/2025   rpatel       IPT rate change 12% (see CM-32001)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class LightVanSchemesHandler {
 

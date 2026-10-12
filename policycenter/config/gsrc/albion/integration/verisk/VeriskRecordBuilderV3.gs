@@ -18,6 +18,7 @@ uses java.text.SimpleDateFormat
  *  01/11/2018   rpatel       Rewritten during Project Mercury, old logic kept below commented out (HERIT-44143)
  *  14/10/2022   vraghu       IPT rate change 12% (see DEF-4456)
  *  06/04/2025   hyamam       IPT rate change 12% (see PRB-12455)
+ *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
  */
 class VeriskRecordBuilderV3 {
 

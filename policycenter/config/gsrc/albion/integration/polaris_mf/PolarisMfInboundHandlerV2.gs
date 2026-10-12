@@ -1,6 +1,6 @@
 package albion.integration.polaris_mf
 
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,7 +17,7 @@ uses java.math.BigDecimal
  *  22/06/2016   nchen        Merged from heritage branch (HERIT-5803)
  *  01/09/2017   nchen        HERIT-16331: Do not change without speaking to actuarial
  *  19/04/2022   gferran      Uplifted during GW v10 upgrade (GWBC-16772) - untested path retained
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PolarisMfInboundHandlerV2 {
 
@@ -30,11 +30,11 @@ class PolarisMfInboundHandlerV2 {
     var amount = msg.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(msg)
+    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(msg)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CM-16594)
-      AlbionPolicySignals.logComplianceBreach("PS215", msg as KeyableBean, amount, nbPrice)
+      AlbionPolicyPredicates.logComplianceBreach("PS215", msg as KeyableBean, amount, nbPrice)
     }
     return result
   }

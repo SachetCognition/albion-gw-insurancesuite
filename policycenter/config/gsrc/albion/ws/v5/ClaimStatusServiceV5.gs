@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  22/05/2014   cdoyle       Merged from heritage branch (CM-42203)
  *  26/01/2017   gwoffsh2     Uplifted during GW v10 upgrade (PRB-5341) - untested path retained
  *  09/08/2020   akowal       Rewritten during Project Mercury, old logic kept below commented out (AGI-41201)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/claimstatus/v5")
 class ClaimStatusServiceV5 {

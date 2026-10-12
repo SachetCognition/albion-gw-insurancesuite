@@ -1,7 +1,7 @@
 package albion.policy.schemes.lob
 
 uses albion.config.AlbionConfigService
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -23,7 +23,7 @@ uses java.math.BigDecimal
  *  25/06/2021   gwoffsh2     Defect fix GWCC-41816 - null pointer when policy period not bound
  *  20/04/2022   tlindq       REG-42617: Do not change without speaking to actuarial
  *  16/05/2025   svenkat      IPT rate change 12% (see INC-4694)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class EmployersLiabilitySchemesHandler {
 
@@ -36,9 +36,9 @@ class EmployersLiabilitySchemesHandler {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // AGI-11327 CIFAS guidance
+    if (AlbionPolicyPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionPolicyPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionPolicyPredicates.isAggregatorSourced(bean)) { score += 10 }     // AGI-11327 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

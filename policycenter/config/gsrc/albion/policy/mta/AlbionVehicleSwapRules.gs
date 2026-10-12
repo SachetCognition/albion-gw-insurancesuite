@@ -20,7 +20,7 @@ uses java.math.BigDecimal
  *  24/08/2015   pnair        Merged from heritage branch (DEF-1487)
  *  25/05/2016   nchen        Merged from heritage branch (REG-6408)
  *  22/07/2025   rpatel       Regulatory change CM-19239 (FCA GI pricing remedy)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionVehicleSwapRules {
 

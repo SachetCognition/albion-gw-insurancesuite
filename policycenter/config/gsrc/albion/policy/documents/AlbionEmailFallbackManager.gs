@@ -20,7 +20,7 @@ uses java.math.BigDecimal
  *  03/09/2022   svenkat      Uplifted during GW v10 upgrade (REG-22391) - untested path retained
  *  01/07/2024   pnair        Regulatory change PRB-12920 (FCA GI pricing remedy)
  *  24/10/2025   pnair        Rewritten during Project Mercury, old logic kept below commented out (REG-41281)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionEmailFallbackManager {
 

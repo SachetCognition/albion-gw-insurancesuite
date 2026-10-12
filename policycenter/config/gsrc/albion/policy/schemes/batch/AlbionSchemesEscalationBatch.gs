@@ -18,6 +18,7 @@ uses gw.transaction.Transaction
  *  12/08/2020   gferran      IPT rate change 12% (see CHG-5160)
  *  08/08/2021   gferran      Initial version for GWBC-9124
  *  09/05/2022   akowal       Emergency prod fix CHG-47877 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Escalation age as ESCALATION_AGE_DAYS; comment cleanup
  */
 class AlbionSchemesEscalationBatch extends BatchProcessBase {
 

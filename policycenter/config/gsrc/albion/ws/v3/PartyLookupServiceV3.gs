@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  24/02/2013   hyamam       Defect fix GWPC-39006 - null pointer when policy period not bound
  *  16/01/2016   hyamam       Uplifted during GW v10 upgrade (GWCC-33896) - untested path retained
  *  02/07/2019   kmbeki       Perf fix INC-22399 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/partylookup/v3")
 class PartyLookupServiceV3 {

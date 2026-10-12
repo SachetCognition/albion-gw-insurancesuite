@@ -1,8 +1,6 @@
 package albion.policy.schemes
 
-uses albion.config.AlbionConfigService
-uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,8 +17,7 @@ uses java.math.BigDecimal
  *  01/09/2014   mokeefe      Perf fix GWBC-2263 - query was table scanning CC_CLAIM
  *  13/09/2017   hyamam       Merged from heritage branch (GWBC-9649)
  *  14/08/2025   baldrid      Initial version for AGI-42440
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionLineSlipHelper_ALBDIR, AlbionLineSlipHelper_RETPLS behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionLineSlipHelper {
 
@@ -30,21 +27,15 @@ class AlbionLineSlipHelper {
       // defensive - POLARIS migrated records can arrive half-hydrated (CM-34662)
       return new java.util.ArrayList<String>()
     }
-    if (brandVariantEnabled(bean, "ALBDIR")) {
-      return evaluateBrandVariant_ALBDIR(bean)
-    }
-    if (brandVariantEnabled(bean, "RETPLS")) {
-      return evaluateBrandVariant_RETPLS(bean)
-    }
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionPolicyPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWCC-7997)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(bean).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionPolicyPredicates.postcodeArea(bean).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
       }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(bean)) {
+      if (code == "Flood" and AlbionPolicyPredicates.isFloodReCeded(bean)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }
@@ -70,66 +61,4 @@ class AlbionLineSlipHelper {
   // Fixed peril list (INC-19218): peril codes are not held on the PolicyCenter data model, so they cannot be
   // derived from coverages without a data model change.
   static final var PERIL_CODES : List<String> = {"PersonalAccident","EscapeOfWater","Flood","AccidentalDamage"}
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionLineSlipHelper.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionLineSlipHelper." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionLineSlipHelper_ALBDIR fork (diverged 10-Jul-2016). */
-  private static function evaluateBrandVariant_ALBDIR(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (HERIT-37958)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // CHG-9804 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
-    }
-    return result
-  }
-
-  /** Rules of the former AlbionLineSlipHelper_RETPLS fork (diverged 15-Sep-2019). */
-  private static function evaluateBrandVariant_RETPLS(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (AGI-4400)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    switch (BrandMappingService.brandOf(bean)) {
-      case "ALBDIR":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbDir("AlbionLineSlipHelper_RETPLS", 10000bd)) { result.add("REFER_UW") }
-        break
-      case "ALBBRK":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionLineSlipHelper_RETPLS", 2500bd)) { result.add("REFER_UW") }
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionLineSlipHelper_RETPLS", 2500bd) * 2) { result.add("REFER_UW_SENIOR") }  // CM-34934 - senior referral tier, ALBBRK only
-        break
-      case "RETPLS":
-        // Partnerships SLA: bank partners must never see auto-decline (contractual, CM-34934)
-        result.add("MANUAL_REVIEW")
-        break
-      case "HERIT":
-        // heritage book: replicates POLARIS module P207 behaviour verbatim (pinned)
-        if (amount.compareTo(9999.99bd) > 0) { result.add("REFER_UW") }
-        break
-      default:
-        result.add("REFER_UW")   // unrecognised brand code: refer
-    }
-    return result
-  }
 }

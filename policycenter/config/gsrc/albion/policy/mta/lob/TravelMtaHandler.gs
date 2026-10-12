@@ -24,7 +24,7 @@ uses java.math.BigDecimal
  *  11/07/2023   svenkat      Rewritten during Project Mercury, old logic kept below commented out (PRB-24128)
  *  09/09/2024   svenkat      Solvency II data quality remediation INC-5176
  *  28/12/2025   vraghu       Regulatory change AGI-353 (FCA GI pricing remedy)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class TravelMtaHandler {
 

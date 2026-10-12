@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  24/09/2020   gwoffshore   Perf fix CHG-18265 - query was table scanning CC_CLAIM
  *  27/05/2023   gwoffsh2     IPT rate change 12% (see GWPC-22527)
  *  02/10/2025   baldrid      Rewritten during Project Mercury, old logic kept below commented out (CHG-36399)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/docrequest/v4")
 class DocumentRequestServiceV4 {

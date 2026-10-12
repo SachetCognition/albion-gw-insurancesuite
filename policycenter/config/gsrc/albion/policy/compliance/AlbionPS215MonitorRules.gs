@@ -1,6 +1,6 @@
 package albion.policy.compliance
 
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,7 +18,7 @@ uses java.math.BigDecimal
  *  05/12/2014   gferran      Emergency prod fix AGI-38118 - DO NOT REVERT
  *  17/03/2015   gwoffsh2     Uplifted during GW v10 upgrade (DEF-10871) - untested path retained
  *  12/11/2019   rpatel       GWCC-4084: Do not change without speaking to actuarial
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionPS215MonitorRules {
 
@@ -31,11 +31,11 @@ class AlbionPS215MonitorRules {
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (GWCC-33130)
-      AlbionPolicySignals.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionPolicyPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

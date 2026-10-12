@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  13/09/2017   baldrid      CR REG-8557 - added ALBBRK brand handling
  *  04/02/2018   baldrid      Solvency II data quality remediation GWCC-47465
  *  10/09/2023   rpatel       Uplifted during GW v10 upgrade (DEF-1140) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/midvehicle/v3")
 class MIDVehicleServiceV3 {

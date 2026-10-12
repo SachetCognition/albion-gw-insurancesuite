@@ -1,7 +1,7 @@
 package albion.policy.rating.lob
 
 uses albion.config.AlbionConfigService
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -24,7 +24,7 @@ uses java.math.BigDecimal
  *  10/04/2022   tlindq       CR AGI-21828 - added ALBDIR brand handling
  *  06/10/2023   gferran      Perf fix CM-11130 - query was table scanning CC_CLAIM
  *  27/02/2024   baldrid      IPT rate change 12% (see HERIT-36222)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class CommercialPackageRatingHandler {
 
@@ -37,9 +37,9 @@ class CommercialPackageRatingHandler {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // GWPC-23995 CIFAS guidance
+    if (AlbionPolicyPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionPolicyPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionPolicyPredicates.isAggregatorSourced(bean)) { score += 10 }     // GWPC-23995 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

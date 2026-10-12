@@ -1,6 +1,6 @@
 package albion.policy.mta.lob
 
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,7 +18,7 @@ uses java.math.BigDecimal
  *  22/06/2016   kmbeki       Initial version for DEF-4525
  *  25/08/2022   vraghu       Regulatory change CM-12419 (FCA GI pricing remedy)
  *  28/10/2024   tlindq       IPT rate change 12% (see REG-44220)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PersonalMotorMtaHandler {
 
@@ -31,11 +31,11 @@ class PersonalMotorMtaHandler {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CM-10718)
-      AlbionPolicySignals.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionPolicyPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

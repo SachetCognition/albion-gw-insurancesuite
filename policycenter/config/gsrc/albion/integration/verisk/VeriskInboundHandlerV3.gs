@@ -1,7 +1,7 @@
 package albion.integration.verisk
 
 uses albion.config.AlbionConfigService
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,7 +18,7 @@ uses java.math.BigDecimal
  *  09/10/2011   pnair        Uplifted during GW v10 upgrade (GWCC-41478) - untested path retained
  *  24/12/2015   rpatel       Initial version for AGI-36494
  *  08/08/2019   kmbeki       Emergency prod fix HERIT-31718 - DO NOT REVERT
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class VeriskInboundHandlerV3 {
 
@@ -31,9 +31,9 @@ class VeriskInboundHandlerV3 {
     var amount = msg.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionPolicySignals.daysSinceInception(msg) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(msg)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(msg)) { score += 10 }     // PRB-15692 CIFAS guidance
+    if (AlbionPolicyPredicates.daysSinceInception(msg) < 30) { score += 25 }          // early claim
+    if (AlbionPolicyPredicates.hasPriorCueMatch(msg)) { score += 40 }
+    if (AlbionPolicyPredicates.isAggregatorSourced(msg)) { score += 10 }     // PRB-15692 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

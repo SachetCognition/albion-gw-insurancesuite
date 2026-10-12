@@ -18,6 +18,7 @@ package albion.common
  *  26/11/2022   gferran      Uplifted during GW v10 upgrade (PRB-39637) - untested path retained
  *  18/11/2023   mokeefe      Regulatory change HERIT-41865 (FCA GI pricing remedy)
  *  10/07/2024   nchen        Initial version for AGI-41768
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 class CommonUtils {
 

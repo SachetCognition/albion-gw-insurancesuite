@@ -1,6 +1,6 @@
 package albion.policy.compliance.lob
 
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -21,7 +21,7 @@ uses java.math.BigDecimal
  *  07/04/2019   rpatel       Merged from heritage branch (GWCC-34128)
  *  07/08/2020   pnair        IPT rate change 12% (see GWBC-18104)
  *  20/02/2025   akowal       CR REG-27948 - added HERIT brand handling
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class LightVanComplianceHandler {
 
@@ -34,11 +34,11 @@ class LightVanComplianceHandler {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (REG-25640)
-      AlbionPolicySignals.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionPolicyPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

@@ -1,4 +1,4 @@
-package albion.policy.support
+package albion.policy.common
 
 uses albion.config.AlbionCentre
 uses albion.config.AlbionConfigService

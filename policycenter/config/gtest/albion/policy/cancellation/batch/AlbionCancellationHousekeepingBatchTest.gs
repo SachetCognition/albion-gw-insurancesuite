@@ -1,6 +1,6 @@
 package albion.policy.cancellation.batch
 
-uses albion.policy.support.AlbionPolicyTestBeans
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
 
 class AlbionCancellationHousekeepingBatchTest extends TestBase {

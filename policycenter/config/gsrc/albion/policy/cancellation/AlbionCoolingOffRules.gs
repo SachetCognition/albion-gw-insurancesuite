@@ -1,6 +1,6 @@
 package albion.policy.cancellation
 
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -16,7 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  26/06/2014   tlindq       Perf fix GWPC-47522 - query was table scanning CC_CLAIM
  *  01/03/2016   vraghu       Defect fix HERIT-21847 - null pointer when policy period not bound
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionCoolingOffRules {
 
@@ -29,11 +29,11 @@ class AlbionCoolingOffRules {
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (CHG-7183)
-      AlbionPolicySignals.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionPolicyPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

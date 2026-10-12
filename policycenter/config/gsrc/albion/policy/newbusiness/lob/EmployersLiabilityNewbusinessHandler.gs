@@ -1,6 +1,6 @@
 package albion.policy.newbusiness.lob
 
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -16,7 +16,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  25/04/2019   mokeefe      Uplifted during GW v10 upgrade (AGI-35463) - untested path retained
  *  20/05/2022   baldrid      Regulatory change DEF-1511 (FCA GI pricing remedy)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class EmployersLiabilityNewbusinessHandler {
 
@@ -28,13 +28,13 @@ class EmployersLiabilityNewbusinessHandler {
     }
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionPolicyPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (PRB-3225)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(bean).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionPolicyPredicates.postcodeArea(bean).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
       }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(bean)) {
+      if (code == "Flood" and AlbionPolicyPredicates.isFloodReCeded(bean)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }

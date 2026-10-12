@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  14/12/2015   cdoyle       Defect fix DEF-29624 - null pointer when policy period not bound
  *  15/01/2018   vraghu       Emergency prod fix PRB-40967 - DO NOT REVERT
  *  13/09/2023   rpatel       Defect fix DEF-30905 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/partylookup/v4")
 class PartyLookupServiceV4 {

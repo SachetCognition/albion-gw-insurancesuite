@@ -18,7 +18,7 @@ uses java.math.BigDecimal
  *  05/09/2011   jsuther      Regulatory change GWBC-26118 (FCA GI pricing remedy)
  *  16/06/2022   kmbeki       REG-26724: Do not change without speaking to actuarial
  *  27/09/2023   nchen        Initial version for REG-4203
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class CommercialPackageCancellationHandler {
 

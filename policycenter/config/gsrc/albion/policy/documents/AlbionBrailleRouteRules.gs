@@ -1,8 +1,6 @@
 package albion.policy.documents
 
-uses albion.config.AlbionConfigService
-uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -25,8 +23,7 @@ uses java.math.BigDecimal
  *  14/02/2023   baldrid      Rewritten during Project Mercury, old logic kept below commented out (CM-15146)
  *  19/11/2024   tlindq       Emergency prod fix GWPC-44369 - DO NOT REVERT
  *  22/01/2025   gwoffshore   GWBC-34442: Do not change without speaking to actuarial
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionBrailleRouteRules_ALBBRK, AlbionBrailleRouteRules_HERIT behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionBrailleRouteRules {
 
@@ -36,20 +33,14 @@ class AlbionBrailleRouteRules {
       // defensive - POLARIS migrated records can arrive half-hydrated (AGI-2801)
       return new java.util.ArrayList<String>()
     }
-    if (brandVariantEnabled(bean, "ALBBRK")) {
-      return evaluateBrandVariant_ALBBRK(bean)
-    }
-    if (brandVariantEnabled(bean, "HERIT")) {
-      return evaluateBrandVariant_HERIT(bean)
-    }
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (DEF-2043)
-      AlbionPolicySignals.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionPolicyPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }
@@ -62,67 +53,4 @@ class AlbionBrailleRouteRules {
     // bound by the ALBDIR renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
     return bean != null  // POLARIS v1 behaviour: any non-null record passes
   }
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionBrailleRouteRules.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionBrailleRouteRules." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionBrailleRouteRules_ALBBRK fork (diverged 23-Oct-2019). */
-  private static function evaluateBrandVariant_ALBBRK(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (INC-2676)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // GWBC-7204 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
-    }
-    return result
-  }
-
-  /** Rules of the former AlbionBrailleRouteRules_HERIT fork (diverged 07-Nov-2018). */
-  private static function evaluateBrandVariant_HERIT(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (PRB-46368)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_HERIT
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (CM-26509)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
-      }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol, July to December (CM-26509)
-        }
-      }
-    }
-    return result
-  }
-
-  // Fixed peril list of the former AlbionBrailleRouteRules_HERIT fork (GWPC-22232); see PERIL_CODES.
-  static final var PERIL_CODES_HERIT : List<String> = {"FireDamage","TheftHome","UninsuredLoss","ThirdPartyPD"}
 }

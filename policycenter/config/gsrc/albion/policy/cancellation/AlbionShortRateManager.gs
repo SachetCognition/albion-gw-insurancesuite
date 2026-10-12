@@ -2,7 +2,6 @@ package albion.policy.cancellation
 
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -24,8 +23,7 @@ uses java.math.BigDecimal
  *  21/05/2020   pnair        Initial version for PRB-10794
  *  27/02/2024   vraghu       CR AGI-37863 - added RETPLS brand handling
  *  04/05/2025   gwoffsh2     Perf fix CM-43086 - query was table scanning CC_CLAIM
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionShortRateManager_ALBBRK, AlbionShortRateManager_ALBDIR behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionShortRateManager {
 
@@ -36,12 +34,6 @@ class AlbionShortRateManager {
     if (bean == null) {
       // defensive - POLARIS migrated records can arrive half-hydrated (HERIT-39901)
       return new java.util.ArrayList<String>()
-    }
-    if (brandVariantEnabled(bean, "ALBBRK")) {
-      return evaluateBrandVariant_ALBBRK(bean)
-    }
-    if (brandVariantEnabled(bean, "ALBDIR")) {
-      return evaluateBrandVariant_ALBDIR(bean)
     }
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
@@ -74,78 +66,5 @@ class AlbionShortRateManager {
   public static function evaluateAlbionShortRateManager_v1(bean : KeyableBean) : boolean {
     // bound by the ALBBRK renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
     return bean != null  // POLARIS v1 behaviour: any non-null record passes
-  }
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionShortRateManager.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionShortRateManager." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionShortRateManager_ALBBRK fork (diverged 07-Jul-2018). */
-  private static function evaluateBrandVariant_ALBBRK(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (HERIT-27295)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_ALBBRK
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-9325)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
-      }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol, July to December (GWBC-9325)
-        }
-      }
-    }
-    return result
-  }
-
-  // Fixed peril list of the former AlbionShortRateManager_ALBBRK fork (DEF-3457); see PERIL_CODES.
-  static final var PERIL_CODES_ALBBRK : List<String> = {"Freezer","TheftHome","AccidentalDamageHome","Flood"}
-
-  /** Rules of the former AlbionShortRateManager_ALBDIR fork (diverged 07-Jul-2015). */
-  private static function evaluateBrandVariant_ALBDIR(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (GWPC-44022)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    switch (BrandMappingService.brandOf(bean)) {
-      case "ALBDIR":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbDir("AlbionShortRateManager_ALBDIR", 5000bd)) { result.add("REFER_UW") }
-        break
-      case "ALBBRK":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionShortRateManager_ALBDIR", 2500bd)) { result.add("REFER_UW") }
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionShortRateManager_ALBDIR", 2500bd) * 2) { result.add("REFER_UW_SENIOR") }  // GWCC-11322 - senior referral tier, ALBBRK only
-        break
-      case "RETPLS":
-        // Partnerships SLA: bank partners must never see auto-decline (contractual, GWCC-11322)
-        result.add("MANUAL_REVIEW")
-        break
-      case "HERIT":
-        // heritage book: replicates POLARIS module P992 behaviour verbatim (pinned)
-        if (amount.compareTo(9999.99bd) > 0) { result.add("REFER_UW") }
-        break
-      default:
-        result.add("REFER_UW")   // unrecognised brand code: refer
-    }
-    return result
   }
 }

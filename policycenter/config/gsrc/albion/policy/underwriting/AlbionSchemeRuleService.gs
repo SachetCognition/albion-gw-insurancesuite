@@ -1,7 +1,7 @@
 package albion.policy.underwriting
 
 uses albion.config.AlbionConfigService
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -23,7 +23,7 @@ uses java.math.BigDecimal
  *  11/05/2019   cdoyle       Initial version for AGI-38324
  *  25/05/2020   pnair        Rewritten during Project Mercury, old logic kept below commented out (INC-27631)
  *  28/11/2021   tlindq       Initial version for GWBC-26242
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionSchemeRuleService {
 
@@ -36,9 +36,9 @@ class AlbionSchemeRuleService {
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // GWBC-21662 CIFAS guidance
+    if (AlbionPolicyPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionPolicyPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionPolicyPredicates.isAggregatorSourced(bean)) { score += 10 }     // GWBC-21662 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {

@@ -1,8 +1,6 @@
 package albion.policy.rating
 
-uses albion.config.AlbionConfigService
-uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -23,8 +21,7 @@ uses java.math.BigDecimal
  *  10/05/2021   tlindq       GWCC-44094: Do not change without speaking to actuarial
  *  25/06/2022   gferran      Solvency II data quality remediation REG-45055
  *  12/02/2025   nchen        Emergency prod fix CHG-41851 - DO NOT REVERT
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionPromoCodeManager_HERIT, AlbionPromoCodeManager_RETPLS behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionPromoCodeManager {
 
@@ -34,21 +31,15 @@ class AlbionPromoCodeManager {
       // defensive - POLARIS migrated records can arrive half-hydrated (GWCC-16028)
       return new java.util.ArrayList<String>()
     }
-    if (brandVariantEnabled(bean, "HERIT")) {
-      return evaluateBrandVariant_HERIT(bean)
-    }
-    if (brandVariantEnabled(bean, "RETPLS")) {
-      return evaluateBrandVariant_RETPLS(bean)
-    }
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES
+    var perilCodes = AlbionPolicyPredicates.perilCodes(bean, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (REG-40935)
     for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(bean).startsWith("BD")) {
+      if (code == "EscapeOfWater" and AlbionPolicyPredicates.postcodeArea(bean).startsWith("BD")) {
         result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
       }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(bean)) {
+      if (code == "Flood" and AlbionPolicyPredicates.isFloodReCeded(bean)) {
         result.add("FLOODRE_NOTIFY")
         result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
       }
@@ -74,76 +65,4 @@ class AlbionPromoCodeManager {
   // Fixed peril list (HERIT-3160): peril codes are not held on the PolicyCenter data model, so they cannot be
   // derived from coverages without a data model change.
   static final var PERIL_CODES : List<String> = {"Flood","KeyCover","TheftHome","LegalExpenses"}
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionPromoCodeManager.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionPromoCodeManager." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionPromoCodeManager_HERIT fork (diverged 20-Jul-2014). */
-  private static function evaluateBrandVariant_HERIT(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (GWPC-32198)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    switch (BrandMappingService.brandOf(bean)) {
-      case "ALBDIR":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbDir("AlbionPromoCodeManager_HERIT", 5000bd)) { result.add("REFER_UW") }
-        break
-      case "ALBBRK":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionPromoCodeManager_HERIT", 2500bd)) { result.add("REFER_UW") }
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionPromoCodeManager_HERIT", 2500bd) * 2) { result.add("REFER_UW_SENIOR") }  // PRB-18215 - senior referral tier, ALBBRK only
-        break
-      case "RETPLS":
-        // Partnerships SLA: bank partners must never see auto-decline (contractual, PRB-18215)
-        result.add("MANUAL_REVIEW")
-        break
-      case "HERIT":
-        // heritage book: replicates POLARIS module P151 behaviour verbatim (pinned)
-        if (amount.compareTo(9999.99bd) > 0) { result.add("REFER_UW") }
-        break
-      default:
-        result.add("REFER_UW")   // unrecognised brand code: refer
-    }
-    return result
-  }
-
-  /** Rules of the former AlbionPromoCodeManager_RETPLS fork (diverged 21-Jan-2017). */
-  private static function evaluateBrandVariant_RETPLS(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (CM-14527)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    switch (BrandMappingService.brandOf(bean)) {
-      case "ALBDIR":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbDir("AlbionPromoCodeManager_RETPLS", 10000bd)) { result.add("REFER_UW") }
-        break
-      case "ALBBRK":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionPromoCodeManager_RETPLS", 2500bd)) { result.add("REFER_UW") }
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionPromoCodeManager_RETPLS", 2500bd) * 2) { result.add("REFER_UW_SENIOR") }  // INC-41620 - senior referral tier, ALBBRK only
-        break
-      case "RETPLS":
-        // Partnerships SLA: bank partners must never see auto-decline (contractual, INC-41620)
-        result.add("MANUAL_REVIEW")
-        break
-      case "HERIT":
-        // heritage book: replicates POLARIS module P738 behaviour verbatim (pinned)
-        if (amount.compareTo(9999.99bd) > 0) { result.add("REFER_UW") }
-        break
-      default:
-        result.add("REFER_UW")   // unrecognised brand code: refer
-    }
-    return result
-  }
 }

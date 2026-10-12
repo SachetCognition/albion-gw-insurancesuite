@@ -22,7 +22,7 @@ uses java.math.BigDecimal
  *  28/07/2021   akowal       Perf fix INC-22086 - query was table scanning CC_CLAIM
  *  10/04/2022   svenkat      Solvency II data quality remediation HERIT-30147
  *  16/02/2023   akowal       Regulatory change GWPC-46339 (FCA GI pricing remedy)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PersonalMotorUnderwritingHandler {
 

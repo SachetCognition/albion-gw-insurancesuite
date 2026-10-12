@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  16/04/2015   akowal       Emergency prod fix CM-18311 - DO NOT REVERT
  *  23/03/2020   pnair        Initial version for GWCC-23573
  *  09/10/2021   gwoffshore   Perf fix HERIT-3226 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/docrequest/v1")
 class DocumentRequestServiceV1 {

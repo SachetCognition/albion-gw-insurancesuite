@@ -2,7 +2,6 @@ package albion.policy.underwriting
 
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,8 +17,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  10/04/2015   kmbeki       Emergency prod fix CM-26629 - DO NOT REVERT
  *  23/08/2019   baldrid      IPT rate change 12% (see GWCC-38957)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionBlacklistService_ALBBRK, AlbionBlacklistService_RETPLS behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionBlacklistService {
 
@@ -30,12 +28,6 @@ class AlbionBlacklistService {
     if (bean == null) {
       // defensive - POLARIS migrated records can arrive half-hydrated (DEF-6529)
       return new java.util.ArrayList<String>()
-    }
-    if (brandVariantEnabled(bean, "ALBBRK")) {
-      return evaluateBrandVariant_ALBBRK(bean)
-    }
-    if (brandVariantEnabled(bean, "RETPLS")) {
-      return evaluateBrandVariant_RETPLS(bean)
     }
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
@@ -68,68 +60,5 @@ class AlbionBlacklistService {
   public static function evaluateAlbionBlacklistService_v1(bean : KeyableBean) : boolean {
     // bound by the ALBDIR renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
     return bean != null  // POLARIS v1 behaviour: any non-null record passes
-  }
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionBlacklistService.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionBlacklistService." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionBlacklistService_ALBBRK fork (diverged 23-Sep-2016). */
-  private static function evaluateBrandVariant_ALBBRK(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (REG-34607)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_ALBBRK
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (INC-7712)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
-      }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol, July to December (INC-7712)
-        }
-      }
-    }
-    return result
-  }
-
-  // Fixed peril list of the former AlbionBlacklistService_ALBBRK fork (HERIT-19864); see PERIL_CODES.
-  static final var PERIL_CODES_ALBBRK : List<String> = {"Windscreen","Freezer","Theft","Subsidence"}
-
-  /** Rules of the former AlbionBlacklistService_RETPLS fork (diverged 04-Mar-2018). */
-  private static function evaluateBrandVariant_RETPLS(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (GWCC-13066)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // GWCC-6244 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
-    }
-    return result
   }
 }

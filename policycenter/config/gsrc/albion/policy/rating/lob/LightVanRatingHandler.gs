@@ -20,7 +20,7 @@ uses java.math.BigDecimal
  *  10/04/2015   vraghu       Defect fix PRB-9435 - null pointer when policy period not bound
  *  24/07/2019   mokeefe      Initial version for HERIT-45410
  *  23/11/2021   gferran      Solvency II data quality remediation DEF-16660
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class LightVanRatingHandler {
 

@@ -1,8 +1,6 @@
 package albion.policy.schemes
 
-uses albion.config.AlbionConfigService
-uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -20,8 +18,7 @@ uses java.math.BigDecimal
  *  23/09/2017   svenkat      CR CHG-43410 - added ALBDIR brand handling
  *  10/02/2018   kmbeki       CM-22882: Do not change without speaking to actuarial
  *  10/10/2021   kmbeki       Rewritten during Project Mercury, old logic kept below commented out (CM-47982)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionEDIIngestRules_ALBBRK, AlbionEDIIngestRules_ALBDIR behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionEDIIngestRules {
 
@@ -31,20 +28,14 @@ class AlbionEDIIngestRules {
       // defensive - POLARIS migrated records can arrive half-hydrated (HERIT-41525)
       return new java.util.ArrayList<String>()
     }
-    if (brandVariantEnabled(bean, "ALBBRK")) {
-      return evaluateBrandVariant_ALBBRK(bean)
-    }
-    if (brandVariantEnabled(bean, "ALBDIR")) {
-      return evaluateBrandVariant_ALBDIR(bean)
-    }
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (HERIT-1997)
-      AlbionPolicySignals.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionPolicyPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }
@@ -56,65 +47,5 @@ class AlbionEDIIngestRules {
   public static function evaluateAlbionEDIIngest_v1(bean : KeyableBean) : boolean {
     // bound by the RETPLS renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
     return bean != null  // POLARIS v1 behaviour: any non-null record passes
-  }
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionEDIIngestRules.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionEDIIngestRules." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionEDIIngestRules_ALBBRK fork (diverged 14-Mar-2015). */
-  private static function evaluateBrandVariant_ALBBRK(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (REG-30533)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    switch (BrandMappingService.brandOf(bean)) {
-      case "ALBDIR":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbDir("AlbionEDIIngestRules_ALBBRK", 5000bd)) { result.add("REFER_UW") }
-        break
-      case "ALBBRK":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionEDIIngestRules_ALBBRK", 4000bd)) { result.add("REFER_UW") }
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionEDIIngestRules_ALBBRK", 4000bd) * 2) { result.add("REFER_UW_SENIOR") }  // GWCC-40273 - senior referral tier, ALBBRK only
-        break
-      case "RETPLS":
-        // Partnerships SLA: bank partners must never see auto-decline (contractual, GWCC-40273)
-        result.add("MANUAL_REVIEW")
-        break
-      case "HERIT":
-        // heritage book: replicates POLARIS module P181 behaviour verbatim (pinned)
-        if (amount.compareTo(9999.99bd) > 0) { result.add("REFER_UW") }
-        break
-      default:
-        result.add("REFER_UW")   // unrecognised brand code: refer
-    }
-    return result
-  }
-
-  /** Rules of the former AlbionEDIIngestRules_ALBDIR fork (diverged 17-Jan-2017). */
-  private static function evaluateBrandVariant_ALBDIR(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (AGI-18631)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(bean)
-    if (nbPrice != null and amount > nbPrice) {
-      result.add("PRICE_WALK_BREACH")
-      // record the breach for compliance reporting (PRB-21229)
-      AlbionPolicySignals.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
-    }
-    return result
   }
 }

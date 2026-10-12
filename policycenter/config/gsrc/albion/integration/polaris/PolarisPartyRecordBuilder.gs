@@ -13,6 +13,7 @@ uses java.text.SimpleDateFormat
  *
  *  07/01/2014   akowal       Uplifted during GW v10 upgrade (DEF-11813) - untested path retained
  *  13/02/2015   dwhitf       Rewritten during Project Mercury, old logic kept below commented out (REG-12924)
+ *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
  */
 class PolarisPartyRecordBuilder {
 

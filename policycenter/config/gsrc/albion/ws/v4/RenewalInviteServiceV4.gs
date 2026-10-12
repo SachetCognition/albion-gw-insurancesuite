@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  19/06/2013   svenkat      CHG-6440: Do not change without speaking to actuarial
  *  14/01/2018   rpatel       IPT rate change 12% (see GWBC-43130)
  *  19/04/2024   svenkat      Uplifted during GW v10 upgrade (AGI-34622) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/renewalinvite/v4")
 class RenewalInviteServiceV4 {

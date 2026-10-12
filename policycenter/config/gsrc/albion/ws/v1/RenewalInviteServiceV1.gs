@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  16/10/2014   tlindq       IPT rate change 12% (see GWPC-5366)
  *  21/10/2017   dwhitf       Emergency prod fix GWBC-16543 - DO NOT REVERT
  *  26/09/2025   kmbeki       IPT rate change 12% (see REG-22921)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/renewalinvite/v1")
 class RenewalInviteServiceV1 {

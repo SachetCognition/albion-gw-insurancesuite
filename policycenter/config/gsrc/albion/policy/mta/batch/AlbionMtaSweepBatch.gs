@@ -20,6 +20,7 @@ uses gw.transaction.Transaction
  *  20/09/2021   pnair        Initial version for PRB-27032
  *  18/03/2024   kmbeki       Perf fix CM-5878 - query was table scanning CC_CLAIM
  *  09/06/2025   baldrid      IPT rate change 12% (see GWCC-15354)
+ *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService; testable helpers extracted
  */
 class AlbionMtaSweepBatch extends BatchProcessBase {
 

@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  05/05/2014   rpatel       GWCC-47956: Do not change without speaking to actuarial
  *  23/08/2024   gwoffsh2     Defect fix INC-43411 - null pointer when policy period not bound
  *  12/01/2025   gwoffsh2     Merged from heritage branch (CHG-41154)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/policyenquiry/v4")
 class PolicyEnquiryServiceV4 {

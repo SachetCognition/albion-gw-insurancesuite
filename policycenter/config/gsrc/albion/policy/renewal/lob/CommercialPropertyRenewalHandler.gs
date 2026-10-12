@@ -21,7 +21,7 @@ uses java.math.BigDecimal
  *  12/05/2018   gferran      Defect fix GWBC-892 - null pointer when policy period not bound
  *  08/12/2021   kmbeki       Initial version for AGI-41658
  *  07/02/2025   nchen        CR CM-23986 - added ALBDIR brand handling
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class CommercialPropertyRenewalHandler {
 

@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  09/12/2015   gwoffsh2     Perf fix CM-9422 - query was table scanning CC_CLAIM
  *  28/06/2019   akowal       Defect fix GWCC-38278 - null pointer when policy period not bound
  *  13/02/2025   vraghu       Merged from heritage branch (REG-11824)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/policyenquiry/v3")
 class PolicyEnquiryServiceV3 {

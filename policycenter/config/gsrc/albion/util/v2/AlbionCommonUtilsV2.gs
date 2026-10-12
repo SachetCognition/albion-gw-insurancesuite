@@ -18,6 +18,7 @@ package albion.util.v2
  *  24/03/2022   mokeefe      Uplifted during GW v10 upgrade (CM-44902) - untested path retained
  *  24/09/2023   mokeefe      Solvency II data quality remediation DEF-2447
  *  21/06/2024   gferran      Uplifted during GW v10 upgrade (DEF-1895) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 class AlbionCommonUtilsV2 {
 

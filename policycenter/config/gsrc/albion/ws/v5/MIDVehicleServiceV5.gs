@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  16/07/2014   kmbeki       Solvency II data quality remediation GWCC-12616
  *  09/09/2017   nchen        Uplifted during GW v10 upgrade (REG-48131) - untested path retained
  *  16/03/2021   mokeefe      IPT rate change 12% (see AGI-44035)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/midvehicle/v5")
 class MIDVehicleServiceV5 {

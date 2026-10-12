@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  26/07/2020   rpatel       Solvency II data quality remediation HERIT-25371
  *  28/01/2021   vraghu       Uplifted during GW v10 upgrade (CHG-29618) - untested path retained
  *  05/06/2023   hyamam       Uplifted during GW v10 upgrade (GWPC-17440) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/docrequest/v2")
 class DocumentRequestServiceV2 {

@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  07/09/2020   hyamam       CR DEF-37052 - added ALBDIR brand handling
  *  02/07/2021   jsuther      Regulatory change PRB-1956 (FCA GI pricing remedy)
  *  01/07/2025   akowal       Emergency prod fix CM-10371 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/docrequest/v3")
 class DocumentRequestServiceV3 {

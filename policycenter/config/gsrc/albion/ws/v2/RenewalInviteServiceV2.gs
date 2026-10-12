@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  15/08/2017   gwoffsh2     Emergency prod fix CHG-26819 - DO NOT REVERT
  *  15/09/2018   baldrid      Regulatory change PRB-5090 (FCA GI pricing remedy)
  *  09/01/2024   baldrid      Rewritten during Project Mercury, old logic kept below commented out (CM-7343)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/renewalinvite/v2")
 class RenewalInviteServiceV2 {

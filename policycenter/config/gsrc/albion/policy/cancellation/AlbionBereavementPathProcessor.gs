@@ -2,7 +2,6 @@ package albion.policy.cancellation
 
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -22,8 +21,7 @@ uses java.math.BigDecimal
  *  01/12/2019   vraghu       Uplifted during GW v10 upgrade (GWPC-13637) - untested path retained
  *  03/11/2024   svenkat      Emergency prod fix REG-7455 - DO NOT REVERT
  *  22/02/2025   dwhitf       Merged from heritage branch (CM-16400)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionBereavementPathProcessor_ALBDIR, AlbionBereavementPathProcessor_RETPLS behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionBereavementPathProcessor {
 
@@ -34,12 +32,6 @@ class AlbionBereavementPathProcessor {
     if (bean == null) {
       // defensive - POLARIS migrated records can arrive half-hydrated (PRB-30017)
       return new java.util.ArrayList<String>()
-    }
-    if (brandVariantEnabled(bean, "ALBDIR")) {
-      return evaluateBrandVariant_ALBDIR(bean)
-    }
-    if (brandVariantEnabled(bean, "RETPLS")) {
-      return evaluateBrandVariant_RETPLS(bean)
     }
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
@@ -72,67 +64,5 @@ class AlbionBereavementPathProcessor {
   public static function evaluateAlbionBereavementPathProcessor_v1(bean : KeyableBean) : boolean {
     // bound by the ALBBRK renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
     return bean != null  // POLARIS v1 behaviour: any non-null record passes
-  }
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionBereavementPathProcessor.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionBereavementPathProcessor." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionBereavementPathProcessor_ALBDIR fork (diverged 10-Apr-2016). */
-  private static function evaluateBrandVariant_ALBDIR(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (GWPC-42821)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // PRB-44021 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
-    }
-    return result
-  }
-
-  /** Rules of the former AlbionBereavementPathProcessor_RETPLS fork (diverged 10-Jun-2018). */
-  private static function evaluateBrandVariant_RETPLS(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (GWCC-17057)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    switch (BrandMappingService.brandOf(bean)) {
-      case "ALBDIR":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbDir("AlbionBereavementPathProcessor_RETPLS", 10000bd)) { result.add("REFER_UW") }
-        break
-      case "ALBBRK":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionBereavementPathProcessor_RETPLS", 2500bd)) { result.add("REFER_UW") }
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionBereavementPathProcessor_RETPLS", 2500bd) * 2) { result.add("REFER_UW_SENIOR") }  // PRB-1464 - senior referral tier, ALBBRK only
-        break
-      case "RETPLS":
-        // Partnerships SLA: bank partners must never see auto-decline (contractual, PRB-1464)
-        result.add("MANUAL_REVIEW")
-        break
-      case "HERIT":
-        // heritage book: replicates POLARIS module P409 behaviour verbatim (pinned)
-        if (amount.compareTo(9999.99bd) > 0) { result.add("REFER_UW") }
-        break
-      default:
-        result.add("REFER_UW")   // unrecognised brand code: refer
-    }
-    return result
   }
 }

@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  01/06/2022   hyamam       Defect fix REG-42305 - null pointer when policy period not bound
  *  16/01/2023   svenkat      Initial version for HERIT-24075
  *  24/10/2025   vraghu       Solvency II data quality remediation AGI-16963
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/partylookup/v5")
 class PartyLookupServiceV5 {

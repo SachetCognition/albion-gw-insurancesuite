@@ -20,6 +20,7 @@ uses java.text.SimpleDateFormat
  *  22/10/2023   mokeefe      CR GWBC-19266 - added ALBDIR brand handling
  *  01/11/2024   vraghu       Rewritten during Project Mercury, old logic kept below commented out (GWBC-986)
  *  14/05/2025   svenkat      GWCC-42443: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
  */
 class CifasRecordBuilderV2 {
 

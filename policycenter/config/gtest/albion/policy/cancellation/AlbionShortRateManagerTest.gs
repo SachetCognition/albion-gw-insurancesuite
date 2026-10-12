@@ -1,7 +1,7 @@
 package albion.policy.cancellation
 
 uses albion.config.AlbionConfigService
-uses albion.policy.support.AlbionPolicyTestBeans
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
 uses java.util.Map
 
@@ -61,39 +61,5 @@ class AlbionShortRateManagerTest extends TestBase {
 
   function testUnscopedConfigDoesNotMoveLegacyThreshold() {
     assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "AnnualPremium_Ext" -> 2bd}), {"po.refer.threshold.albdir" -> "1"}))
-  }
-
-  function testBrandVariantALBBRKKey() {
-    assertEquals("brandvariant.AlbionShortRateManager.ALBBRK.enabled", AlbionShortRateManager.brandVariantKey("ALBBRK"))
-  }
-
-  function testBrandVariantALBBRKOffByDefault() {
-    assertEquals("REFER_UW,REFER_UW_SENIOR", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBBRK", "AnnualPremium_Ext" -> 1000000bd, "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
-    assertEquals("REFER_UW,REFER_UW_SENIOR", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBBRK", "AnnualPremium_Ext" -> 1000000bd, "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionShortRateManager.ALBBRK.enabled" -> "false"}))
-  }
-
-  function testBrandVariantALBBRKEnabledByConfig() {
-    assertEquals("FLOODRE_NOTIFY,SUPPRESS_EXCESS_WAIVER", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBBRK", "AnnualPremium_Ext" -> 1000000bd, "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionShortRateManager.ALBBRK.enabled" -> "true"}))
-  }
-
-  function testBrandVariantALBBRKOnlyAppliesToItsBrand() {
-    assertEquals("MANUAL_REVIEW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "AnnualPremium_Ext" -> 1000000bd, "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionShortRateManager.ALBBRK.enabled" -> "true"}))
-  }
-
-  function testBrandVariantALBDIRKey() {
-    assertEquals("brandvariant.AlbionShortRateManager.ALBDIR.enabled", AlbionShortRateManager.brandVariantKey("ALBDIR"))
-  }
-
-  function testBrandVariantALBDIROffByDefault() {
-    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
-    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionShortRateManager.ALBDIR.enabled" -> "false"}))
-  }
-
-  function testBrandVariantALBDIREnabledByConfig() {
-    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionShortRateManager.ALBDIR.enabled" -> "true"}))
-  }
-
-  function testBrandVariantALBDIROnlyAppliesToItsBrand() {
-    assertEquals("MANUAL_REVIEW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionShortRateManager.ALBDIR.enabled" -> "true"}))
   }
 }

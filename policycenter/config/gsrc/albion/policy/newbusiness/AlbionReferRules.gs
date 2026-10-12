@@ -18,7 +18,7 @@ uses java.math.BigDecimal
  *  01/03/2013   baldrid      Initial version for PRB-32129
  *  14/12/2021   gferran      Defect fix PRB-18845 - null pointer when policy period not bound
  *  22/07/2023   tlindq       Rewritten during Project Mercury, old logic kept below commented out (GWBC-40262)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionReferRules {
 

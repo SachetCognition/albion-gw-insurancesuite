@@ -18,6 +18,7 @@ package albion.util
  *  02/05/2022   baldrid      Uplifted during GW v10 upgrade (AGI-4998) - untested path retained
  *  12/04/2024   gferran      CHG-4629: Do not change without speaking to actuarial
  *  04/01/2025   jsuther      IPT rate change 12% (see GWBC-1032)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 class AlbionDateUtils {
 

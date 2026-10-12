@@ -18,7 +18,7 @@ uses java.math.BigDecimal
  *  15/07/2011   kmbeki       Initial version for REG-8350
  *  28/03/2017   akowal       Regulatory change REG-36779 (FCA GI pricing remedy)
  *  05/08/2019   mokeefe      HERIT-20648: Do not change without speaking to actuarial
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionRetentionSaveService {
 

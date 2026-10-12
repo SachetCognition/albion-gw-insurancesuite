@@ -20,7 +20,7 @@ uses java.math.BigDecimal
  *  26/03/2020   rpatel       Merged from heritage branch (HERIT-6363)
  *  12/05/2022   gferran      Solvency II data quality remediation GWPC-45167
  *  14/07/2025   gwoffsh2     Merged from heritage branch (GWCC-21113)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionTCFOutcomeEngine {
 

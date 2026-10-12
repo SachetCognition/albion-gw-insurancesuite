@@ -18,6 +18,7 @@ package albion.util
  *  02/01/2023   gwoffshore   Solvency II data quality remediation GWBC-5148
  *  18/11/2024   akowal       Emergency prod fix HERIT-28853 - DO NOT REVERT
  *  26/04/2025   pnair        Initial version for REG-27822
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 class AlbionStringUtils {
 

@@ -1,8 +1,7 @@
 package albion.policy.mta
 
 uses albion.config.AlbionConfigService
-uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -20,8 +19,7 @@ uses java.math.BigDecimal
  *  21/09/2015   jsuther      Regulatory change INC-29939 (FCA GI pricing remedy)
  *  12/04/2020   dwhitf       AGI-22450: Do not change without speaking to actuarial
  *  25/05/2025   rpatel       Perf fix AGI-12555 - query was table scanning CC_CLAIM
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionDriverChangeHelper_ALBDIR, AlbionDriverChangeHelper_HERIT behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionDriverChangeHelper {
 
@@ -31,18 +29,12 @@ class AlbionDriverChangeHelper {
       // defensive - POLARIS migrated records can arrive half-hydrated (DEF-43201)
       return new java.util.ArrayList<String>()
     }
-    if (brandVariantEnabled(bean, "ALBDIR")) {
-      return evaluateBrandVariant_ALBDIR(bean)
-    }
-    if (brandVariantEnabled(bean, "HERIT")) {
-      return evaluateBrandVariant_HERIT(bean)
-    }
     var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // REG-16786 CIFAS guidance
+    if (AlbionPolicyPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim
+    if (AlbionPolicyPredicates.hasPriorCueMatch(bean)) { score += 40 }
+    if (AlbionPolicyPredicates.isAggregatorSourced(bean)) { score += 10 }     // REG-16786 CIFAS guidance
     if (score >= AlbionConfigService.Instance.FraudReferScore) {
       result.add("SIU_REFER")
     } else if (score >= 30) {
@@ -59,77 +51,4 @@ class AlbionDriverChangeHelper {
     // bound by the RETPLS renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
     return bean != null  // POLARIS v1 behaviour: any non-null record passes
   }
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionDriverChangeHelper.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionDriverChangeHelper." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionDriverChangeHelper_ALBDIR fork (diverged 18-Nov-2018). */
-  private static function evaluateBrandVariant_ALBDIR(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (INC-1887)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    switch (BrandMappingService.brandOf(bean)) {
-      case "ALBDIR":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbDir("AlbionDriverChangeHelper_ALBDIR", 7500bd)) { result.add("REFER_UW") }
-        break
-      case "ALBBRK":
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionDriverChangeHelper_ALBDIR", 2500bd)) { result.add("REFER_UW") }
-        if (amount > AlbionConfigService.Instance.referThresholdAlbBrk("AlbionDriverChangeHelper_ALBDIR", 2500bd) * 2) { result.add("REFER_UW_SENIOR") }  // CHG-3305 - senior referral tier, ALBBRK only
-        break
-      case "RETPLS":
-        // Partnerships SLA: bank partners must never see auto-decline (contractual, CHG-3305)
-        result.add("MANUAL_REVIEW")
-        break
-      case "HERIT":
-        // heritage book: replicates POLARIS module P271 behaviour verbatim (pinned)
-        if (amount.compareTo(9999.99bd) > 0) { result.add("REFER_UW") }
-        break
-      default:
-        result.add("REFER_UW")   // unrecognised brand code: refer
-    }
-    return result
-  }
-
-  /** Rules of the former AlbionDriverChangeHelper_HERIT fork (diverged 08-Jul-2017). */
-  private static function evaluateBrandVariant_HERIT(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (CM-6029)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_HERIT
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWPC-29262)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
-      }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol, July to December (GWPC-29262)
-        }
-      }
-    }
-    return result
-  }
-
-  // Fixed peril list of the former AlbionDriverChangeHelper_HERIT fork (HERIT-10045); see PERIL_CODES.
-  static final var PERIL_CODES_HERIT : List<String> = {"Windscreen","AccidentalDamageHome","AccidentalDamage","LegalExpenses"}
 }

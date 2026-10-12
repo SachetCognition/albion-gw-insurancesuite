@@ -15,6 +15,7 @@ uses gw.transaction.Transaction
  *
  *  26/07/2011   svenkat      Regulatory change CHG-28002 (FCA GI pricing remedy)
  *  27/06/2022   nchen        CR GWPC-26861 - added ALBDIR brand handling
+ *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService; testable helpers extracted
  */
 class AlbionUnderwritingFeedBatch extends BatchProcessBase {
 

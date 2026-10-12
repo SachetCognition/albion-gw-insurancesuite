@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  27/11/2012   gferran      Merged from heritage branch (CHG-20105)
  *  05/10/2020   rpatel       Perf fix GWBC-45710 - query was table scanning CC_CLAIM
  *  01/12/2021   pnair        Perf fix HERIT-19588 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/quoteretrieve/v2")
 class QuoteRetrieveServiceV2 {

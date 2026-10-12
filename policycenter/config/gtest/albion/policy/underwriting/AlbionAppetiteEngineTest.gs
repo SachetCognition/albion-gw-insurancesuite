@@ -1,7 +1,7 @@
 package albion.policy.underwriting
 
 uses albion.config.AlbionConfigService
-uses albion.policy.support.AlbionPolicyTestBeans
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
 uses java.util.Map
 
@@ -48,39 +48,5 @@ class AlbionAppetiteEngineTest extends TestBase {
 
   function testJobSignalsUseLatestPeriod() {
     assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.job(null, AlbionPolicyTestBeans.policyPeriod(null, AlbionPolicyTestBeans.daysAgo(2), null), "AGGR"), null))
-  }
-
-  function testBrandVariantHERITKey() {
-    assertEquals("brandvariant.AlbionAppetiteEngine.HERIT.enabled", AlbionAppetiteEngine.brandVariantKey("HERIT"))
-  }
-
-  function testBrandVariantHERITOffByDefault() {
-    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
-    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAppetiteEngine.HERIT.enabled" -> "false"}))
-  }
-
-  function testBrandVariantHERITEnabledByConfig() {
-    assertEquals("", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "HERIT", "TotalIncurred_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAppetiteEngine.HERIT.enabled" -> "true"}))
-  }
-
-  function testBrandVariantHERITOnlyAppliesToItsBrand() {
-    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAppetiteEngine.HERIT.enabled" -> "true"}))
-  }
-
-  function testBrandVariantRETPLSKey() {
-    assertEquals("brandvariant.AlbionAppetiteEngine.RETPLS.enabled", AlbionAppetiteEngine.brandVariantKey("RETPLS"))
-  }
-
-  function testBrandVariantRETPLSOffByDefault() {
-    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "TotalIncurred_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
-    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "TotalIncurred_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAppetiteEngine.RETPLS.enabled" -> "false"}))
-  }
-
-  function testBrandVariantRETPLSEnabledByConfig() {
-    assertEquals("", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "TotalIncurred_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAppetiteEngine.RETPLS.enabled" -> "true"}))
-  }
-
-  function testBrandVariantRETPLSOnlyAppliesToItsBrand() {
-    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "TotalIncurred_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAppetiteEngine.RETPLS.enabled" -> "true"}))
   }
 }

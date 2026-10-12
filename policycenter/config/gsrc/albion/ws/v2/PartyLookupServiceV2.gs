@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  06/12/2015   mokeefe      Initial version for INC-39721
  *  24/04/2022   dwhitf       Defect fix CM-46983 - null pointer when policy period not bound
  *  25/06/2024   tlindq       CR AGI-48094 - added ALBDIR brand handling
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/partylookup/v2")
 class PartyLookupServiceV2 {

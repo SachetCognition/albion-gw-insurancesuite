@@ -20,6 +20,7 @@ uses gw.transaction.Transaction
  *  12/11/2021   hyamam       Solvency II data quality remediation CM-701
  *  20/10/2022   akowal       Defect fix GWPC-27255 - null pointer when policy period not bound
  *  19/05/2024   cdoyle       CR CM-15260 - added RETPLS brand handling
+ *  12/10/2026   AGI-GW Platform  Escalation age as ESCALATION_AGE_DAYS; comment cleanup
  */
 class AlbionDocumentsHousekeepingBatch extends BatchProcessBase {
 

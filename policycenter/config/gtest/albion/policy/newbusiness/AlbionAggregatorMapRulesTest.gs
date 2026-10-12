@@ -1,7 +1,7 @@
 package albion.policy.newbusiness
 
 uses albion.config.AlbionConfigService
-uses albion.policy.support.AlbionPolicyTestBeans
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
 uses java.util.Map
 
@@ -61,39 +61,5 @@ class AlbionAggregatorMapRulesTest extends TestBase {
 
   function testUnscopedConfigDoesNotMoveLegacyThreshold() {
     assertEquals("", run(AlbionPolicyTestBeans.bean({"BrandCode_Ext" -> "ALBDIR", "EstimatedLoss_Ext" -> 2bd}), {"po.refer.threshold.albdir" -> "1"}))
-  }
-
-  function testBrandVariantHERITKey() {
-    assertEquals("brandvariant.AlbionAggregatorMapRules.HERIT.enabled", AlbionAggregatorMapRules.brandVariantKey("HERIT"))
-  }
-
-  function testBrandVariantHERITOffByDefault() {
-    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "HERIT", "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
-    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "HERIT", "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAggregatorMapRules.HERIT.enabled" -> "false"}))
-  }
-
-  function testBrandVariantHERITEnabledByConfig() {
-    assertEquals("", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "HERIT", "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAggregatorMapRules.HERIT.enabled" -> "true"}))
-  }
-
-  function testBrandVariantHERITOnlyAppliesToItsBrand() {
-    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAggregatorMapRules.HERIT.enabled" -> "true"}))
-  }
-
-  function testBrandVariantRETPLSKey() {
-    assertEquals("brandvariant.AlbionAggregatorMapRules.RETPLS.enabled", AlbionAggregatorMapRules.brandVariantKey("RETPLS"))
-  }
-
-  function testBrandVariantRETPLSOffByDefault() {
-    assertEquals("MANUAL_REVIEW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "EstimatedLoss_Ext" -> 1000000bd, "TotalIncurred_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
-    assertEquals("MANUAL_REVIEW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "EstimatedLoss_Ext" -> 1000000bd, "TotalIncurred_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAggregatorMapRules.RETPLS.enabled" -> "false"}))
-  }
-
-  function testBrandVariantRETPLSEnabledByConfig() {
-    assertEquals("", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "EstimatedLoss_Ext" -> 1000000bd, "TotalIncurred_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAggregatorMapRules.RETPLS.enabled" -> "true"}))
-  }
-
-  function testBrandVariantRETPLSOnlyAppliesToItsBrand() {
-    assertEquals("REFER_UW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "EstimatedLoss_Ext" -> 1000000bd, "TotalIncurred_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionAggregatorMapRules.RETPLS.enabled" -> "true"}))
   }
 }

@@ -18,7 +18,7 @@ uses java.math.BigDecimal
  *  23/07/2012   tlindq       Regulatory change CM-42043 (FCA GI pricing remedy)
  *  18/05/2020   dwhitf       Merged from heritage branch (CHG-29602)
  *  23/04/2025   vraghu       Defect fix PRB-3854 - null pointer when policy period not bound
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class ProfessionalIndemnityUnderwritingHandler {
 

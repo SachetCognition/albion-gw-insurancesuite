@@ -18,6 +18,7 @@ uses gw.transaction.Transaction
  *  06/12/2015   jsuther      AGI-35230: Do not change without speaking to actuarial
  *  15/03/2018   nchen        Emergency prod fix REG-12831 - DO NOT REVERT
  *  20/05/2020   svenkat      Rewritten during Project Mercury, old logic kept below commented out (PRB-21404)
+ *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService; testable helpers extracted
  */
 class AlbionComplianceEscalationBatch extends BatchProcessBase {
 

@@ -18,6 +18,7 @@ package albion.util
  *  03/09/2022   jsuther      Uplifted during GW v10 upgrade (GWPC-18035) - untested path retained
  *  01/10/2023   jsuther      Emergency prod fix AGI-47265 - DO NOT REVERT
  *  27/10/2024   rpatel       Initial version for AGI-23650
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 class BrandRoutingUtils {
 

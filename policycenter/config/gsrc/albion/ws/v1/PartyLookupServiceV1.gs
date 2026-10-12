@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  11/09/2020   tlindq       CR INC-44062 - added HERIT brand handling
  *  05/02/2022   gferran      Solvency II data quality remediation GWCC-40255
  *  12/08/2024   dwhitf       CM-8718: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/partylookup/v1")
 class PartyLookupServiceV1 {

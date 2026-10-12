@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  15/07/2016   nchen        IPT rate change 12% (see DEF-26133)
  *  04/03/2019   svenkat      Uplifted during GW v10 upgrade (AGI-45655) - untested path retained
  *  09/07/2023   vraghu       Perf fix PRB-17223 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/bordereaux/v1")
 class BrokerBordereauxServiceV1 {

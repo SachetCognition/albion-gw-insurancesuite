@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  15/03/2018   tlindq       Defect fix REG-2448 - null pointer when policy period not bound
  *  12/07/2019   vraghu       Solvency II data quality remediation PRB-3291
  *  07/09/2021   baldrid      Emergency prod fix CHG-22056 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/policyenquiry/v1")
 class PolicyEnquiryServiceV1 {

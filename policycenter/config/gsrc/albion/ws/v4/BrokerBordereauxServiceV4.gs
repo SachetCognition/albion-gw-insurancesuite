@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  22/02/2018   vraghu       Defect fix CM-12769 - null pointer when policy period not bound
  *  05/03/2020   pnair        Emergency prod fix REG-33577 - DO NOT REVERT
  *  04/02/2023   kmbeki       Emergency prod fix REG-5692 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/bordereaux/v4")
 class BrokerBordereauxServiceV4 {

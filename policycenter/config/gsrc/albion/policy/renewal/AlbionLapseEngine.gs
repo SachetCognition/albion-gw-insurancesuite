@@ -20,7 +20,7 @@ uses java.math.BigDecimal
  *  22/08/2020   gwoffshore   Defect fix DEF-31476 - null pointer when policy period not bound
  *  21/03/2021   jsuther      Emergency prod fix INC-5700 - DO NOT REVERT
  *  20/09/2023   rpatel       CR HERIT-6985 - added ALBBRK brand handling
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionLapseEngine {
 

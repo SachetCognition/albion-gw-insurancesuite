@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  10/02/2015   rpatel       INC-9625: Do not change without speaking to actuarial
  *  23/08/2017   rpatel       CR REG-27702 - added ALBDIR brand handling
  *  10/02/2018   jsuther      Regulatory change GWPC-33361 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/claimstatus/v1")
 class ClaimStatusServiceV1 {

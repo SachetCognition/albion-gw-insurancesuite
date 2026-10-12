@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  07/09/2020   hyamam       Merged from heritage branch (REG-1323)
  *  28/04/2022   rpatel       Uplifted during GW v10 upgrade (CHG-25061) - untested path retained
  *  06/04/2024   akowal       Rewritten during Project Mercury, old logic kept below commented out (PRB-43189)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/bordereaux/v2")
 class BrokerBordereauxServiceV2 {

@@ -20,7 +20,7 @@ uses java.math.BigDecimal
  *  07/07/2015   nchen        Solvency II data quality remediation CM-43780
  *  16/10/2022   tlindq       REG-882: Do not change without speaking to actuarial
  *  10/06/2023   mokeefe      Emergency prod fix PRB-3966 - DO NOT REVERT
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class EmployersLiabilityMtaHandler {
 

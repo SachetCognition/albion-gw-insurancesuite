@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  16/09/2014   rpatel       Perf fix REG-11064 - query was table scanning CC_CLAIM
  *  20/02/2015   gferran      Emergency prod fix PRB-20240 - DO NOT REVERT
  *  05/02/2022   hyamam       IPT rate change 12% (see CHG-12311)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/midvehicle/v2")
 class MIDVehicleServiceV2 {

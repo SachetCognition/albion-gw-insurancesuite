@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  03/07/2018   nchen        Perf fix DEF-3611 - query was table scanning CC_CLAIM
  *  17/07/2020   dwhitf       IPT rate change 12% (see GWBC-38118)
  *  04/08/2022   vraghu       Emergency prod fix GWPC-33570 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/bordereaux/v3")
 class BrokerBordereauxServiceV3 {

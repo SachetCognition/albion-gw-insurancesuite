@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  18/10/2014   jsuther      Initial version for DEF-36915
  *  23/09/2018   gferran      IPT rate change 12% (see PRB-48729)
  *  24/08/2025   tlindq       Perf fix PRB-42678 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/polaris/v1")
 class PolarisCICSGateway {

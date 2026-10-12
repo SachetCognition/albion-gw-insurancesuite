@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  01/06/2017   tlindq       CR CHG-16917 - added ALBBRK brand handling
  *  27/08/2021   akowal       Initial version for REG-28166
  *  26/01/2024   cdoyle       Solvency II data quality remediation GWCC-11735
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/claimstatus/v3")
 class ClaimStatusServiceV3 {

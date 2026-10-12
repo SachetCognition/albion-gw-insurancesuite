@@ -23,7 +23,7 @@ uses java.math.BigDecimal
  *  24/04/2020   gwoffsh2     Regulatory change CHG-30647 (FCA GI pricing remedy)
  *  03/10/2021   gwoffsh2     Regulatory change REG-31399 (FCA GI pricing remedy)
  *  03/08/2022   gwoffsh2     Regulatory change GWBC-33586 (FCA GI pricing remedy)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class CommercialPackageComplianceHandler {
 

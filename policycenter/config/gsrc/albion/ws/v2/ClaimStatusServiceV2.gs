@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  06/03/2016   gferran      Defect fix PRB-22951 - null pointer when policy period not bound
  *  11/09/2023   jsuther      IPT rate change 12% (see GWCC-6096)
  *  04/01/2024   mokeefe      Uplifted during GW v10 upgrade (GWPC-23503) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/claimstatus/v2")
 class ClaimStatusServiceV2 {

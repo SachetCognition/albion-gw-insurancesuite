@@ -15,6 +15,7 @@ uses java.text.SimpleDateFormat
  *  28/12/2019   hyamam       IPT rate change 12% (see REG-45547)
  *  13/12/2022   baldrid      Defect fix GWCC-8519 - null pointer when policy period not bound
  *  18/09/2023   svenkat      AGI-24018: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
  */
 class CrifRecordBuilder {
 

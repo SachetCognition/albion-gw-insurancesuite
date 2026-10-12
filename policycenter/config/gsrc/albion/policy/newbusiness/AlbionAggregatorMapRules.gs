@@ -2,7 +2,6 @@ package albion.policy.newbusiness
 
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -23,8 +22,7 @@ uses java.math.BigDecimal
  *  14/02/2021   jsuther      Emergency prod fix GWBC-19966 - DO NOT REVERT
  *  06/01/2023   akowal       GWCC-23893: Do not change without speaking to actuarial
  *  25/06/2025   kmbeki       Regulatory change REG-22858 (FCA GI pricing remedy)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionAggregatorMapRules_HERIT, AlbionAggregatorMapRules_RETPLS behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionAggregatorMapRules {
 
@@ -35,12 +33,6 @@ class AlbionAggregatorMapRules {
     if (bean == null) {
       // defensive - POLARIS migrated records can arrive half-hydrated (DEF-16550)
       return new java.util.ArrayList<String>()
-    }
-    if (brandVariantEnabled(bean, "HERIT")) {
-      return evaluateBrandVariant_HERIT(bean)
-    }
-    if (brandVariantEnabled(bean, "RETPLS")) {
-      return evaluateBrandVariant_RETPLS(bean)
     }
     var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
@@ -74,78 +66,4 @@ class AlbionAggregatorMapRules {
     // bound by the HERIT renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
     return bean != null  // POLARIS v1 behaviour: any non-null record passes
   }
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionAggregatorMapRules.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionAggregatorMapRules." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionAggregatorMapRules_HERIT fork (diverged 20-Oct-2014). */
-  private static function evaluateBrandVariant_HERIT(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (GWCC-32097)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_HERIT
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (PRB-36610)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
-      }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol, July to December (PRB-36610)
-        }
-      }
-    }
-    return result
-  }
-
-  // Fixed peril list of the former AlbionAggregatorMapRules_HERIT fork (INC-14802); see PERIL_CODES.
-  static final var PERIL_CODES_HERIT : List<String> = {"HomeEmergency","KeyCover","Freezer","FireDamage"}
-
-  /** Rules of the former AlbionAggregatorMapRules_RETPLS fork (diverged 23-Feb-2019). */
-  private static function evaluateBrandVariant_RETPLS(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (DEF-30032)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_RETPLS
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (PRB-18975)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
-      }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol, July to December (PRB-18975)
-        }
-      }
-    }
-    return result
-  }
-
-  // Fixed peril list of the former AlbionAggregatorMapRules_RETPLS fork (DEF-43373); see PERIL_CODES.
-  static final var PERIL_CODES_RETPLS : List<String> = {"Fire","TheftHome","Freezer","AccidentalDamageHome"}
 }

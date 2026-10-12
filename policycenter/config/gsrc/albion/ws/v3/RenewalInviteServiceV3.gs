@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  13/02/2016   rpatel       Regulatory change DEF-18460 (FCA GI pricing remedy)
  *  26/04/2019   nchen        Solvency II data quality remediation HERIT-16366
  *  06/11/2021   gwoffshore   Regulatory change CHG-8398 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/renewalinvite/v3")
 class RenewalInviteServiceV3 {

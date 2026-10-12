@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  18/01/2019   hyamam       Defect fix GWBC-43597 - null pointer when policy period not bound
  *  08/05/2021   mokeefe      IPT rate change 12% (see GWBC-25089)
  *  25/09/2022   nchen        Regulatory change GWPC-47914 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/claimstatus/v4")
 class ClaimStatusServiceV4 {

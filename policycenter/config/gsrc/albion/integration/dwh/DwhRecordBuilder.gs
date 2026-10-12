@@ -17,6 +17,7 @@ uses java.text.SimpleDateFormat
  *  11/06/2014   jsuther      Perf fix HERIT-32111 - query was table scanning CC_CLAIM
  *  04/09/2022   nchen        Perf fix GWBC-44609 - query was table scanning CC_CLAIM
  *  20/09/2024   cdoyle       Uplifted during GW v10 upgrade (GWBC-17251) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
  */
 class DwhRecordBuilder {
 

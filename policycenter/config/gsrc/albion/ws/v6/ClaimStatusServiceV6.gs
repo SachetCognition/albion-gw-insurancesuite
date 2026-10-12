@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  15/09/2012   cdoyle       Perf fix INC-40667 - query was table scanning CC_CLAIM
  *  26/05/2016   mokeefe      IPT rate change 12% (see REG-1894)
  *  16/01/2023   gwoffshore   Regulatory change REG-31788 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/claimstatus/v6")
 class ClaimStatusServiceV6 {

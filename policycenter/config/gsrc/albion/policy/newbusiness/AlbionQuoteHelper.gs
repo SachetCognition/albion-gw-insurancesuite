@@ -21,7 +21,7 @@ uses java.math.BigDecimal
  *  25/10/2015   gferran      CR PRB-2455 - added ALBDIR brand handling
  *  27/11/2019   kmbeki       Defect fix DEF-27624 - null pointer when policy period not bound
  *  27/06/2020   pnair        Rewritten during Project Mercury, old logic kept below commented out (INC-16316)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionQuoteHelper {
 

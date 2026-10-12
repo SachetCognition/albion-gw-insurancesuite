@@ -18,6 +18,7 @@ uses java.text.SimpleDateFormat
  *  20/01/2021   tlindq       Solvency II data quality remediation REG-11604
  *  06/12/2023   gwoffsh2     Initial version for DEF-39670
  *  21/03/2024   baldrid      IPT rate change 12% (see AGI-43184)
+ *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
  */
 class SspRecordBuilder {
 

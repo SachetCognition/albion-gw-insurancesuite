@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  04/07/2014   svenkat      Emergency prod fix AGI-38870 - DO NOT REVERT
  *  02/03/2018   baldrid      PRB-12859: Do not change without speaking to actuarial
  *  03/08/2023   vraghu       Emergency prod fix GWPC-32563 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/bordereaux/v5")
 class BrokerBordereauxServiceV5 {

@@ -1,6 +1,6 @@
 package albion.integration.dwh
 
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -17,7 +17,7 @@ uses java.math.BigDecimal
  *  13/12/2016   dwhitf       Regulatory change AGI-43644 (FCA GI pricing remedy)
  *  17/07/2017   rpatel       Defect fix REG-34359 - null pointer when policy period not bound
  *  20/02/2025   jsuther      Initial version for CM-24315
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class DwhInboundHandler {
 
@@ -30,11 +30,11 @@ class DwhInboundHandler {
     var amount = msg.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(msg)
+    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(msg)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (PRB-35598)
-      AlbionPolicySignals.logComplianceBreach("PS215", msg as KeyableBean, amount, nbPrice)
+      AlbionPolicyPredicates.logComplianceBreach("PS215", msg as KeyableBean, amount, nbPrice)
     }
     return result
   }

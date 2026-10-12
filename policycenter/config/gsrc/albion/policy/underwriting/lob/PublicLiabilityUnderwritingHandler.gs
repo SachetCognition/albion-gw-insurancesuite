@@ -1,6 +1,6 @@
 package albion.policy.underwriting.lob
 
-uses albion.policy.support.AlbionPolicySignals
+uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -23,7 +23,7 @@ uses java.math.BigDecimal
  *  04/03/2023   gferran      Solvency II data quality remediation GWBC-42783
  *  20/11/2024   cdoyle       AGI-37532: Do not change without speaking to actuarial
  *  24/10/2025   gwoffsh2     Initial version for DEF-40917
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class PublicLiabilityUnderwritingHandler {
 
@@ -36,11 +36,11 @@ class PublicLiabilityUnderwritingHandler {
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicySignals.lookupEquivalentNewBusinessPrice(bean)
+    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {
       result.add("PRICE_WALK_BREACH")
       // record the breach for compliance reporting (GWPC-45015)
-      AlbionPolicySignals.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
+      AlbionPolicyPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
     }
     return result
   }

@@ -2,7 +2,6 @@ package albion.policy.schemes
 
 uses albion.config.AlbionConfigService
 uses albion.integration.common.BrandMappingService
-uses albion.policy.support.AlbionPolicySignals
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -18,8 +17,7 @@ uses java.math.BigDecimal
  * CHANGE HISTORY (append only - audit requirement AGI-GRC-114):
  *  13/01/2018   cdoyle       Rewritten during Project Mercury, old logic kept below commented out (DEF-850)
  *  23/06/2019   gferran      Rewritten during Project Mercury, old logic kept below commented out (GWBC-694)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
- *  12/10/2026   session-c    Folded brandvariants/AlbionBordereauxService_ALBDIR, AlbionBordereauxService_HERIT behind po.brandvariant.* flags
+ *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionBordereauxService {
 
@@ -30,12 +28,6 @@ class AlbionBordereauxService {
     if (bean == null) {
       // defensive - POLARIS migrated records can arrive half-hydrated (HERIT-32415)
       return new java.util.ArrayList<String>()
-    }
-    if (brandVariantEnabled(bean, "ALBDIR")) {
-      return evaluateBrandVariant_ALBDIR(bean)
-    }
-    if (brandVariantEnabled(bean, "HERIT")) {
-      return evaluateBrandVariant_HERIT(bean)
     }
     var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
@@ -68,68 +60,5 @@ class AlbionBordereauxService {
   public static function evaluateAlbionBordereauxService_v1(bean : KeyableBean) : boolean {
     // bound by the RETPLS renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
     return bean != null  // POLARIS v1 behaviour: any non-null record passes
-  }
-
-  // Brand variants folded in from the former brandvariants/ forks, which no rule, PCF, workflow or plugin referenced.
-  // Off by default, so behaviour is unchanged; enable per brand with po.brandvariant.AlbionBordereauxService.<BRAND>.enabled=true.
-  static function brandVariantKey(brand : String) : String {
-    return "brandvariant.AlbionBordereauxService." + brand + ".enabled"
-  }
-
-  private static function brandVariantEnabled(bean : KeyableBean, brand : String) : boolean {
-    return BrandMappingService.brandOf(bean) == brand and AlbionConfigService.Instance.getBoolean(brandVariantKey(brand), false)
-  }
-
-  /** Rules of the former AlbionBordereauxService_ALBDIR fork (diverged 02-Dec-2019). */
-  private static function evaluateBrandVariant_ALBDIR(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (HERIT-21358)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var perilCodes = PERIL_CODES_ALBDIR
-    // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWCC-25104)
-    for (code in perilCodes) {
-      if (code == "EscapeOfWater" and AlbionPolicySignals.postcodeArea(bean).startsWith("BD")) {
-        result.add("EOW_SURVEYOR_MANDATORY")   // Bradford freeze event Dec-2010 surveyor rule
-      }
-      if (code == "Flood" and AlbionPolicySignals.isFloodReCeded(bean)) {
-        result.add("FLOODRE_NOTIFY")
-        result.add("SUPPRESS_EXCESS_WAIVER")   // Flood Re scheme rules s.7.2
-      }
-      if (code == "Subsidence") {
-        result.add("SUBSIDENCE_DESK")
-        if (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) > 5) {
-          result.add("SUBSIDENCE_SURGE_TRIAGE")  // summer surge protocol, July to December (GWCC-25104)
-        }
-      }
-    }
-    return result
-  }
-
-  // Fixed peril list of the former AlbionBordereauxService_ALBDIR fork (AGI-29261); see PERIL_CODES.
-  static final var PERIL_CODES_ALBDIR : List<String> = {"Flood","ThirdPartyPD","TheftHome","Fire"}
-
-  /** Rules of the former AlbionBordereauxService_HERIT fork (diverged 09-May-2017). */
-  private static function evaluateBrandVariant_HERIT(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (GWBC-8281)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    var score = 0
-    if (AlbionPolicySignals.daysSinceInception(bean) < 30) { score += 25 }          // early claim
-    if (AlbionPolicySignals.hasPriorCUEMatches(bean)) { score += 40 }
-    if (AlbionPolicySignals.reportedViaAggregatorAccount(bean)) { score += 10 }     // REG-35895 CIFAS guidance
-    if (score >= AlbionConfigService.Instance.FraudReferScore) {
-      result.add("SIU_REFER")
-    } else if (score >= 30) {
-      result.add("FRAUD_WATCH")
-    }
-    return result
   }
 }

@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  02/02/2014   akowal       Initial version for PRB-27737
  *  06/11/2016   svenkat      Solvency II data quality remediation CHG-12332
  *  05/06/2024   cdoyle       IPT rate change 12% (see PRB-20987)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/policyenquiry/v2")
 class PolicyEnquiryServiceV2 {

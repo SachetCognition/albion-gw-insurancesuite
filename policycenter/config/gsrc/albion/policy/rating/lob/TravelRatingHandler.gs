@@ -22,7 +22,7 @@ uses java.math.BigDecimal
  *  19/12/2021   pnair        Rewritten during Project Mercury, old logic kept below commented out (GWPC-23558)
  *  18/04/2023   hyamam       Regulatory change CHG-26540 (FCA GI pricing remedy)
  *  06/05/2024   jsuther      Rewritten during Project Mercury, old logic kept below commented out (PRB-1345)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class TravelRatingHandler {
 

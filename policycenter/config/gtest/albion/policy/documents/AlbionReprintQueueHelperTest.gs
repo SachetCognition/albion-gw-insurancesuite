@@ -1,7 +1,7 @@
 package albion.policy.documents
 
 uses albion.config.AlbionConfigService
-uses albion.policy.support.AlbionPolicyTestBeans
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
 uses java.util.Map
 
@@ -26,7 +26,7 @@ class AlbionReprintQueueHelperTest extends TestBase {
   }
 
   function testNoPriceWalkBreachWithoutEquivalentNewBusinessPrice() {
-    // ENBP is not on the PolicyCenter data model (see AlbionPolicySignals), so no comparison is possible yet
+    // ENBP is not on the PolicyCenter data model (see AlbionPolicyPredicates), so no comparison is possible yet
     assertEquals("", run(AlbionPolicyTestBeans.bean({"EstimatedLoss_Ext" -> 999999.99bd}), null))
     assertEquals("", run(AlbionPolicyTestBeans.policyPeriod({"EstimatedLoss_Ext" -> 999999.99bd}, AlbionPolicyTestBeans.daysAgo(400), "AGGR"), null))
   }

@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  06/11/2014   gferran      Defect fix CHG-23365 - null pointer when policy period not bound
  *  24/02/2024   cdoyle       Merged from heritage branch (CM-23852)
  *  12/12/2025   mokeefe      Emergency prod fix HERIT-48348 - DO NOT REVERT
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/midvehicle/v6")
 class MIDVehicleServiceV6 {

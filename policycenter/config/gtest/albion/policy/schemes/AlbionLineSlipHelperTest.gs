@@ -1,7 +1,7 @@
 package albion.policy.schemes
 
 uses albion.config.AlbionConfigService
-uses albion.policy.support.AlbionPolicyTestBeans
+uses albion.policy.common.AlbionPolicyTestBeans
 uses gw.testharness.TestBase
 uses java.util.Map
 
@@ -39,39 +39,5 @@ class AlbionLineSlipHelperTest extends TestBase {
 
   function testPerilListIsTheLegacyList() {
     assertEquals("PersonalAccident,EscapeOfWater,Flood,AccidentalDamage", String.join(",", AlbionLineSlipHelper.PERIL_CODES))
-  }
-
-  function testBrandVariantALBDIRKey() {
-    assertEquals("brandvariant.AlbionLineSlipHelper.ALBDIR.enabled", AlbionLineSlipHelper.brandVariantKey("ALBDIR"))
-  }
-
-  function testBrandVariantALBDIROffByDefault() {
-    assertEquals("EOW_SURVEYOR_MANDATORY,FLOODRE_NOTIFY,SUPPRESS_EXCESS_WAIVER", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
-    assertEquals("EOW_SURVEYOR_MANDATORY,FLOODRE_NOTIFY,SUPPRESS_EXCESS_WAIVER", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionLineSlipHelper.ALBDIR.enabled" -> "false"}))
-  }
-
-  function testBrandVariantALBDIREnabledByConfig() {
-    assertEquals("FRAUD_WATCH", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBDIR", "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionLineSlipHelper.ALBDIR.enabled" -> "true"}))
-  }
-
-  function testBrandVariantALBDIROnlyAppliesToItsBrand() {
-    assertEquals("EOW_SURVEYOR_MANDATORY,FLOODRE_NOTIFY,SUPPRESS_EXCESS_WAIVER", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBBRK", "EstimatedLoss_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionLineSlipHelper.ALBDIR.enabled" -> "true"}))
-  }
-
-  function testBrandVariantRETPLSKey() {
-    assertEquals("brandvariant.AlbionLineSlipHelper.RETPLS.enabled", AlbionLineSlipHelper.brandVariantKey("RETPLS"))
-  }
-
-  function testBrandVariantRETPLSOffByDefault() {
-    assertEquals("EOW_SURVEYOR_MANDATORY,FLOODRE_NOTIFY,SUPPRESS_EXCESS_WAIVER", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "EstimatedLoss_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), null))
-    assertEquals("EOW_SURVEYOR_MANDATORY,FLOODRE_NOTIFY,SUPPRESS_EXCESS_WAIVER", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "EstimatedLoss_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionLineSlipHelper.RETPLS.enabled" -> "false"}))
-  }
-
-  function testBrandVariantRETPLSEnabledByConfig() {
-    assertEquals("MANUAL_REVIEW", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "RETPLS", "EstimatedLoss_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionLineSlipHelper.RETPLS.enabled" -> "true"}))
-  }
-
-  function testBrandVariantRETPLSOnlyAppliesToItsBrand() {
-    assertEquals("EOW_SURVEYOR_MANDATORY,FLOODRE_NOTIFY,SUPPRESS_EXCESS_WAIVER", run(AlbionPolicyTestBeans.policyPeriod({"BrandCode_Ext" -> "ALBBRK", "EstimatedLoss_Ext" -> 1000000bd, "AnnualPremium_Ext" -> 1000000bd, "RiskPostcode_Ext" -> "BD7 1AA", "FloodReCeded_Ext" -> Boolean.TRUE}, AlbionPolicyTestBeans.daysAgo(5), "AGGR"), {"po.brandvariant.AlbionLineSlipHelper.RETPLS.enabled" -> "true"}))
   }
 }

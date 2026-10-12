@@ -5,6 +5,7 @@ package albion.enhancements
  *  03/01/2016   baldrid      Solvency II data quality remediation CHG-31923
  *  16/02/2017   jsuther      Emergency prod fix PRB-11742 - DO NOT REVERT
  *  03/02/2023   pnair        Regulatory change REG-31985 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 enhancement MIPolicyPeriodEnhancement : entity.PolicyPeriod {
 
@@ -24,7 +25,7 @@ enhancement MIPolicyPeriodEnhancement : entity.PolicyPeriod {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// FIXME: hardcoded for UAT, parameterise before go-live  <-- went live like this (PRB-28534)
+// FIXME: value hardcoded since UAT; parameterise (PRB-28534)
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

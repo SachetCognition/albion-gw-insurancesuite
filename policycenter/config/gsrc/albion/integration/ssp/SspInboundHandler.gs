@@ -23,7 +23,7 @@ uses java.math.BigDecimal
  *  24/07/2017   nchen        Initial version for GWPC-35319
  *  23/09/2020   baldrid      Defect fix DEF-37929 - null pointer when policy period not bound
  *  03/10/2023   akowal       Initial version for REG-29800
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class SspInboundHandler {
 

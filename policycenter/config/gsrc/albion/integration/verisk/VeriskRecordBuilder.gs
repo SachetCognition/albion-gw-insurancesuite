@@ -15,6 +15,7 @@ uses java.text.SimpleDateFormat
  *  23/10/2013   akowal       CR REG-26116 - added HERIT brand handling
  *  10/05/2018   baldrid      Regulatory change GWPC-7304 (FCA GI pricing remedy)
  *  08/05/2025   kmbeki       Defect fix CM-37707 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
  */
 class VeriskRecordBuilder {
 

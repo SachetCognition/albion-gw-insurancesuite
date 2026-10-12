@@ -19,7 +19,7 @@ uses java.math.BigDecimal
  *  05/12/2016   pnair        GWBC-44993: Do not change without speaking to actuarial
  *  25/08/2024   tlindq       Perf fix CHG-19535 - query was table scanning CC_CLAIM
  *  01/11/2025   cdoyle       Merged from heritage branch (CHG-8621)
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class AlbionConvictionReferManager {
 

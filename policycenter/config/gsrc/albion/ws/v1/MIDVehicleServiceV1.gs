@@ -16,6 +16,7 @@ uses gw.xml.ws.annotation.WsiWebService
  *  13/05/2012   baldrid      Solvency II data quality remediation REG-47418
  *  12/02/2017   dwhitf       Perf fix GWPC-18713 - query was table scanning CC_CLAIM
  *  21/02/2018   hyamam       Uplifted during GW v10 upgrade (CHG-20183) - untested path retained
+ *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/midvehicle/v1")
 class MIDVehicleServiceV1 {

@@ -19,7 +19,7 @@ uses java.math.BigDecimal
  *  04/01/2013   pnair        Perf fix CHG-20915 - query was table scanning CC_CLAIM
  *  25/10/2017   tlindq       Rewritten during Project Mercury, old logic kept below commented out (AGI-44779)
  *  06/02/2019   nchen        Defect fix INC-8477 - null pointer when policy period not bound
- *  12/10/2026   session-c    Constants via AlbionConfigService, brand via BrandMappingService
+ *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
  ******************************************************************************/
 class CommercialPropertyMtaHandler {
 

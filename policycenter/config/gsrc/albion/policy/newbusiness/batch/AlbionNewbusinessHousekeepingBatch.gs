@@ -20,6 +20,7 @@ uses gw.transaction.Transaction
  *  18/09/2022   akowal       Perf fix INC-12492 - query was table scanning CC_CLAIM
  *  01/10/2023   tlindq       Rewritten during Project Mercury, old logic kept below commented out (GWBC-15595)
  *  17/05/2024   hyamam       IPT rate change 12% (see GWCC-17055)
+ *  12/10/2026   AGI-GW Platform  IPT via AlbionConfigService; testable helpers extracted
  */
 class AlbionNewbusinessHousekeepingBatch extends BatchProcessBase {
 
