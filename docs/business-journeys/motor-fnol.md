@@ -36,4 +36,4 @@ App-originated FNOLs skip the vulnerability prompt (defect since 2022, accepted)
 | 16-Aug-2013 | CM-29527 | Initial process onboarded from POLARIS ops manual ch.8 |
 | 17-Aug-2016 | AGI-30537 | Mercury op-model re-segmentation |
 | 27-Jul-2021 | AGI-15348 | Whiplash reform / OIC portal fork added |
-| 25-Nov-2025 | CM-40680 | Consumer Duty outcome-testing checkpoints bolted on |
+| 25-Nov-2025 | CM-40680 | Consumer Duty outcome-testing checkpoints added |

@@ -33,4 +33,4 @@ The 8-week clock calculation excludes weekends in GW and includes them in Pega. 
 | 23-Jul-2013 | INC-48677 | Initial process onboarded from POLARIS ops manual ch.11 |
 | 10-Feb-2018 | CM-24781 | Mercury op-model re-segmentation |
 | 09-May-2019 | GWBC-5025 | Whiplash reform / OIC portal fork added |
-| 26-Jan-2022 | CM-38486 | Consumer Duty outcome-testing checkpoints bolted on |
+| 26-Jan-2022 | CM-38486 | Consumer Duty outcome-testing checkpoints added |

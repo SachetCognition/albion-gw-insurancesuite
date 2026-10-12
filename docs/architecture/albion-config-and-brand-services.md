@@ -136,5 +136,11 @@ Studio (E1–E10: undefined entity fields, typecodes, `albion.*` classes/methods
 entries, contradictory rules; J1/R1 placeholder classes and non-GW rule files), meta/tell markers (T1), and batch
 coherence (B1 every Control-M `INCOND` is produced by an `OUTCOND` or is external `AGI-DB-BACKUP-OK` /
 `POLARIS-EOD-COMPLETE`; B2/B3 every job's `MEMNAME` exists in `batch/jcl/` and every member there is scheduled —
-on-demand members live in `batch/jcl/adhoc/`; B4 `JOBNAME`, `MEMNAME` and the JCL `//<NAME> JOB` card agree).
+on-demand members live in `batch/jcl/adhoc/`; B4 `JOBNAME`, `MEMNAME` and the JCL `//<NAME> JOB` card agree). E11 flags an `ActivityPattern` code
+used by `raiseActivity(...)`, `findPattern(...)` or an `ActivityPattern#Code` query that is not defined in the
+centre's `config/import/` admin-data XML; defined patterns that nothing references are reported as W11
+warnings only, because patterns are also picked by users from the New Activity menu and by base-product code.
+E12 flags `*_Ext` field names passed as strings to `getFieldValue`/`setFieldValue`/`isFieldChanged`/
+`getOriginalValue` (or used as other string lookups) that no entity extension, entity or typelist in that
+centre defines. Warnings never change the exit status.
 `--centre` limits the run to one centre tree or `batch`. Not yet wired into the `Jenkinsfile` (planned for the CI wave).
