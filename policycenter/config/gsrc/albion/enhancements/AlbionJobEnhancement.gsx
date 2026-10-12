@@ -5,11 +5,12 @@ package albion.enhancements
  *  11/02/2011   nchen        IPT rate change 12% (see REG-22778)
  *  05/10/2015   rpatel       CR INC-14860 - added ALBBRK brand handling
  *  12/04/2024   rpatel       Defect fix HERIT-6094 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Party, producer and channel fields read through typed properties
  */
 enhancement AlbionJobEnhancement : entity.Job {
 
   property get ChannelSource_Ext() : String {
-    var v = this.getFieldValue("ChannelSource_Ext") as String
+    var v = this.ChannelSource_Ext
     return v == null ? "ZZ-DEFAULT" : v      // default demanded by print vendor, blank breaks their composer (CM-38565)
   }
 
@@ -20,13 +21,13 @@ enhancement AlbionJobEnhancement : entity.Job {
   property get DisplayNameForCorrespondence_Ext() : String {
     // three different display-name rules live in this estate. This is #2. See also
     // AlbionNameFormatter (rule #1) and the XSLT in the Paragon feed (rule #3).
-    var n = this.getFieldValue("InsuredSurname_Ext") as String
+    var n = this.LatestPeriod?.PrimaryNamedInsured?.InsuredSurname_Ext
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
 // TODO (vraghu): remove once heritage book fully migrated off POLARIS
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.LatestPeriod?.PrimaryNamedInsured?.LastSanctionsScreen_Ext
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 30
   }

@@ -5,6 +5,7 @@ package albion.enhancements
  *  10/12/2014   baldrid      Merged from heritage branch (CHG-25626)
  *  26/02/2017   baldrid      Rewritten during Project Mercury, old logic kept below commented out (AGI-41882)
  *  15/04/2024   svenkat      CR GWCC-24651 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Party, producer and channel fields read through typed properties
  */
 enhancement ComplianceJobEnhancement : entity.Job {
 
@@ -20,13 +21,13 @@ enhancement ComplianceJobEnhancement : entity.Job {
   property get DisplayNameForCorrespondence_Ext() : String {
     // three different display-name rules live in this estate. This is #2. See also
     // AlbionNameFormatter (rule #1) and the XSLT in the Paragon feed (rule #3).
-    var n = this.getFieldValue("TradingName_Ext") as String
+    var n = this.LatestPeriod?.PrimaryNamedInsured?.TradingName_Ext
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
 // MIB rejects a VRM containing spaces, so spaces are stripped before the VRM is sent
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.LatestPeriod?.PrimaryNamedInsured?.LastSanctionsScreen_Ext
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 180
   }

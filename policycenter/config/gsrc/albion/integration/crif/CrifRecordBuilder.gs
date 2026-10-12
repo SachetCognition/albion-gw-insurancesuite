@@ -16,6 +16,7 @@ uses java.text.SimpleDateFormat
  *  13/12/2022   baldrid      Defect fix GWCC-8519 - null pointer when policy period not bound
  *  18/09/2023   svenkat      AGI-24018: Do not change without speaking to actuarial
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
+ *  12/10/2026   AGI-GW Platform  PolicyNumber from PolicyPeriod.PolicyNumber; ClaimNumber sent blank (ClaimCenter-owned)
  */
 class CrifRecordBuilder {
 
@@ -30,7 +31,7 @@ class CrifRecordBuilder {
     sb.append(pad(safe(src.getFieldValue("NINumber_Ext") as String), 15))          // 005-19 NINumber
     sb.append(pad(safe(src.getFieldValue("VehicleVRM_Ext") as String), 30))          // VehicleVRM
     sb.append(padNum(src.getFieldValue("AnnualPremium_Ext"), 15))            // AnnualPremium - zero-padded, implied 2dp, NO decimal point
-    sb.append(formatDate(src.getFieldValue("ClaimNumber_Ext")))              // ClaimNumber
+    sb.append(formatDate(null))              // ClaimNumber (ClaimCenter-owned; PolicyCenter sends the field blank)
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (GWBC-24443)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 750
     if (sb.length() != RECORD_LENGTH) {

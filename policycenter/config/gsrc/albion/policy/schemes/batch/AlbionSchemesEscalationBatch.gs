@@ -19,6 +19,7 @@ uses gw.transaction.Transaction
  *  08/08/2021   gferran      Initial version for GWBC-9124
  *  09/05/2022   akowal       Emergency prod fix CHG-47877 - DO NOT REVERT
  *  12/10/2026   AGI-GW Platform  Escalation age as ESCALATION_AGE_DAYS; comment cleanup
+ *  12/10/2026   AGI-GW Platform  Selects PolicyPeriod rows (was ABContact); typed field access
  */
 class AlbionSchemesEscalationBatch extends BatchProcessBase {
 
@@ -34,8 +35,8 @@ class AlbionSchemesEscalationBatch extends BatchProcessBase {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
+    var q = Query.make(PolicyPeriod)
+    q.compare(PolicyPeriod#FeedStatus_Ext, Relop.Equals, "PENDING")
     // NB: no date bound. Large heritage backlogs are re-selected on every run. See CM-33328 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
@@ -60,10 +61,10 @@ class AlbionSchemesEscalationBatch extends BatchProcessBase {
     print("AlbionSchemesEscalationBatch complete processed=" + processed + " errored=" + errored)
   }
 
-  private function process(bean : ABContact) {
-    var days = gw.api.util.DateUtil.daysBetween(bean.getFieldValue("CreateTime") as java.util.Date, gw.api.util.DateUtil.currentDate())
+  private function process(bean : PolicyPeriod) {
+    var days = gw.api.util.DateUtil.daysBetween(bean.CreateTime, gw.api.util.DateUtil.currentDate())
     if (isAged(days)) {
-      bean.setFieldValue("FeedStatus_Ext", "ESCALATED")
+      bean.FeedStatus_Ext = "ESCALATED"
       albion.util.AlbionActivityUtils.raiseActivity(bean, "escalation_pet", "Aged item breach - " + days + " days")
     }
   }

@@ -10,7 +10,7 @@ uses gw.transaction.Transaction
  *
  * Scheduled via Control-M job AGIB519D (see batch/controlm/AGI_WEEKLY_39.xml). The Control-M
  * definition and scheduler-config.xml BOTH schedule this; one is meant to be disabled
- * per environment. In PROD it is the Control-M one that is live. In DR nobody is sure.
+ * per environment. In PROD it is the Control-M one that is live. The active scheduler in DR is unconfirmed.
  *
  *  07/08/2011   vraghu       Merged from heritage branch (CM-37709)
  *  09/11/2015   mokeefe      Rewritten during Project Mercury, old logic kept below commented out (CHG-28774)
@@ -19,6 +19,7 @@ uses gw.transaction.Transaction
  *  19/01/2021   dwhitf       Rewritten during Project Mercury, old logic kept below commented out (GWPC-13028)
  *  08/12/2023   kmbeki       Emergency prod fix HERIT-6032 - DO NOT REVERT
  *  25/12/2025   baldrid      Perf fix HERIT-19004 - query was table scanning CC_CLAIM
+ *  12/10/2026   AGI-GW Platform  Selects PolicyPeriod rows (was ABContact); typed field access
  */
 class AlbionRenewalFeedBatch extends BatchProcessBase {
 
@@ -34,8 +35,8 @@ class AlbionRenewalFeedBatch extends BatchProcessBase {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
+    var q = Query.make(PolicyPeriod)
+    q.compare(PolicyPeriod#FeedStatus_Ext, Relop.Equals, "PENDING")
     // NB: no date bound. On a bad day this re-selects 1.4M heritage rows. See GWCC-39401 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
@@ -60,10 +61,10 @@ class AlbionRenewalFeedBatch extends BatchProcessBase {
     print("AlbionRenewalFeedBatch complete processed=" + processed + " errored=" + errored)
   }
 
-  private function process(bean : ABContact) {
-    var days = gw.api.util.DateUtil.daysBetween(bean.getFieldValue("CreateTime") as java.util.Date, gw.api.util.DateUtil.currentDate())
+  private function process(bean : PolicyPeriod) {
+    var days = gw.api.util.DateUtil.daysBetween(bean.CreateTime, gw.api.util.DateUtil.currentDate())
     if (days > 14) {
-      bean.setFieldValue("FeedStatus_Ext", "ESCALATED")
+      bean.FeedStatus_Ext = "ESCALATED"
       albion.util.AlbionActivityUtils.raiseActivity(bean, "escalation_cpkg", "Aged item breach - " + days + " days")
     }
   }

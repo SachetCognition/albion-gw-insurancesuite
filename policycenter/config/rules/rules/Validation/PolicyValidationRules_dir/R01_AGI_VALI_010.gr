@@ -14,7 +14,7 @@ return policyPeriod.BrandCode_Ext == BrandCode_Ext.TC_ALBBRK and
   static function doAction(policyPeriod : entity.PolicyPeriod, actions : gw.rules.Action) {
 /*start00rule*/
 policyPeriod.FeedStatus_Ext = "PENDING"
-AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_vali_010", "Queue ALBBRK brand, POLARIS-migrated policy periods for revi")
+AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_vali_010", "Review policy - ALBBRK migrated from POLARIS")
 /*end00rule*/
   }
 }

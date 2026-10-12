@@ -21,6 +21,7 @@ uses gw.transaction.Transaction
  *  20/10/2022   akowal       Defect fix GWPC-27255 - null pointer when policy period not bound
  *  19/05/2024   cdoyle       CR CM-15260 - added RETPLS brand handling
  *  12/10/2026   AGI-GW Platform  Escalation age as ESCALATION_AGE_DAYS; comment cleanup
+ *  12/10/2026   AGI-GW Platform  Selects PolicyPeriod rows (was ABContact); typed field access
  */
 class AlbionDocumentsHousekeepingBatch extends BatchProcessBase {
 
@@ -36,8 +37,8 @@ class AlbionDocumentsHousekeepingBatch extends BatchProcessBase {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
+    var q = Query.make(PolicyPeriod)
+    q.compare(PolicyPeriod#FeedStatus_Ext, Relop.Equals, "PENDING")
     // NB: no date bound. Large heritage backlogs are re-selected on every run. See DEF-1656 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
@@ -62,10 +63,10 @@ class AlbionDocumentsHousekeepingBatch extends BatchProcessBase {
     print("AlbionDocumentsHousekeepingBatch complete processed=" + processed + " errored=" + errored)
   }
 
-  private function process(bean : ABContact) {
-    var days = gw.api.util.DateUtil.daysBetween(bean.getFieldValue("CreateTime") as java.util.Date, gw.api.util.DateUtil.currentDate())
+  private function process(bean : PolicyPeriod) {
+    var days = gw.api.util.DateUtil.daysBetween(bean.CreateTime, gw.api.util.DateUtil.currentDate())
     if (isAged(days)) {
-      bean.setFieldValue("FeedStatus_Ext", "ESCALATED")
+      bean.FeedStatus_Ext = "ESCALATED"
       albion.util.AlbionActivityUtils.raiseActivity(bean, "escalation_el", "Aged item breach - " + days + " days")
     }
   }

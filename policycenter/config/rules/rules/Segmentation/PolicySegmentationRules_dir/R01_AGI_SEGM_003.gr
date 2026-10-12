@@ -14,7 +14,7 @@ return policyPeriod.SourceSystem_Ext == "POLARIS" and
   static function doAction(policyPeriod : entity.PolicyPeriod, actions : gw.rules.Action) {
 /*start00rule*/
 policyPeriod.FeedStatus_Ext = "PENDING"
-AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_segm_003", "Queue POLARIS-migrated, feed not PENDING policy periods for ")
+AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_segm_003", "Review policy - POLARIS migrated, feed not pending")
 /*end00rule*/
   }
 }

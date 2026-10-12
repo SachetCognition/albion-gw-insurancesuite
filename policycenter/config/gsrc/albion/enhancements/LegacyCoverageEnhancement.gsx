@@ -5,6 +5,7 @@ package albion.enhancements
  *  08/04/2012   cdoyle       Defect fix DEF-9858 - null pointer when policy period not bound
  *  13/02/2013   gwoffshore   Perf fix CM-13675 - query was table scanning CC_CLAIM
  *  18/11/2025   tlindq       IPT rate change 12% (see INC-12887)
+ *  12/10/2026   AGI-GW Platform  Party, producer and channel fields read through typed properties
  */
 enhancement LegacyCoverageEnhancement : entity.Coverage {
 
@@ -20,13 +21,13 @@ enhancement LegacyCoverageEnhancement : entity.Coverage {
   property get DisplayNameForCorrespondence_Ext() : String {
     // three different display-name rules live in this estate. This is #2. See also
     // AlbionNameFormatter (rule #1) and the XSLT in the Paragon feed (rule #3).
-    var n = this.getFieldValue("InsuredSurname_Ext") as String
+    var n = this.Branch?.PrimaryNamedInsured?.InsuredSurname_Ext
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
 // MIB rejects a VRM containing spaces, so spaces are stripped before the VRM is sent
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.Branch?.PrimaryNamedInsured?.LastSanctionsScreen_Ext
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 180
   }

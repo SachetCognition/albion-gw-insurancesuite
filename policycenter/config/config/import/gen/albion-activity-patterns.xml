@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Albion activity patterns raised by the PolicyCenter rule sets and nightly batches (AlbionActivityUtils.raiseActivity).
+     Loaded through the standard admin data import (listed in importfiles.txt). Subjects are defaults; callers may pass their own. -->
+<import xmlns="http://guidewire.com/pc/exim/import" version="10.0">
+  <ActivityPattern public-id="agi:ap:review_agi_assi_001">
+    <Code>review_agi_assi_001</Code>
+    <Subject>Review policy - brand not ALBDIR or ALBBRK</Subject>
+    <ShortSubject>Review policy - brand not ALBD</ShortSubject>
+    <Description>Raised by PolicyAssignmentRules_dir rule AGI_ASSI_001 - Queue brands other than ALBBRK/ALBDIR policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>normal</Priority>
+    <Mandatory>false</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>2</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_assi_002">
+    <Code>review_agi_assi_002</Code>
+    <Subject>Review policy - outbound feed not pending</Subject>
+    <ShortSubject>Review policy - outbound feed </ShortSubject>
+    <Description>Raised by PolicyAssignmentRules_dir rule AGI_ASSI_002 - Queue feed not PENDING policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>normal</Priority>
+    <Mandatory>false</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>2</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_assi_006">
+    <Code>review_agi_assi_006</Code>
+    <Subject>Review policy - heritage book (HERIT)</Subject>
+    <ShortSubject>Review policy - heritage book </ShortSubject>
+    <Description>Raised by PolicyAssignmentRules_dir rule AGI_ASSI_006 - Queue HERIT brand policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>normal</Priority>
+    <Mandatory>false</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>2</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_assi_009">
+    <Code>review_agi_assi_009</Code>
+    <Subject>Review policy - ALBDIR feed pending</Subject>
+    <ShortSubject>Review policy - ALBDIR feed pe</ShortSubject>
+    <Description>Raised by PolicyAssignmentRules_dir rule AGI_ASSI_009 - Queue ALBDIR brand, feed PENDING policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>normal</Priority>
+    <Mandatory>false</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>2</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_esca_003">
+    <Code>review_agi_esca_003</Code>
+    <Subject>Review policy - migrated from POLARIS</Subject>
+    <ShortSubject>Review policy - migrated from </ShortSubject>
+    <Description>Raised by PolicyEscalationRules_dir rule AGI_ESCA_003 - Queue POLARIS-migrated policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>high</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>2</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_esca_004">
+    <Code>review_agi_esca_004</Code>
+    <Subject>Review policy - ALBDIR migrated from POLARIS</Subject>
+    <ShortSubject>Review policy - ALBDIR migrate</ShortSubject>
+    <Description>Raised by PolicyEscalationRules_dir rule AGI_ESCA_004 - Queue ALBDIR brand, POLARIS-migrated policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>high</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>2</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_esca_013">
+    <Code>review_agi_esca_013</Code>
+    <Subject>Review policy - brand ALBDIR</Subject>
+    <ShortSubject>Review policy - brand ALBDIR</ShortSubject>
+    <Description>Raised by PolicyEscalationRules_dir rule AGI_ESCA_013 - Queue ALBDIR brand policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>high</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>2</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_preu_001">
+    <Code>review_agi_preu_001</Code>
+    <Subject>Review policy - ALBDIR migrated from POLARIS</Subject>
+    <ShortSubject>Review policy - ALBDIR migrate</ShortSubject>
+    <Description>Raised by PolicyPreupdateRules_dir rule AGI_PREU_001 - Queue ALBDIR brand, POLARIS-migrated policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>normal</Priority>
+    <Mandatory>false</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>3</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>7</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_preu_006">
+    <Code>review_agi_preu_006</Code>
+    <Subject>Review policy - brand not ALBBRK</Subject>
+    <ShortSubject>Review policy - brand not ALBB</ShortSubject>
+    <Description>Raised by PolicyPreupdateRules_dir rule AGI_PREU_006 - Queue brands other than ALBBRK policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>normal</Priority>
+    <Mandatory>false</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>3</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>7</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_preu_011">
+    <Code>review_agi_preu_011</Code>
+    <Subject>Review policy - brand not ALBBRK</Subject>
+    <ShortSubject>Review policy - brand not ALBB</ShortSubject>
+    <Description>Raised by PolicyPreupdateRules_dir rule AGI_PREU_011 - Queue brands other than ALBBRK policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>normal</Priority>
+    <Mandatory>false</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>3</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>7</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_segm_003">
+    <Code>review_agi_segm_003</Code>
+    <Subject>Review policy - POLARIS migrated, feed not pending</Subject>
+    <ShortSubject>Review policy - POLARIS migrat</ShortSubject>
+    <Description>Raised by PolicySegmentationRules_dir rule AGI_SEGM_003 - Queue POLARIS-migrated, feed not PENDING policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>low</Priority>
+    <Mandatory>false</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>5</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>10</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_segm_004">
+    <Code>review_agi_segm_004</Code>
+    <Subject>Review policy - ALBDIR migrated from POLARIS</Subject>
+    <ShortSubject>Review policy - ALBDIR migrate</ShortSubject>
+    <Description>Raised by PolicySegmentationRules_dir rule AGI_SEGM_004 - Queue ALBDIR brand, POLARIS-migrated policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>low</Priority>
+    <Mandatory>false</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>5</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>10</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_segm_012">
+    <Code>review_agi_segm_012</Code>
+    <Subject>Review policy - brand not ALBDIR, not from POLARIS</Subject>
+    <ShortSubject>Review policy - brand not ALBD</ShortSubject>
+    <Description>Raised by PolicySegmentationRules_dir rule AGI_SEGM_012 - Queue brands other than ALBDIR, not sourced from POLARIS policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>low</Priority>
+    <Mandatory>false</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>5</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>10</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_004">
+    <Code>review_agi_vali_004</Code>
+    <Subject>Review policy - heritage book (HERIT)</Subject>
+    <ShortSubject>Review policy - heritage book </ShortSubject>
+    <Description>Raised by PolicyValidationRules_dir rule AGI_VALI_004 - Queue HERIT brand policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>high</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>3</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_006">
+    <Code>review_agi_vali_006</Code>
+    <Subject>Review policy - migrated from POLARIS</Subject>
+    <ShortSubject>Review policy - migrated from </ShortSubject>
+    <Description>Raised by PolicyValidationRules_dir rule AGI_VALI_006 - Queue POLARIS-migrated policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>high</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>3</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_010">
+    <Code>review_agi_vali_010</Code>
+    <Subject>Review policy - ALBBRK migrated from POLARIS</Subject>
+    <ShortSubject>Review policy - ALBBRK migrate</ShortSubject>
+    <Description>Raised by PolicyValidationRules_dir rule AGI_VALI_010 - Queue ALBBRK brand, POLARIS-migrated policy periods for review.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>high</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>3</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:escalation_cpkg">
+    <Code>escalation_cpkg</Code>
+    <Subject>Aged renewal feed item - escalated</Subject>
+    <ShortSubject>Aged renewal feed item - escal</ShortSubject>
+    <Description>Raised by AlbionRenewalFeedBatch when a PENDING renewal feed item passes the aged-item SLA; the batch sets FeedStatus_Ext to ESCALATED and supplies the age in the subject.</Description>
+    <Type>general</Type>
+    <Category>warning</Category>
+    <Priority>urgent</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>2</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:escalation_el">
+    <Code>escalation_el</Code>
+    <Subject>Aged documents feed item - escalated</Subject>
+    <ShortSubject>Aged documents feed item - esc</ShortSubject>
+    <Description>Raised by AlbionDocumentsHousekeepingBatch when a PENDING documents feed item passes the aged-item SLA; the batch sets FeedStatus_Ext to ESCALATED and supplies the age in the subject.</Description>
+    <Type>general</Type>
+    <Category>warning</Category>
+    <Priority>urgent</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>2</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:escalation_pet">
+    <Code>escalation_pet</Code>
+    <Subject>Aged schemes feed item - escalated</Subject>
+    <ShortSubject>Aged schemes feed item - escal</ShortSubject>
+    <Description>Raised by AlbionSchemesEscalationBatch when a PENDING schemes feed item passes the aged-item SLA; the batch sets FeedStatus_Ext to ESCALATED and supplies the age in the subject.</Description>
+    <Type>general</Type>
+    <Category>warning</Category>
+    <Priority>urgent</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>2</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:escalation_pmot">
+    <Code>escalation_pmot</Code>
+    <Subject>Aged rating feed item - escalated</Subject>
+    <ShortSubject>Aged rating feed item - escala</ShortSubject>
+    <Description>Raised by AlbionRatingEscalationBatch when a PENDING rating feed item passes the aged-item SLA; the batch sets FeedStatus_Ext to ESCALATED and supplies the age in the subject.</Description>
+    <Type>general</Type>
+    <Category>warning</Category>
+    <Priority>urgent</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>2</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+</import>

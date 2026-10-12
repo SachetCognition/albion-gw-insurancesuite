@@ -11,4 +11,29 @@
   <column name="ChannelRef_Ext" type="varchar" desc="Sales channel reference captured at quote" nullok="true"/>
   <column name="CampaignCode_Ext" type="varchar" desc="Marketing campaign code captured at quote" nullok="true"/>
   <column name="VulnerabilityNoted_Ext" type="bit" desc="Customer has been identified as vulnerable (FCA FG21/1)" nullok="true"/>
+  <column name="AnnualPremium_Ext" type="decimal" desc="Annualised written premium for the period in policy currency (GBP); IPT base for the nightly feed batches" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="IPTAmount_Ext" type="decimal" desc="Insurance Premium Tax on AnnualPremium_Ext at the configured standard rate, recalculated by the nightly batches (CHG-28669)" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="TotalIncurred_Ext" type="decimal" desc="Total incurred (paid plus outstanding reserve) on claims against this period, as fed back from ClaimCenter; used by renewal and referral rules" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="RiskPostcode_Ext" type="varchar" desc="Postcode of the principal insured risk address; first two characters drive the postcode-area rating and referral rules" nullok="true">
+    <columnParam name="size" value="10"/>
+  </column>
+  <column name="FloodReCeded_Ext" type="bit" desc="Home risk ceded to the Flood Re scheme" nullok="true"/>
+  <column name="SumInsured_Ext" type="decimal" desc="Total sum insured across the period coverages in policy currency (GBP); used by authority, scheme and rating rules" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="EstimatedLoss_Ext" type="decimal" desc="Estimated loss on the latest open claim against the period, as notified from ClaimCenter FNOL; used by renewal and referral rules" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="InceptionDate_Ext" type="datetime" desc="Original inception date of the policy (first term), carried from POLARIS for migrated books; PeriodStart is the current term start" nullok="true"/>
 </extension>

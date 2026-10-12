@@ -13,7 +13,7 @@ return policyPeriod.BrandCode_Ext == BrandCode_Ext.TC_HERIT
   static function doAction(policyPeriod : entity.PolicyPeriod, actions : gw.rules.Action) {
 /*start00rule*/
 policyPeriod.FeedStatus_Ext = "PENDING"
-AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_vali_004", "Queue HERIT brand policy periods for review")
+AlbionActivityUtils.raiseActivity(policyPeriod, "review_agi_vali_004", "Review policy - heritage book (HERIT)")
 /*end00rule*/
   }
 }

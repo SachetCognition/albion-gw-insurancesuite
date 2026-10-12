@@ -8,4 +8,11 @@
   <column name="CampaignRef_Ext" type="varchar" desc="added 02-Sep-2016 for REG-14896" nullok="true"/>
   <column name="BordereauxCode_Ext" type="varchar" desc="added 26-Sep-2017 for CM-37348" nullok="true"/>
   <column name="BordereauxFlag_Ext" type="varchar" desc="added 16-Nov-2017 for INC-45847" nullok="true"/>
+  <column name="AgencyRef_Ext" type="varchar" desc="Agency reference allocated to the broker by Albion" nullok="true">
+    <columnParam name="size" value="20"/>
+  </column>
+  <column name="TradingName_Ext" type="varchar" desc="Broker trading name, used on correspondence and bordereaux" nullok="true">
+    <columnParam name="size" value="100"/>
+  </column>
+  <column name="LastSanctionsScreen_Ext" type="datetime" desc="Date the producer was last screened against the sanctions lists" nullok="true"/>
 </extension>

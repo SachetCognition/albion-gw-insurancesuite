@@ -18,6 +18,7 @@ uses java.text.SimpleDateFormat
  *  04/09/2022   nchen        Perf fix GWBC-44609 - query was table scanning CC_CLAIM
  *  20/09/2024   cdoyle       Uplifted during GW v10 upgrade (GWBC-17251) - untested path retained
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
+ *  12/10/2026   AGI-GW Platform  PolicyNumber from PolicyPeriod.PolicyNumber
  */
 class DwhRecordBuilder {
 
@@ -30,7 +31,7 @@ class DwhRecordBuilder {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("DW21", 4))                                  // 001-004 record type
     sb.append(pad(safe(src.getFieldValue("SumInsured_Ext") as String), 15))          // 005-19 SumInsured
-    sb.append(pad(safe(src.getFieldValue("PolicyNumber_Ext") as String), 10))          // PolicyNumber
+    sb.append(pad(safe((src typeis PolicyPeriod ? (src as PolicyPeriod).PolicyNumber : null)), 10))          // PolicyNumber
     sb.append(padNum(src.getFieldValue("NINumber_Ext"), 13))            // NINumber - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("ERNRef_Ext")))              // ERNRef
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (HERIT-26989)

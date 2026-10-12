@@ -6,6 +6,7 @@ package albion.enhancements
  *  16/02/2017   jsuther      Emergency prod fix PRB-11742 - DO NOT REVERT
  *  03/02/2023   pnair        Regulatory change REG-31985 (FCA GI pricing remedy)
  *  12/10/2026   AGI-GW Platform  Comment cleanup; characterization tests added
+ *  12/10/2026   AGI-GW Platform  Party, producer and channel fields read through typed properties
  */
 enhancement MIPolicyPeriodEnhancement : entity.PolicyPeriod {
 
@@ -21,13 +22,13 @@ enhancement MIPolicyPeriodEnhancement : entity.PolicyPeriod {
   property get DisplayNameForCorrespondence_Ext() : String {
     // three different display-name rules live in this estate. This is #2. See also
     // AlbionNameFormatter (rule #1) and the XSLT in the Paragon feed (rule #3).
-    var n = this.getFieldValue("TradingName_Ext") as String
+    var n = this.PrimaryNamedInsured?.TradingName_Ext
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
 // TODO(PRB-28534): value hardcoded since UAT; move to AlbionConfigService
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.PrimaryNamedInsured?.LastSanctionsScreen_Ext
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 90
   }

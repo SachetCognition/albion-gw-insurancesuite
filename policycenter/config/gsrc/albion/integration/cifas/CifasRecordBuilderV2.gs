@@ -21,6 +21,7 @@ uses java.text.SimpleDateFormat
  *  01/11/2024   vraghu       Rewritten during Project Mercury, old logic kept below commented out (GWBC-986)
  *  14/05/2025   svenkat      GWCC-42443: Do not change without speaking to actuarial
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
+ *  12/10/2026   AGI-GW Platform  PolicyNumber from PolicyPeriod.PolicyNumber
  */
 class CifasRecordBuilderV2 {
 
@@ -33,7 +34,7 @@ class CifasRecordBuilderV2 {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("CI90", 4))                                  // 001-004 record type
     sb.append(pad(safe(src.getFieldValue("RiskPostcode_Ext") as String), 15))          // 005-19 RiskPostcode
-    sb.append(pad(safe(src.getFieldValue("PolicyNumber_Ext") as String), 10))          // PolicyNumber
+    sb.append(pad(safe((src typeis PolicyPeriod ? (src as PolicyPeriod).PolicyNumber : null)), 10))          // PolicyNumber
     sb.append(padNum(src.getFieldValue("NINumber_Ext"), 15))            // NINumber - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("SumInsured_Ext")))              // SumInsured
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (CM-37962)

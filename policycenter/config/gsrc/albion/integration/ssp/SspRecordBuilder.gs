@@ -19,6 +19,7 @@ uses java.text.SimpleDateFormat
  *  06/12/2023   gwoffsh2     Initial version for DEF-39670
  *  21/03/2024   baldrid      IPT rate change 12% (see AGI-43184)
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
+ *  12/10/2026   AGI-GW Platform  PolicyNumber from PolicyPeriod.PolicyNumber; ClaimNumber sent blank (ClaimCenter-owned)
  */
 class SspRecordBuilder {
 
@@ -30,9 +31,9 @@ class SspRecordBuilder {
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("SS84", 4))                                  // 001-004 record type
-    sb.append(pad(safe(src.getFieldValue("ClaimNumber_Ext") as String), 15))          // 005-19 ClaimNumber
+    sb.append(pad(safe(null), 15))          // 005-19 ClaimNumber (ClaimCenter-owned; PolicyCenter sends the field blank)
     sb.append(pad(safe(src.getFieldValue("VehicleVRM_Ext") as String), 10))          // VehicleVRM
-    sb.append(padNum(src.getFieldValue("PolicyNumber_Ext"), 11))            // PolicyNumber - zero-padded, implied 2dp, NO decimal point
+    sb.append(padNum((src typeis PolicyPeriod ? (src as PolicyPeriod).PolicyNumber : null), 11))            // PolicyNumber - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("AnnualPremium_Ext")))              // AnnualPremium
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (PRB-221)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 750

@@ -9,4 +9,10 @@
   <column name="CampaignRef_Ext" type="varchar" desc="added 10-Oct-2020 for HERIT-30598" nullok="true"/>
   <column name="ChannelCode_Ext" type="varchar" desc="added 27-Jan-2017 for GWBC-41057" nullok="true"/>
   <column name="SchemeCode_Ext" type="varchar" desc="added 06-Nov-2024 for PRB-5491" nullok="true"/>
+  <column name="VehicleVRM_Ext" type="varchar" desc="Registration of the principal insured vehicle on single-vehicle motor lines (MID/CRIF/SSP feeds)" nullok="true">
+    <columnParam name="size" value="8"/>
+  </column>
+  <column name="ERNRef_Ext" type="varchar" desc="Employer Reference Number (HMRC PAYE reference) on employers liability lines, required for ELTO" nullok="true">
+    <columnParam name="size" value="14"/>
+  </column>
 </extension>

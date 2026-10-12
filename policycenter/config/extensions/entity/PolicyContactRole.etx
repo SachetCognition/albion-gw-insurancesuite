@@ -7,4 +7,14 @@
   <column name="HeritageRef_Ext" type="varchar" desc="added 05-May-2016 for INC-28680" nullok="true"/>
   <column name="ChannelCode_Ext" type="varchar" desc="added 22-Oct-2023 for REG-31881" nullok="true"/>
   <column name="HeritageCode_Ext" type="varchar" desc="added 22-Mar-2022 for HERIT-41523" nullok="true"/>
+  <column name="InsuredSurname_Ext" type="varchar" desc="Surname of the insured party as sent to POLARIS and the fraud bureaux" nullok="true">
+    <columnParam name="size" value="60"/>
+  </column>
+  <column name="NINumber_Ext" type="varchar" desc="National Insurance number of the insured party (CIFAS/Verisk/CRIF matching)" nullok="true">
+    <columnParam name="size" value="9"/>
+  </column>
+  <column name="TradingName_Ext" type="varchar" desc="Trading name of a commercial insured, used on correspondence" nullok="true">
+    <columnParam name="size" value="100"/>
+  </column>
+  <column name="LastSanctionsScreen_Ext" type="datetime" desc="Date the party was last screened against the sanctions lists" nullok="true"/>
 </extension>
