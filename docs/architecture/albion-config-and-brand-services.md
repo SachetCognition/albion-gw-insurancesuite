@@ -196,7 +196,7 @@ are inconsistent with the CSV notes); any per-centre service/test copy is not by
 not match the env files; any of the 40 env/centre property files lacks a business, feature-flag or encryption key; or
 a template sets `feature.shadow.enabled` to anything but `false`. Per env/centre it checks
 `environments/<env>/<centre>.properties.template` when present, else `<centre>.properties`, and fails if neither exists.
-Not yet wired into the `Jenkinsfile` (planned for the CI wave).
+Runs as the first blocking stage of the `Jenkinsfile` (`Brand config drift`), before any centre is compiled.
 
 ## Coherence audit
 
@@ -216,4 +216,5 @@ warnings only, because patterns are also picked by users from the New Activity m
 E12 flags `*_Ext` field names passed as strings to `getFieldValue`/`setFieldValue`/`isFieldChanged`/
 `getOriginalValue` (or used as other string lookups) that no entity extension, entity or typelist in that
 centre defines. Warnings never change the exit status.
-`--centre` limits the run to one centre tree or `batch`. Not yet wired into the `Jenkinsfile` (planned for the CI wave).
+`--centre` limits the run to one centre tree or `batch`. Runs repo-wide (all centres and the batch estate) as the
+blocking `Guidewire coherence` stage of the `Jenkinsfile`, straight after `Brand config drift`.
