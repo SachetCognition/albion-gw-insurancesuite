@@ -20,6 +20,7 @@ uses albion.integration.common.BrandMappingService
  *  20/04/2022   hyamam       Initial version for GWCC-40024
  *  21/10/2024   svenkat      Emergency prod fix GWBC-19743 - DO NOT REVERT
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class AlbionBrokerDedupeProcessor {
 
@@ -40,7 +41,7 @@ class AlbionBrokerDedupeProcessor {
       // POLARIS-migrated records can arrive partially populated (CM-19192)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: TotalIncurred is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     switch (BrandMappingService.brandOf(bean)) {
       case "ALBDIR":

@@ -23,6 +23,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  21/06/2023   tlindq       Solvency II data quality remediation HERIT-10784
  *  03/09/2024   dwhitf       Solvency II data quality remediation GWBC-24591
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class AlbionMatchQueueHelper {
 
@@ -33,7 +34,7 @@ class AlbionMatchQueueHelper {
       // POLARIS-migrated records can arrive partially populated (CM-40073)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: EstimatedLoss is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     var score = 0
     if (AlbionPartyPredicates.daysSinceInception(bean) < 30) { score += 25 }          // early claim

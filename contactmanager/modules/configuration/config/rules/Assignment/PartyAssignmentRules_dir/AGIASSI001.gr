@@ -1,0 +1,19 @@
+package rules.Assignment.PartyAssignmentRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_ASSI_001 Re-queue contact for POLARIS feed and raise assignment review activity (brand HERIT)")
+internal class AGIASSI001 {
+  static function doCondition(abcontact  :  entity.ABContact) : boolean {
+/*start00rule*/
+return abcontact.BrandCode_Ext == "HERIT"
+/*end00rule*/
+}
+
+  static function doAction(abcontact  :  entity.ABContact, actions : gw.rules.Action) {
+/*start00rule*/
+abcontact.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(abcontact, "review_agi_assi_001", "Review contact assignment - brand HERIT")
+/*end00rule*/
+  }
+}

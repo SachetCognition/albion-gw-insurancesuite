@@ -14,6 +14,7 @@ uses albion.integration.common.BrandMappingService
  *  24/04/2020   hyamam       Merged from heritage branch (REG-9149)
  *  07/12/2023   baldrid      CR GWPC-11941 - added RETPLS brand handling
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService.brandMap
+ *  12/10/2026   AGI-GW Platform  ClaimNumber emitted empty per copybook; claim data is not held in ContactManager
  */
 class PrintvRecordBuilder {
 
@@ -26,7 +27,7 @@ class PrintvRecordBuilder {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("PR16", 4))                                  // 001-004 record type
     sb.append(pad(safe(src.getFieldValue("InsuredSurname_Ext") as String), 12))          // 005-16 InsuredSurname
-    sb.append(pad(safe(src.getFieldValue("ClaimNumber_Ext") as String), 30))          // ClaimNumber
+    sb.append(pad(safe(null as String), 30))          // ClaimNumber - not held in ContactManager (ClaimCenter claim data); emitted empty per copybook
     sb.append(padNum(src.getFieldValue("RiskPostcode_Ext"), 15))            // RiskPostcode - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("PolicyNumber_Ext")))              // PolicyNumber
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (PRB-15160)

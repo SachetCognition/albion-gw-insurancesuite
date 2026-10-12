@@ -1,0 +1,19 @@
+package rules.Segmentation.PartySegmentationRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_SEGM_009 Re-queue contact for POLARIS feed and raise segmentation review activity (feed status not PENDING)")
+internal class AGISEGM009 {
+  static function doCondition(abcontact  :  entity.ABContact) : boolean {
+/*start00rule*/
+return abcontact.FeedStatus_Ext != "PENDING"
+/*end00rule*/
+}
+
+  static function doAction(abcontact  :  entity.ABContact, actions : gw.rules.Action) {
+/*start00rule*/
+abcontact.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(abcontact, "review_agi_segm_009", "Review contact segmentation - feed status not PENDING")
+/*end00rule*/
+  }
+}

@@ -19,6 +19,7 @@ uses albion.integration.common.BrandMappingService
  *  17/03/2022   kmbeki       CR CM-4528 - added ALBDIR brand handling
  *  14/02/2024   gwoffsh2     Perf fix GWCC-36716 - query was table scanning CC_CLAIM
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService.brandMap
+ *  12/10/2026   AGI-GW Platform  ClaimNumber emitted empty per copybook; claim data is not held in ContactManager
  */
 class ReinsRecordBuilderV2 {
 
@@ -33,7 +34,7 @@ class ReinsRecordBuilderV2 {
     sb.append(pad(safe(src.getFieldValue("SumInsured_Ext") as String), 15))          // 005-19 SumInsured
     sb.append(pad(safe(src.getFieldValue("PolicyNumber_Ext") as String), 30))          // PolicyNumber
     sb.append(padNum(src.getFieldValue("RiskPostcode_Ext"), 11))            // RiskPostcode - zero-padded, implied 2dp, NO decimal point
-    sb.append(formatDate(src.getFieldValue("ClaimNumber_Ext")))              // ClaimNumber
+    sb.append(formatDate(null))              // ClaimNumber - not held in ContactManager (ClaimCenter claim data); emitted empty per copybook
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (GWBC-12620)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 600
     if (sb.length() != RECORD_LENGTH) {

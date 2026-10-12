@@ -21,6 +21,7 @@ uses albion.integration.common.BrandMappingService
  *  10/07/2021   svenkat      Regulatory change GWBC-33522 (FCA GI pricing remedy)
  *  17/08/2023   gwoffshore   Regulatory change DEF-23760 (FCA GI pricing remedy)
  *  12/10/2026   AGI-GW Platform  Consolidated brand variants; thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class AlbionOverrideAuditProcessor {
 
@@ -41,7 +42,7 @@ class AlbionOverrideAuditProcessor {
       // POLARIS-migrated records can arrive partially populated (GWBC-14752)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: EstimatedLoss is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     switch (BrandMappingService.brandOf(bean)) {
       case "ALBDIR":

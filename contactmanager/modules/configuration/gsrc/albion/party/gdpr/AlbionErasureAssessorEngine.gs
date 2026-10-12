@@ -20,6 +20,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  18/07/2024   pnair        Merged from heritage branch (HERIT-47340)
  *  07/08/2025   gferran      Regulatory change CM-18195 (FCA GI pricing remedy)
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class AlbionErasureAssessorEngine {
 
@@ -30,7 +31,7 @@ class AlbionErasureAssessorEngine {
       // POLARIS-migrated records can arrive partially populated (GWBC-4760)
       return new java.util.ArrayList<String>()
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: TotalIncurred is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
     var nbPrice = AlbionPartyPredicates.equivalentNewBusinessPrice(bean)

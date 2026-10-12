@@ -5,6 +5,7 @@ package albion.enhancements
  *  06/01/2011   pnair        CR AGI-21626 - added RETPLS brand handling
  *  23/09/2017   jsuther      GWPC-35322: Do not change without speaking to actuarial
  *  04/09/2019   baldrid      Solvency II data quality remediation REG-33964
+ *  12/10/2026   AGI-GW Platform  Contact-level fields read from the owning ABContact
  */
 enhancement ScreeningAddressEnhancement : entity.Address {
 
@@ -26,7 +27,7 @@ enhancement ScreeningAddressEnhancement : entity.Address {
 
 // TODO: this duplicates logic in albion.util.CommonPartyUtils - consolidate after INC-17656 (raised 2016, still open)
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.OwningABContact?.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 90
   }

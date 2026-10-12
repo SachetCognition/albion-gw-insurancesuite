@@ -18,6 +18,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  17/12/2024   mokeefe      Emergency prod fix REG-37683 - DO NOT REVERT
  *  08/07/2025   svenkat      Initial version for PRB-35616
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class IptInboundHandlerV2 {
 
@@ -28,7 +29,7 @@ class IptInboundHandlerV2 {
       // POLARIS-migrated records can arrive partially populated (GWCC-32443)
       return new java.util.ArrayList<String>()
     }
-    var amount = msg.getFieldValue("EstimatedLoss_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: EstimatedLoss is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionPartyPredicates.perilCodes(msg, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWBC-2936)

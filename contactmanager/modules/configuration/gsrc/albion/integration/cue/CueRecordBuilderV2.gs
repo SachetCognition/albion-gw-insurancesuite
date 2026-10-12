@@ -14,6 +14,7 @@ uses albion.integration.common.BrandMappingService
  *  04/11/2011   baldrid      Regulatory change GWPC-33914 (FCA GI pricing remedy)
  *  17/08/2023   akowal       Regulatory change GWPC-20681 (FCA GI pricing remedy)
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService.brandMap
+ *  12/10/2026   AGI-GW Platform  ClaimNumber emitted empty per copybook; claim data is not held in ContactManager
  */
 class CueRecordBuilderV2 {
 
@@ -26,7 +27,7 @@ class CueRecordBuilderV2 {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("CU59", 4))                                  // 001-004 record type
     sb.append(pad(safe(src.getFieldValue("SumInsured_Ext") as String), 12))          // 005-16 SumInsured
-    sb.append(pad(safe(src.getFieldValue("ClaimNumber_Ext") as String), 10))          // ClaimNumber
+    sb.append(pad(safe(null as String), 10))          // ClaimNumber - not held in ContactManager (ClaimCenter claim data); emitted empty per copybook
     sb.append(padNum(src.getFieldValue("PolicyNumber_Ext"), 15))            // PolicyNumber - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("UPRN_Ext")))              // UPRN
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (CHG-27057)

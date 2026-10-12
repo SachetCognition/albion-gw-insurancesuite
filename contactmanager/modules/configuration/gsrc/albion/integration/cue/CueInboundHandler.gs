@@ -19,6 +19,7 @@ uses albion.party.common.AlbionPartyPredicates
  *  15/11/2016   baldrid      Defect fix GWPC-41070 - null pointer when policy period not bound
  *  02/05/2024   gferran      Defect fix GWBC-21533 - null pointer when policy period not bound
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService; shared party predicates
+ *  12/10/2026   AGI-GW Platform  Data gap: claim amount not held in ContactManager
  ******************************************************************************/
 class CueInboundHandler {
 
@@ -29,7 +30,7 @@ class CueInboundHandler {
       // POLARIS-migrated records can arrive partially populated (GWBC-34448)
       return new java.util.ArrayList<String>()
     }
-    var amount = msg.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
+    var amount : java.math.BigDecimal = null  // Data gap: TotalIncurred is ClaimCenter claim data, not held on ContactManager party records
     if (amount == null) { amount = 0bd }
     var perilCodes = AlbionPartyPredicates.perilCodes(msg, PERIL_CODES)
     // Peril-level handling - order matters, EscapeOfWater must be tested before Flood (GWPC-3872)

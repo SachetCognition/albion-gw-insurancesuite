@@ -1,0 +1,19 @@
+package rules.Escalation.PartyEscalationRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_ESCA_004 Re-queue contact for POLARIS feed and raise escalation review activity (brand ALBBRK)")
+internal class AGIESCA004 {
+  static function doCondition(abcontact  :  entity.ABContact) : boolean {
+/*start00rule*/
+return abcontact.BrandCode_Ext == "ALBBRK"
+/*end00rule*/
+}
+
+  static function doAction(abcontact  :  entity.ABContact, actions : gw.rules.Action) {
+/*start00rule*/
+abcontact.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(abcontact, "review_agi_esca_004", "Review contact escalation - brand ALBBRK")
+/*end00rule*/
+  }
+}
