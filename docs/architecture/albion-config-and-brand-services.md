@@ -20,10 +20,14 @@ To change a service: edit the ClaimCenter copy, copy it to the other three centr
 
 ## AlbionConfigService (`albion.config`)
 
-Reads the non-sensitive business constants from `environments/<env>/<centre>.properties`. Keys are prefixed by the
-centre's existing convention (`cl.`, `po.`, `bi.`, `co.`).
+Reads the non-sensitive business constants from the centre's environment property file. Keys are prefixed by the
+centre's existing convention (`cl.`, `po.`, `bi.`, `co.`). In git the keys live in
+`environments/<env>/<centre>.properties.template` (secrets as `${TOKENS}`); older trees have the plain
+`<centre>.properties`. The business keys hold literal values in either file.
 
-Source of values: the file named by `-Dalbion.config.file=<path>` (optional), overlaid by JVM system properties.
+Source of values at runtime: the **rendered** `<centre>.properties` (produced from the template at deploy time), named by
+`-Dalbion.config.file=<path>` (optional), overlaid by JVM system properties. The service never reads the
+`.template` file itself.
 Trailing `   # comment` text on a value is stripped (the estate's property files use inline comments).
 Invalid values (unparseable / out of range) throw `IllegalStateException` naming the full key; call
 `AlbionConfigService.Instance.validate()` at start-up to fail fast on all of them at once.
@@ -37,7 +41,8 @@ if (score >= cfg.FraudReferScore) { ... }
 ### Keys, defaults, getters
 
 Defaults equal the values hardcoded in the centres today. All ten envs (`dev dev2 sit sit2 uat preprod prod perf dr
-train`) carry every key below with the default value, e.g. `bi.large.loss.threshold=25000`.
+train`) carry every key below with the default value in their `<centre>.properties.template` (or `<centre>.properties`),
+e.g. `bi.large.loss.threshold=25000`.
 
 | Key (after prefix) | Default | Getter | Validation |
 |---|---|---|---|
@@ -116,5 +121,6 @@ python3 tools/scripts/check_brand_config_drift.py [--root <repo>]
 Python 3 stdlib only, no Guidewire distribution needed; exit 1 on drift. Fails when: the four typelists differ; a CSV
 `GW_TYPECODE` is missing from or retired in the typelist; the service tables differ from the typelist or CSV (or roles
 are inconsistent with the CSV notes); any per-centre service/test copy is not byte-identical; `AlbionCentre` prefix does
-not match the env files; or any of the 40 `environments/<env>/<centre>.properties` files lacks a business key.
+not match the env files; or any of the 40 env/centre property files lacks a business key. Per env/centre it checks
+`environments/<env>/<centre>.properties.template` when present, else `<centre>.properties`, and fails if neither exists.
 Not yet wired into the `Jenkinsfile` (planned for the CI wave).

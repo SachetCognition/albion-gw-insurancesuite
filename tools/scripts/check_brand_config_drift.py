@@ -13,8 +13,10 @@ Checks:
      role consistent with the CSV (RETIRED notes -> RETIRED, empty typecode -> SENTINEL, at most one OUTBOUND
      per typecode).
   5. Per-centre copies of AlbionConfigService, BrandMappingService and their GUnit tests are byte-identical.
-  6. AlbionCentre.PROPERTY_PREFIX matches the prefix used in environments/<env>/<centre>.properties, and every
-     env property file defines every business-constant key declared in AlbionConfigService.
+  6. AlbionCentre.PROPERTY_PREFIX matches the prefix used in each env property file, and every env property file
+     defines every business-constant key declared in AlbionConfigService. Per env/centre the committed
+     environments/<env>/<centre>.properties.template is checked when present, else <centre>.properties
+     (drift if neither exists).
 
 Usage: python3 tools/scripts/check_brand_config_drift.py [--root <repo root>]
 """
@@ -51,6 +53,15 @@ CENTRE_FILE = "gsrc/albion/config/AlbionCentre.gs"
 NS = "{http://guidewire.com/typelists}"
 # Keys AlbionConfigService reads but which already existed before Session A (not required to be added).
 PRE_EXISTING_KEYS = {"ipt.rate"}
+
+
+def env_property_file(root, env, env_name):
+    """The committed template wins over a rendered .properties file; None when neither exists."""
+    base = root / "environments" / env
+    for name in (f"{env_name}.properties.template", f"{env_name}.properties"):
+        if (base / name).is_file():
+            return base / name
+    return None
 
 
 class Drift:
@@ -169,9 +180,9 @@ def main():
             continue
         prefix = m.group(1)
         for env in ENVS:
-            p = root / "environments" / env / f"{env_name}.properties"
-            if not p.is_file():
-                err(f"missing {p}")
+            p = env_property_file(root, env, env_name)
+            if p is None:
+                err(f"missing environments/{env}/{env_name}.properties.template and {env_name}.properties")
                 continue
             props = {}
             for line in p.read_text(encoding="utf-8", errors="replace").splitlines():
