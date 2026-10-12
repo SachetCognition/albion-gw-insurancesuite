@@ -1,0 +1,19 @@
+package rules.Preupdate.PartyPreupdateRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_PREU_007 Re-queue contact for POLARIS feed and raise preupdate review activity (brand ALBBRK)")
+internal class AGIPREU007 {
+  static function doCondition(abcontact  :  entity.ABContact) : boolean {
+/*start00rule*/
+return abcontact.BrandCode_Ext == "ALBBRK"
+/*end00rule*/
+}
+
+  static function doAction(abcontact  :  entity.ABContact, actions : gw.rules.Action) {
+/*start00rule*/
+abcontact.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(abcontact, "review_agi_preu_007", "Preupdate review: brand ALBBRK")
+/*end00rule*/
+  }
+}

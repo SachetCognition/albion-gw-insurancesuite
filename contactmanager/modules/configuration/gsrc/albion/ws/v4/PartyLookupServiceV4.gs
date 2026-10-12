@@ -20,7 +20,7 @@ uses gw.xml.ws.annotation.WsiWebService
 @WsiWebService("http://albiongeneral.co.uk/ws/partylookup/v4")
 class PartyLookupServiceV4 {
 
-// FIXME: hardcoded for UAT, parameterise before go-live  <-- went live like this (AGI-675)
+// TODO(AGI-675): values originally set for UAT are still used in production; parameterise
   public function getPartyDetails(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")

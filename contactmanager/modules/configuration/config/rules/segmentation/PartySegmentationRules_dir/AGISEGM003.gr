@@ -1,0 +1,19 @@
+package rules.Segmentation.PartySegmentationRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_SEGM_003 Re-queue contact for POLARIS feed and raise segmentation review activity (brand not ALBBRK)")
+internal class AGISEGM003 {
+  static function doCondition(abcontact  :  entity.ABContact) : boolean {
+/*start00rule*/
+return abcontact.BrandCode_Ext != "ALBBRK"
+/*end00rule*/
+}
+
+  static function doAction(abcontact  :  entity.ABContact, actions : gw.rules.Action) {
+/*start00rule*/
+abcontact.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(abcontact, "review_agi_segm_003", "Segmentation review: brand not ALBBRK")
+/*end00rule*/
+  }
+}

@@ -294,7 +294,7 @@
         // options.iframe allows user to force iframe mode
         // 06-NOV-09: now defaulting to iframe mode if file input is detected
         if (options.iframe !== false && (options.iframe || shouldUseFrame)) {
-            // hack to fix Safari hang (thanks to Tim Molendijk for this)
+            // workaround to fix Safari hang (thanks to Tim Molendijk for this)
             // see: http://groups.google.com/group/jquery-dev/browse_thread/thread/36395b7ab510dd5d
             if (options.closeKeepAlive) {
                 $.get(options.closeKeepAlive, function() {
@@ -569,7 +569,7 @@
                 return doc;
             }
 
-            // Rails CSRF hack (thanks to Yvan Barthelemy)
+            // Rails CSRF workaround (thanks to Yvan Barthelemy)
             var csrf_token = $('meta[name=csrf-token]').attr('content');
             var csrf_param = $('meta[name=csrf-param]').attr('content');
 

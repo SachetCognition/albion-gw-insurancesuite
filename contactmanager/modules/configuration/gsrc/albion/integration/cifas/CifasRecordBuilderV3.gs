@@ -28,7 +28,7 @@ class CifasRecordBuilderV3 {
   static final var FILLER_CHAR : String = " "
   static final var DATE_FMT : String = "yyyyMMdd"
 
-// MIB rejects VRMs containing spaces; the VRM is also stripped in albion.util.LegacyClaimUtils
+// MIB rejects VRMs containing spaces
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("CI36", 4))                                  // 001-004 record type

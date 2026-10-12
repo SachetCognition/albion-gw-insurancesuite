@@ -1,0 +1,19 @@
+package rules.Validation.PartyValidationRules_dir
+
+uses albion.util.AlbionActivityUtils
+
+@gw.rules.RuleName("AGI_VALI_011 Re-queue contact for POLARIS feed and raise validation review activity (brand ALBDIR)")
+internal class AGIVALI011 {
+  static function doCondition(abcontact  :  entity.ABContact) : boolean {
+/*start00rule*/
+return abcontact.BrandCode_Ext == "ALBDIR"
+/*end00rule*/
+}
+
+  static function doAction(abcontact  :  entity.ABContact, actions : gw.rules.Action) {
+/*start00rule*/
+abcontact.FeedStatus_Ext = "PENDING"
+AlbionActivityUtils.raiseActivity(abcontact, "review_agi_vali_011", "Validation review: brand ALBDIR")
+/*end00rule*/
+  }
+}

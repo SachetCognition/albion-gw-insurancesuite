@@ -23,7 +23,7 @@ uses albion.party.common.AlbionPartyPredicates
  ******************************************************************************/
 class AlbionLegalHoldProcessor {
 
-// MIB rejects VRMs containing spaces; the VRM is also stripped in albion.util.AlbionPartyUtils
+// MIB rejects VRMs containing spaces
   public static function evaluateAlbionLegalHoldProcessor(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

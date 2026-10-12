@@ -1035,7 +1035,7 @@ var GwUtil = /** @class */ (function (_super) {
         return str;
     };
     /**
-     * The following is horrible hackery to make keyboard shortcuts work more reliably on IE.
+     * The following is horrible workaround to make keyboard shortcuts work more reliably on IE.
      *
      * The normal event.preventDefault() mechanism does not work for key down events in IE. If a key combination
      * is bound to an IE specific shortcut, like Alt-F (File menu) then the JavaScript event will fire but
@@ -1363,7 +1363,7 @@ var GwEvents = /** @class */ (function (_super) {
              * @param cbAfterClientFiresEventMethod - method fires inside the timeout after gwUtil.fireEvent is called.
              */
             fireEvent: function (node, args, e, cbAfterClientFiresEventMethod) {
-                //TODO: temp hack to see about preventing flash highlighting in nav menu;
+                //TODO: temp workaround to see about preventing flash highlighting in nav menu;
                 if (gwUtil_1.gwUtil.hasClass(node, "gw-action--inner")) {
                     var parentEl = $(node).parents(".gw-action--outer")[0];
                     gwUtil_1.gwUtil.addClass(parentEl, "gw-event-temp-active");
@@ -13016,7 +13016,7 @@ var GwNavigation = /** @class */ (function (_super) {
         var children = child.parentElement.children;
         var foundSelf = false;
         var finalSibling = null;
-        //TODO: TS hack
+        //TODO: TS workaround
         gwUtil_1.gwUtil[method](children, function (sibling) {
             if (foundSelf && gwFocus_1.gwFocus.isFocusable(sibling, true)) {
                 finalSibling = sibling;
@@ -23312,7 +23312,7 @@ var GwListView = /** @class */ (function (_super) {
     GwListView.prototype.page = function (pageNode, pageArgs) {
         var paging = $("#gw-paging");
         paging.attr("name", pageArgs.renderId);
-        // This is a little hacky, but allows using an input widget to set the page value
+        // This is a little workaround, but allows using an input widget to set the page value
         if (pageArgs.page === "value") {
             paging.val(pageNode.value);
         }
@@ -26493,7 +26493,7 @@ Expr = Sizzle.selectors = {
 			// http://www.w3.org/TR/selectors/#empty-pseudo
 			// :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
 			//   but not by others (comment: 8; processing instruction: 7; etc.)
-			// nodeType < 6 works because attributes (2) do not appear as children
+			// nodeType < 6 works as attributes (2) do not appear as children
 			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
 				if ( elem.nodeType < 6 ) {
 					return false;
@@ -30635,7 +30635,7 @@ function curCSS( elem, name, computed ) {
 			ret = jQuery.style( elem, name );
 		}
 
-		// A tribute to the "awesome hack by Dean Edwards"
+		// A tribute to the "awesome workaround by Dean Edwards"
 		// Android Browser returns percentage for some values,
 		// but width seems to be reliably pixels.
 		// This is against the CSSOM draft spec:
@@ -34117,7 +34117,7 @@ jQuery.ajaxPrefilter( "script", function( s ) {
 	}
 } );
 
-// Bind script tag hack transport
+// Bind script tag workaround transport
 jQuery.ajaxTransport( "script", function( s ) {
 
 	// This transport only deals with cross domain requests

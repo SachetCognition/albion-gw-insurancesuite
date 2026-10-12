@@ -1,0 +1,21 @@
+package rules.Segmentation
+
+/**
+ * Albion party segmentation rules for ABContact. Each rule re-queues the contact for the POLARIS feed
+ * (FeedStatus_Ext = PENDING) and raises a review activity. Rules run in descending priority:
+ * AGI_SEGM_012 (priority 685)
+ * AGI_SEGM_001 (priority 323)
+ * AGI_SEGM_003 (priority 193)
+ * AGI_SEGM_009 (priority 125)
+ */
+@gw.rules.RuleName("PartySegmentationRules")
+@gw.rules.RuleSetDescription("Albion party segmentation rules: re-queue ABContact for the POLARIS feed and raise a segmentation review activity")
+class PartySegmentationRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.ABContact) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.ABContact) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "PartySegmentationRules", PartySegmentationRules )
+  }
+}

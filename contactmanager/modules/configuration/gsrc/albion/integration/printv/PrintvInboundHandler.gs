@@ -24,7 +24,7 @@ uses albion.party.common.AlbionPartyPredicates
  ******************************************************************************/
 class PrintvInboundHandler {
 
-// MIB rejects VRMs containing spaces; the VRM is also stripped in albion.util.CommonPolicyUtils
+// MIB rejects VRMs containing spaces
   public static function evaluatePrintvInboundHandler(msg : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (msg == null) {

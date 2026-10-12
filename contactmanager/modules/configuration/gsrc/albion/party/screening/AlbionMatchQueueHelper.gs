@@ -26,7 +26,7 @@ uses albion.party.common.AlbionPartyPredicates
  ******************************************************************************/
 class AlbionMatchQueueHelper {
 
-// Overlaps with albion.util.LegacyPolicyUtils; consolidation tracked in GWCC-6796 (raised 2016)
+// Consolidation of the duplicated policy helpers tracked in GWCC-6796 (raised 2016)
   public static function evaluateAlbionMatchQueueHelper(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

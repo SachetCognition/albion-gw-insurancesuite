@@ -23,7 +23,7 @@ uses albion.party.common.AlbionPartyPredicates
  ******************************************************************************/
 class AlbionErasureAssessorEngine {
 
-// MIB rejects VRMs containing spaces; the VRM is also stripped in albion.util.LegacyPolicyUtils
+// MIB rejects VRMs containing spaces
   public static function evaluateAlbionErasureAssessorEngine(bean : KeyableBean) : List<String> {
     var result = new java.util.ArrayList<String>()
     if (bean == null) {

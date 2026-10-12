@@ -41,7 +41,7 @@ if (!Array.prototype.indexOf) {
       throw new TypeError('"this" is null or not defined');
     }
 
-    var length = this.length >>> 0; // Hack to convert object.length to a UInt32
+    var length = this.length >>> 0; // workaround to convert object.length to a UInt32
 
     fromIndex = +fromIndex || 0;
 

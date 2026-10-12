@@ -1,0 +1,20 @@
+package rules.Assignment
+
+/**
+ * Albion party assignment rules for ABContact. Each rule re-queues the contact for the POLARIS feed
+ * (FeedStatus_Ext = PENDING) and raises a review activity. Rules run in descending priority:
+ * AGI_ASSI_005 (priority 623)
+ * AGI_ASSI_001 (priority 142)
+ * AGI_ASSI_004 (priority 54)
+ */
+@gw.rules.RuleName("PartyAssignmentRules")
+@gw.rules.RuleSetDescription("Albion party assignment rules: re-queue ABContact for the POLARIS feed and raise a assignment review activity")
+class PartyAssignmentRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.ABContact) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.ABContact) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "PartyAssignmentRules", PartyAssignmentRules )
+  }
+}

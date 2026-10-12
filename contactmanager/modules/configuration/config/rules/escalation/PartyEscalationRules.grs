@@ -1,0 +1,19 @@
+package rules.Escalation
+
+/**
+ * Albion party escalation rules for ABContact. Each rule re-queues the contact for the POLARIS feed
+ * (FeedStatus_Ext = PENDING) and raises a review activity. Rules run in descending priority:
+ * AGI_ESCA_004 (priority 581)
+ * AGI_ESCA_001 (priority 526)
+ */
+@gw.rules.RuleName("PartyEscalationRules")
+@gw.rules.RuleSetDescription("Albion party escalation rules: re-queue ABContact for the POLARIS feed and raise a escalation review activity")
+class PartyEscalationRules extends gw.rules.RuleSetBase {
+  static function invoke(bean : entity.ABContact) : gw.rules.ExecutionSession {
+    return invoke( new gw.rules.ExecutionSession(), bean )
+  }
+
+  static function invoke(exeSession : gw.rules.ExecutionSession, bean : entity.ABContact) : gw.rules.ExecutionSession {
+    return _invoke( exeSession, bean, "PartyEscalationRules", PartyEscalationRules )
+  }
+}

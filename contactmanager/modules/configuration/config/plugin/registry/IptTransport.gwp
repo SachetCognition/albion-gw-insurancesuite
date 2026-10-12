@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<plugin
+  interface="MessageTransport"
+  name="IptTransport">
+  <!-- Insurance Premium Tax calculation & HMRC returns -->
+  <plugin-gosu
+    gosuclass="albion.integration.ipt.IptTransport"/>
+</plugin>

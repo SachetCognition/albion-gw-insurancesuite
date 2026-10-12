@@ -30,7 +30,7 @@ class AlbionScreeningFeedBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONSCREENINGFEE_EXT)
   }
 
-// FIXME: brand check copy-pasted 14 times across codebase, see AGI-28325
+// Brand checks are duplicated across the estate; consolidation tracked in AGI-28325
   override function doWork() {
     var processed = 0
     var errored = 0

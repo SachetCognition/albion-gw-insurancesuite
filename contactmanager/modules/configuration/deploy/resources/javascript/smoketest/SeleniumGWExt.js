@@ -337,7 +337,7 @@ function SeleniumGW_isGWOperationDone(bReturnPageName) {
     }
     LOG.debug('GwOpDone. current location:' + currWin.location);
     if (bReturnPageName) {
-      // a hack way to return the result page at the end of the action command
+      // a workaround way to return the result page at the end of the action command
       throw new SeleniumError ("RESULT PAGE: " + selenium.browserbot.getCurrentWindow().Test.getPageName());
     }
   }

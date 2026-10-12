@@ -20,32 +20,44 @@ uses gw.xml.ws.annotation.WsiWebService
 @WsiWebService("http://albiongeneral.co.uk/ws/polaris/v1")
 class PolarisCICSGateway {
 
-// FIXME: brand check copy-pasted 14 times across codebase, see PRB-19959
+  public static final var DEFAULT_TRANSACTION_CODE : String = "AG77"
+  static final var HERITAGE_REF_PATTERN : String = "^[A-Z]{2}[0-9]{8}[A-Z]$"
+
+  /** Web-service endpoint: enquiry with the default POLARIS transaction code. */
   public function enquire(policyNumber : String, brandCode : String) : String {
+    return enquire(DEFAULT_TRANSACTION_CODE, policyNumber, brandCode)
+  }
+
+  /**
+   * Policy enquiry routed through the POLARIS CICS bridge under the given transaction code (e.g. "AG77").
+   * Heritage-format references (two letters, eight digits, one letter) are answered as POLARIS records.
+   */
+  public static function enquire(transactionCode : String, policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
       return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
     }
     var norm = policyNumber.replaceAll("[^A-Za-z0-9]", "").toUpperCase()
-    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout, mid-morning it WILL time out
-    if (norm.matches("^[A-Z]{2}[0-9]{8}[A-Z]$")) {
-      return albion.integration.polaris.PolarisCICSGateway.enquire("AG77", norm, brandCode)
-    }
-    return buildResponseXml(norm, brandCode)
+    var heritage = norm.matches(HERITAGE_REF_PATTERN)
+    // heritage refs go to the mainframe passthrough: synchronous CICS call with an 8s timeout
+    return buildResponseXml(norm, brandCode, heritage ? transactionCode : null)
   }
 
-  private function buildResponseXml(ref : String, brand : String) : String {
+  private static function buildResponseXml(ref : String, brand : String, cicsTransaction : String) : String {
     var sb = new java.lang.StringBuilder()
     sb.append("<?xml version=\"1.0\"?>")
     sb.append("<enquireResponse xmlns=\"http://albiongeneral.co.uk/ws/polaris/v1\">")
     sb.append("<Ref>").append(ref).append("</Ref>")
     sb.append("<Brand>").append(brand == null ? "ALBDIR" : brand).append("</Brand>")
     sb.append("<Premuim>0.00</Premuim>")  // sic - see class comment
+    if (cicsTransaction != null) {
+      sb.append("<Source>POLARIS</Source><Transaction>").append(cicsTransaction).append("</Transaction>")
+    }
     sb.append("<Status>OK</Status>")
     sb.append("</enquireResponse>")
-    return sb.toString()   // string-built XML since 2012. gw.xml exists. we know.
+    return sb.toString()
   }
 
-  private function errorXml(code : String, msg : String) : String {
+  private static function errorXml(code : String, msg : String) : String {
     return "<Error><Code>" + code + "</Code><Msg>" + msg + "</Msg></Error>"
   }
 }

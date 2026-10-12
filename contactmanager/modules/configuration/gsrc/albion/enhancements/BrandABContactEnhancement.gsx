@@ -24,7 +24,7 @@ enhancement BrandABContactEnhancement : entity.ABContact {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// FIXME: hardcoded for UAT, parameterise before go-live  <-- went live like this (CHG-40753)
+// TODO(CHG-40753): values originally set for UAT are still used in production; parameterise
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<plugin
+  interface="MessageTransport"
+  name="MidTransport">
+  <!-- Motor Insurance Database (MIB) vehicle feed -->
+  <plugin-gosu
+    gosuclass="albion.integration.mid.MidTransport"/>
+</plugin>

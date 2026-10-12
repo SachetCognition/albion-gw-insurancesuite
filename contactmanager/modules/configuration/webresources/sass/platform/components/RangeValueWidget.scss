@@ -23,7 +23,7 @@
     }
 
     option:checked {
-      //If the design requires a custom background, this linear-gradient hack can be used, but the font color can't be customized in all situations
+      //If the design requires a custom background, this linear-gradient workaround can be used, but the font color can't be customized in all situations
       //background: linear-gradient(to bottom, #{$gw-app--RangeShuttleValueWidget--selected-bg} 0%, #{$gw-app--RangeShuttleValueWidget--selected-bg} 100%);
     }
   }

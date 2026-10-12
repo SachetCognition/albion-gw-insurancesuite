@@ -508,7 +508,7 @@ var Test = function() {
 
           // AHK - 4/22/2013 - Simulating key events is apparently a cross-browser nightmare.  The workaround here
           // was taken from http://stackoverflow.com/questions/10455626/keydown-simulation-in-chrome-fires-normally-but-not-the-correct-key
-          // Hack for Chrome/WebKit issues
+          // workaround for Chrome/WebKit issues
           Object.defineProperty(eventObject, 'keyCode', {
             get : function() {
               return this.keyCodeVal;
