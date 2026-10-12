@@ -24,6 +24,9 @@
   <typecode code="AlbionSchemesEscal_Ext" desc="Schemes escalation (AlbionSchemesEscalationBatch)" name="Schemes escalation">
     <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
   </typecode>
+  <typecode code="AlbionShadowRecon_Ext" desc="Strangler shadow reconciliation report, unscheduled (AlbionShadowReconciliationBatch)" name="Shadow reconciliation">
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
   <typecode code="AlbionUnderwriting_Ext" desc="Underwriting feed (AlbionUnderwritingFeedBatch)" name="Underwriting feed">
     <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
   </typecode>

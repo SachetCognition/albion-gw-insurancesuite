@@ -74,15 +74,11 @@ the same table, which is the precondition for consolidating the calculation.
 
 All of them run in the blocking `GUnit CC/PC/BC/CM` stages of the `Jenkinsfile`.
 
-## Next phases build on
+## Next phases
 
-- Shadow reconciliation: enable `feature.shadow.enabled` + `feature.shadow.feeds` in a non-production environment
-  (and relax `DORMANT_FLAGS` in the drift check for that environment), plug a persistent `ShadowDiffRecorder` in
-  through `ShadowRecordFacade.setRecorder`, and count `ReconciliationResult` outcomes against `ShadowTolerance`.
-- Offline replay: run the legacy builder and candidate through `ShadowRunner` with an `InMemoryShadowDiffRecorder`
-  over captured inputs.
-- Cutover: add a per-feed cutover switch to `AlbionConfigService` and switch the authoritative producer inside
-  `ShadowRecordFacade.buildRecord`, the only place a transport obtains its record.
+Shadow reconciliation, offline replay evidence and the gated cutover switch (`feature.cutover.feeds`) are described in
+`docs/migration/strangler-phase2-3.md`. They keep this foundation: the committed templates stay OFF and the drift check
+keeps `DORMANT_FLAGS`; enabling in an environment is a deploy-time override.
 
 Not changed in Phase 1: `Jenkinsfile.legacy` (the production release job). It still runs no tests; gating releases on
 the golden-master tests is a decision for the owner of `AGI-GW-RELEASE-PROD`.

@@ -19,6 +19,8 @@ cl.feature.newratingengine.enabled=true   # 'temporary' dual-running since 2021
 cl.feature.shadow.enabled=false
 cl.feature.shadow.feeds=
 cl.feature.shadow.brands=
+# strangler cutover: empty = legacy record authoritative for every feed; set per change window only, see docs/migration/strangler-phase2-3.md
+cl.feature.cutover.feeds=
 cl.ipt.rate=0.12
 cl.ipt.rate.travel=0.20
 # legacy keys below - unknown consumers, removal attempt PRB-25586 rolled back

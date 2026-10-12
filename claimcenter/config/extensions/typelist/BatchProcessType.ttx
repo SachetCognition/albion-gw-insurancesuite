@@ -24,6 +24,9 @@
     <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
     <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
   </typecode>
+  <typecode code="AlbionShadowRecon_Ext" name="Albion Shadow Reconciliation" desc="Strangler shadow reconciliation report, unscheduled (AlbionShadowReconciliationBatch)">
+    <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>
+  </typecode>
   <typecode code="AlbionPropertyclai_Ext" name="Albion Propertyclaims Feed" desc="Nightly propertyclaims batch (Property perils handling) (AlbionPropertyclaimsFeedBatch)">
     <category code="Schedulable" typelist="BatchProcessTypeUsage"/>
     <category code="UIRunnable" typelist="BatchProcessTypeUsage"/>

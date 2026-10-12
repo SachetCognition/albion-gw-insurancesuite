@@ -13,7 +13,8 @@ uses java.util.concurrent.locks.ReentrantLock
  * AlbionConfigService - typed access to the non-sensitive Albion business constants held in
  * environments/<env>/<centre>.properties (keys are prefixed per centre, see AlbionCentre.PROPERTY_PREFIX).
  *
- * The KEY_FEATURE_SHADOW_* keys are the strangler shadow-run switches (docs/migration/strangler-phase1.md). They default
+ * The KEY_FEATURE_SHADOW_* keys are the strangler shadow-run switches (docs/migration/strangler-phase1.md) and
+ * KEY_FEATURE_CUTOVER_FEEDS is the Phase 3 cutover switch (docs/migration/strangler-phase2-3.md). They default
  * OFF/empty, so with no value configured every feed produces its legacy record only.
  *
  * The KEY_ENCRYPTION_* keys are the exception: they carry CyberArk-rendered key material for
@@ -52,6 +53,11 @@ class AlbionConfigService {
   public static final var KEY_FEATURE_SHADOW_FEEDS : String = "feature.shadow.feeds"
   /** Optional BrandCode_Ext typecodes the shadow run is limited to, comma separated. Empty (the default) = all brands. */
   public static final var KEY_FEATURE_SHADOW_BRANDS : String = "feature.shadow.brands"
+  /**
+   * Feed names cut over to the candidate builder, comma separated. Empty (the default) = none. A listed feed must also be
+   * shadow-run: the candidate record is emitted only when it reconciles with the legacy record, which still runs.
+   */
+  public static final var KEY_FEATURE_CUTOVER_FEEDS : String = "feature.cutover.feeds"
 
   /** Current AES-256 key, Base64 of 32 bytes. CyberArk token; no default. */
   public static final var KEY_ENCRYPTION_KEY : String = "encryption.key"
@@ -83,7 +89,7 @@ class AlbionConfigService {
 
   /** Strangler feature-flag keys (validated at start-up with the business constants; never business constants themselves). */
   public static final var FEATURE_KEYS : List<String> = {
-      KEY_FEATURE_SHADOW_ENABLED, KEY_FEATURE_SHADOW_FEEDS, KEY_FEATURE_SHADOW_BRANDS
+      KEY_FEATURE_SHADOW_ENABLED, KEY_FEATURE_SHADOW_FEEDS, KEY_FEATURE_SHADOW_BRANDS, KEY_FEATURE_CUTOVER_FEEDS
   }
 
   static final var INSTANCE_LOCK : ReentrantLock = new ReentrantLock()
@@ -357,6 +363,19 @@ class AlbionConfigService {
     return brands.Empty or (brandTypecode != null and brands.contains(brandTypecode.trim().toUpperCase()))
   }
 
+  /** Feeds listed for cutover, upper case. Key: feature.cutover.feeds, default empty (no feed). */
+  property get CutoverFeeds() : List<String> {
+    return getList(KEY_FEATURE_CUTOVER_FEEDS)
+  }
+
+  /**
+   * True only when the feed is listed for cutover and isShadowEnabled(feed, brandTypecode) is true, so a cut-over record
+   * is always reconciled against legacy. Clearing feature.cutover.feeds (or the shadow switch) restores legacy-only output.
+   */
+  function isCutoverEnabled(feed : String, brandTypecode : String) : boolean {
+    return feed != null and CutoverFeeds.contains(feed.trim().toUpperCase()) and isShadowEnabled(feed, brandTypecode)
+  }
+
   // ------------------------------------------------------------------------------------------------ validation
 
   /** Every problem with the configured business constants and feature flags; empty when all are valid. Call at server start-up. */
@@ -380,6 +399,12 @@ class AlbionConfigService {
       }
       if (ComplaintHoldingLetterDays >= ComplaintFinalResponseDays) {
         errors.add(fullKey(KEY_SLA_COMPLAINT_HOLDING_LETTER_DAYS) + " must be less than " + fullKey(KEY_SLA_COMPLAINT_FINAL_RESPONSE_DAYS))
+      }
+      for (feed in CutoverFeeds) {
+        if (not ShadowRunEnabled or not ShadowFeeds.contains(feed)) {
+          errors.add(fullKey(KEY_FEATURE_CUTOVER_FEEDS) + " lists " + feed + " but it is not shadow-run: cutover requires "
+              + fullKey(KEY_FEATURE_SHADOW_ENABLED) + "=true and " + feed + " in " + fullKey(KEY_FEATURE_SHADOW_FEEDS))
+        }
       }
     }
     return errors
