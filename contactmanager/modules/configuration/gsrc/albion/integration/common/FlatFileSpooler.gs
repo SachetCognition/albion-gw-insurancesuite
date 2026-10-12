@@ -21,12 +21,12 @@ package albion.integration.common
  */
 class FlatFileSpooler {
 
-  public static final var SPOOL_DIR_KEY : String = "spool.dir"
+  public static final var SPOOL_DIR_KEY : String = "integration.spool.dir"
   public static final var DEFAULT_SPOOL_DIR : String = "/var/agi/spool/outbound"
 
   /**
    * Appends one fixed-width record to the outbound spool file for the feed
-   * (<co.spool.dir>/<feed>.dat, default DEFAULT_SPOOL_DIR). Returns the file written.
+   * (<co.integration.spool.dir>/<feed>.dat, default DEFAULT_SPOOL_DIR). Returns the file written.
    */
   public static function spool(feed : String, record : String) : java.io.File {
     if (feed == null or feed.trim().length() == 0) {

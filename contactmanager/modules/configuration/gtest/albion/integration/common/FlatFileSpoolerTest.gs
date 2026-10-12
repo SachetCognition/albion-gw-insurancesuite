@@ -8,7 +8,7 @@ class FlatFileSpoolerTest extends AlbionRuleTestBase {
 
   function testSpoolAppendsOneLinePerRecordToTheFeedFile() {
     var dir = Files.createTempDirectory("spool").toFile()
-    withConfig(new HashMap<String, String>() {"co.spool.dir" -> dir.AbsolutePath}, \ -> {
+    withConfig(new HashMap<String, String>() {"co.integration.spool.dir" -> dir.AbsolutePath}, \ -> {
       var file = FlatFileSpooler.spool("CUE", "REC1")
       FlatFileSpooler.spool("CUE", "REC2")
       assertEquals("CUE.dat", file.Name)

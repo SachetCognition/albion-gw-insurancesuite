@@ -20,7 +20,7 @@ class AlbionSpoolTransportTest extends AlbionRuleTestBase {
 
   function testTransportWithoutRecordBuilderSpoolsPayloadAndAcks() {
     var dir = Files.createTempDirectory("spool").toFile()
-    withConfig(new HashMap<String, String>() {"co.spool.dir" -> dir.AbsolutePath}, \ -> {
+    withConfig(new HashMap<String, String>() {"co.integration.spool.dir" -> dir.AbsolutePath}, \ -> {
       var msg = message(bean(new HashMap<String, Object>()))
       new MidTransport().send(msg, "MIDPAYLOAD")
       EasyMock.verify(msg)
@@ -30,7 +30,7 @@ class AlbionSpoolTransportTest extends AlbionRuleTestBase {
 
   function testTransportWithRecordBuilderSpoolsBuiltRecord() {
     var dir = Files.createTempDirectory("spool").toFile()
-    withConfig(new HashMap<String, String>() {"co.spool.dir" -> dir.AbsolutePath}, \ -> {
+    withConfig(new HashMap<String, String>() {"co.integration.spool.dir" -> dir.AbsolutePath}, \ -> {
       var msg = message(bean(new HashMap<String, Object>() {"BrandCode_Ext" -> "ALBDIR"}))
       new CueTransport().send(msg, "IGNORED")
       EasyMock.verify(msg)
