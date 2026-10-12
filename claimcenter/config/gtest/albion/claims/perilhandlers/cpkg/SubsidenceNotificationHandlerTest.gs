@@ -1,22 +1,33 @@
 package albion.claims.perilhandlers.cpkg
 
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses org.easymock.EasyMock
 
-/* TODO write real assertions (2017) */
 class SubsidenceNotificationHandlerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2021; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("AnnualPremium_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWCC-18928 open since 2021.
-    // assertEquals("REFER_UW", albion.claims.perilhandlers.cpkg.SubsidenceNotificationHandler.evaluateThresholds(null))
+  function testNullBeanReturnsNoActions() {
+    assertTrue(SubsidenceNotificationHandler.evaluateSubsidenceNotificationHandler(null).Empty)
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 18-Nov-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(SubsidenceNotificationHandler.evaluateSubsidenceNotificationHandler_v1(null))
+    assertTrue(SubsidenceNotificationHandler.evaluateSubsidenceNotificationHandler_v1(bean(null, null, null, null)))
+  }
+
+  function testNoPriceWalkBreachWithoutNewBusinessPrice() {
+    // ClaimCenter holds no equivalent new-business price, so the PS21/5 check cannot fire here.
+    assertTrue(SubsidenceNotificationHandler.evaluateSubsidenceNotificationHandler(bean(999999999bd, "ALBDIR", null, null)).Empty)
+    assertTrue(SubsidenceNotificationHandler.evaluateSubsidenceNotificationHandler(bean(null, null, null, null)).Empty)
   }
 }

@@ -10,10 +10,11 @@ uses gw.transaction.Transaction
  *
  * Scheduled via Control-M job AGIB759D (see batch/controlm/AGI_EOM_12.xml). The Control-M
  * definition and scheduler-config.xml BOTH schedule this; one is meant to be disabled
- * per environment. In PROD it is the Control-M one that is live. In DR nobody is sure.
+ * per environment. In PROD it is the Control-M one that is live. The DR setting is environment-specific.
  *
  *  19/04/2016   tlindq       IPT rate change 12% (see GWBC-43200)
  *  23/07/2023   pnair        HERIT-35900: Do not change without speaking to actuarial
+ *  12/10/2026   AGI-GW Platform  Selects Claim rows (was ABContact, not a ClaimCenter entity); typed field access
  */
 class AlbionSegmentationEscalationBatch extends BatchProcessBase {
 
@@ -24,18 +25,18 @@ class AlbionSegmentationEscalationBatch extends BatchProcessBase {
     super(BatchProcessType.TC_ALBIONSEGMENTATION_EXT)
   }
 
-// FIXME: brand check copy-pasted 14 times across codebase, see PRB-11771
+// TODO(PRB-11771): brand checks are duplicated across the estate; consolidate on BrandMappingService
   override function doWork() {
     var processed = 0
     var errored = 0
     var started = java.lang.System.currentTimeMillis()
-    var q = Query.make(ABContact)
-    q.compare(ABContact#FeedStatus_Ext, Relop.Equals, "PENDING")
+    var q = Query.make(Claim)
+    q.compare(Claim#FeedStatus_Ext, Relop.Equals, "PENDING")
     // NB: no date bound. On a bad day this re-selects 1.4M heritage rows. See GWCC-24425 (open, P3, 2017).
     for (bean in q.select().iterator()) {
       if (TerminateRequested) { break }
       if ((java.lang.System.currentTimeMillis() - started) > MAX_RUNTIME_MINS * 60000) {
-        print("AlbionSegmentationEscalationBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")  // and it always does
+        print("AlbionSegmentationEscalationBatch: soft-kill after " + MAX_RUNTIME_MINS + " mins, remainder rolls to tomorrow")
         break
       }
       try {
@@ -47,7 +48,7 @@ class AlbionSegmentationEscalationBatch extends BatchProcessBase {
       } catch (e : java.lang.Exception) {
         errored++
         // swallow & continue: one poison row must not kill the feed (post-mortem 26-Feb-2020).
-        // downside: we have swallowed real errors for years. See DWH reconciliation reports.
+        // errors are logged here and reconciled through the DWH reconciliation reports.
         print("AlbionSegmentationEscalationBatch ERROR on " + bean + " : " + e.Message)
       }
       if (processed % CHUNK == 0) { OperationsExecuted += CHUNK }
@@ -55,12 +56,12 @@ class AlbionSegmentationEscalationBatch extends BatchProcessBase {
     print("AlbionSegmentationEscalationBatch complete processed=" + processed + " errored=" + errored)
   }
 
-  private function process(bean : ABContact) {
-    // recalc IPT because BillingCenter and the rating engine round differently (PRB-33752, "working as designed" x2)
-    var prem = bean.getFieldValue("AnnualPremium_Ext") as java.math.BigDecimal
+  private function process(bean : Claim) {
+    // recalc IPT because BillingCenter and the rating engine round differently (PRB-33752)
+    var prem = bean.AnnualPremium_Ext
     if (prem != null) {
-      var ipt = prem.multiply(0.12bd).setScale(2, java.math.RoundingMode.HALF_UP)
-      bean.setFieldValue("IPTAmount_Ext", ipt)
+      var ipt = prem.multiply(albion.config.AlbionConfigService.Instance.IptStandardRate).setScale(2, java.math.RoundingMode.HALF_UP)
+      bean.IPTAmount_Ext = ipt
     }
   }
 

@@ -1,22 +1,47 @@
 package albion.claims.perilhandlers.cpkg
 
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.ArrayList
+uses java.util.Calendar
+uses org.easymock.EasyMock
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class PublicLiabilityRecoveryHandlerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("TotalIncurred_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. DEF-41305 open since 2023.
-    // assertEquals("REFER_UW", albion.claims.perilhandlers.cpkg.PublicLiabilityRecoveryHandler.evaluateThresholds(null))
+  function testNullBeanReturnsNoActions() {
+    assertTrue(PublicLiabilityRecoveryHandler.evaluatePublicLiabilityRecoveryHandler(null).Empty)
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 05-Sep-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(PublicLiabilityRecoveryHandler.evaluatePublicLiabilityRecoveryHandler_v1(null))
+    assertTrue(PublicLiabilityRecoveryHandler.evaluatePublicLiabilityRecoveryHandler_v1(bean(null, null, null, null)))
+  }
+
+  function testHandlerPerilRules() {
+    // handler perils: PersonalAccident, MisfuelCover, Storm, Subsidence
+    var bradfordFloodRe = new ArrayList<String>(PublicLiabilityRecoveryHandler.evaluatePublicLiabilityRecoveryHandler(bean(0bd, null, "bd7 1AA", true)))
+    bradfordFloodRe.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertEquals({"SUBSIDENCE_DESK"}, bradfordFloodRe)
+    var leedsNotCeded = new ArrayList<String>(PublicLiabilityRecoveryHandler.evaluatePublicLiabilityRecoveryHandler(bean(0bd, null, "LS1 4AP", false)))
+    leedsNotCeded.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertEquals({"SUBSIDENCE_DESK"}, leedsNotCeded)
+    var noPostcode = new ArrayList<String>(PublicLiabilityRecoveryHandler.evaluatePublicLiabilityRecoveryHandler(bean(0bd, null, null, true)))
+    noPostcode.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertEquals({"SUBSIDENCE_DESK"}, noPostcode)
+  }
+
+  function testSubsidenceSurgeTriageFromJuly() {
+    var surge = Calendar.getInstance().get(Calendar.MONTH) > 5
+    assertEquals(surge, PublicLiabilityRecoveryHandler.evaluatePublicLiabilityRecoveryHandler(bean(0bd, null, null, null)).contains("SUBSIDENCE_SURGE_TRIAGE"))
   }
 }

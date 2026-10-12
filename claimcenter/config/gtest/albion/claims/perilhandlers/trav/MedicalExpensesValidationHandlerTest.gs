@@ -1,22 +1,33 @@
 package albion.claims.perilhandlers.trav
 
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses org.easymock.EasyMock
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class MedicalExpensesValidationHandlerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("EstimatedLoss_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. DEF-40602 open since 2023.
-    // assertEquals("REFER_UW", albion.claims.perilhandlers.trav.MedicalExpensesValidationHandler.evaluateThresholds(null))
+  function testNullBeanReturnsNoActions() {
+    assertTrue(MedicalExpensesValidationHandler.evaluateMedicalExpensesValidationHandler(null).Empty)
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 27-Dec-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(MedicalExpensesValidationHandler.evaluateMedicalExpensesValidationHandler_v1(null))
+    assertTrue(MedicalExpensesValidationHandler.evaluateMedicalExpensesValidationHandler_v1(bean(null, null, null, null)))
+  }
+
+  function testNoPriceWalkBreachWithoutNewBusinessPrice() {
+    // ClaimCenter holds no equivalent new-business price, so the PS21/5 check cannot fire here.
+    assertTrue(MedicalExpensesValidationHandler.evaluateMedicalExpensesValidationHandler(bean(999999999bd, "ALBDIR", null, null)).Empty)
+    assertTrue(MedicalExpensesValidationHandler.evaluateMedicalExpensesValidationHandler(bean(null, null, null, null)).Empty)
   }
 }

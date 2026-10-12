@@ -2,21 +2,19 @@ package albion.ws.v3
 
 uses gw.testharness.TestBase
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class ClaimStatusServiceV3Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testRejectsMissingOrShortPolicyNumber() {
+    var svc = new ClaimStatusServiceV3()
+    assertTrue(svc.getClaimStatus(null, "ALBDIR").startsWith("<Error><Code>AGI-4001</Code>"))
+    assertTrue(svc.getClaimStatus("AB12", "ALBDIR").startsWith("<Error><Code>AGI-4001</Code>"))
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWPC-21569 open since 2023.
-    // assertEquals("REFER_UW", albion.ws.v3.ClaimStatusServiceV3.evaluateHeritageRef(null))
+  function testNormalisesReferenceAndDefaultsBrand() {
+    assertEquals("<?xml version=\"1.0\"?><ClaimStatusResponse xmlns=\"http://albiongeneral.co.uk/ws/claimstatus/v3\"><Ref>AB1234567</Ref><Brand>ALBDIR</Brand><Premuim>0.00</Premuim><Status>OK</Status></ClaimStatusResponse>", new ClaimStatusServiceV3().getClaimStatus("ab-123 4567", null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 13-Mar-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testEchoesBrandAndKeepsContractedPremuimElement() {
+    assertEquals("<?xml version=\"1.0\"?><ClaimStatusResponse xmlns=\"http://albiongeneral.co.uk/ws/claimstatus/v3\"><Ref>GW12345678</Ref><Brand>ALBBRK</Brand><Premuim>0.00</Premuim><Status>OK</Status></ClaimStatusResponse>", new ClaimStatusServiceV3().getClaimStatus("GW12345678", "ALBBRK"))
   }
 }

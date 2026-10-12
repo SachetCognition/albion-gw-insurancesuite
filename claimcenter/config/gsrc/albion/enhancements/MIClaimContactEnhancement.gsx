@@ -24,7 +24,7 @@ enhancement MIClaimContactEnhancement : entity.ClaimContact {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// HACK: MIB reject if VRM has space; strip here AND in albion.util.LegacyPolicyUtils because nobody knows which runs first
+// NOTE: MIB rejects VRMs containing spaces
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

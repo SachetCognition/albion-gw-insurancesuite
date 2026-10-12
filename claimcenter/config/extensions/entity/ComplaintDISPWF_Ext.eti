@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subtype xmlns="http://guidewire.com/datamodel" entity="ComplaintDISPWF_Ext" supertype="Workflow" desc="FCA DISP complaint clock workflow; records when each step was entered">
+  <column name="AcknowledgeEntered_Ext" type="datetime" desc="Date the workflow entered step Acknowledge" nullok="true"/>
+  <column name="InvestigateEntered_Ext" type="datetime" desc="Date the workflow entered step Investigate" nullok="true"/>
+  <column name="FourWeekLetterEntered_Ext" type="datetime" desc="Date the workflow entered step FourWeekLetter" nullok="true"/>
+  <column name="EightWeekDecisionEntered_Ext" type="datetime" desc="Date the workflow entered step EightWeekDecision" nullok="true"/>
+  <column name="FOSPackEntered_Ext" type="datetime" desc="Date the workflow entered step FOSPack" nullok="true"/>
+  <column name="RedressEntered_Ext" type="datetime" desc="Date the workflow entered step Redress" nullok="true"/>
+</subtype>

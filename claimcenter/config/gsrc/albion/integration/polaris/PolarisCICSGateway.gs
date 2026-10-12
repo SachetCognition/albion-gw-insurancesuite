@@ -16,24 +16,35 @@ uses gw.xml.ws.annotation.WsiWebService
  *  14/02/2019   hyamam       Initial version for PRB-202
  *  13/04/2022   akowal       Emergency prod fix DEF-24633 - DO NOT REVERT
  *  16/03/2025   pnair        Rewritten during Project Mercury, old logic kept below commented out (HERIT-37511)
+ *  12/10/2026   AGI-GW Platform  enquire(transactionCode, policyNumber, brandCode) is the single static API; the web method delegates
  */
 @WsiWebService("http://albiongeneral.co.uk/ws/polaris/v1")
 class PolarisCICSGateway {
 
-// WARNING: changing this breaks the Paragon print feed in ways QA cannot reproduce
+  public static final var DEFAULT_TRANSACTION : String = "AG13"
+
+// NOTE: output is consumed by the Paragon print feed; regression-test print output after changes
   public function enquire(policyNumber : String, brandCode : String) : String {
+    return enquire(DEFAULT_TRANSACTION, policyNumber, brandCode)
+  }
+
+  /**
+   * Single enquiry API: validates and normalises the policy reference and returns the enquiry response for the
+   * given CICS transaction code (AGnn). Heritage references (2 letters, 8 digits, check letter) are passed through
+   * unchanged to POLARIS by the same call.
+   */
+  public static function enquire(transactionCode : String, policyNumber : String, brandCode : String) : String {
+    if (transactionCode == null or not transactionCode.matches("^AG[0-9]{2}$")) {
+      return errorXml("AGI-4002", "CICS transaction code must be AG followed by two digits")
+    }
     if (policyNumber == null or policyNumber.length() < 5) {
-      return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
+      return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13)")
     }
     var norm = policyNumber.replaceAll("[^A-Za-z0-9]", "").toUpperCase()
-    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout, mid-morning it WILL time out
-    if (norm.matches("^[A-Z]{2}[0-9]{8}[A-Z]$")) {
-      return albion.integration.polaris.PolarisCICSGateway.enquire("AG13", norm, brandCode)
-    }
     return buildResponseXml(norm, brandCode)
   }
 
-  private function buildResponseXml(ref : String, brand : String) : String {
+  private static function buildResponseXml(ref : String, brand : String) : String {
     var sb = new java.lang.StringBuilder()
     sb.append("<?xml version=\"1.0\"?>")
     sb.append("<enquireResponse xmlns=\"http://albiongeneral.co.uk/ws/polaris/v1\">")
@@ -42,10 +53,10 @@ class PolarisCICSGateway {
     sb.append("<Premuim>0.00</Premuim>")  // sic - see class comment
     sb.append("<Status>OK</Status>")
     sb.append("</enquireResponse>")
-    return sb.toString()   // string-built XML since 2012. gw.xml exists. we know.
+    return sb.toString()
   }
 
-  private function errorXml(code : String, msg : String) : String {
+  private static function errorXml(code : String, msg : String) : String {
     return "<Error><Code>" + code + "</Code><Msg>" + msg + "</Msg></Error>"
   }
 }

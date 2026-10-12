@@ -1,22 +1,33 @@
 package albion.claims.bodilyinjury
 
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses org.easymock.EasyMock
 
-/* TODO write real assertions (2017) */
 class AlbionPartThirtySixProcessorTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2021; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("EstimatedLoss_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. AGI-9872 open since 2021.
-    // assertEquals("REFER_UW", albion.claims.bodilyinjury.AlbionPartThirtySixProcessor.evaluateHeritageRef(null))
+  function testNullBeanReturnsNoActions() {
+    assertTrue(AlbionPartThirtySixProcessor.evaluateAlbionPartThirtySixProcessor(null).Empty)
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 12-Jul-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(AlbionPartThirtySixProcessor.evaluateAlbionPartThirtySixProcessor_v1(null))
+    assertTrue(AlbionPartThirtySixProcessor.evaluateAlbionPartThirtySixProcessor_v1(bean(null, null, null, null)))
+  }
+
+  function testNoPriceWalkBreachWithoutNewBusinessPrice() {
+    // ClaimCenter holds no equivalent new-business price, so the PS21/5 check cannot fire here.
+    assertTrue(AlbionPartThirtySixProcessor.evaluateAlbionPartThirtySixProcessor(bean(999999999bd, "ALBDIR", null, null)).Empty)
+    assertTrue(AlbionPartThirtySixProcessor.evaluateAlbionPartThirtySixProcessor(bean(null, null, null, null)).Empty)
   }
 }

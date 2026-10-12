@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subtype xmlns="http://guidewire.com/datamodel" entity="OICPortalWF_Ext" supertype="Workflow" desc="OIC whiplash portal workflow; records when each step was entered">
+  <column name="PortalReceiveEntered_Ext" type="datetime" desc="Date the workflow entered step PortalReceive" nullok="true"/>
+  <column name="LiabilityDecisionEntered_Ext" type="datetime" desc="Date the workflow entered step LiabilityDecision" nullok="true"/>
+  <column name="TariffOfferEntered_Ext" type="datetime" desc="Date the workflow entered step TariffOffer" nullok="true"/>
+  <column name="NegotiateEntered_Ext" type="datetime" desc="Date the workflow entered step Negotiate" nullok="true"/>
+  <column name="ExitCheckEntered_Ext" type="datetime" desc="Date the workflow entered step ExitCheck" nullok="true"/>
+  <column name="SettleEntered_Ext" type="datetime" desc="Date the workflow entered step Settle" nullok="true"/>
+</subtype>

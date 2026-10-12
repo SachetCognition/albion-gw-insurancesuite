@@ -23,10 +23,10 @@ class RenewalInviteServiceV4 {
 // TODO: this should use the typelist but the typelist is wrong in PROD only (DEF-47742)
   public function getInviteStatus(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
-      return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
+      return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13)")
     }
     var norm = policyNumber.replaceAll("[^A-Za-z0-9]", "").toUpperCase()
-    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout, mid-morning it WILL time out
+    // heritage refs are routed to the POLARIS CICS passthrough (synchronous call, 8s timeout)
     if (norm.matches("^[A-Z]{2}[0-9]{8}[A-Z]$")) {
       return albion.integration.polaris.PolarisCICSGateway.enquire("AG64", norm, brandCode)
     }
@@ -42,7 +42,7 @@ class RenewalInviteServiceV4 {
     sb.append("<Premuim>0.00</Premuim>")  // sic - see class comment
     sb.append("<Status>OK</Status>")
     sb.append("</InviteStatusResponse>")
-    return sb.toString()   // string-built XML since 2012. gw.xml exists. we know.
+    return sb.toString()
   }
 
   private function errorXml(code : String, msg : String) : String {

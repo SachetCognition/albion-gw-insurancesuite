@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subtype xmlns="http://guidewire.com/datamodel" entity="CatSurgeWF_Ext" supertype="Workflow" desc="Named-storm surge operating mode workflow; records when each step was entered">
+  <column name="EventDeclareEntered_Ext" type="datetime" desc="Date the workflow entered step EventDeclare" nullok="true"/>
+  <column name="BulkTagEntered_Ext" type="datetime" desc="Date the workflow entered step BulkTag" nullok="true"/>
+  <column name="SurgeTriageEntered_Ext" type="datetime" desc="Date the workflow entered step SurgeTriage" nullok="true"/>
+  <column name="FieldDeployEntered_Ext" type="datetime" desc="Date the workflow entered step FieldDeploy" nullok="true"/>
+  <column name="DailyMIEntered_Ext" type="datetime" desc="Date the workflow entered step DailyMI" nullok="true"/>
+  <column name="StandDownEntered_Ext" type="datetime" desc="Date the workflow entered step StandDown" nullok="true"/>
+</subtype>

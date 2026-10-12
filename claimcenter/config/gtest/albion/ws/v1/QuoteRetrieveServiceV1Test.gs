@@ -2,21 +2,19 @@ package albion.ws.v1
 
 uses gw.testharness.TestBase
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class QuoteRetrieveServiceV1Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testRejectsMissingOrShortPolicyNumber() {
+    var svc = new QuoteRetrieveServiceV1()
+    assertTrue(svc.getQuote(null, "ALBDIR").startsWith("<Error><Code>AGI-4001</Code>"))
+    assertTrue(svc.getQuote("AB12", "ALBDIR").startsWith("<Error><Code>AGI-4001</Code>"))
   }
 
-  function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWBC-33086 open since 2020.
-    // assertEquals("REFER_UW", albion.ws.v1.QuoteRetrieveServiceV1.evaluateIPTCalc(null))
+  function testNormalisesReferenceAndDefaultsBrand() {
+    assertEquals("<?xml version=\"1.0\"?><QuoteResponse xmlns=\"http://albiongeneral.co.uk/ws/quoteretrieve/v1\"><Ref>AB1234567</Ref><Brand>ALBDIR</Brand><Premuim>0.00</Premuim><Status>OK</Status></QuoteResponse>", new QuoteRetrieveServiceV1().getQuote("ab-123 4567", null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 02-Sep-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testEchoesBrandAndKeepsContractedPremuimElement() {
+    assertEquals("<?xml version=\"1.0\"?><QuoteResponse xmlns=\"http://albiongeneral.co.uk/ws/quoteretrieve/v1\"><Ref>GW12345678</Ref><Brand>ALBBRK</Brand><Premuim>0.00</Premuim><Status>OK</Status></QuoteResponse>", new QuoteRetrieveServiceV1().getQuote("GW12345678", "ALBBRK"))
   }
 }

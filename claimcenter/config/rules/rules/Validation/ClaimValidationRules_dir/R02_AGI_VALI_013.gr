@@ -1,0 +1,18 @@
+package rules.Validation.ClaimValidationRules_dir
+
+@gw.rules.RuleName("AGI_VALI_013 Validation review for claims where brand is not ALBBRK")
+internal class R02_AGI_VALI_013 {
+  static function doCondition(claim  :  entity.Claim) : boolean {
+/*start00rule*/
+return claim.BrandCode_Ext != BrandCode_Ext.TC_ALBBRK
+/*end00rule*/
+}
+
+  static function doAction(claim  :  entity.Claim, actions : gw.rules.Action) {
+/*start00rule*/
+// Legacy rule AGI_VALI_013 (priority 384, DEF-15320): set feed status to PENDING and raise a validation review activity.
+claim.FeedStatus_Ext = "PENDING"
+albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_vali_013", "Validation review: brand is not ALBBRK")
+/*end00rule*/
+  }
+}

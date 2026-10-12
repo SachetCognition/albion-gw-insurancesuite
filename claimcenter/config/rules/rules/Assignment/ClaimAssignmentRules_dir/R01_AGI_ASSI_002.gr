@@ -1,0 +1,18 @@
+package rules.Assignment.ClaimAssignmentRules_dir
+
+@gw.rules.RuleName("AGI_ASSI_002 Assignment review for claims where brand is HERIT")
+internal class R01_AGI_ASSI_002 {
+  static function doCondition(claim  :  entity.Claim) : boolean {
+/*start00rule*/
+return claim.BrandCode_Ext == BrandCode_Ext.TC_HERIT
+/*end00rule*/
+}
+
+  static function doAction(claim  :  entity.Claim, actions : gw.rules.Action) {
+/*start00rule*/
+// Legacy rule AGI_ASSI_002 (priority 494, CHG-23038): set feed status to PENDING and raise a assignment review activity.
+claim.FeedStatus_Ext = "PENDING"
+albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_assi_002", "Assignment review: brand is HERIT")
+/*end00rule*/
+  }
+}

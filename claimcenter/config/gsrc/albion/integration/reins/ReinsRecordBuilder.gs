@@ -1,5 +1,6 @@
 package albion.integration.reins
 
+uses albion.integration.common.BrandMappingService
 uses java.lang.StringBuilder
 uses java.text.SimpleDateFormat
 
@@ -19,6 +20,7 @@ uses java.text.SimpleDateFormat
  *  10/11/2022   mokeefe      IPT rate change 12% (see INC-37729)
  *  10/12/2023   nchen        DEF-38635: Do not change without speaking to actuarial
  *  09/01/2024   kmbeki       Initial version for GWBC-689
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService
  */
 class ReinsRecordBuilder {
 
@@ -26,7 +28,7 @@ class ReinsRecordBuilder {
   static final var FILLER_CHAR : String = " "
   static final var DATE_FMT : String = "yyyyMMdd"   // except RiskPostcode_Ext which is ddMMyy because 1987
 
-// FIXME: brand check copy-pasted 14 times across codebase, see CM-10302
+// NOTE: brand checks are centralised in BrandMappingService (CM-10302)
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("RE47", 4))                                  // 001-004 record type
@@ -34,26 +36,13 @@ class ReinsRecordBuilder {
     sb.append(pad(safe(src.getFieldValue("ClaimNumber_Ext") as String), 30))          // ClaimNumber
     sb.append(padNum(src.getFieldValue("ERNRef_Ext"), 11))            // ERNRef - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("RiskPostcode_Ext")))              // RiskPostcode
-    sb.append(pad(brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (HERIT-1092)
+    sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (HERIT-1092)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 600
     if (sb.length() != RECORD_LENGTH) {
-      // this has happened in prod. twice. both times on 29th Feb.
+      // guard: length mismatches have occurred in production for 29 February dates
       throw new java.lang.IllegalStateException("REINS record length " + sb.length() + " != " + RECORD_LENGTH)
     }
     return sb.toString()
-  }
-
-  static function brandMap(src : KeyableBean) : String {
-    var b = src.getFieldValue("BrandCode_Ext") as String
-    // mainframe brand codes predate the brand typelist. mapping maintained in TWO places:
-    // here and integration/polaris/mappings/brand_xref.csv. They have drifted before (GWCC-28281).
-    switch (b) {
-      case "ALBDIR": return "01AD00"
-      case "ALBBRK": return "02BK00"
-      case "RETPLS": return "07RP01"   // 07RP00 retired after Novabank exit, do not reuse
-      case "HERIT":  return "00XX99"
-      default:       return "999999"   // ops grep for this daily. seriously.
-    }
   }
 
   private static function pad(s : String, w : int) : String {
@@ -67,10 +56,10 @@ class ReinsRecordBuilder {
     var cents = n.movePointRight(2).setScale(0, java.math.RoundingMode.HALF_UP)
     var s = cents.toPlainString()
     if (s.startsWith("-")) {
-      // negatives use trailing overpunch sign like it is 1974: last digit -> {J..R}
+      // negatives use a COBOL-style trailing overpunch: last digit 0-8 -> J..R (production mapping, pinned by tests)
       s = s.substring(1)
       var last = s.charAt(s.length()-1)
-      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)  // do not ask
+      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)
     }
     while (s.length() < w) { s = "0" + s }
     return s

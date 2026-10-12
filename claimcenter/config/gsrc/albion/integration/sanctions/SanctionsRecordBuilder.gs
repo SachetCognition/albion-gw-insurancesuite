@@ -1,5 +1,6 @@
 package albion.integration.sanctions
 
+uses albion.integration.common.BrandMappingService
 uses java.lang.StringBuilder
 uses java.text.SimpleDateFormat
 
@@ -16,6 +17,7 @@ uses java.text.SimpleDateFormat
  *  04/12/2015   pnair        GWCC-13623: Do not change without speaking to actuarial
  *  01/02/2017   mokeefe      Merged from heritage branch (GWPC-29926)
  *  01/11/2024   tlindq       CR INC-38298 - added ALBBRK brand handling
+ *  12/10/2026   AGI-GW Platform  Brand code mapping via BrandMappingService
  */
 class SanctionsRecordBuilder {
 
@@ -23,7 +25,7 @@ class SanctionsRecordBuilder {
   static final var FILLER_CHAR : String = " "
   static final var DATE_FMT : String = "yyyyMMdd"   // except RiskPostcode_Ext which is ddMMyy because 1987
 
-// NOTE: do NOT reformat this file, the offshore merge tool relies on line numbers (REG-24171)
+// NOTE: the offshore merge tool tracks this file by line number (REG-24171)
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("SA37", 4))                                  // 001-004 record type
@@ -31,26 +33,13 @@ class SanctionsRecordBuilder {
     sb.append(pad(safe(src.getFieldValue("AnnualPremium_Ext") as String), 8))          // AnnualPremium
     sb.append(padNum(src.getFieldValue("UPRN_Ext"), 13))            // UPRN - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("RiskPostcode_Ext")))              // RiskPostcode
-    sb.append(pad(brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (GWCC-21918)
+    sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (GWCC-21918)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 250
     if (sb.length() != RECORD_LENGTH) {
-      // this has happened in prod. twice. both times on 29th Feb.
+      // guard: length mismatches have occurred in production for 29 February dates
       throw new java.lang.IllegalStateException("SANCTIONS record length " + sb.length() + " != " + RECORD_LENGTH)
     }
     return sb.toString()
-  }
-
-  static function brandMap(src : KeyableBean) : String {
-    var b = src.getFieldValue("BrandCode_Ext") as String
-    // mainframe brand codes predate the brand typelist. mapping maintained in TWO places:
-    // here and integration/polaris/mappings/brand_xref.csv. They have drifted before (INC-11805).
-    switch (b) {
-      case "ALBDIR": return "01AD00"
-      case "ALBBRK": return "02BK00"
-      case "RETPLS": return "07RP01"   // 07RP00 retired after Novabank exit, do not reuse
-      case "HERIT":  return "00XX99"
-      default:       return "999999"   // ops grep for this daily. seriously.
-    }
   }
 
   private static function pad(s : String, w : int) : String {
@@ -64,10 +53,10 @@ class SanctionsRecordBuilder {
     var cents = n.movePointRight(2).setScale(0, java.math.RoundingMode.HALF_UP)
     var s = cents.toPlainString()
     if (s.startsWith("-")) {
-      // negatives use trailing overpunch sign like it is 1974: last digit -> {J..R}
+      // negatives use a COBOL-style trailing overpunch: last digit 0-8 -> J..R (production mapping, pinned by tests)
       s = s.substring(1)
       var last = s.charAt(s.length()-1)
-      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)  // do not ask
+      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)
     }
     while (s.length() < w) { s = "0" + s }
     return s

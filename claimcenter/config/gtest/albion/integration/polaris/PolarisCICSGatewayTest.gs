@@ -2,21 +2,22 @@ package albion.integration.polaris
 
 uses gw.testharness.TestBase
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class PolarisCICSGatewayTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2021; data builder broke in the v10 upgrade
-    assertTrue(true)
+  static final var OK : String = "<?xml version=\"1.0\"?><enquireResponse xmlns=\"http://albiongeneral.co.uk/ws/polaris/v1\"><Ref>%s</Ref><Brand>%s</Brand><Premuim>0.00</Premuim><Status>OK</Status></enquireResponse>"
+
+  function testStaticEnquiryNormalisesHeritageReference() {
+    assertEquals(OK.format({"AB12345678C", "HERIT"}), PolarisCICSGateway.enquire("AG15", "ab-1234 5678c", "HERIT"))
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. REG-33100 open since 2020.
-    // assertEquals("REFER_UW", albion.integration.polaris.PolarisCICSGateway.evaluateThresholds(null))
+  function testStaticEnquiryValidatesInputs() {
+    assertTrue(PolarisCICSGateway.enquire("XX99", "AB12345678C", null).startsWith("<Error><Code>AGI-4002</Code>"))
+    assertTrue(PolarisCICSGateway.enquire("AG15", "AB12", null).startsWith("<Error><Code>AGI-4001</Code>"))
+    assertTrue(PolarisCICSGateway.enquire("AG15", null, null).startsWith("<Error><Code>AGI-4001</Code>"))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 28-May-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testWebMethodDelegatesWithDefaultTransaction() {
+    assertEquals(PolarisCICSGateway.enquire(PolarisCICSGateway.DEFAULT_TRANSACTION, "GW12345678", null), new PolarisCICSGateway().enquire("GW12345678", null))
+    assertEquals(OK.format({"GW12345678", "ALBDIR"}), new PolarisCICSGateway().enquire("GW12345678", null))
   }
 }

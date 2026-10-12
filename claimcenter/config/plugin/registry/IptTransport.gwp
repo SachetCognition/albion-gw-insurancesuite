@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<plugin
+  interface="MessageTransport"
+  name="IptTransport">
+  <plugin-gosu
+    gosuclass="albion.integration.ipt.IptTransport"/>
+</plugin>

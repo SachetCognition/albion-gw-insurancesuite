@@ -1,22 +1,42 @@
 package albion.claims.fraud
 
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.ArrayList
+uses java.util.Calendar
+uses org.easymock.EasyMock
 
-/* TODO write real assertions (2017) */
 class AlbionCIFASRulesTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("EstimatedLoss_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testBrandRouting_DISABLED() {
-    // @Reason: fails intermittently on the build box only. CM-41520 open since 2022.
-    // assertEquals("REFER_UW", albion.claims.fraud.AlbionCIFASRules.evaluateBrandRouting(null))
+  function testNullBeanReturnsNoActions() {
+    assertTrue(AlbionCIFASRules.evaluateAlbionCIFAS(null).Empty)
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 06-Mar-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(AlbionCIFASRules.evaluateAlbionCIFAS_v1(null))
+    assertTrue(AlbionCIFASRules.evaluateAlbionCIFAS_v1(bean(null, null, null, null)))
+  }
+
+  function testHandlerPerilRules() {
+    // handler perils: AccidentalDamage, Theft, Freezer, AccidentalDamageHome
+    var bradfordFloodRe = new ArrayList<String>(AlbionCIFASRules.evaluateAlbionCIFAS(bean(0bd, null, "bd7 1AA", true)))
+    bradfordFloodRe.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertTrue(bradfordFloodRe.Empty)
+    var leedsNotCeded = new ArrayList<String>(AlbionCIFASRules.evaluateAlbionCIFAS(bean(0bd, null, "LS1 4AP", false)))
+    leedsNotCeded.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertTrue(leedsNotCeded.Empty)
+    var noPostcode = new ArrayList<String>(AlbionCIFASRules.evaluateAlbionCIFAS(bean(0bd, null, null, true)))
+    noPostcode.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertTrue(noPostcode.Empty)
   }
 }

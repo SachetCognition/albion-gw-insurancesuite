@@ -24,7 +24,7 @@ enhancement ComplianceIncidentEnhancement : entity.Incident {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// FIXME: hardcoded for UAT, parameterise before go-live  <-- went live like this (HERIT-11490)
+// TODO(HERIT-11490): values set for UAT were promoted to production unchanged; move them to AlbionConfigService
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

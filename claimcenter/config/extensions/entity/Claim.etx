@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension xmlns="http://guidewire.com/datamodel" entityName="Claim">
-  <!-- Fields accreted 2011-2025. Column names may not match displayed labels; labels were "fixed" in PCF only (DEF-41225) -->
+  <!-- Fields added 2011-2025. Column names may differ from displayed labels; labels are set in PCF (DEF-41225) -->
   <column name="LastBatchRun_Ext" type="datetime" desc="" nullok="true"/>
   <column name="SourceSystem_Ext" type="varchar" desc="POLARIS / GW / SSP / AGGR / MANUAL" nullok="true"/>
   <column name="LegacyPolicyRef_Ext" type="varchar" desc="POLARIS reference where migrated" nullok="true"/>
-  <column name="BordereauxFlag_Ext" type="varchar" desc="added 09-May-2012 for PRB-4026; meaning disputed between MI and Finance" nullok="true"/>
-  <column name="BordereauxRef_Ext" type="varchar" desc="added 12-Nov-2024 for CM-18988; meaning disputed between MI and Finance" nullok="true"/>
-  <column name="HeritageFlag_Ext" type="varchar" desc="added 26-Aug-2022 for CM-23439; meaning disputed between MI and Finance" nullok="true"/>
-  <column name="HeritageRef_Ext" type="varchar" desc="added 15-Sep-2016 for AGI-35295; meaning disputed between MI and Finance" nullok="true"/>
-  <column name="SchemeCode_Ext" type="varchar" desc="added 16-Jan-2021 for HERIT-17762; meaning disputed between MI and Finance" nullok="true"/>
+  <column name="BordereauxFlag_Ext" type="varchar" desc="added 09-May-2012 for PRB-4026" nullok="true"/>
+  <column name="BordereauxRef_Ext" type="varchar" desc="added 12-Nov-2024 for CM-18988" nullok="true"/>
+  <column name="HeritageFlag_Ext" type="varchar" desc="added 26-Aug-2022 for CM-23439" nullok="true"/>
+  <column name="HeritageRef_Ext" type="varchar" desc="added 15-Sep-2016 for AGI-35295" nullok="true"/>
+  <column name="SchemeCode_Ext" type="varchar" desc="added 16-Jan-2021 for HERIT-17762" nullok="true"/>
+  <column name="VulnerabilityNoted_Ext" type="bit" desc="Customer vulnerability noted on the claim (FCA FG21/1)" nullok="true"/>
+  <column name="ChannelRef_Ext" type="varchar" desc="Reference allocated by the notification channel" nullok="true"/>
+  <column name="TotalIncurred_Ext" type="decimal" desc="Total incurred (paid plus outstanding reserve)" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="EstimatedLoss_Ext" type="decimal" desc="Estimated loss amount recorded at notification" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="SumInsured_Ext" type="decimal" desc="Sum insured on the affected cover" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="AnnualPremium_Ext" type="decimal" desc="Annual premium of the policy at loss date" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="IPTAmount_Ext" type="decimal" desc="Insurance Premium Tax amount calculated by the batch" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="FloodReCeded_Ext" type="bit" desc="Risk is ceded to the Flood Re scheme" nullok="true"/>
+  <column name="LastSanctionsScreen_Ext" type="datetime" desc="Date of the last HMT/OFSI sanctions screen" nullok="true"/>
+  <column name="RiskPostcode_Ext" type="varchar" desc="Postcode of the risk address" nullok="true"/>
+  <column name="InsuredSurname_Ext" type="varchar" desc="Surname of the insured" nullok="true"/>
+  <column name="TradingName_Ext" type="varchar" desc="Trading name of a commercial insured" nullok="true"/>
+  <column name="AgencyRef_Ext" type="varchar" desc="Broker agency reference" nullok="true"/>
+  <column name="ChannelSource_Ext" type="varchar" desc="Notification channel (web, phone, broker, aggregator)" nullok="true"/>
+  <column name="PolicyNumber_Ext" type="varchar" desc="Policy number as printed on documents" nullok="true"/>
+  <column name="ClaimNumber_Ext" type="varchar" desc="Claim number as sent to external feeds" nullok="true"/>
+  <column name="UPRN_Ext" type="varchar" desc="Unique Property Reference Number of the risk address" nullok="true"/>
+  <column name="VehicleVRM_Ext" type="varchar" desc="Vehicle registration mark" nullok="true"/>
+  <column name="NINumber_Ext" type="varchar" desc="National Insurance number of the claimant" nullok="true"/>
+  <column name="ERNRef_Ext" type="varchar" desc="Employer Reference Number (ELTO)" nullok="true"/>
+  <column name="InceptionDate_Ext" type="varchar" desc="Policy inception date as received from POLARIS (yyyyMMdd)" nullok="true"/>
 </extension>

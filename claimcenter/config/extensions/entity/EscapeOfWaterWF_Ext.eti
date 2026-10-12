@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subtype xmlns="http://guidewire.com/datamodel" entity="EscapeOfWaterWF_Ext" supertype="Workflow" desc="EOW property journey with drying network workflow; records when each step was entered">
+  <column name="NotifyEntered_Ext" type="datetime" desc="Date the workflow entered step Notify" nullok="true"/>
+  <column name="SurveyorTriageEntered_Ext" type="datetime" desc="Date the workflow entered step SurveyorTriage" nullok="true"/>
+  <column name="DryingDeployEntered_Ext" type="datetime" desc="Date the workflow entered step DryingDeploy" nullok="true"/>
+  <column name="AltAccomAssessEntered_Ext" type="datetime" desc="Date the workflow entered step AltAccomAssess" nullok="true"/>
+  <column name="ScopeAgreeEntered_Ext" type="datetime" desc="Date the workflow entered step ScopeAgree" nullok="true"/>
+  <column name="SettleEntered_Ext" type="datetime" desc="Date the workflow entered step Settle" nullok="true"/>
+</subtype>

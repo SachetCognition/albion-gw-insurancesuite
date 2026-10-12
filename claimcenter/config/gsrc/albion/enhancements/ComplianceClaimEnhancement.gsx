@@ -24,7 +24,7 @@ enhancement ComplianceClaimEnhancement : entity.Claim {
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
-// WARNING: changing this breaks the Paragon print feed in ways QA cannot reproduce
+// NOTE: output is consumed by the Paragon print feed; regression-test print output after changes
   function requiresSanctionsRescreen_Ext() : boolean {
     var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
     if (last == null) { return true }

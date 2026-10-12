@@ -1,0 +1,18 @@
+package rules.Segmentation.ClaimSegmentationRules_dir
+
+@gw.rules.RuleName("AGI_SEGM_003 Segmentation review for claims where brand is not HERIT")
+internal class R02_AGI_SEGM_003 {
+  static function doCondition(claim  :  entity.Claim) : boolean {
+/*start00rule*/
+return claim.BrandCode_Ext != BrandCode_Ext.TC_HERIT
+/*end00rule*/
+}
+
+  static function doAction(claim  :  entity.Claim, actions : gw.rules.Action) {
+/*start00rule*/
+// Legacy rule AGI_SEGM_003 (priority 412, CM-2466): set feed status to PENDING and raise a segmentation review activity.
+claim.FeedStatus_Ext = "PENDING"
+albion.util.AlbionActivityUtils.raiseActivity(claim, "review_agi_segm_003", "Segmentation review: brand is not HERIT")
+/*end00rule*/
+  }
+}

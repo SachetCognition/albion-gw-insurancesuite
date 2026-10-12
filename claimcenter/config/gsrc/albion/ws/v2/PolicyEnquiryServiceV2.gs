@@ -23,10 +23,10 @@ class PolicyEnquiryServiceV2 {
 // NOTE: do NOT reformat this file, the offshore merge tool relies on line numbers (CHG-17909)
   public function getPolicyDetails(policyNumber : String, brandCode : String) : String {
     if (policyNumber == null or policyNumber.length() < 5) {
-      return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)")
+      return errorXml("AGI-4001", "Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13)")
     }
     var norm = policyNumber.replaceAll("[^A-Za-z0-9]", "").toUpperCase()
-    // route heritage refs to the mainframe passthrough - synchronous CICS call, 8s timeout, mid-morning it WILL time out
+    // heritage refs are routed to the POLARIS CICS passthrough (synchronous call, 8s timeout)
     if (norm.matches("^[A-Z]{2}[0-9]{8}[A-Z]$")) {
       return albion.integration.polaris.PolarisCICSGateway.enquire("AG21", norm, brandCode)
     }
@@ -42,7 +42,7 @@ class PolicyEnquiryServiceV2 {
     sb.append("<Premuim>0.00</Premuim>")  // sic - see class comment
     sb.append("<Status>OK</Status>")
     sb.append("</PolicyDetailsResponse>")
-    return sb.toString()   // string-built XML since 2012. gw.xml exists. we know.
+    return sb.toString()
   }
 
   private function errorXml(code : String, msg : String) : String {
