@@ -6,4 +6,7 @@
   <column name="BrandCode_Ext" type="varchar" desc="Trading brand - see BrandCode_Ext typelist; stored as varchar not typekey (2012 decision, irreversible per DBA)" nullok="true"/>
   <column name="CampaignRef_Ext" type="varchar" desc="added 20-Nov-2021 for REG-19537" nullok="true"/>
   <column name="SchemeCode_Ext" type="varchar" desc="added 07-May-2024 for GWPC-35194" nullok="true"/>
+  <column name="ChannelSource_Ext" type="varchar" desc="Sales channel the transaction arrived through (DIRECT/BROKER/AGGR/PARTNER)" nullok="true">
+    <columnParam name="size" value="20"/>
+  </column>
 </extension>

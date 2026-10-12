@@ -5,6 +5,7 @@ package albion.enhancements
  *  11/09/2018   cdoyle       Regulatory change CM-11912 (FCA GI pricing remedy)
  *  05/06/2019   tlindq       CR INC-38923 - added ALBDIR brand handling
  *  08/04/2025   rpatel       CR GWPC-44139 - added HERIT brand handling
+ *  12/10/2026   AGI-GW Platform  Party, producer and channel fields read through typed properties
  */
 enhancement MIPolicyContactRoleEnhancement : entity.PolicyContactRole {
 
@@ -20,13 +21,13 @@ enhancement MIPolicyContactRoleEnhancement : entity.PolicyContactRole {
   property get DisplayNameForCorrespondence_Ext() : String {
     // three different display-name rules live in this estate. This is #2. See also
     // AlbionNameFormatter (rule #1) and the XSLT in the Paragon feed (rule #3).
-    var n = this.getFieldValue("TradingName_Ext") as String
+    var n = this.TradingName_Ext
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
 // TODO (hyamam): remove once heritage book fully migrated off POLARIS
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.LastSanctionsScreen_Ext
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 365
   }

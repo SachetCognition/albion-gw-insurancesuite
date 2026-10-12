@@ -27,4 +27,13 @@
     <columnParam name="size" value="10"/>
   </column>
   <column name="FloodReCeded_Ext" type="bit" desc="Home risk ceded to the Flood Re scheme" nullok="true"/>
+  <column name="SumInsured_Ext" type="decimal" desc="Total sum insured across the period coverages in policy currency (GBP); used by authority, scheme and rating rules" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="EstimatedLoss_Ext" type="decimal" desc="Estimated loss on the latest open claim against the period, as notified from ClaimCenter FNOL; used by renewal and referral rules" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="InceptionDate_Ext" type="datetime" desc="Original inception date of the policy (first term), carried from POLARIS for migrated books; PeriodStart is the current term start" nullok="true"/>
 </extension>

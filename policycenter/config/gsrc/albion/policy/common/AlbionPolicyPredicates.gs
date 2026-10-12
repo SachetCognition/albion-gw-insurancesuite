@@ -72,7 +72,7 @@ class AlbionPolicyPredicates {
 
   /** First two characters of RiskPostcode_Ext, upper-cased; "ZZ" when absent. */
   static function postcodeArea(bean : Object) : String {
-    var pc = bean typeis PolicyPeriod ? bean.RiskPostcode_Ext : (bean as KeyableBean).getFieldValue("RiskPostcode_Ext") as String
+    var pc = bean typeis PolicyPeriod ? (bean as PolicyPeriod).RiskPostcode_Ext : (bean as KeyableBean).getFieldValue("RiskPostcode_Ext") as String
     return pc == null ? UNKNOWN_POSTCODE_AREA : pc.substring(0, Math.min(2, pc.length())).toUpperCase()
   }
 

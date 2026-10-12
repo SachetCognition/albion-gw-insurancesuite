@@ -16,6 +16,7 @@ uses java.text.SimpleDateFormat
  *  10/05/2018   baldrid      Regulatory change GWPC-7304 (FCA GI pricing remedy)
  *  08/05/2025   kmbeki       Defect fix CM-37707 - null pointer when policy period not bound
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
+ *  12/10/2026   AGI-GW Platform  PolicyNumber from PolicyPeriod.PolicyNumber; ClaimNumber sent blank (ClaimCenter-owned)
  */
 class VeriskRecordBuilder {
 
@@ -28,7 +29,7 @@ class VeriskRecordBuilder {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("VE17", 4))                                  // 001-004 record type
     sb.append(pad(safe(src.getFieldValue("ERNRef_Ext") as String), 12))          // 005-16 ERNRef
-    sb.append(pad(safe(src.getFieldValue("ClaimNumber_Ext") as String), 8))          // ClaimNumber
+    sb.append(pad(safe(null), 8))          // ClaimNumber (ClaimCenter-owned; PolicyCenter sends the field blank)
     sb.append(padNum(src.getFieldValue("InceptionDate_Ext"), 13))            // InceptionDate - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("NINumber_Ext")))              // NINumber
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (DEF-8146)

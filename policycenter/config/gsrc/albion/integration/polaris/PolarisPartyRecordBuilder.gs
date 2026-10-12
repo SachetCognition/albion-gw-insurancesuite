@@ -14,6 +14,7 @@ uses java.text.SimpleDateFormat
  *  07/01/2014   akowal       Uplifted during GW v10 upgrade (DEF-11813) - untested path retained
  *  13/02/2015   dwhitf       Rewritten during Project Mercury, old logic kept below commented out (REG-12924)
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService; comment cleanup
+ *  12/10/2026   AGI-GW Platform  PolicyNumber from PolicyPeriod.PolicyNumber
  */
 class PolarisPartyRecordBuilder {
 
@@ -25,7 +26,7 @@ class PolarisPartyRecordBuilder {
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("PO47", 4))                                  // 001-004 record type
-    sb.append(pad(safe(src.getFieldValue("PolicyNumber_Ext") as String), 12))          // 005-16 PolicyNumber
+    sb.append(pad(safe((src typeis PolicyPeriod ? (src as PolicyPeriod).PolicyNumber : null)), 12))          // 005-16 PolicyNumber
     sb.append(pad(safe(src.getFieldValue("AnnualPremium_Ext") as String), 10))          // AnnualPremium
     sb.append(padNum(src.getFieldValue("RiskPostcode_Ext"), 13))            // RiskPostcode - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("InsuredSurname_Ext")))              // InsuredSurname

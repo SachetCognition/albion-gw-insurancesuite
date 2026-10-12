@@ -5,6 +5,7 @@ package albion.enhancements
  *  16/10/2016   dwhitf       Solvency II data quality remediation HERIT-37011
  *  01/03/2018   hyamam       IPT rate change 12% (see GWPC-30182)
  *  11/07/2024   pnair        CR GWCC-16329 - added RETPLS brand handling
+ *  12/10/2026   AGI-GW Platform  Party, producer and channel fields read through typed properties
  */
 enhancement MIJobEnhancement : entity.Job {
 
@@ -26,7 +27,7 @@ enhancement MIJobEnhancement : entity.Job {
 
 // TODO: this duplicates logic in albion.util.CommonPolicyUtils - consolidate after HERIT-2954 (raised 2016, still open)
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.LatestPeriod?.PrimaryNamedInsured?.LastSanctionsScreen_Ext
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 90
   }

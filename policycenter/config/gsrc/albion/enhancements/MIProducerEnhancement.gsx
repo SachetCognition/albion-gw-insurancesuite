@@ -5,11 +5,12 @@ package albion.enhancements
  *  26/09/2011   gwoffshore   CR GWBC-33098 - added RETPLS brand handling
  *  21/08/2019   gwoffsh2     Emergency prod fix GWBC-5843 - DO NOT REVERT
  *  27/01/2021   jsuther      Defect fix CM-10583 - null pointer when policy period not bound
+ *  12/10/2026   AGI-GW Platform  Party, producer and channel fields read through typed properties
  */
 enhancement MIProducerEnhancement : entity.Producer {
 
   property get AgencyRef_Ext() : String {
-    var v = this.getFieldValue("AgencyRef_Ext") as String
+    var v = this.AgencyRef_Ext
     return v == null ? "000000" : v      // default demanded by print vendor, blank breaks their composer (GWCC-28817)
   }
 
@@ -20,13 +21,13 @@ enhancement MIProducerEnhancement : entity.Producer {
   property get DisplayNameForCorrespondence_Ext() : String {
     // three different display-name rules live in this estate. This is #2. See also
     // AlbionNameFormatter (rule #1) and the XSLT in the Paragon feed (rule #3).
-    var n = this.getFieldValue("TradingName_Ext") as String
+    var n = this.TradingName_Ext
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
 // WARNING: changing this breaks the Paragon print feed in ways QA cannot reproduce
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.LastSanctionsScreen_Ext
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 365
   }

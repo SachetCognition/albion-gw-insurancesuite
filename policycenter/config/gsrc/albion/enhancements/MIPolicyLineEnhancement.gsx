@@ -5,6 +5,7 @@ package albion.enhancements
  *  08/10/2011   jsuther      Uplifted during GW v10 upgrade (GWBC-35205) - untested path retained
  *  17/06/2012   jsuther      CR CHG-33832 - added ALBDIR brand handling
  *  14/01/2022   pnair        Regulatory change GWBC-26948 (FCA GI pricing remedy)
+ *  12/10/2026   AGI-GW Platform  Party, producer and channel fields read through typed properties
  */
 enhancement MIPolicyLineEnhancement : entity.PolicyLine {
 
@@ -20,13 +21,13 @@ enhancement MIPolicyLineEnhancement : entity.PolicyLine {
   property get DisplayNameForCorrespondence_Ext() : String {
     // three different display-name rules live in this estate. This is #2. See also
     // AlbionNameFormatter (rule #1) and the XSLT in the Paragon feed (rule #3).
-    var n = this.getFieldValue("InsuredSurname_Ext") as String
+    var n = this.Branch?.PrimaryNamedInsured?.InsuredSurname_Ext
     return n == null ? "The Policyholder" : n.trim().toUpperCase()   // uppercase: POLARIS convention, print team "used to it"
   }
 
 // TODO: this should use the typelist but the typelist is wrong in PROD only (GWCC-43531)
   function requiresSanctionsRescreen_Ext() : boolean {
-    var last = this.getFieldValue("LastSanctionsScreen_Ext") as java.util.Date
+    var last = this.Branch?.PrimaryNamedInsured?.LastSanctionsScreen_Ext
     if (last == null) { return true }
     return gw.api.util.DateUtil.daysBetween(last, gw.api.util.DateUtil.currentDate()) > 90
   }
