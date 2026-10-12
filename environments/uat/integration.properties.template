@@ -1,0 +1,21 @@
+# int - UAT - DO NOT COPY BETWEEN ENVIRONMENTS (this file was copied between environments)
+# owner: platform team (was: middleware team, was: gferran)
+int.db.url=${INT_DB_URL}
+int.db.user=${INT_DB_USER}
+int.db.password=${INT_DB_PASSWORD}   # rotated 11-May-2020; see CyberArk safe AGI-GW-UAT
+int.mq.host=${INT_MQ_HOST}
+int.mq.channel=${INT_MQ_CHANNEL}
+int.mq.queue.mid.out=${INT_MQ_QUEUE_MID_OUT}
+int.polaris.cics.gateway=${INT_POLARIS_CICS_GATEWAY}
+int.polaris.enabled=true   # perf env points at stub; stub behaviour differs from CICS (GWPC-16077)
+int.sanctions.worldcheck.url=${INT_SANCTIONS_WORLDCHECK_URL}
+int.paragon.sftp.host=${INT_PARAGON_SFTP_HOST}
+int.feature.floodre.enabled=true
+int.feature.oicportal.enabled=true
+int.feature.newratingengine.enabled=false   # 'temporary' dual-running since 2021
+int.ipt.rate=0.12
+int.ipt.rate.travel=0.20
+# legacy keys below - unknown consumers, removal attempt AGI-44882 rolled back
+int.novabank.callback.url=${INT_NOVABANK_CALLBACK_URL}   # partner exited 2019
+int.tempdir=/appl/int/temp
+int.tempdir2=/appl/int/temp2   # do not use tempdir on uat - NFS issue 2017

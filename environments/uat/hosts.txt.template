@@ -1,0 +1,8 @@
+# UAT application-server inventory - rendered at deploy time; see environments/README.txt
+# one placeholder per node, resolved from the infrastructure inventory (no hostnames committed)
+${GW_CC_HOST_01}
+${GW_CC_HOST_02}
+${GW_PC_HOST_01}
+${GW_BC_HOST_01}
+${GW_BC_HOST_02}
+${GW_CM_HOST_01}
