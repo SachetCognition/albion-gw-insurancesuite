@@ -27,7 +27,7 @@ Each centre loads its activity patterns from `<config-root>/import/gen/albion-ac
 ## Known gaps
 - **Claim data outside ClaimCenter.** BillingCenter and ContactManager do not hold claim data. Claim-amount thresholds read 0 in those centres, and the ClaimNumber slots in their outbound records are blank or filler; record lengths are unchanged.
 - **Navigation.** The Albion screens in all four centres have no navigation entry point, because the base-product menus they hang from are not held in this repository.
-- **Encryption.** `NINumber_Ext` in PolicyCenter is stored unencrypted pending the encryption plugin.
+- **Encryption.** NI numbers and ContactManager bank details are encrypted at rest by `albion.security.AlbionAesEncryptionPlugin` (AES-256-GCM, keys from CyberArk); see `albion-config-and-brand-services.md` (Encryption at rest). ContactManager `LicenseNumber` and `TaxID` stay unencrypted until a hashed lookup column replaces their database-equality duplicate matching.
 - **Rules for business review.**
   - BillingCenter `AGI_ESCA_001`/`AGI_ESCA_002` and `AGI_PREU_001`/`AGI_PREU_006` have duplicate conditions.
   - BillingCenter `AGI_ESCA_009` and `AGI_PREU_007`, and ContactManager `vali_002`, fire on every record.

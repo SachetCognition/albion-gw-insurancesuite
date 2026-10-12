@@ -12,6 +12,7 @@
   </column>
   <column name="NINumber_Ext" type="varchar" desc="National Insurance number of the insured party (CIFAS/Verisk/CRIF matching)" nullok="true">
     <columnParam name="size" value="9"/>
+    <columnParam name="encryption" value="true"/>
   </column>
   <column name="TradingName_Ext" type="varchar" desc="Trading name of a commercial insured, used on correspondence" nullok="true">
     <columnParam name="size" value="100"/>

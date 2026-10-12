@@ -34,3 +34,6 @@ po.sla.complaint.ack.promise.days=3
 po.sla.complaint.ack.regulatory.days=5
 po.sla.complaint.holding.letter.days=28
 po.sla.complaint.final.response.days=56
+po.encryption.key=${PO_ENCRYPTION_KEY}
+po.encryption.key.id=${PO_ENCRYPTION_KEY_ID}
+po.encryption.keys.retired=${PO_ENCRYPTION_KEYS_RETIRED}

@@ -42,7 +42,9 @@
   <column name="ClaimNumber_Ext" type="varchar" desc="Claim number as sent to external feeds" nullok="true"/>
   <column name="UPRN_Ext" type="varchar" desc="Unique Property Reference Number of the risk address" nullok="true"/>
   <column name="VehicleVRM_Ext" type="varchar" desc="Vehicle registration mark" nullok="true"/>
-  <column name="NINumber_Ext" type="varchar" desc="National Insurance number of the claimant" nullok="true"/>
+  <column name="NINumber_Ext" type="varchar" desc="National Insurance number of the claimant" nullok="true">
+    <columnParam name="encryption" value="true"/>
+  </column>
   <column name="ERNRef_Ext" type="varchar" desc="Employer Reference Number (ELTO)" nullok="true"/>
   <column name="InceptionDate_Ext" type="varchar" desc="Policy inception date as received from POLARIS (yyyyMMdd)" nullok="true"/>
 </extension>
