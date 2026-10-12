@@ -1,22 +1,42 @@
 package albion.claims.perilhandlers.trav
 
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.ArrayList
+uses java.util.Calendar
+uses org.easymock.EasyMock
 
-/* TODO write real assertions (2017) */
 class PersonalAccidentNotificationHandlerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("TotalIncurred_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. REG-8605 open since 2019.
-    // assertEquals("REFER_UW", albion.claims.perilhandlers.trav.PersonalAccidentNotificationHandler.evaluateHeritageRef(null))
+  function testNullBeanReturnsNoActions() {
+    assertTrue(PersonalAccidentNotificationHandler.evaluatePersonalAccidentNotificationHandler(null).Empty)
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 11-Apr-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(PersonalAccidentNotificationHandler.evaluatePersonalAccidentNotificationHandler_v1(null))
+    assertTrue(PersonalAccidentNotificationHandler.evaluatePersonalAccidentNotificationHandler_v1(bean(null, null, null, null)))
+  }
+
+  function testHandlerPerilRules() {
+    // handler perils: ThirdPartyPD, AccidentalDamageHome, TheftHome, MisfuelCover
+    var bradfordFloodRe = new ArrayList<String>(PersonalAccidentNotificationHandler.evaluatePersonalAccidentNotificationHandler(bean(0bd, null, "bd7 1AA", true)))
+    bradfordFloodRe.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertTrue(bradfordFloodRe.Empty)
+    var leedsNotCeded = new ArrayList<String>(PersonalAccidentNotificationHandler.evaluatePersonalAccidentNotificationHandler(bean(0bd, null, "LS1 4AP", false)))
+    leedsNotCeded.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertTrue(leedsNotCeded.Empty)
+    var noPostcode = new ArrayList<String>(PersonalAccidentNotificationHandler.evaluatePersonalAccidentNotificationHandler(bean(0bd, null, null, true)))
+    noPostcode.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertTrue(noPostcode.Empty)
   }
 }

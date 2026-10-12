@@ -1,22 +1,103 @@
 package albion.claims.cat.lob
 
+uses albion.config.AlbionCentre
+uses albion.config.AlbionConfigService
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.HashMap
+uses org.easymock.EasyMock
 
-/* TODO write real assertions (2017) */
 class HomePropertyCatHandlerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("TotalIncurred_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. REG-34642 open since 2019.
-    // assertEquals("REFER_UW", albion.claims.cat.lob.HomePropertyCatHandler.evaluateThresholds(null))
+  private function withConfig(key : String, value : String, body : block()) {
+    var values = new HashMap<String, String>()
+    if (key != null) {
+      values.put(AlbionCentre.PROPERTY_PREFIX + "." + key, value)
+    }
+    AlbionConfigService.setInstance(new AlbionConfigService(AlbionCentre.PROPERTY_PREFIX, values))
+    try {
+      body()
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 06-Oct-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testNullBeanReturnsNoActions() {
+    assertTrue(HomePropertyCatHandler.evaluateHomePropertyCatHandler(null).Empty)
+  }
+
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(HomePropertyCatHandler.evaluateHomePropertyCatHandler_v1(null))
+    assertTrue(HomePropertyCatHandler.evaluateHomePropertyCatHandler_v1(bean(null, null, null, null)))
+  }
+
+  function testAlbdirReferralUsesLegacyPinnedThreshold() {
+    withConfig(null, null, \ -> {
+      assertTrue(HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(10000bd, "ALBDIR", null, null)).Empty)
+      assertEquals({"REFER_UW"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(10000.01bd, "ALBDIR", null, null)))
+      assertTrue(HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(null, "ALBDIR", null, null)).Empty)
+    })
+  }
+
+  function testMissingBrandDefaultsToAlbdir() {
+    withConfig(null, null, \ -> {
+      assertTrue(HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(10000bd, null, null, null)).Empty)
+      assertEquals({"REFER_UW"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(10000.01bd, null, null, null)))
+    })
+  }
+
+  function testAlbbrkReferralTiersUseLegacyPinnedThreshold() {
+    withConfig(null, null, \ -> {
+      assertTrue(HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(2500bd, "ALBBRK", null, null)).Empty)
+      assertEquals({"REFER_UW"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(2500.01bd, "ALBBRK", null, null)))
+      assertEquals({"REFER_UW"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(5000bd, "ALBBRK", null, null)))
+      assertEquals({"REFER_UW", "REFER_UW_SENIOR"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(5000.01bd, "ALBBRK", null, null)))
+    })
+  }
+
+  function testRetplsAlwaysGoesToManualReview() {
+    withConfig(null, null, \ -> {
+      assertEquals({"MANUAL_REVIEW"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(0bd, "RETPLS", null, null)))
+      assertEquals({"MANUAL_REVIEW"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(1000000bd, "RETPLS", null, null)))
+    })
+  }
+
+  function testUnmappedBrandIsReferred() {
+    withConfig(null, null, \ -> {
+      assertEquals({"REFER_UW"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(0bd, "NOVABANK", null, null)))
+    })
+  }
+
+  function testScopedConfigOverridesLegacyThreshold() {
+    withConfig(AlbionConfigService.KEY_REFER_THRESHOLD_ALBDIR + ".HomePropertyCatHandler", "100", \ -> {
+      assertTrue(HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(100bd, "ALBDIR", null, null)).Empty)
+      assertEquals({"REFER_UW"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(100.01bd, "ALBDIR", null, null)))
+    })
+    withConfig(AlbionConfigService.KEY_REFER_THRESHOLD_ALBBRK + ".HomePropertyCatHandler", "100", \ -> {
+      assertEquals({"REFER_UW", "REFER_UW_SENIOR"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(200.01bd, "ALBBRK", null, null)))
+    })
+  }
+
+  function testGlobalKeyDoesNotOverrideLegacyPinnedThreshold() {
+    withConfig(AlbionConfigService.KEY_REFER_THRESHOLD_ALBDIR, "1", \ -> {
+      assertTrue(HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(10000bd, "ALBDIR", null, null)).Empty)
+    })
+  }
+
+  function testHeritageUsesPolarisLimit() {
+    withConfig(null, null, \ -> {
+      assertTrue(HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(9999.99bd, "HERIT", null, null)).Empty)
+      assertEquals({"REFER_UW"}, HomePropertyCatHandler.evaluateHomePropertyCatHandler(bean(10000.00bd, "HERIT", null, null)))
+    })
   }
 }

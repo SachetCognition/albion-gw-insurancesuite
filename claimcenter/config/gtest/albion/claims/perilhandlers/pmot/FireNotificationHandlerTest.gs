@@ -1,22 +1,47 @@
 package albion.claims.perilhandlers.pmot
 
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.ArrayList
+uses java.util.Calendar
+uses org.easymock.EasyMock
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class FireNotificationHandlerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2020; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("SumInsured_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. AGI-30813 open since 2023.
-    // assertEquals("REFER_UW", albion.claims.perilhandlers.pmot.FireNotificationHandler.evaluateThresholds(null))
+  function testNullBeanReturnsNoActions() {
+    assertTrue(FireNotificationHandler.evaluateFireNotificationHandler(null).Empty)
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 16-Feb-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(FireNotificationHandler.evaluateFireNotificationHandler_v1(null))
+    assertTrue(FireNotificationHandler.evaluateFireNotificationHandler_v1(bean(null, null, null, null)))
+  }
+
+  function testHandlerPerilRules() {
+    // handler perils: MisfuelCover, Storm, Subsidence, KeyCover
+    var bradfordFloodRe = new ArrayList<String>(FireNotificationHandler.evaluateFireNotificationHandler(bean(0bd, null, "bd7 1AA", true)))
+    bradfordFloodRe.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertEquals({"SUBSIDENCE_DESK"}, bradfordFloodRe)
+    var leedsNotCeded = new ArrayList<String>(FireNotificationHandler.evaluateFireNotificationHandler(bean(0bd, null, "LS1 4AP", false)))
+    leedsNotCeded.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertEquals({"SUBSIDENCE_DESK"}, leedsNotCeded)
+    var noPostcode = new ArrayList<String>(FireNotificationHandler.evaluateFireNotificationHandler(bean(0bd, null, null, true)))
+    noPostcode.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertEquals({"SUBSIDENCE_DESK"}, noPostcode)
+  }
+
+  function testSubsidenceSurgeTriageFromJuly() {
+    var surge = Calendar.getInstance().get(Calendar.MONTH) > 5
+    assertEquals(surge, FireNotificationHandler.evaluateFireNotificationHandler(bean(0bd, null, null, null)).contains("SUBSIDENCE_SURGE_TRIAGE"))
   }
 }

@@ -1,22 +1,103 @@
 package albion.claims.fraud
 
+uses albion.config.AlbionCentre
+uses albion.config.AlbionConfigService
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.HashMap
+uses org.easymock.EasyMock
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class AlbionReferralProcessorTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("AnnualPremium_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testIPTCalc_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWPC-33274 open since 2021.
-    // assertEquals("REFER_UW", albion.claims.fraud.AlbionReferralProcessor.evaluateIPTCalc(null))
+  private function withConfig(key : String, value : String, body : block()) {
+    var values = new HashMap<String, String>()
+    if (key != null) {
+      values.put(AlbionCentre.PROPERTY_PREFIX + "." + key, value)
+    }
+    AlbionConfigService.setInstance(new AlbionConfigService(AlbionCentre.PROPERTY_PREFIX, values))
+    try {
+      body()
+    } finally {
+      AlbionConfigService.setInstance(null)
+    }
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 04-Sep-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testNullBeanReturnsNoActions() {
+    assertTrue(AlbionReferralProcessor.evaluateAlbionReferralProcessor(null).Empty)
+  }
+
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(AlbionReferralProcessor.evaluateAlbionReferralProcessor_v1(null))
+    assertTrue(AlbionReferralProcessor.evaluateAlbionReferralProcessor_v1(bean(null, null, null, null)))
+  }
+
+  function testAlbdirReferralUsesLegacyPinnedThreshold() {
+    withConfig(null, null, \ -> {
+      assertTrue(AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(7500bd, "ALBDIR", null, null)).Empty)
+      assertEquals({"REFER_UW"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(7500.01bd, "ALBDIR", null, null)))
+      assertTrue(AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(null, "ALBDIR", null, null)).Empty)
+    })
+  }
+
+  function testMissingBrandDefaultsToAlbdir() {
+    withConfig(null, null, \ -> {
+      assertTrue(AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(7500bd, null, null, null)).Empty)
+      assertEquals({"REFER_UW"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(7500.01bd, null, null, null)))
+    })
+  }
+
+  function testAlbbrkReferralTiersUseLegacyPinnedThreshold() {
+    withConfig(null, null, \ -> {
+      assertTrue(AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(4000bd, "ALBBRK", null, null)).Empty)
+      assertEquals({"REFER_UW"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(4000.01bd, "ALBBRK", null, null)))
+      assertEquals({"REFER_UW"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(8000bd, "ALBBRK", null, null)))
+      assertEquals({"REFER_UW", "REFER_UW_SENIOR"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(8000.01bd, "ALBBRK", null, null)))
+    })
+  }
+
+  function testRetplsAlwaysGoesToManualReview() {
+    withConfig(null, null, \ -> {
+      assertEquals({"MANUAL_REVIEW"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(0bd, "RETPLS", null, null)))
+      assertEquals({"MANUAL_REVIEW"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(1000000bd, "RETPLS", null, null)))
+    })
+  }
+
+  function testUnmappedBrandIsReferred() {
+    withConfig(null, null, \ -> {
+      assertEquals({"REFER_UW"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(0bd, "NOVABANK", null, null)))
+    })
+  }
+
+  function testScopedConfigOverridesLegacyThreshold() {
+    withConfig(AlbionConfigService.KEY_REFER_THRESHOLD_ALBDIR + ".AlbionReferralProcessor", "100", \ -> {
+      assertTrue(AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(100bd, "ALBDIR", null, null)).Empty)
+      assertEquals({"REFER_UW"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(100.01bd, "ALBDIR", null, null)))
+    })
+    withConfig(AlbionConfigService.KEY_REFER_THRESHOLD_ALBBRK + ".AlbionReferralProcessor", "100", \ -> {
+      assertEquals({"REFER_UW", "REFER_UW_SENIOR"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(200.01bd, "ALBBRK", null, null)))
+    })
+  }
+
+  function testGlobalKeyDoesNotOverrideLegacyPinnedThreshold() {
+    withConfig(AlbionConfigService.KEY_REFER_THRESHOLD_ALBDIR, "1", \ -> {
+      assertTrue(AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(7500bd, "ALBDIR", null, null)).Empty)
+    })
+  }
+
+  function testHeritageUsesPolarisLimit() {
+    withConfig(null, null, \ -> {
+      assertTrue(AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(9999.99bd, "HERIT", null, null)).Empty)
+      assertEquals({"REFER_UW"}, AlbionReferralProcessor.evaluateAlbionReferralProcessor(bean(10000.00bd, "HERIT", null, null)))
+    })
   }
 }

@@ -1,22 +1,33 @@
 package albion.claims.supplychain.lob
 
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses org.easymock.EasyMock
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class LightVanSupplychainHandlerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2021; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("SumInsured_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testThresholds_DISABLED() {
-    // @Reason: fails intermittently on the build box only. CHG-2038 open since 2020.
-    // assertEquals("REFER_UW", albion.claims.supplychain.lob.LightVanSupplychainHandler.evaluateThresholds(null))
+  function testNullBeanReturnsNoActions() {
+    assertTrue(LightVanSupplychainHandler.evaluateLightVanSupplychainHandler(null).Empty)
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 09-Nov-2014. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(LightVanSupplychainHandler.evaluateLightVanSupplychainHandler_v1(null))
+    assertTrue(LightVanSupplychainHandler.evaluateLightVanSupplychainHandler_v1(bean(null, null, null, null)))
+  }
+
+  function testNoPriceWalkBreachWithoutNewBusinessPrice() {
+    // ClaimCenter holds no equivalent new-business price, so the PS21/5 check cannot fire here.
+    assertTrue(LightVanSupplychainHandler.evaluateLightVanSupplychainHandler(bean(999999999bd, "ALBDIR", null, null)).Empty)
+    assertTrue(LightVanSupplychainHandler.evaluateLightVanSupplychainHandler(bean(null, null, null, null)).Empty)
   }
 }

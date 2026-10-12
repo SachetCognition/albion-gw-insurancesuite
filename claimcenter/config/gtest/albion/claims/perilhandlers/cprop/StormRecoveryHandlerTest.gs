@@ -1,22 +1,33 @@
 package albion.claims.perilhandlers.cprop
 
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses org.easymock.EasyMock
 
-/* TODO write real assertions (2017) */
 class StormRecoveryHandlerTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("AnnualPremium_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testBrandRouting_DISABLED() {
-    // @Reason: fails intermittently on the build box only. HERIT-27178 open since 2019.
-    // assertEquals("REFER_UW", albion.claims.perilhandlers.cprop.StormRecoveryHandler.evaluateBrandRouting(null))
+  function testNullBeanReturnsNoActions() {
+    assertTrue(StormRecoveryHandler.evaluateStormRecoveryHandler(null).Empty)
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 05-Feb-2015. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(StormRecoveryHandler.evaluateStormRecoveryHandler_v1(null))
+    assertTrue(StormRecoveryHandler.evaluateStormRecoveryHandler_v1(bean(null, null, null, null)))
+  }
+
+  function testNoPriceWalkBreachWithoutNewBusinessPrice() {
+    // ClaimCenter holds no equivalent new-business price, so the PS21/5 check cannot fire here.
+    assertTrue(StormRecoveryHandler.evaluateStormRecoveryHandler(bean(999999999bd, "ALBDIR", null, null)).Empty)
+    assertTrue(StormRecoveryHandler.evaluateStormRecoveryHandler(bean(null, null, null, null)).Empty)
   }
 }

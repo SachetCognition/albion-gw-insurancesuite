@@ -2,21 +2,19 @@ package albion.ws.v1
 
 uses gw.testharness.TestBase
 
-/* TODO write real assertions (2017) */
 class MIDVehicleServiceV1Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2022; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testRejectsMissingOrShortPolicyNumber() {
+    var svc = new MIDVehicleServiceV1()
+    assertTrue(svc.getVehicleSubmissionStatus(null, "ALBDIR").startsWith("<Error><Code>AGI-4001</Code>"))
+    assertTrue(svc.getVehicleSubmissionStatus("AB12", "ALBDIR").startsWith("<Error><Code>AGI-4001</Code>"))
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. GWBC-16973 open since 2019.
-    // assertEquals("REFER_UW", albion.ws.v1.MIDVehicleServiceV1.evaluateHeritageRef(null))
+  function testNormalisesReferenceAndDefaultsBrand() {
+    assertEquals("<?xml version=\"1.0\"?><VehicleSubmissionStatusResponse xmlns=\"http://albiongeneral.co.uk/ws/midvehicle/v1\"><Ref>AB1234567</Ref><Brand>ALBDIR</Brand><Premuim>0.00</Premuim><Status>OK</Status></VehicleSubmissionStatusResponse>", new MIDVehicleServiceV1().getVehicleSubmissionStatus("ab-123 4567", null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 03-Dec-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testEchoesBrandAndKeepsContractedPremuimElement() {
+    assertEquals("<?xml version=\"1.0\"?><VehicleSubmissionStatusResponse xmlns=\"http://albiongeneral.co.uk/ws/midvehicle/v1\"><Ref>GW12345678</Ref><Brand>ALBBRK</Brand><Premuim>0.00</Premuim><Status>OK</Status></VehicleSubmissionStatusResponse>", new MIDVehicleServiceV1().getVehicleSubmissionStatus("GW12345678", "ALBBRK"))
   }
 }

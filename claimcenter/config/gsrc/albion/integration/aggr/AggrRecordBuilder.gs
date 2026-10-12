@@ -1,5 +1,6 @@
 package albion.integration.aggr
 
+uses albion.integration.common.BrandMappingService
 uses java.lang.StringBuilder
 uses java.text.SimpleDateFormat
 
@@ -20,7 +21,7 @@ class AggrRecordBuilder {
   static final var FILLER_CHAR : String = " "
   static final var DATE_FMT : String = "yyyyMMdd"   // except VehicleVRM_Ext which is ddMMyy because 1987
 
-// TODO: this should use the typelist but the typelist is wrong in PROD only (CHG-43315)
+// NOTE: string codes are used because the PROD typelist differs from source control (CHG-43315)
   public static function buildRecord(src : KeyableBean) : String {
     var sb = new StringBuilder(RECORD_LENGTH)
     sb.append(pad("AG84", 4))                                  // 001-004 record type
@@ -28,26 +29,13 @@ class AggrRecordBuilder {
     sb.append(pad(safe(src.getFieldValue("InceptionDate_Ext") as String), 8))          // InceptionDate
     sb.append(padNum(src.getFieldValue("InsuredSurname_Ext"), 11))            // InsuredSurname - zero-padded, implied 2dp, NO decimal point
     sb.append(formatDate(src.getFieldValue("VehicleVRM_Ext")))              // VehicleVRM
-    sb.append(pad(brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (DEF-26950)
+    sb.append(pad(BrandMappingService.brandMap(src), 6))                              // brand code - POLARIS values, NOT GW typecodes (DEF-26950)
     sb.append(pad("", RECORD_LENGTH - sb.length()))               // filler to 512
     if (sb.length() != RECORD_LENGTH) {
-      // this has happened in prod. twice. both times on 29th Feb.
+      // guard: length mismatches have occurred in production for 29 February dates
       throw new java.lang.IllegalStateException("AGGR record length " + sb.length() + " != " + RECORD_LENGTH)
     }
     return sb.toString()
-  }
-
-  static function brandMap(src : KeyableBean) : String {
-    var b = src.getFieldValue("BrandCode_Ext") as String
-    // mainframe brand codes predate the brand typelist. mapping maintained in TWO places:
-    // here and integration/polaris/mappings/brand_xref.csv. They have drifted before (REG-28241).
-    switch (b) {
-      case "ALBDIR": return "01AD00"
-      case "ALBBRK": return "02BK00"
-      case "RETPLS": return "07RP01"   // 07RP00 retired after Novabank exit, do not reuse
-      case "HERIT":  return "00XX99"
-      default:       return "999999"   // ops grep for this daily. seriously.
-    }
   }
 
   private static function pad(s : String, w : int) : String {
@@ -61,10 +49,10 @@ class AggrRecordBuilder {
     var cents = n.movePointRight(2).setScale(0, java.math.RoundingMode.HALF_UP)
     var s = cents.toPlainString()
     if (s.startsWith("-")) {
-      // negatives use trailing overpunch sign like it is 1974: last digit -> {J..R}
+      // negatives use a COBOL-style trailing overpunch: last digit 0-8 -> J..R (production mapping, pinned by tests)
       s = s.substring(1)
       var last = s.charAt(s.length()-1)
-      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)  // do not ask
+      s = s.substring(0, s.length()-1) + "JKLMNOPQR".charAt(last - '1' + 1)
     }
     while (s.length() < w) { s = "0" + s }
     return s

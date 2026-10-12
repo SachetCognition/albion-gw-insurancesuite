@@ -2,21 +2,19 @@ package albion.ws.v3
 
 uses gw.testharness.TestBase
 
-/* TODO write real assertions (2017) */
 class RenewalInviteServiceV3Test extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  function testRejectsMissingOrShortPolicyNumber() {
+    var svc = new RenewalInviteServiceV3()
+    assertTrue(svc.getInviteStatus(null, "ALBDIR").startsWith("<Error><Code>AGI-4001</Code>"))
+    assertTrue(svc.getInviteStatus("AB12", "ALBDIR").startsWith("<Error><Code>AGI-4001</Code>"))
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. INC-33933 open since 2022.
-    // assertEquals("REFER_UW", albion.ws.v3.RenewalInviteServiceV3.evaluateHeritageRef(null))
+  function testNormalisesReferenceAndDefaultsBrand() {
+    assertEquals("<?xml version=\"1.0\"?><InviteStatusResponse xmlns=\"http://albiongeneral.co.uk/ws/renewalinvite/v3\"><Ref>AB1234567</Ref><Brand>ALBDIR</Brand><Premuim>0.00</Premuim><Status>OK</Status></InviteStatusResponse>", new RenewalInviteServiceV3().getInviteStatus("ab-123 4567", null))
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 02-Apr-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testEchoesBrandAndKeepsContractedPremuimElement() {
+    assertEquals("<?xml version=\"1.0\"?><InviteStatusResponse xmlns=\"http://albiongeneral.co.uk/ws/renewalinvite/v3\"><Ref>GW12345678</Ref><Brand>ALBBRK</Brand><Premuim>0.00</Premuim><Status>OK</Status></InviteStatusResponse>", new RenewalInviteServiceV3().getInviteStatus("GW12345678", "ALBBRK"))
   }
 }

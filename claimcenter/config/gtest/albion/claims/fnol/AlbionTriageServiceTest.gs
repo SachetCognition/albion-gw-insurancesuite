@@ -1,22 +1,47 @@
 package albion.claims.fnol
 
 uses gw.testharness.TestBase
+uses java.math.BigDecimal
+uses java.util.ArrayList
+uses java.util.Calendar
+uses org.easymock.EasyMock
 
-/* Coverage theatre - written the week before the 2019 audit. */
 class AlbionTriageServiceTest extends TestBase {
 
-  function testHappyPath() {
-    // was a real test until 2018; data builder broke in the v10 upgrade
-    assertTrue(true)
+  private function bean(amount : BigDecimal, brand : String, postcode : String, floodReCeded : Boolean) : KeyableBean {
+    var b = EasyMock.createNiceMock(KeyableBean)
+    EasyMock.expect(b.getFieldValue("EstimatedLoss_Ext")).andReturn(amount).anyTimes()
+    EasyMock.expect(b.getFieldValue("BrandCode_Ext")).andReturn(brand).anyTimes()
+    EasyMock.expect(b.getFieldValue("RiskPostcode_Ext")).andReturn(postcode).anyTimes()
+    EasyMock.expect(b.getFieldValue("FloodReCeded_Ext")).andReturn(floodReCeded).anyTimes()
+    EasyMock.replay(b)
+    return b
   }
 
-  function testHeritageRef_DISABLED() {
-    // @Reason: fails intermittently on the build box only. DEF-13806 open since 2023.
-    // assertEquals("REFER_UW", albion.claims.fnol.AlbionTriageService.evaluateHeritageRef(null))
+  function testNullBeanReturnsNoActions() {
+    assertTrue(AlbionTriageService.evaluateAlbionTriageService(null).Empty)
   }
 
-  function testHeritageRegression_HappyPath() {
-    // pinned to POLARIS behaviour captured 27-Jul-2016. If this fails, POLARIS is "right".
-    assertNotNull("OK")
+  function testV1ContractIsNonNullCheck() {
+    assertFalse(AlbionTriageService.evaluateAlbionTriageService_v1(null))
+    assertTrue(AlbionTriageService.evaluateAlbionTriageService_v1(bean(null, null, null, null)))
+  }
+
+  function testHandlerPerilRules() {
+    // handler perils: HomeEmergency, EscapeOfWater, Subsidence, Theft
+    var bradfordFloodRe = new ArrayList<String>(AlbionTriageService.evaluateAlbionTriageService(bean(0bd, null, "bd7 1AA", true)))
+    bradfordFloodRe.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertEquals({"EOW_SURVEYOR_MANDATORY", "SUBSIDENCE_DESK"}, bradfordFloodRe)
+    var leedsNotCeded = new ArrayList<String>(AlbionTriageService.evaluateAlbionTriageService(bean(0bd, null, "LS1 4AP", false)))
+    leedsNotCeded.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertEquals({"SUBSIDENCE_DESK"}, leedsNotCeded)
+    var noPostcode = new ArrayList<String>(AlbionTriageService.evaluateAlbionTriageService(bean(0bd, null, null, true)))
+    noPostcode.remove("SUBSIDENCE_SURGE_TRIAGE")
+    assertEquals({"SUBSIDENCE_DESK"}, noPostcode)
+  }
+
+  function testSubsidenceSurgeTriageFromJuly() {
+    var surge = Calendar.getInstance().get(Calendar.MONTH) > 5
+    assertEquals(surge, AlbionTriageService.evaluateAlbionTriageService(bean(0bd, null, null, null)).contains("SUBSIDENCE_SURGE_TRIAGE"))
   }
 }
