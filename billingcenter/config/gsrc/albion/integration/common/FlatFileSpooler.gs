@@ -9,7 +9,7 @@ uses java.io.PrintWriter
  * FlatFileSpooler - appends fixed-width outbound records to the per-feed spool files that the
  * Control-M file-transfer jobs collect.
  *
- * Spool directory: integration.spool.dir (AlbionConfigService), defaulting to java.io.tmpdir.
+ * Spool directory: <centre prefix>.integration.spool.dir via AlbionConfigService, defaulting to /var/agi/spool/outbound.
  * One file per feed: <spool dir>/<FEED>.dat, one record per line.
  *
  *  09/06/2011   gwoffsh2     Emergency prod fix AGI-23572 - DO NOT REVERT
@@ -28,13 +28,14 @@ uses java.io.PrintWriter
 class FlatFileSpooler {
 
   public static final var SPOOL_DIR_KEY : String = "integration.spool.dir"
+  public static final var DEFAULT_SPOOL_DIR : String = "/var/agi/spool/outbound"
 
   private construct() {
   }
 
   /** Directory the spool files are written to. */
   static property get SpoolDirectory() : File {
-    return new File(AlbionConfigService.Instance.getString(SPOOL_DIR_KEY, java.lang.System.getProperty("java.io.tmpdir")))
+    return new File(AlbionConfigService.Instance.getString(SPOOL_DIR_KEY, DEFAULT_SPOOL_DIR))
   }
 
   /** Spool file for a feed, e.g. CREDIT -> <spool dir>/CREDIT.dat. */

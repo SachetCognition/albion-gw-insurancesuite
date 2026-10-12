@@ -26,6 +26,17 @@ class FlatFileSpoolerTest extends TestBase {
     assertEquals({"REC1", "REC2 SPLIT"}, Files.readAllLines(f.toPath()))
   }
 
+  function testSpoolDirectoryReadsCentrePrefixedKey() {
+    assertEquals("bi.integration.spool.dir", AlbionConfigService.Instance.fullKey(FlatFileSpooler.SPOOL_DIR_KEY))
+    assertEquals(_dir, FlatFileSpooler.SpoolDirectory)
+  }
+
+  function testSpoolDirectoryDefaultsToStandardOutboundPath() {
+    AlbionConfigService.setInstance(new AlbionConfigService("bi", new java.util.HashMap<String, String>()))
+    assertEquals(new java.io.File("/var/agi/spool/outbound"), FlatFileSpooler.SpoolDirectory)
+    assertEquals(new java.io.File("/var/agi/spool/outbound", "MID.dat"), FlatFileSpooler.spoolFile("mid"))
+  }
+
   function testSpoolRejectsMissingFeedOrRecord() {
     try { FlatFileSpooler.spool(" ", "X"); fail("expected IllegalArgumentException") } catch (e : IllegalArgumentException) { }
     try { FlatFileSpooler.spool("MID", null); fail("expected IllegalArgumentException") } catch (e : IllegalArgumentException) { }
