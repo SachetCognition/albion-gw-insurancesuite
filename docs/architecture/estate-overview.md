@@ -21,6 +21,13 @@
 3. `FeedStatus_Ext` drives the feed batches with no enforced state machine — see `FEEDSTATUS-STATE-MACHINE.md`.
 4. IPT is computed in 4 places; month-end reconciliation is a runbook (`docs/runbooks/month-end-ipt-reconciliation.md`), not a control.
 
+## Strangler migration
+POLARIS-facing record builders are replaced feed by feed behind `albion.integration.shadow.ShadowRecordFacade`, which the
+registered `IptTransport` (ClaimCenter) and `PolarisMfTransport` (PolicyCenter, ContactManager) call for every record.
+Shadow running is switched by `<prefix>.feature.shadow.enabled` / `.feeds` / `.brands` in the environment templates and
+ships off, so each feed writes its legacy record only. Golden-master GUnit tests pin today's IPT and POLARIS_MF 512-byte
+records and the IPT calculation, and prove each candidate builder byte-identical. See `docs/migration/strangler-phase1.md`.
+
 ## Admin data
 Each centre loads its activity patterns from `<config-root>/import/gen/albion-activity-patterns.xml`, listed in that directory's `importfiles.txt` and loaded with the standard admin-data import: ClaimCenter 13, PolicyCenter 20, BillingCenter 15 and ContactManager 18 patterns. Every pattern code raised by a rule (`AGI_*`) or an escalation batch is defined there; `check_gw_coherence.py` (E11) fails the build if a code is missing. In BillingCenter and ContactManager the activity subjects are display keys.
 

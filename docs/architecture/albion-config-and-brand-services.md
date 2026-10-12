@@ -15,7 +15,8 @@ canonical implementation (ClaimCenter) and a byte-identical copy in every centre
 | `albion/integration/common/BrandMappingService.gs` | same | same | same | same |
 | `albion/config/AlbionCentre.gs` (**only per-centre file**) | `CODE="cc"`, `PROPERTY_PREFIX="cl"` | `"pc"`, `"po"` | `"bc"`, `"bi"` | `"cm"`, `"co"` |
 | `albion/security/AlbionAesEncryptionPlugin.gs` | same | same | same | same |
-| GUnit: `gtest/albion/config/AlbionConfigServiceTest.gs`, `gtest/albion/integration/common/BrandMappingServiceTest.gs`, `gtest/albion/security/AlbionAesEncryptionPluginTest.gs` | same | same | same | same |
+| `albion/integration/shadow/*.gs` (strangler shadow scaffold, `docs/migration/strangler-phase1.md`) | same | same | same | same |
+| GUnit: `gtest/albion/config/AlbionConfigServiceTest.gs`, `gtest/albion/integration/common/BrandMappingServiceTest.gs`, `gtest/albion/security/AlbionAesEncryptionPluginTest.gs`, `gtest/albion/integration/shadow/*.gs` | same | same | same | same |
 
 To change a service: edit the ClaimCenter copy, copy it to the other three centres, run the drift check.
 
@@ -59,9 +60,19 @@ e.g. `bi.large.loss.threshold=25000`.
 | `sla.complaint.holding.letter.days` | `28` | `ComplaintHoldingLetterDays : int` | 1..365, < final |
 | `sla.complaint.final.response.days` | `56` | `ComplaintFinalResponseDays : int` | 1..365 |
 
+Strangler feature flags (not business constants; listed in `FEATURE_KEYS`, committed OFF/empty in every template):
+
+| Key (after prefix) | Default | Getter | Validation |
+|---|---|---|---|
+| `feature.shadow.enabled` | `false` | `ShadowRunEnabled : boolean` | `true`/`false` |
+| `feature.shadow.feeds` | empty | `ShadowFeeds : List<String>` | comma list, upper-cased |
+| `feature.shadow.brands` | empty (all brands) | `ShadowBrands : List<String>` | comma list, upper-cased |
+
+`isShadowEnabled(feed, brandTypecode)` combines them; see `docs/migration/strangler-phase1.md`.
+
 Key names are also public constants (`AlbionConfigService.KEY_*`, list in `BUSINESS_KEYS`); defaults are `DEFAULT_*`.
 Generic typed getters for other keys: `getString`, `getBoolean`, `getInt(key, default, min, max)`,
-`getDecimal(key, default, min, max, maxExclusive)`, `rawValue`, `isSet`, `fullKey`.
+`getDecimal(key, default, min, max, maxExclusive)`, `getList`, `rawValue`, `isSet`, `fullKey`.
 
 ### Divergent thresholds: use the legacy-pinned functions
 
@@ -182,9 +193,10 @@ python3 tools/scripts/check_brand_config_drift.py [--root <repo>]
 Python 3 stdlib only, no Guidewire distribution needed; exit 1 on drift. Fails when: the four typelists differ; a CSV
 `GW_TYPECODE` is missing from or retired in the typelist; the service tables differ from the typelist or CSV (or roles
 are inconsistent with the CSV notes); any per-centre service/test copy is not byte-identical; `AlbionCentre` prefix does
-not match the env files; or any of the 40 env/centre property files lacks a business or encryption key. Per env/centre it checks
+not match the env files; any of the 40 env/centre property files lacks a business, feature-flag or encryption key; or
+a template sets `feature.shadow.enabled` to anything but `false`. Per env/centre it checks
 `environments/<env>/<centre>.properties.template` when present, else `<centre>.properties`, and fails if neither exists.
-Not yet wired into the `Jenkinsfile` (planned for the CI wave).
+Runs as the first blocking stage of the `Jenkinsfile` (`Brand config drift`), before any centre is compiled.
 
 ## Coherence audit
 
@@ -204,4 +216,5 @@ warnings only, because patterns are also picked by users from the New Activity m
 E12 flags `*_Ext` field names passed as strings to `getFieldValue`/`setFieldValue`/`isFieldChanged`/
 `getOriginalValue` (or used as other string lookups) that no entity extension, entity or typelist in that
 centre defines. Warnings never change the exit status.
-`--centre` limits the run to one centre tree or `batch`. Not yet wired into the `Jenkinsfile` (planned for the CI wave).
+`--centre` limits the run to one centre tree or `batch`. Runs repo-wide (all centres and the batch estate) as the
+blocking `Guidewire coherence` stage of the `Jenkinsfile`, straight after `Brand config drift`.
