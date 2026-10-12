@@ -43,3 +43,13 @@ environments/**/*.p12
 environments/**/*.pem
 environments/**/*.key
 !environments/**/*.template
+# Per-centre local runtime and build output (the root-relative patterns above
+# only match a single-product checkout).
+**/db/*.db
+**/db/tmp/
+**/db/*.lobs.db/
+**/dbbackup/
+**/*.iml
+**/modules/configuration/deploy/.timestamp
+**/modules/configuration/deploy/bundles/
+**/modules/configuration/deploy/resources/*/gen/
