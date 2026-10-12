@@ -8,6 +8,9 @@ The runbooks do not name an accountable control owner. The owner entries below t
 
 ## Control register
 
+> Quoted runbook phrases below are the Phase 0 baseline wording; the runbooks themselves have since been
+> rewritten in neutral terms with the same steps, tolerances, contacts and ticket references.
+
 | Control | Current production rule | Where it lives today | Current operator / owner | What an automated or tested control must assert |
 |---|---|---|---|---|
 | Reconciliation count tolerance | If source and downstream counts differ by **less than 0.1%**, operations may sign off and release downstream feeds. Exactly 0.1% is not stated as acceptable. Every runbook says this tolerance is “not written down anywhere except here.” | All ten files under `docs/runbooks/`; explicitly required by `month-end-ipt-reconciliation.md` and `polaris-bridge-failover.md` | Operations signs off; no accountable control owner is named | Calculate the same numerator and denominator as the selected reconciliation query; allow only `difference < 0.001`; retain counts, percentage, query identity, operator, timestamp, and decision; block or require exception approval at `>= 0.1%`. |

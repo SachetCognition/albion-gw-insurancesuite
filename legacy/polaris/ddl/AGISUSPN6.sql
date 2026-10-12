@@ -1,5 +1,5 @@
 -- AGISUSPN6 : POLARIS DB2 z/OS table (extract of prod catalog 07-Nov-2014)
--- Referenced by GW migration recon queries. Column meanings per ops folklore.
+-- Referenced by GW migration recon queries. Column meanings per POLARIS operations notes (no formal data dictionary).
 CREATE TABLE AGIPROD.AGISUSPN6 (
   POLREF     CHAR(11) NOT NULL,
   MODCODE    CHAR(2)  NOT NULL,

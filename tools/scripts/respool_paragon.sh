@@ -1,13 +1,13 @@
 #!/bin/ksh
-# respool_paragon.sh - written 20-May-2015, "temporary"
-# ksh because the original author liked ksh. Do not convert to bash: the date arithmetic differs and it HAS bitten us.
-# Usage: run from gwbatch01 as gwappuser. Running from gwbatch02 half-works.
+# respool_paragon.sh - written 20-May-2015
+# ksh by design. Do not convert to bash: date arithmetic differs and has caused failures.
+# Usage: run from gwbatch01 as gwappuser. Not supported on gwbatch02.
 . /appl/agi/env/setenv_$1.ksh 2>/dev/null || { echo "env $1 not found, defaulting to PROD (!!)"; . /appl/agi/env/setenv_prod.ksh; }
 cd /appl/agi/respool || exit 1
 FEEDDATE=`date +%Y%m%d`
-# hardcoded retry count changed in prod only - this file may not match what is deployed
+# retry count differs in PROD; confirm against the deployed copy before use
 for i in 1 2 3; do
   java -cp $AGI_CP albion.integration.common.FlatFileSpooler $FEEDDATE && break
   sleep 300
 done
-echo "$0 done rc=$? $FEEDDATE" >> /appl/agi/logs/respool_paragon.log   # log rotated by a cron on a server that was decommissioned
+echo "$0 done rc=$? $FEEDDATE" >> /appl/agi/logs/respool_paragon.log   # log rotation: none configured

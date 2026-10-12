@@ -124,3 +124,17 @@ are inconsistent with the CSV notes); any per-centre service/test copy is not by
 not match the env files; or any of the 40 env/centre property files lacks a business key. Per env/centre it checks
 `environments/<env>/<centre>.properties.template` when present, else `<centre>.properties`, and fails if neither exists.
 Not yet wired into the `Jenkinsfile` (planned for the CI wave).
+
+## Coherence audit
+
+```
+python3 tools/scripts/check_gw_coherence.py <repo> [--detail N] [--centre cc|pc|bc|cm|batch]
+```
+
+Python 3 stdlib only; exit 1 when any finding exists. Static checks that each centre would make sense to Guidewire
+Studio (E1–E10: undefined entity fields, typecodes, `albion.*` classes/methods, PCF refs, registry classes, scheduler
+entries, contradictory rules; J1/R1 placeholder classes and non-GW rule files), meta/tell markers (T1), and batch
+coherence (B1 every Control-M `INCOND` is produced by an `OUTCOND` or is external `AGI-DB-BACKUP-OK` /
+`POLARIS-EOD-COMPLETE`; B2/B3 every job's `MEMNAME` exists in `batch/jcl/` and every member there is scheduled —
+on-demand members live in `batch/jcl/adhoc/`; B4 `JOBNAME`, `MEMNAME` and the JCL `//<NAME> JOB` card agree).
+`--centre` limits the run to one centre tree or `batch`. Not yet wired into the `Jenkinsfile` (planned for the CI wave).

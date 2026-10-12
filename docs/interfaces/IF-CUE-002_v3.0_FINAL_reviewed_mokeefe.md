@@ -5,7 +5,7 @@ Claims & Underwriting Exchange enquiry/load
 > **Document status:** FINAL (v7). There are 6 other "FINAL" versions of this document. This one matches production closest, per the 2023 audit sample.
 
 ## Transport
-SFTP nightly, PGP-encrypted with a key that expired and was extended verbally
+SFTP nightly, PGP-encrypted; key expiry extended without a written record (renewal outstanding)
 
 ## Record layout
 See `integration/polaris/copybooks/AGICUERE.cpy`. Where copybook and this doc disagree, **production behaviour wins** (transcribed by hand into `CueRecordBuilder.gs`).
