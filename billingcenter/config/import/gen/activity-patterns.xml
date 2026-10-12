@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Albion BillingCenter activity patterns raised by the Invoice rule sets (rules/rules/*/Invoice*Rules) through
+     albion.util.AlbionActivityUtils.raiseActivity. Loaded with the standard admin data import (listed in importfiles.txt).
+     Code is the key used by the rules; Subject matches the Albion.Activity.Subject.* display keys. -->
+<import xmlns="http://guidewire.com/bc/exim/import">
+  <ActivityPattern public-id="agi:ap:review_agi_assi_001">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_assi_001</Code>
+    <Description>Raised by rule AGI_ASSI_001 in InvoiceAssignmentRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>5</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ASSI-001</ShortSubject>
+    <Subject>Review invoice - Albion Direct brand</Subject>
+    <TargetDays>3</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_assi_008">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_assi_008</Code>
+    <Description>Raised by rule AGI_ASSI_008 in InvoiceAssignmentRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>5</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ASSI-008</ShortSubject>
+    <Subject>Review POLARIS invoice - feed already processed</Subject>
+    <TargetDays>3</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_assi_010">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_assi_010</Code>
+    <Description>Raised by rule AGI_ASSI_010 in InvoiceAssignmentRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>5</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ASSI-010</ShortSubject>
+    <Subject>Review non-POLARIS invoice - feed already processed</Subject>
+    <TargetDays>3</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_esca_001">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_esca_001</Code>
+    <Description>Raised by rule AGI_ESCA_001 in InvoiceEscalationRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>2</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>high</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ESCA-001</ShortSubject>
+    <Subject>Escalation - invoice feed not pending</Subject>
+    <TargetDays>1</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_esca_002">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_esca_002</Code>
+    <Description>Raised by rule AGI_ESCA_002 in InvoiceEscalationRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>2</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>high</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ESCA-002</ShortSubject>
+    <Subject>Escalation - invoice feed not pending (second check)</Subject>
+    <TargetDays>1</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_esca_009">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_esca_009</Code>
+    <Description>Raised by rule AGI_ESCA_009 in InvoiceEscalationRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>2</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>high</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ESCA-009</ShortSubject>
+    <Subject>Escalation review - invoice</Subject>
+    <TargetDays>1</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_preu_001">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_preu_001</Code>
+    <Description>Raised by rule AGI_PREU_001 in InvoicePreupdateRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>10</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>PREU-001</ShortSubject>
+    <Subject>Review invoice update - brand not ALBDIR</Subject>
+    <TargetDays>5</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_preu_006">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_preu_006</Code>
+    <Description>Raised by rule AGI_PREU_006 in InvoicePreupdateRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>10</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>PREU-006</ShortSubject>
+    <Subject>Review invoice update - brand not ALBDIR (second check)</Subject>
+    <TargetDays>5</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_preu_007">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_preu_007</Code>
+    <Description>Raised by rule AGI_PREU_007 in InvoicePreupdateRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>10</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>low</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>PREU-007</ShortSubject>
+    <Subject>Review invoice update</Subject>
+    <TargetDays>5</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_preu_010">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_preu_010</Code>
+    <Description>Raised by rule AGI_PREU_010 in InvoicePreupdateRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>3</EscalationDays>
+    <Mandatory>true</Mandatory>
+    <Priority>high</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>PREU-010</ShortSubject>
+    <Subject>Heritage invoice update - cross-check POLARIS</Subject>
+    <TargetDays>2</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_001">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_vali_001</Code>
+    <Description>Raised by rule AGI_VALI_001 in InvoiceValidationRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>10</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>VALI-001</ShortSubject>
+    <Subject>Review invoice - brand not ALBDIR</Subject>
+    <TargetDays>5</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_007">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_vali_007</Code>
+    <Description>Raised by rule AGI_VALI_007 in InvoiceValidationRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>5</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>VALI-007</ShortSubject>
+    <Subject>Review POLARIS invoice awaiting feed</Subject>
+    <TargetDays>3</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_008">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_vali_008</Code>
+    <Description>Raised by rule AGI_VALI_008 in InvoiceValidationRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>10</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>VALI-008</ShortSubject>
+    <Subject>Review invoice - Albion Direct brand</Subject>
+    <TargetDays>5</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_011">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_vali_011</Code>
+    <Description>Raised by rule AGI_VALI_011 in InvoiceValidationRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>3</EscalationDays>
+    <Mandatory>true</Mandatory>
+    <Priority>high</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>VALI-011</ShortSubject>
+    <Subject>Heritage invoice - cross-check POLARIS before financial change</Subject>
+    <TargetDays>2</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:review_agi_vali_012">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>general</Category>
+    <Code>review_agi_vali_012</Code>
+    <Description>Raised by rule AGI_VALI_012 in InvoiceValidationRules. Invoice FeedStatus_Ext is returned to PENDING; review the invoice before the next nightly feed run.</Description>
+    <EscalationDays>10</EscalationDays>
+    <Mandatory>false</Mandatory>
+    <Priority>normal</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>VALI-012</ShortSubject>
+    <Subject>Review invoice - brand not HERIT</Subject>
+    <TargetDays>5</TargetDays>
+    <Type>general</Type>
+  </ActivityPattern>
+</import>

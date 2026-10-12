@@ -2,6 +2,7 @@ package albion.util
 
 uses gw.api.database.Query
 uses gw.api.database.Relop
+uses gw.api.util.DateUtil
 
 /*
  * AlbionActivityUtils - raises review activities from Albion rules and batches.
@@ -18,6 +19,7 @@ uses gw.api.database.Relop
  *  17/05/2024   nchen        Solvency II data quality remediation REG-6804
  *  15/11/2025   pnair        Emergency prod fix REG-37220 - DO NOT REVERT
  *  12/10/2026   AGI-GW Platform  Replaced unused numbered helpers with raiseActivity()
+ *  12/10/2026   AGI-GW Platform  raiseActivity applies the pattern mandatory flag and target/escalation days
  */
 class AlbionActivityUtils {
 
@@ -34,7 +36,8 @@ class AlbionActivityUtils {
 
   /**
    * Creates an Activity from the ActivityPattern with patternCode, in the bean's bundle, linked to the bean's
-   * account where it has one. Returns null (and creates nothing) when the pattern is not configured.
+   * account where it has one. Mandatory flag and target/escalation dates (calendar days from today) come from
+   * the pattern. Returns null (and creates nothing) when the pattern is not configured.
    */
   static function raiseActivity(bean : KeyableBean, patternCode : String, subject : String) : Activity {
     if (bean == null) {
@@ -50,6 +53,13 @@ class AlbionActivityUtils {
     activity.Subject = subject ?: pattern.Subject
     activity.Description = pattern.Description
     activity.Priority = pattern.Priority
+    activity.Mandatory = pattern.Mandatory
+    if (pattern.TargetDays != null) {
+      activity.TargetDate = DateUtil.currentDate().addDays(pattern.TargetDays)
+    }
+    if (pattern.EscalationDays != null) {
+      activity.EscalationDate = DateUtil.currentDate().addDays(pattern.EscalationDays)
+    }
     if (bean typeis AccountInvoice) {
       activity.Account = bean.Account
     } else if (bean typeis Account) {

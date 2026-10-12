@@ -1,6 +1,7 @@
 package rules.Preupdate.InvoicePreupdateRules_dir
 
 uses albion.util.AlbionActivityUtils
+uses gw.api.locale.DisplayKey
 
 @gw.rules.RuleName("AGI_PREU_007: hold every invoice for preupdate review")
 internal class AGI_PREU_007 {
@@ -14,7 +15,7 @@ return true
 /*start00rule*/
 // priority 337; sets the invoice back to PENDING and raises the AGI_PREU_007 review activity
 invoice.FeedStatus_Ext = "PENDING"
-AlbionActivityUtils.raiseActivity(invoice, "review_agi_preu_007", "Preupdate review: every invoice")
+AlbionActivityUtils.raiseActivity(invoice, "review_agi_preu_007", DisplayKey.get("Albion.Activity.Subject.AGI_PREU_007"))
 /*end00rule*/
   }
 }

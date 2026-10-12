@@ -22,7 +22,7 @@
           id="FeedStatus_Ext"
           label="&quot;FeedStatus&quot;"
           value="Invoice.FeedStatus_Ext"/>
-        <TextInput
+        <TypeKeyInput
           editable="true"
           id="BrandCode_Ext"
           label="&quot;BrandCode&quot;"

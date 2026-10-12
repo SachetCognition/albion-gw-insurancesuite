@@ -12,7 +12,7 @@
           id="CampaignCode_Ext"
           label="&quot;CampaignCode&quot;"
           value="Invoice.CampaignCode_Ext"/>
-        <TextInput
+        <TypeKeyInput
           editable="true"
           id="BrandCode_Ext"
           label="&quot;BrandCode&quot;"
