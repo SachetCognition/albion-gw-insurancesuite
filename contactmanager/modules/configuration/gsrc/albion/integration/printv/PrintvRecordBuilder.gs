@@ -15,6 +15,7 @@ uses albion.integration.common.BrandMappingService
  *  07/12/2023   baldrid      CR GWPC-11941 - added RETPLS brand handling
  *  12/10/2026   AGI-GW Platform  Brand code via BrandMappingService.brandMap
  *  12/10/2026   AGI-GW Platform  ClaimNumber emitted empty per copybook; claim data is not held in ContactManager
+ *  13/10/2026   AGI-GW Platform  Added PR17 renewal disclosure layout (buildRecordPR17, 300 bytes); PR16 buildRecord unchanged
  */
 class PrintvRecordBuilder {
 
@@ -63,4 +64,61 @@ class PrintvRecordBuilder {
     return v == null ? "00000000" : new SimpleDateFormat(DATE_FMT).format(v)
   }
   private static function safe(s : String) : String { return s == null ? "" : s.replaceAll("[|\\r\\n]", " ") }
+
+  // PR17 renewal invite record (ICOBS 6A/6B disclosure). Draft layout: integration/paragon/AGIPRINRE-v2.draft.cpy.
+  // Positions 005-075 are built exactly as PR16; the PR16 layout above is unchanged.
+  static final var RECORD_LENGTH_PR17 : int = 300
+  static final var SHOPPING_AROUND_POLICY_YEAR : int = 4
+
+  public static function buildRecordPR17(src : KeyableBean) : String {
+    var sb = new StringBuilder(RECORD_LENGTH_PR17)
+    sb.append(pad("PR17", 4))                                  // 001-004 record type
+    sb.append(pad(safe(src.getFieldValue("InsuredSurname_Ext") as String), 12))          // 005-016 InsuredSurname
+    sb.append(pad(safe(null as String), 30))          // 017-046 ClaimNumber - not held in ContactManager; emitted empty per copybook
+    sb.append(padNum(src.getFieldValue("RiskPostcode_Ext"), 15))            // 047-061 RiskPostcode - as PR16
+    sb.append(formatDate(src.getFieldValue("PolicyNumber_Ext")))              // 062-069 PolicyNumber - as PR16
+    sb.append(pad(BrandMappingService.brandMap(src), 6))                              // 070-075 brand code - POLARIS values
+    sb.append(disclosureAmount(src.getFieldValue("PriorPremium_Ext"), "PriorPremium_Ext"))            // 076-090 last year's premium, implied 2dp
+    sb.append(disclosureAmount(src.getFieldValue("RenewalPremium_Ext"), "RenewalPremium_Ext"))          // 091-105 renewal premium, implied 2dp
+    sb.append(disclosureAmount(src.getFieldValue("EquivalentNBPremium_Ext"), "EquivalentNBPremium_Ext"))     // 106-120 equivalent new business price (PS21/5), implied 2dp
+    sb.append(ncdYears(src.getFieldValue("NCDYears_Ext")))                  // 121-122 no-claims discount years, 00-99
+    sb.append(flag(policyYear(src.getFieldValue("PolicyYear_Ext")) >= SHOPPING_AROUND_POLICY_YEAR))   // 123 shopping-around prompt (ICOBS 6B, 4th renewal year on)
+    sb.append(flag(isSet(src.getFieldValue("RenewalOptOut_Ext"))))          // 124 customer opted out of auto-renewal
+    sb.append(pad("", RECORD_LENGTH_PR17 - sb.length()))               // 125-300 filler
+    if (sb.length() != RECORD_LENGTH_PR17) {
+      throw new java.lang.IllegalStateException("PRINTV PR17 record length " + sb.length() + " != " + RECORD_LENGTH_PR17)
+    }
+    return sb.toString()
+  }
+
+  private static function ncdYears(v : Object) : String {
+    var n = (v == null) ? 0 : (v as java.lang.Number).intValue()
+    if (n < 0) { n = 0 }
+    if (n > 99) { n = 99 }
+    return n < 10 ? "0" + n : "" + n
+  }
+
+  private static function policyYear(v : Object) : int {
+    return (v == null) ? 0 : (v as java.lang.Number).intValue()
+  }
+
+  private static function isSet(v : Object) : boolean {
+    if (v typeis java.lang.Boolean) { return v.booleanValue() }
+    if (v typeis String) {
+      var t = v.trim().toUpperCase()
+      return t == "Y" or t == "TRUE" or t == "1"
+    }
+    return false
+  }
+
+  private static function flag(b : boolean) : String { return b ? "Y" : "N" }
+
+  // PR17 disclosure amounts must fit their 15-byte slot; padNum never truncates, so a wider value would shift every later field
+  private static function disclosureAmount(v : Object, field : String) : String {
+    var s = padNum(v, 15)
+    if (s.length() > 15) {
+      throw new java.lang.IllegalStateException("PRINTV PR17 " + field + " needs " + s.length() + " bytes > 15")
+    }
+    return s
+  }
 }

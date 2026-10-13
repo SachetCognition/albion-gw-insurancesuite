@@ -54,8 +54,17 @@ period, on every server that sends the feed (the ledger is per server).
 ## Offline replay evidence
 
 `tools/replay/run_replay.sh` replays committed synthetic fixtures (`tools/replay/fixtures/*.csv`, invented values only)
-through the legacy and candidate builders of each wired feed with `ShadowRunner`, plus a negative control that alters
-the candidate record and must come out RED. It writes `tools/replay/evidence/replay-evidence.json`:
+through named profiles with `ShadowRunner`, each with a negative control that alters the compared candidate value and
+must come out RED. `REPLAY_PROFILES` (space-separated) selects a subset; the default is all:
+
+| Profile | Fixture | Compared |
+| --- | --- | --- |
+| `IPT_CC`, `POLARIS_MF_PC`, `POLARIS_MF_CM` | `ipt_cc.csv`, `polaris_mf_pc.csv`, `polaris_mf_cm.csv` | legacy vs candidate record builder, byte for byte |
+| `PS215_PC` | `renewal_ps215.csv` | `AlbionPS215Gate.evaluate` codes vs `expect`; monitor, Paragon manager and `_v1` must agree with the gate |
+| `ELIGIBILITY_PC` | `renewal_eligibility.csv` | `AlbionRenewalEligibilityRules.evaluate` codes (contract order, `NONE` when empty) vs `expect` |
+| `PRINTV_PR17_CM` | `printv_pr17.csv` | PR16 pinned by SHA-256; PR17 vs `PR17` + PR16 005-075 + expected disclosure fields, 300 bytes |
+
+It writes `tools/replay/evidence/replay-evidence.json`:
 
 ```
 {
@@ -65,10 +74,15 @@ the candidate record and must come out RED. It writes `tools/replay/evidence/rep
   "tolerance": "exact",
   "runtime": "open-source Gosu 1.17.5",
   "negativeControl": "RED",
-  "fixtures": [{"path": "...csv", "sha256": "...", "cases": 17}],
-  "runs": [ <albion.shadow.evidence/v1 document per centre and feed> ]
+  "fixtures": [{"path": "...csv", "sha256": "...", "cases": 17, "profile": "IPT_CC"}],
+  "runs": [ <albion.shadow.evidence/v1 document per profile> ],
+  "profiles": [{"name": "IPT_CC", "centre": "cc", "feed": "IPT", "fixture": "...csv", "status": "GREEN",
+                "negativeControl": "RED", "cases": 17}]
 }
 ```
+
+`fixtures[].profile` and `profiles` were added with the replay profiles; every earlier key keeps its meaning, and
+`negativeControl` is RED only when every profile's negative control is RED.
 
 Each `albion.shadow.evidence/v1` document (also the reconciliation batch output) has `schema`, `source`
 (`offline-replay` or `shadow-run`), `centre` (`cc`/`pc`/`bc`/`cm`), `periodStart`, `generatedAt`, `status`, `totals`
@@ -76,7 +90,12 @@ Each `albion.shadow.evidence/v1` document (also the reconciliation batch output)
 `feeds` (the same counts per `feed` and `brand` plus `status`) and `cases` (replay only: `id`, `feed`, `brand`,
 `outcome`, `legacyLength`, `candidateLength`, `firstDifferenceIndex`, `candidateFailure`). For a fixture marked
 `LEGACY_ERROR` both builders must fail with the same exception class; the compared values are then the class names.
-Run instructions: `tools/replay/README.md`.
+Rule profiles report the expected codes as the legacy value and the evaluated codes as the candidate value.
+
+The committed evidence covers all six profiles (`AlbionPS215Gate`, `AlbionRenewalEligibilityRules` and
+`PrintvRecordBuilder.buildRecordPR17` included); see `docs/migration/renewal-compliance-phase1.md`. The same
+builders and rule classes have plain JUnit 4 tests on the same runtime (`tools/replay/junit/run_junit.sh`); the Jenkins
+stage `Offline replay + builder JUnit` runs both after the coherence check. Run instructions: `tools/replay/README.md`.
 
 ## Phase 3 cutover runbook
 

@@ -1,5 +1,8 @@
 package albion.policy.renewal.batch
 
+uses albion.policy.compliance.AlbionPS215Gate
+uses albion.policy.renewal.AlbionRenewalEligibilityActivities
+uses albion.policy.renewal.AlbionRenewalEligibilityRules
 uses gw.processes.BatchProcessBase
 uses gw.api.database.Query
 uses gw.api.database.Relop
@@ -20,6 +23,8 @@ uses gw.transaction.Transaction
  *  08/12/2023   kmbeki       Emergency prod fix HERIT-6032 - DO NOT REVERT
  *  25/12/2025   baldrid      Perf fix HERIT-19004 - query was table scanning CC_CLAIM
  *  12/10/2026   AGI-GW Platform  Selects PolicyPeriod rows (was ABContact); typed field access
+ *  13/10/2026   AGI-GW Platform  Renewal eligibility screen ahead of aged-item escalation; block codes raise renewal activities
+ *  13/10/2026   AGI-GW Platform  PS21/5 gate (AlbionPS215Gate) runs after the eligibility screen for unblocked renewals
  */
 class AlbionRenewalFeedBatch extends BatchProcessBase {
 
@@ -62,6 +67,12 @@ class AlbionRenewalFeedBatch extends BatchProcessBase {
   }
 
   private function process(bean : PolicyPeriod) {
+    var blocks = AlbionRenewalEligibilityRules.evaluate(bean)
+    if (not blocks.Empty) {
+      AlbionRenewalEligibilityActivities.raise(bean, blocks)
+    } else {
+      AlbionPS215Gate.evaluate(bean)
+    }
     var days = gw.api.util.DateUtil.daysBetween(bean.CreateTime, gw.api.util.DateUtil.currentDate())
     if (days > 14) {
       bean.FeedStatus_Ext = "ESCALATED"

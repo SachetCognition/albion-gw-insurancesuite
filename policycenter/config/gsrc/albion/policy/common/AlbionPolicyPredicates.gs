@@ -55,10 +55,17 @@ class AlbionPolicyPredicates {
   }
 
   /**
-   * Data gap: no PS21/5 equivalent new-business price (ENBP) field on the PolicyCenter data model;
-   * returns null, the current production value, so no price-walk comparison is made.
+   * PS21/5 equivalent new-business price (ENBP) from PolicyPeriod.EquivalentNBPremium_Ext (other beans: the
+   * EquivalentNBPremium_Ext field value). Data gap: no feed populates EquivalentNBPremium_Ext yet; while it is null
+   * this returns null, the previous production value, so no price-walk comparison is made.
    */
   static function equivalentNewBusinessPrice(bean : Object) : BigDecimal {
+    if (bean typeis PolicyPeriod) {
+      return bean.EquivalentNBPremium_Ext
+    }
+    if (bean typeis KeyableBean) {
+      return bean.getFieldValue("EquivalentNBPremium_Ext") as BigDecimal
+    }
     return null
   }
 
