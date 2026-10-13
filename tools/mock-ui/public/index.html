@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Albion General – Renewal compliance (offline demo)</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="ribbon" role="note" data-testid="offline-ribbon">
+    <span class="ribbon-dot" aria-hidden="true"></span>
+    Offline demo – synthetic data, not production results
+  </div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Albion General renewal compliance home">
+      <span class="brand-mark" aria-hidden="true">A</span>
+      <span class="brand-text"><strong>Albion General</strong><span>Renewal compliance</span></span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav">
+        <li><a href="/" data-nav="home">Policies</a></li>
+        <li><a href="/journey?step=1" data-nav="journey">Journey</a></li>
+        <li><a href="/ps215/SYN-REN-0002" data-nav="ps215">PS21/5 gate</a></li>
+        <li><a href="/records/SYN-REN-0004" data-nav="records">PRINTV records</a></li>
+        <li><a href="/admin/eligibility" data-nav="admin">Eligibility admin</a></li>
+      </ul>
+    </nav>
+    <button type="button" class="btn btn-ghost btn-sm" id="reset-demo" title="Restore the seed state">Reset demo</button>
+  </header>
+  <main id="main" tabindex="-1">
+    <div class="loading" role="status">Loading…</div>
+  </main>
+  <footer class="footer">
+    <p>Offline demo – synthetic data, not production results. Rules mirror
+      <code>AlbionRenewalEligibilityRules</code>, <code>AlbionPS215Gate</code> and <code>PrintvRecordBuilder</code>;
+      service stubs mirror <code>RenewalInviteServiceV1</code>–<code>V4</code>.</p>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/assets/app.js"></script>
+</body>
+</html>
