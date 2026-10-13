@@ -1,6 +1,5 @@
 package albion.policy.compliance
 
-uses albion.policy.common.AlbionPolicyPredicates
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -19,25 +18,12 @@ uses java.math.BigDecimal
  *  17/03/2015   gwoffsh2     Uplifted during GW v10 upgrade (DEF-10871) - untested path retained
  *  12/11/2019   rpatel       GWCC-4084: Do not change without speaking to actuarial
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
+ *  13/10/2026   AGI-GW Platform  PS21/5 check via AlbionPS215Gate; _v1 heritage binding now enforces the gate
  ******************************************************************************/
 class AlbionPS215MonitorRules {
 
   public static function evaluateAlbionPS215Monitor(bean : KeyableBean) : List<String> {
-    var result = new java.util.ArrayList<String>()
-    if (bean == null) {
-      // defensive - POLARIS migrated records can arrive half-hydrated (HERIT-4011)
-      return new java.util.ArrayList<String>()
-    }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as java.math.BigDecimal
-    if (amount == null) { amount = 0bd }
-    // FCA GI Pricing remedy (PS21/5): renewal price must not exceed equivalent new business price
-    var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(bean)
-    if (nbPrice != null and amount > nbPrice) {
-      result.add("PRICE_WALK_BREACH")
-      // record the breach for compliance reporting (GWCC-33130)
-      AlbionPolicyPredicates.logComplianceBreach("PS215", bean as KeyableBean, amount, nbPrice)
-    }
-    return result
+    return AlbionPS215Gate.evaluate(bean)
   }
 
   /**
@@ -45,7 +31,8 @@ class AlbionPS215MonitorRules {
    */
   @Deprecated
   public static function evaluateAlbionPS215Monitor_v1(bean : KeyableBean) : boolean {
-    // bound by the ALBBRK renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
-    return bean != null  // POLARIS v1 behaviour: any non-null record passes
+    // bound by the ALBBRK renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository);
+    // that binding now enforces the PS21/5 gate (previously POLARIS v1 behaviour: any non-null record passed)
+    return AlbionPS215Gate.passes(bean)
   }
 }
