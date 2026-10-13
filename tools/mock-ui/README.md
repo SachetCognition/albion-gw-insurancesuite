@@ -15,7 +15,7 @@ npm start            # http://localhost:4317  (override with PORT=...)
 npm test             # node:test unit and HTTP tests
 ```
 
-Node.js 18+ and one runtime dependency (`express` 4.21.2, exact-pinned, `package-lock.json` committed).
+Node.js 18+ and one runtime dependency (`express` 4.22.3, exact-pinned, `package-lock.json` committed).
 No build step, no external fonts, scripts or network calls at runtime: the screens are vanilla HTML/CSS/JS served
 from `public/`.
 
