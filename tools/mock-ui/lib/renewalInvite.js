@@ -49,8 +49,12 @@ function isHeritageRef(policyNumber) {
   return policyNumber !== null && policyNumber !== undefined && HERITAGE_RE.test(normalise(String(policyNumber)));
 }
 
+function xmlText(v) {
+  return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+}
+
 function brandOrDefault(brand) {
-  return brand === null || brand === undefined ? 'ALBDIR' : brand;
+  return xmlText(brand === null || brand === undefined ? 'ALBDIR' : brand);
 }
 
 /** RenewalInviteServiceVn.buildResponseXml */
@@ -86,7 +90,7 @@ function gatewayEnquire(centre, transactionCode, policyNumber, brand) {
     + '<Brand>' + brandOrDefault(brand) + '</Brand>'
     + '<Premuim>0.00</Premuim>';
   if (centre === 'cm' && HERITAGE_RE.test(ref)) {
-    sb += '<Source>POLARIS</Source><Transaction>' + transactionCode + '</Transaction>';
+    sb += '<Source>POLARIS</Source><Transaction>' + xmlText(transactionCode) + '</Transaction>';
   }
   return sb + '<Status>OK</Status>' + '</enquireResponse>';
 }

@@ -22,6 +22,14 @@ test('v2 keeps the <Premuim> misspelling', () => {
   assert.doesNotMatch(xml, /<Premium>/);
 });
 
+test('brand code is XML-escaped, not injected as markup', () => {
+  for (const ref of ['SYN-REN-0001', 'HR12345678A']) {
+    const xml = ET.getInviteStatus(2, ref, '</Brand><Status>HACKED</Status><Brand>').xml;
+    assert.match(xml, /<Brand>&lt;\/Brand&gt;&lt;Status&gt;HACKED&lt;\/Status&gt;&lt;Brand&gt;<\/Brand>/);
+    assert.equal((xml.match(/<Status>/g) || []).length, 1);
+  }
+});
+
 test('short or missing reference -> AGI-4001 error XML (PC wording)', () => {
   const err = '<Error><Code>AGI-4001</Code><Msg>Policy number mandatory, min 5 chars (POLARIS refs are 11, GW are 10, quotes are 13 - yes really)</Msg></Error>';
   for (const v of [1, 2, 3, 4]) {

@@ -214,8 +214,9 @@ function createApp(options = {}) {
 
 if (require.main === module) {
   const port = Number.parseInt(process.env.PORT, 10) || 4317;
-  createApp().listen(port, () => {
-    console.log(`Albion renewal mock UI (offline demo, synthetic data) on http://localhost:${port}`);
+  const host = process.env.HOST || '127.0.0.1';
+  createApp().listen(port, host, () => {
+    console.log(`Albion renewal mock UI (offline demo, synthetic data) on http://${host}:${port}`);
   });
 }
 

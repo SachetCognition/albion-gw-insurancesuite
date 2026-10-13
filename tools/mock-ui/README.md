@@ -22,6 +22,7 @@ from `public/`.
 | Variable        | Default | Meaning                                                    |
 |-----------------|---------|------------------------------------------------------------|
 | `PORT`          | `4317`  | HTTP port                                                  |
+| `HOST`          | `127.0.0.1` | Bind address (loopback only by default; the demo has no auth) |
 | `CICS_DELAY_MS` | `2500`  | Simulated POLARIS round-trip for heritage references       |
 
 State is held in memory. `POST /api/reset` (or the **Reset demo** button) restores the seed state.
