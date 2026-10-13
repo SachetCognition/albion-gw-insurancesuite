@@ -40,4 +40,9 @@
     <columnParam name="precision" value="18"/>
     <columnParam name="scale" value="2"/>
   </column>
+  <column name="RenewalOptOut_Ext" type="bit" desc="Customer has opted out of automatic renewal (ICOBS 6B); blocks the renewal invite and auto-renew" nullok="true"/>
+  <column name="MarketingSuppressed_Ext" type="bit" desc="Marketing contact suppressed for the policyholder (PECR / ePrivacy); renewal invite held for review" nullok="true"/>
+  <column name="SanctionsHold_Ext" type="bit" desc="Policyholder or party under a sanctions screening hold; renewal must not be offered until cleared" nullok="true"/>
+  <column name="BereavementHold_Ext" type="bit" desc="Bereavement notified on the policyholder; renewal invite held for the bereavement team" nullok="true"/>
+  <column name="GDPRErasurePending_Ext" type="bit" desc="UK GDPR Art.17 erasure request pending for the policyholder; renewal invite suppressed until resolved" nullok="true"/>
 </extension>

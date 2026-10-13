@@ -362,4 +362,76 @@
     <EscalationInclDays>businessdays</EscalationInclDays>
     <EscalationStartPt>activitycreation</EscalationStartPt>
   </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:renewal_suppression">
+    <Code>renewal_suppression</Code>
+    <Subject>Renewal suppressed - opt-out or data hold</Subject>
+    <ShortSubject>Renewal suppressed - opt-out o</ShortSubject>
+    <Description>Raised by AlbionRenewalFeedBatch when the renewal eligibility screen returns OPT_OUT, MARKETING_SUPPRESSED or GDPR_ERASURE_PENDING for a PENDING renewal period (ICOBS 6B opt-out, PECR marketing suppression, UK GDPR Art.17 erasure); the subject lists the block codes.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>high</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>3</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:renewal_sanctions_hold">
+    <Code>renewal_sanctions_hold</Code>
+    <Subject>Renewal blocked - sanctions hold</Subject>
+    <ShortSubject>Renewal blocked - sanctions ho</ShortSubject>
+    <Description>Raised by AlbionRenewalFeedBatch when the renewal eligibility screen returns SANCTIONS_HOLD for a PENDING renewal period; renewal must not be offered until the sanctions screening hold is cleared.</Description>
+    <Type>general</Type>
+    <Category>warning</Category>
+    <Priority>urgent</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>1</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>2</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:renewal_vulnerability_review">
+    <Code>renewal_vulnerability_review</Code>
+    <Subject>Renewal review - vulnerable customer</Subject>
+    <ShortSubject>Renewal review - vulnerable cu</ShortSubject>
+    <Description>Raised by AlbionRenewalFeedBatch when the renewal eligibility screen returns VULNERABILITY_REVIEW for a PENDING renewal period (FCA FG21/1); the renewal is reviewed before the invite is issued.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>high</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>2</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
+  <ActivityPattern public-id="agi:ap:renewal_bereavement_hold">
+    <Code>renewal_bereavement_hold</Code>
+    <Subject>Renewal held - bereavement notified</Subject>
+    <ShortSubject>Renewal held - bereavement not</ShortSubject>
+    <Description>Raised by AlbionRenewalFeedBatch when the renewal eligibility screen returns BEREAVEMENT_HOLD for a PENDING renewal period; the renewal invite is held for the bereavement team.</Description>
+    <Type>general</Type>
+    <Category>general</Category>
+    <Priority>high</Priority>
+    <Mandatory>true</Mandatory>
+    <Recurring>false</Recurring>
+    <AutomatedOnly>true</AutomatedOnly>
+    <TargetDays>2</TargetDays>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <EscalationDays>5</EscalationDays>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+  </ActivityPattern>
 </import>
