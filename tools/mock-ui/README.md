@@ -95,7 +95,7 @@ Response headers on `/ws/...`: `X-Albion-Route` (`GW`, `CICS` or `ERROR`), `X-Al
 
 Production behaviour, including quirks, is reproduced rather than corrected:
 
-- PS21/5 reads the renewal premium from `TotalIncurred_Ext` (null → 0); a missing `EquivalentNBPremium_Ext` means no
+- PS21/5 reads the renewal premium from `AnnualPremium_Ext` (null → 0); a missing `EquivalentNBPremium_Ext` means no
   comparison. Strictly greater breaches; equal passes. The admin screen shows this mapping.
 - `pad()` silently truncates overlong text. `padNum()` writes implied 2dp, zero-padded, with a COBOL trailing
   overpunch (`J`..`R`) on negatives; a negative ending in 9 throws, as the 9-entry overpunch table does in production.

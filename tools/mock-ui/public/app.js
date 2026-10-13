@@ -318,7 +318,7 @@
     render(head('Screen 4 · PS21/5 price walking', 'Renewal price vs equivalent new-business price',
       'FCA PS21/5: a renewing customer must not be quoted more than an equivalent new customer. The gate breaches only when the renewal premium is <em>strictly greater</em>; an equal price passes.', policyPicker(ref, '/ps215/', false))
       + '<div class="stack">' + gateCard(g)
-      + '<div class="callout callout-info"><span class="icon" aria-hidden="true">i</span><div><strong>Gate input mapping</strong><p>The production gate reads the renewal premium from <code>TotalIncurred_Ext</code> and compares it with <code>EquivalentNBPremium_Ext</code>. A missing NB price means no comparison (no breach).</p></div></div>'
+      + '<div class="callout callout-info"><span class="icon" aria-hidden="true">i</span><div><strong>Gate input mapping</strong><p>The production gate reads the renewal premium from <code>AnnualPremium_Ext</code> and compares it with <code>EquivalentNBPremium_Ext</code>. A missing NB price means no comparison (no breach).</p></div></div>'
       + complianceLog(log) + '</div>', 'PS21/5 ' + ref);
     bindPicker();
   }
@@ -395,7 +395,7 @@
       const items = [
         ['Policy loaded', p.ref + ' with FeedStatus_Ext ' + p.fields.FeedStatus_Ext + ', policy year ' + p.fields.PolicyYear_Ext + ' (shopping-around prompt shown).'],
         ['Eligibility screen', 'Six suppression fields evaluated in contract order; the policy was eligible before the opt-out.'],
-        ['PS21/5 gate', p.ref + ' renewal ' + money(p.fields.TotalIncurred_Ext) + ' ≤ NB ' + money(p.fields.EquivalentNBPremium_Ext) + ' passes; ' + d.breach.ref + ' ' + money(d.breach.actual) + ' > ' + money(d.breach.allowed) + ' raises ' + (d.breach.codes[0] || 'none') + '.'],
+        ['PS21/5 gate', p.ref + ' renewal ' + money(p.fields.AnnualPremium_Ext) + ' ≤ NB ' + money(p.fields.EquivalentNBPremium_Ext) + ' passes; ' + d.breach.ref + ' ' + money(d.breach.actual) + ' > ' + money(d.breach.allowed) + ' raises ' + (d.breach.codes[0] || 'none') + '.'],
         ['PRINTV records', 'PR16 ' + (d.records.pr16 || '').length + ' bytes unchanged; PR17 ' + pr17.length + ' bytes with disclosure block 076–124.'],
         ['Opt-out captured', 'RenewalOptOut_Ext = ' + flagText(p.fields.RenewalOptOut_Ext) + '; PR17 opt-out flag (offset 124) = ' + (pr17[123] || '?') + '.'],
         ['Auto-renew blocked', d.decision.autoRenew + ' by ' + d.decision.blockedBy.join(', ') + ' → activity ' + (d.decision.activities[0] ? d.decision.activities[0].pattern : '—') + '.'],

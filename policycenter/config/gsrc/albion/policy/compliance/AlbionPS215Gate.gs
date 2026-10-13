@@ -10,7 +10,7 @@ uses java.util.ArrayList
  * Conduct & regulatory - FCA GI Pricing remedy (PS21/5) price-walk gate
  *
  * Single PS21/5 check for PolicyCenter: the renewal price must not exceed the equivalent new-business price (ENBP).
- * The price compared is TotalIncurred_Ext, the field production has always read here; the ENBP comes from
+ * The price compared is AnnualPremium_Ext, the field production has always read here; the ENBP comes from
  * AlbionPolicyPredicates.equivalentNewBusinessPrice, so the gate cannot breach while the ENBP is unpopulated.
  * A strictly greater price breaches; an equal price passes. Each breach writes the COMPLIANCE-BREACH|PS215| line.
  *
@@ -30,7 +30,7 @@ class AlbionPS215Gate {
       // defensive - POLARIS migrated records can arrive half-hydrated (HERIT-4011)
       return result
     }
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as BigDecimal
+    var amount = bean.getFieldValue("AnnualPremium_Ext") as BigDecimal
     if (amount == null) { amount = 0bd }
     var nbPrice = AlbionPolicyPredicates.equivalentNewBusinessPrice(bean)
     if (nbPrice != null and amount > nbPrice) {

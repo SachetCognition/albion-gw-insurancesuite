@@ -1,11 +1,11 @@
 # Synthetic PS21/5 price-walk replay fixture for PolicyCenter (profile PS215_PC). Every value is invented.
-# Rule: albion.policy.compliance.AlbionPS215Gate. The price compared is TotalIncurred_Ext (production field; null is
+# Rule: albion.policy.compliance.AlbionPS215Gate. The price compared is AnnualPremium_Ext (annualised renewal premium; null is
 # read as 0) against the equivalent new-business price EquivalentNBPremium_Ext (null = no comparison, so no breach).
 # Strictly greater breaches; equal passes.
 # Columns: case_id, expect (PRICE_WALK_BREACH or NONE), PolicyNumber_Ext, BrandCode_Ext (null = brand default),
-# SourceSystem_Ext (POLARIS for migrated rows), TotalIncurred_Ext (renewal price), EquivalentNBPremium_Ext (ENBP).
+# SourceSystem_Ext (POLARIS for migrated rows), AnnualPremium_Ext (renewal price), EquivalentNBPremium_Ext (ENBP).
 # null_bean_* rows are replayed with a null bean (all field columns ~): no codes and passes() is false.
-case_id,expect,PolicyNumber_Ext:text,BrandCode_Ext:text,SourceSystem_Ext:text,TotalIncurred_Ext:decimal,EquivalentNBPremium_Ext:decimal
+case_id,expect,PolicyNumber_Ext:text,BrandCode_Ext:text,SourceSystem_Ext:text,AnnualPremium_Ext:decimal,EquivalentNBPremium_Ext:decimal
 breach_albdir,PRICE_WALK_BREACH,SYN-PS215-0001,ALBDIR,~,610.00,575.00
 pass_albdir,NONE,SYN-PS215-0002,ALBDIR,~,438.10,441.00
 breach_albbrk,PRICE_WALK_BREACH,SYN-PS215-0003,ALBBRK,~,720.45,699.99

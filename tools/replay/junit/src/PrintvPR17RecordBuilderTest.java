@@ -89,11 +89,13 @@ public class PrintvPR17RecordBuilderTest {
     assertEquals(300, GosuRuntime.staticField(BUILDER, "RECORD_LENGTH_PR17"));
     assertEquals(250, GosuRuntime.staticField(BUILDER, "RECORD_LENGTH"));
     assertEquals(300, pr17(Fixtures.bean()).length());
-    String shifted = pr17(renewal("PriorPremium_Ext", Fixtures.dec("10000000000000.00")));
-    assertEquals(300, shifted.length());
-    assertEquals("1000000000000000", Fixtures.at(shifted, 76, 91));
-    Throwable overflow = Fixtures.failure(() -> pr17(renewal("PriorPremium_Ext", Fixtures.dec("1E+215"))));
-    assertEquals(StringIndexOutOfBoundsException.class, overflow.getClass());
+    assertEquals("999999999999999", Fixtures.at(pr17(renewal("PriorPremium_Ext", Fixtures.dec("9999999999999.99"))), 76, 90));
+    for (String field : new String[] {"PriorPremium_Ext", "RenewalPremium_Ext", "EquivalentNBPremium_Ext"}) {
+      for (String wide : new String[] {"10000000000000.00", "1E+215"}) {
+        Throwable t = Fixtures.failure(() -> pr17(renewal(field, Fixtures.dec(wide))));
+        assertEquals(field + " " + wide, IllegalStateException.class, t.getClass());
+      }
+    }
   }
 
   @Test

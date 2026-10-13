@@ -6,8 +6,9 @@
 # >= 4), 124 opt-out flag (Y when RenewalOptOut_Ext is set: Boolean true or Y/TRUE/1 any case, trimmed), 125-300 spaces.
 # As in production, InsuredSurname_Ext is a text field truncated to 12, RiskPostcode_Ext is read as an implied-2dp
 # number and PolicyNumber_Ext as a date (yyyyMMdd); brand is BrandMappingService.brandMap (unmapped or null = 999999).
-# A negative amount ending in 9 has no overpunch character and fails (production behaviour); an amount wider than 15
-# digits is not truncated and shifts every later byte (the filler absorbs it), until the record overflows and fails.
+# A negative amount ending in 9 has no overpunch character and fails (production behaviour). In the PR16-shared bytes an
+# amount wider than its slot is not truncated and shifts every later byte (PR16 behaviour, kept); a PR17 disclosure
+# amount wider than 15 bytes fails with IllegalStateException before the record is assembled.
 # expect: MATCH, LEGACY_ERROR (PR16 and PR17 fail with the pr17_error class) or CANDIDATE_ERROR (PR16 succeeds and
 # keeps its pinned bytes, PR17 fails with the pr17_error class).
 # Expected columns (type expect): pr16_sha256 = SHA-256 of the PR16 record (UTF-8), pinning it byte for byte;
@@ -43,7 +44,7 @@ polaris_half_hydrated,MATCH,~,~,~,~,~,~,~,~,~,~,96af64959ecac15faac54962bb3c4dca
 negative_trailing_9_pr16_field,LEGACY_ERROR,TESTPERSONV,-0.09,2027-07-31,ALBDIR,100.00,101.00,102.00,1,4,N,~,~,~,~,~,~,~,~,java.lang.StringIndexOutOfBoundsException
 risk_postcode_16_digits_shifts_layout,MATCH,TESTPERSONW,10000000000000.00,2027-08-31,ALBDIR,100.00,101.00,102.00,1,4,N,72760fe6f8aceb1d9d79a1b3e2650ea3b166a9ec4a6f78805df63e0124bb186a,000000000001000,000000000001010,000000000001020,00,1,Y,N,~
 negative_trailing_9_pr17_field,CANDIDATE_ERROR,TESTPERSONX,1.00,2027-09-30,ALBDIR,-4.99,101.00,102.00,1,4,N,4e7604191547fa4a1f9309ce9914fb68ce76e759639eb9c8a01964a2bb79233d,~,~,~,~,~,~,~,java.lang.StringIndexOutOfBoundsException
-prior_premium_16_digits_shifts_layout,MATCH,TESTPERSONY,1.00,2027-10-31,ALBDIR,10000000000000.00,101.00,102.00,1,4,N,329b54e89aa43370be237e266317c95e0a01604f5c245f614be3f06c344c741b,100000000000000,000000000001010,000000000001020,00,1,Y,N,~
+prior_premium_16_digits_rejected,CANDIDATE_ERROR,TESTPERSONY,1.00,2027-10-31,ALBDIR,10000000000000.00,101.00,102.00,1,4,N,329b54e89aa43370be237e266317c95e0a01604f5c245f614be3f06c344c741b,~,~,~,~,~,~,~,java.lang.IllegalStateException
 risk_postcode_beyond_record_length,LEGACY_ERROR,TESTPERSONZ,1E+240,2027-11-30,ALBDIR,100.00,101.00,102.00,1,4,N,~,~,~,~,~,~,~,~,java.lang.StringIndexOutOfBoundsException
-prior_premium_beyond_pr17_length,CANDIDATE_ERROR,TESTPERSONAA,1.00,2027-12-31,ALBDIR,1E+215,101.00,102.00,1,4,N,495d44cd4feeaf48d175bf002b7ebeb1ed89b558fb62b13867e0341b28f30c13,~,~,~,~,~,~,~,java.lang.StringIndexOutOfBoundsException
+prior_premium_beyond_pr17_length,CANDIDATE_ERROR,TESTPERSONAA,1.00,2027-12-31,ALBDIR,1E+215,101.00,102.00,1,4,N,495d44cd4feeaf48d175bf002b7ebeb1ed89b558fb62b13867e0341b28f30c13,~,~,~,~,~,~,~,java.lang.IllegalStateException
 null_bean,LEGACY_ERROR,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,java.lang.NullPointerException

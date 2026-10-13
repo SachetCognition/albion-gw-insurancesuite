@@ -6,8 +6,8 @@ const decimal = require('./decimal');
 
 const BREACH_CODE = 'PRICE_WALK_BREACH';
 const RULE = 'PS215';
-/** Production quirk: the gate input is TotalIncurred_Ext; it carries the renewal premium being tested. */
-const AMOUNT_FIELD = 'TotalIncurred_Ext';
+/** The gate input is AnnualPremium_Ext, the annualised premium of the renewal period (not TotalIncurred_Ext claim costs). */
+const AMOUNT_FIELD = 'AnnualPremium_Ext';
 const NB_FIELD = 'EquivalentNBPremium_Ext';
 
 /** AlbionPolicyPredicates.equivalentNewBusinessPrice: EquivalentNBPremium_Ext, null when absent. */
@@ -22,7 +22,7 @@ function complianceBreachLine(rule, bean, actual, allowed) {
 }
 
 /**
- * evaluate(bean): [] for a null bean; ["PRICE_WALK_BREACH"] when TotalIncurred_Ext (null -> 0) is strictly greater
+ * evaluate(bean): [] for a null bean; ["PRICE_WALK_BREACH"] when AnnualPremium_Ext (null -> 0) is strictly greater
  * than the equivalent NB price; [] when the NB price is absent (data gap) or the amount is equal or lower.
  * `log` receives the compliance line (print() in production).
  */

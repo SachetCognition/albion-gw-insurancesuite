@@ -45,34 +45,34 @@ test('eligibility: all fields set -> every code in fixed contract order', () => 
 
 test('ps215: strictly greater breaches and logs the exact compliance line', () => {
   const lines = [];
-  const codes = ps215.evaluate(bean({ TotalIncurred_Ext: '610.00', EquivalentNBPremium_Ext: '575.00' }, 'SYN-REN-0002'), (l) => lines.push(l));
+  const codes = ps215.evaluate(bean({ AnnualPremium_Ext: '610.00', EquivalentNBPremium_Ext: '575.00' }, 'SYN-REN-0002'), (l) => lines.push(l));
   assert.deepEqual(codes, ['PRICE_WALK_BREACH']);
   assert.deepEqual(lines, ['COMPLIANCE-BREACH|PS215|SYN-REN-0002|610.00|575.00']);
 });
 
 test('ps215: equal price passes (boundary) and does not log', () => {
   const lines = [];
-  const b = bean({ TotalIncurred_Ext: '300.00', EquivalentNBPremium_Ext: '300.00' });
+  const b = bean({ AnnualPremium_Ext: '300.00', EquivalentNBPremium_Ext: '300.00' });
   assert.deepEqual(ps215.evaluate(b, (l) => lines.push(l)), []);
   assert.equal(ps215.passes(b), true);
   assert.deepEqual(lines, []);
 });
 
 test('ps215: null NB price is a data gap -> never breaches; null bean -> empty, passes false', () => {
-  assert.deepEqual(ps215.evaluate(bean({ TotalIncurred_Ext: '99999.99' })), []);
+  assert.deepEqual(ps215.evaluate(bean({ AnnualPremium_Ext: '99999.99' })), []);
   assert.deepEqual(ps215.evaluate(null), []);
   assert.equal(ps215.passes(null), false);
 });
 
-test('ps215: gate input is TotalIncurred_Ext (not RenewalPremium_Ext); null amount treated as 0', () => {
-  assert.equal(ps215.AMOUNT_FIELD, 'TotalIncurred_Ext');
+test('ps215: gate input is AnnualPremium_Ext (not RenewalPremium_Ext); null amount treated as 0', () => {
+  assert.equal(ps215.AMOUNT_FIELD, 'AnnualPremium_Ext');
   assert.deepEqual(ps215.evaluate(bean({ RenewalPremium_Ext: '999.00', EquivalentNBPremium_Ext: '100.00' })), []);
-  assert.deepEqual(ps215.evaluate(bean({ TotalIncurred_Ext: '100.01', EquivalentNBPremium_Ext: '100.00' })), ['PRICE_WALK_BREACH']);
+  assert.deepEqual(ps215.evaluate(bean({ AnnualPremium_Ext: '100.01', EquivalentNBPremium_Ext: '100.00' })), ['PRICE_WALK_BREACH']);
   assert.deepEqual(ps215.evaluate(bean({ EquivalentNBPremium_Ext: '-0.01' })), ['PRICE_WALK_BREACH']);
 });
 
 test('ps215: compareTo semantics ignore scale (438.1 == 438.10)', () => {
-  assert.deepEqual(ps215.evaluate(bean({ TotalIncurred_Ext: '438.1', EquivalentNBPremium_Ext: '438.10' })), []);
+  assert.deepEqual(ps215.evaluate(bean({ AnnualPremium_Ext: '438.1', EquivalentNBPremium_Ext: '438.10' })), []);
 });
 
 test('seed policies produce the contract outcomes', () => {

@@ -19,7 +19,7 @@ LIBS="$JUNIT_LIB/junit-4.13.2.jar:$JUNIT_LIB/hamcrest-core-1.3.jar:$GOSU_LIB/*"
 javac -d "$WORK/classes" -cp "$LIBS" $(find "$ROOT/tools/replay/standins" "$ROOT/tools/replay/junit/src" -name '*.java')
 
 GROUPS_="cc claimcenter/config/gsrc IptRecordBuilderGoldenTest
-pc policycenter/config/gsrc PolarisMfPcRecordBuilderGoldenTest AlbionPS215GateRuleTest AlbionRenewalEligibilityRulesRuleTest
+pc policycenter/config/gsrc PolarisMfPcRecordBuilderGoldenTest AlbionPS215GateRuleTest AlbionRenewalEligibilityRulesRuleTest AlbionAutoRenewServiceRuleTest
 cm contactmanager/modules/configuration/gsrc PolarisMfCmRecordBuilderGoldenTest PrintvPR16RecordBuilderGoldenTest PrintvPR17RecordBuilderTest"
 
 STATUS=0

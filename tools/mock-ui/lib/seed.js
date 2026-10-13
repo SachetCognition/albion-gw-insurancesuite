@@ -3,7 +3,7 @@
 // Synthetic seed policies. Every value is invented for the offline demo (SYN- references, TESTPERSON surnames).
 // Each policy carries the PolicyCenter PolicyPeriod fields read by the eligibility screen and the PS21/5 gate, and
 // the ContactManager party fields read by the PRINTV builders, in one map.
-// TotalIncurred_Ext carries the renewal premium: it is the PS21/5 gate input in production.
+// AnnualPremium_Ext is the renewal period's annualised premium: the PS21/5 gate input.
 // RiskPostcode_Ext and PolicyNumber_Ext are read as a decimal and a date by the PRINTV layout; the synthetic party
 // records leave them unset, so those slots carry the builders' zero-fill.
 
@@ -19,7 +19,7 @@ function policy(ref, o) {
       PolicyYear_Ext: o.year,
       PriorPremium_Ext: o.prior,
       RenewalPremium_Ext: o.renewal,
-      TotalIncurred_Ext: o.renewal,
+      AnnualPremium_Ext: o.renewal,
       EquivalentNBPremium_Ext: o.nb,
       NCDYears_Ext: o.ncd,
       FeedStatus_Ext: o.feedStatus,

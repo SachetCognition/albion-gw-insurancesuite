@@ -100,12 +100,19 @@ function shoppingAroundFlag(v) {
   return intValue(v) >= 4 ? 'Y' : 'N';
 }
 
+// PR17 disclosure amounts must fit their 15-byte slot (padNum never truncates)
+function disclosureAmount(v, field) {
+  const s = padNum(v, 15);
+  if (s.length > 15) throw javaError('IllegalStateException', `PRINTV PR17 ${field} needs ${s.length} bytes > 15`);
+  return s;
+}
+
 function buildRecordPR17(src) {
   const sb = pad('PR17', 4)
     + commonBody(src)
-    + padNum(src.getFieldValue('PriorPremium_Ext'), 15)
-    + padNum(src.getFieldValue('RenewalPremium_Ext'), 15)
-    + padNum(src.getFieldValue('EquivalentNBPremium_Ext'), 15)
+    + disclosureAmount(src.getFieldValue('PriorPremium_Ext'), 'PriorPremium_Ext')
+    + disclosureAmount(src.getFieldValue('RenewalPremium_Ext'), 'RenewalPremium_Ext')
+    + disclosureAmount(src.getFieldValue('EquivalentNBPremium_Ext'), 'EquivalentNBPremium_Ext')
     + ncdYears(src.getFieldValue('NCDYears_Ext'))
     + shoppingAroundFlag(src.getFieldValue('PolicyYear_Ext'))
     + (isSet(src.getFieldValue('RenewalOptOut_Ext')) ? 'Y' : 'N');

@@ -21,6 +21,8 @@ PS21/5 renewal disclosure fields:
 | 124 | Auto-renewal opt-out | `RenewalOptOut_Ext` | `Y` when true / `Y` / `TRUE` / `1`, else `N` |
 | 125-300 | Filler | | spaces |
 
+A disclosure amount that needs more than its 15 bytes fails the record with `IllegalStateException` rather than shifting later fields.
+
 Field map rows: `integration/mappings/printv_field_map.csv` (`STATUS=DRAFT`, ids `AGI_9601`-`AGI_9606`).
 
 ### Status and notice process

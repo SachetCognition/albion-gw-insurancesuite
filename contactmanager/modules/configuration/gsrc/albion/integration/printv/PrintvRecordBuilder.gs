@@ -78,9 +78,9 @@ class PrintvRecordBuilder {
     sb.append(padNum(src.getFieldValue("RiskPostcode_Ext"), 15))            // 047-061 RiskPostcode - as PR16
     sb.append(formatDate(src.getFieldValue("PolicyNumber_Ext")))              // 062-069 PolicyNumber - as PR16
     sb.append(pad(BrandMappingService.brandMap(src), 6))                              // 070-075 brand code - POLARIS values
-    sb.append(padNum(src.getFieldValue("PriorPremium_Ext"), 15))            // 076-090 last year's premium, implied 2dp
-    sb.append(padNum(src.getFieldValue("RenewalPremium_Ext"), 15))          // 091-105 renewal premium, implied 2dp
-    sb.append(padNum(src.getFieldValue("EquivalentNBPremium_Ext"), 15))     // 106-120 equivalent new business price (PS21/5), implied 2dp
+    sb.append(disclosureAmount(src.getFieldValue("PriorPremium_Ext"), "PriorPremium_Ext"))            // 076-090 last year's premium, implied 2dp
+    sb.append(disclosureAmount(src.getFieldValue("RenewalPremium_Ext"), "RenewalPremium_Ext"))          // 091-105 renewal premium, implied 2dp
+    sb.append(disclosureAmount(src.getFieldValue("EquivalentNBPremium_Ext"), "EquivalentNBPremium_Ext"))     // 106-120 equivalent new business price (PS21/5), implied 2dp
     sb.append(ncdYears(src.getFieldValue("NCDYears_Ext")))                  // 121-122 no-claims discount years, 00-99
     sb.append(flag(policyYear(src.getFieldValue("PolicyYear_Ext")) >= SHOPPING_AROUND_POLICY_YEAR))   // 123 shopping-around prompt (ICOBS 6B, 4th renewal year on)
     sb.append(flag(isSet(src.getFieldValue("RenewalOptOut_Ext"))))          // 124 customer opted out of auto-renewal
@@ -112,4 +112,13 @@ class PrintvRecordBuilder {
   }
 
   private static function flag(b : boolean) : String { return b ? "Y" : "N" }
+
+  // PR17 disclosure amounts must fit their 15-byte slot; padNum never truncates, so a wider value would shift every later field
+  private static function disclosureAmount(v : Object, field : String) : String {
+    var s = padNum(v, 15)
+    if (s.length() > 15) {
+      throw new java.lang.IllegalStateException("PRINTV PR17 " + field + " needs " + s.length() + " bytes > 15")
+    }
+    return s
+  }
 }

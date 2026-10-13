@@ -49,6 +49,18 @@ test('brand mapping: null / unknown brand -> 999999 sentinel', () => {
   assert.equal(slice(printv.buildRecord(bean({ BrandCode_Ext: 'NOPE' })), 70, 75), '999999');
 });
 
+test('PR17: a disclosure amount wider than its 15-byte slot is rejected, not shifted', () => {
+  const { FixtureBean } = require('../lib/bean');
+  const s = createStore();
+  const b = s.bean(s.find('SYN-REN-0004'));
+  for (const f of ['PriorPremium_Ext', 'RenewalPremium_Ext', 'EquivalentNBPremium_Ext']) {
+    const wide = new FixtureBean({ ...b.fields, [f]: '10000000000000.00' }, b.label);
+    assert.throws(() => printv.buildRecordPR17(wide), { name: 'IllegalStateException' });
+  }
+  const max = new FixtureBean({ ...b.fields, PriorPremium_Ext: '9999999999999.99' }, b.label);
+  assert.equal(slice(printv.buildRecordPR17(max), 76, 90), '999999999999999');
+});
+
 test('PR17: 300 bytes, 005-075 byte-identical to PR16, disclosure block offsets', () => {
   const s = createStore();
   const b = s.bean(s.find('SYN-REN-0004'));

@@ -69,7 +69,7 @@ function createApp(options = {}) {
       ref: p.ref,
       codes,
       passes: codes.length === 0,
-      actual: p.fields.TotalIncurred_Ext,
+      actual: p.fields.AnnualPremium_Ext,
       actualField: ps215.AMOUNT_FIELD,
       allowed: p.fields.EquivalentNBPremium_Ext,
       allowedField: ps215.NB_FIELD,

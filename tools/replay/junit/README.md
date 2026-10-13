@@ -28,7 +28,8 @@ because each centre's `gsrc` has its own copies of the shared `albion.*` package
 
 Builder tests assert golden records, field offsets (1-based, as in the copybooks), brand defaults (`999999`) and the
 length guards, including production behaviour that must not change: silent text truncation, a numeric field wider than
-its width shifting later bytes into the filler, content wider than the record failing in the filler pad
+its width shifting later bytes into the filler (PR16 and the PR16-shared PR17 bytes; a PR17 disclosure amount wider than
+15 bytes fails with `IllegalStateException`), content wider than the record failing in the filler pad
 (`StringIndexOutOfBoundsException`) before the length guard, a negative amount ending in 9 having no overpunch
 character, and a null bean failing with `NullPointerException`. Rule tests cover each code, order, truthiness, the
 equal-price boundary, null amounts and ENBP, and null beans.

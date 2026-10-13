@@ -68,7 +68,7 @@ function ps215(bean : KeyableBean, mismatches : List<String>) : String {
   if (codes == "NONE") {
     if (log.contains("COMPLIANCE-BREACH|PS215|")) { mismatches.add("breach line logged on pass") }
   } else {
-    var amount = bean.getFieldValue("TotalIncurred_Ext") as BigDecimal ?: 0bd
+    var amount = bean.getFieldValue("AnnualPremium_Ext") as BigDecimal ?: 0bd
     var line = "COMPLIANCE-BREACH|PS215|" + bean + "|" + amount + "|" + (bean.getFieldValue("EquivalentNBPremium_Ext") as BigDecimal)
     if (!log.contains(line)) { mismatches.add("missing " + line) }
   }

@@ -1,6 +1,6 @@
 {
   "schema": "albion.shadow.replay/v1",
-  "generatedAt": "2026-10-13T09:10:24Z",
+  "generatedAt": "2026-10-13T09:52:14Z",
   "status": "GREEN",
   "tolerance": "exact",
   "runtime": "open-source Gosu 1.17.5",
@@ -26,7 +26,7 @@
     },
     {
       "path": "tools/replay/fixtures/renewal_ps215.csv",
-      "sha256": "8dedb90927f64eb858780c3b43c82e2d3f1d9fc3410a6271fb1bfe5d917c024b",
+      "sha256": "3d913ac89c6181f7137804800759fd604a9d0ae39fbb3ae1c4bef61ac49a0f7f",
       "cases": 26,
       "profile": "PS215_PC"
     },
@@ -38,7 +38,7 @@
     },
     {
       "path": "tools/replay/fixtures/printv_pr17.csv",
-      "sha256": "01b53e4f7871fc55cc509366c4705cdb3e7eeb6cde809a29b56f119f50a4563b",
+      "sha256": "b71c9863af2db9a51ee1db256fc082d47d2c2271a534ffd7f1b226b0b15827e3",
       "cases": 32,
       "profile": "PRINTV_PR17_CM"
     }
@@ -48,8 +48,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "cc",
-      "periodStart": "2026-10-13T09:10:06Z",
-      "generatedAt": "2026-10-13T09:10:06Z",
+      "periodStart": "2026-10-13T09:51:55Z",
+      "generatedAt": "2026-10-13T09:51:55Z",
       "status": "GREEN",
       "totals": {
         "compared": 17,
@@ -323,8 +323,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "pc",
-      "periodStart": "2026-10-13T09:10:09Z",
-      "generatedAt": "2026-10-13T09:10:09Z",
+      "periodStart": "2026-10-13T09:51:58Z",
+      "generatedAt": "2026-10-13T09:51:58Z",
       "status": "GREEN",
       "totals": {
         "compared": 16,
@@ -588,8 +588,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "cm",
-      "periodStart": "2026-10-13T09:10:12Z",
-      "generatedAt": "2026-10-13T09:10:12Z",
+      "periodStart": "2026-10-13T09:52:02Z",
+      "generatedAt": "2026-10-13T09:52:02Z",
       "status": "GREEN",
       "totals": {
         "compared": 12,
@@ -813,8 +813,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "pc",
-      "periodStart": "2026-10-13T09:10:15Z",
-      "generatedAt": "2026-10-13T09:10:16Z",
+      "periodStart": "2026-10-13T09:52:05Z",
+      "generatedAt": "2026-10-13T09:52:05Z",
       "status": "GREEN",
       "totals": {
         "compared": 26,
@@ -1142,8 +1142,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "pc",
-      "periodStart": "2026-10-13T09:10:19Z",
-      "generatedAt": "2026-10-13T09:10:19Z",
+      "periodStart": "2026-10-13T09:52:08Z",
+      "generatedAt": "2026-10-13T09:52:08Z",
       "status": "GREEN",
       "totals": {
         "compared": 29,
@@ -1501,8 +1501,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "cm",
-      "periodStart": "2026-10-13T09:10:22Z",
-      "generatedAt": "2026-10-13T09:10:22Z",
+      "periodStart": "2026-10-13T09:52:11Z",
+      "generatedAt": "2026-10-13T09:52:12Z",
       "status": "GREEN",
       "totals": {
         "compared": 32,
@@ -1857,12 +1857,12 @@
           "candidateFailure": null
         },
         {
-          "id": "printv_pr17/prior_premium_16_digits_shifts_layout",
+          "id": "printv_pr17/prior_premium_16_digits_rejected",
           "feed": "PRINTV",
           "brand": "ALBDIR",
           "outcome": "MATCH",
-          "legacyLength": 300,
-          "candidateLength": 300,
+          "legacyLength": 32,
+          "candidateLength": 32,
           "firstDifferenceIndex": -1,
           "candidateFailure": null
         },
@@ -1881,8 +1881,8 @@
           "feed": "PRINTV",
           "brand": "ALBDIR",
           "outcome": "MATCH",
-          "legacyLength": 42,
-          "candidateLength": 42,
+          "legacyLength": 32,
+          "candidateLength": 32,
           "firstDifferenceIndex": -1,
           "candidateFailure": null
         },

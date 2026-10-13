@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * PolicyCenter PS21/5 gate (albion.policy.compliance.AlbionPS215Gate): TotalIncurred_Ext (null read as 0) strictly
+ * PolicyCenter PS21/5 gate (albion.policy.compliance.AlbionPS215Gate): AnnualPremium_Ext (null read as 0) strictly
  * greater than EquivalentNBPremium_Ext breaches with PRICE_WALK_BREACH and logs COMPLIANCE-BREACH|PS215|; equal passes;
  * no ENBP means no comparison. AlbionPS215MonitorRules and AlbionParagonFeedManager delegate to the gate.
  */
@@ -30,7 +30,7 @@ public class AlbionPS215GateRuleTest {
   }
 
   static KeyableBean price(String amount, String enbp) {
-    return Fixtures.bean("PolicyNumber_Ext", "SYN-PS215-JUNIT", "BrandCode_Ext", "ALBDIR", "TotalIncurred_Ext",
+    return Fixtures.bean("PolicyNumber_Ext", "SYN-PS215-JUNIT", "BrandCode_Ext", "ALBDIR", "AnnualPremium_Ext",
         amount == null ? null : Fixtures.dec(amount), "EquivalentNBPremium_Ext", enbp == null ? null : Fixtures.dec(enbp));
   }
 

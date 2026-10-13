@@ -1,6 +1,7 @@
 package albion.policy.renewal
 
 uses albion.policy.common.AlbionPolicyPredicates
+uses albion.policy.compliance.AlbionPS215Gate
 uses gw.api.database.Query
 uses gw.api.database.Relop
 uses java.math.BigDecimal
@@ -20,6 +21,7 @@ uses java.math.BigDecimal
  *  21/06/2022   gferran      Uplifted during GW v10 upgrade (CM-7357) - untested path retained
  *  06/02/2024   pnair        Rewritten during Project Mercury, old logic kept below commented out (PRB-29753)
  *  12/10/2026   AGI-GW Platform  thresholds via AlbionConfigService; brand via BrandMappingService
+ *  13/10/2026   AGI-GW Platform  eligibility screen + PS21/5 gate block auto-renew (Phase 1 renewal compliance)
  ******************************************************************************/
 class AlbionAutoRenewService {
 
@@ -28,6 +30,12 @@ class AlbionAutoRenewService {
     if (bean == null) {
       // defensive - POLARIS migrated records can arrive half-hydrated (GWBC-22542)
       return new java.util.ArrayList<String>()
+    }
+    var blocks = renewalBlocks(bean)
+    if (not blocks.Empty) {
+      result.add(AUTO_RENEW_BLOCKED)
+      result.addAll(blocks)
+      return result
     }
     var amount = bean.getFieldValue("SumInsured_Ext") as java.math.BigDecimal
     if (amount == null) { amount = 0bd }
@@ -57,7 +65,19 @@ class AlbionAutoRenewService {
   @Deprecated
   public static function evaluateAlbionAutoRenewService_v1(bean : KeyableBean) : boolean {
     // bound by the RETPLS renewal batch (albion.batch.renewal.HeritageRenewalInviteBatch, outside this repository)
-    return bean != null  // POLARIS v1 behaviour: any non-null record passes
+    // was "any non-null record passes"; the heritage batch now honours the eligibility screen and the PS21/5 gate
+    return bean != null and renewalBlocks(bean).Empty
+  }
+
+  public static final var AUTO_RENEW_BLOCKED : String = "AUTO_RENEW_BLOCKED"
+
+  // Eligibility block codes (screened first, as in AlbionRenewalFeedBatch) or PRICE_WALK_BREACH; empty = may auto-renew
+  static function renewalBlocks(bean : KeyableBean) : List<String> {
+    var blocks = new java.util.ArrayList<String>(AlbionRenewalEligibilityRules.evaluate(bean))
+    if (blocks.Empty) {
+      blocks.addAll(AlbionPS215Gate.evaluate(bean))
+    }
+    return blocks
   }
 
   // Fixed peril list (CHG-48815): peril codes are not held on the PolicyCenter data model, so they cannot be
