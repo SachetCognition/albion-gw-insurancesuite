@@ -92,8 +92,8 @@ Each `albion.shadow.evidence/v1` document (also the reconciliation batch output)
 `LEGACY_ERROR` both builders must fail with the same exception class; the compared values are then the class names.
 Rule profiles report the expected codes as the legacy value and the evaluated codes as the candidate value.
 
-The committed evidence covers the profiles whose classes are on `main`; regenerate it with the full profile set once
-`AlbionPS215Gate`, `AlbionRenewalEligibilityRules` and `PrintvRecordBuilder.buildRecordPR17` are merged. The same
+The committed evidence covers all six profiles (`AlbionPS215Gate`, `AlbionRenewalEligibilityRules` and
+`PrintvRecordBuilder.buildRecordPR17` included); see `docs/migration/renewal-compliance-phase1.md`. The same
 builders and rule classes have plain JUnit 4 tests on the same runtime (`tools/replay/junit/run_junit.sh`); the Jenkins
 stage `Offline replay + builder JUnit` runs both after the coherence check. Run instructions: `tools/replay/README.md`.
 

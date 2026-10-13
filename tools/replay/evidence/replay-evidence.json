@@ -1,6 +1,6 @@
 {
   "schema": "albion.shadow.replay/v1",
-  "generatedAt": "2026-10-13T08:43:02Z",
+  "generatedAt": "2026-10-13T08:50:58Z",
   "status": "GREEN",
   "tolerance": "exact",
   "runtime": "open-source Gosu 1.17.5",
@@ -23,6 +23,24 @@
       "sha256": "77d4253fb2680399754f5f0572a21d35436fe2640df82e08717af86f951243ec",
       "cases": 12,
       "profile": "POLARIS_MF_CM"
+    },
+    {
+      "path": "tools/replay/fixtures/renewal_ps215.csv",
+      "sha256": "8dedb90927f64eb858780c3b43c82e2d3f1d9fc3410a6271fb1bfe5d917c024b",
+      "cases": 26,
+      "profile": "PS215_PC"
+    },
+    {
+      "path": "tools/replay/fixtures/renewal_eligibility.csv",
+      "sha256": "ee73596d627a2dc7464ed84520cb72ee798decfd745b2a1152dd5213f4b106f7",
+      "cases": 29,
+      "profile": "ELIGIBILITY_PC"
+    },
+    {
+      "path": "tools/replay/fixtures/printv_pr17.csv",
+      "sha256": "01b53e4f7871fc55cc509366c4705cdb3e7eeb6cde809a29b56f119f50a4563b",
+      "cases": 32,
+      "profile": "PRINTV_PR17_CM"
     }
   ],
   "runs": [
@@ -30,8 +48,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "cc",
-      "periodStart": "2026-10-13T08:42:51Z",
-      "generatedAt": "2026-10-13T08:42:51Z",
+      "periodStart": "2026-10-13T08:50:38Z",
+      "generatedAt": "2026-10-13T08:50:39Z",
       "status": "GREEN",
       "totals": {
         "compared": 17,
@@ -305,8 +323,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "pc",
-      "periodStart": "2026-10-13T08:42:55Z",
-      "generatedAt": "2026-10-13T08:42:55Z",
+      "periodStart": "2026-10-13T08:50:42Z",
+      "generatedAt": "2026-10-13T08:50:42Z",
       "status": "GREEN",
       "totals": {
         "compared": 16,
@@ -570,8 +588,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "cm",
-      "periodStart": "2026-10-13T08:43:00Z",
-      "generatedAt": "2026-10-13T08:43:00Z",
+      "periodStart": "2026-10-13T08:50:45Z",
+      "generatedAt": "2026-10-13T08:50:45Z",
       "status": "GREEN",
       "totals": {
         "compared": 12,
@@ -790,6 +808,1095 @@
           "candidateFailure": null
         }
       ]
+    },
+    {
+      "schema": "albion.shadow.evidence/v1",
+      "source": "offline-replay",
+      "centre": "pc",
+      "periodStart": "2026-10-13T08:50:49Z",
+      "generatedAt": "2026-10-13T08:50:49Z",
+      "status": "GREEN",
+      "totals": {
+        "compared": 26,
+        "matched": 26,
+        "withinTolerance": 0,
+        "breaches": 0,
+        "candidateErrors": 0,
+        "cutoverCandidateEmitted": 0,
+        "cutoverReverted": 0
+      },
+      "feeds": [
+        {
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "compared": 16,
+          "matched": 16,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "PS215",
+          "brand": "ALBBRK",
+          "compared": 5,
+          "matched": 5,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "PS215",
+          "brand": "RETPLS",
+          "compared": 2,
+          "matched": 2,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "PS215",
+          "brand": "HERIT",
+          "compared": 3,
+          "matched": 3,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        }
+      ],
+      "cases": [
+        {
+          "id": "renewal_ps215/breach_albdir",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 17,
+          "candidateLength": 17,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/pass_albdir",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/breach_albbrk",
+          "feed": "PS215",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 17,
+          "candidateLength": 17,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/pass_albbrk",
+          "feed": "PS215",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/breach_retpls",
+          "feed": "PS215",
+          "brand": "RETPLS",
+          "outcome": "MATCH",
+          "legacyLength": 17,
+          "candidateLength": 17,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/pass_retpls_equal_price",
+          "feed": "PS215",
+          "brand": "RETPLS",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/breach_herit",
+          "feed": "PS215",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 17,
+          "candidateLength": 17,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/pass_herit",
+          "feed": "PS215",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/breach_brand_default",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 17,
+          "candidateLength": 17,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/pass_brand_default",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/equal_price_boundary",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/equal_price_different_scale",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/one_penny_over",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 17,
+          "candidateLength": 17,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/one_penny_under",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/null_amount_reads_zero",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/null_amount_negative_enbp",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 17,
+          "candidateLength": 17,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/null_amount_zero_enbp",
+          "feed": "PS215",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/null_enbp_no_comparison",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/null_enbp_and_amount",
+          "feed": "PS215",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/large_values_breach",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 17,
+          "candidateLength": 17,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/large_values_pass",
+          "feed": "PS215",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/polaris_half_hydrated_all_null",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/polaris_half_hydrated_amount_only",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/polaris_half_hydrated_enbp_only",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/polaris_half_hydrated_breach",
+          "feed": "PS215",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 17,
+          "candidateLength": 17,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_ps215/null_bean",
+          "feed": "PS215",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        }
+      ]
+    },
+    {
+      "schema": "albion.shadow.evidence/v1",
+      "source": "offline-replay",
+      "centre": "pc",
+      "periodStart": "2026-10-13T08:50:52Z",
+      "generatedAt": "2026-10-13T08:50:53Z",
+      "status": "GREEN",
+      "totals": {
+        "compared": 29,
+        "matched": 29,
+        "withinTolerance": 0,
+        "breaches": 0,
+        "candidateErrors": 0,
+        "cutoverCandidateEmitted": 0,
+        "cutoverReverted": 0
+      },
+      "feeds": [
+        {
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "compared": 12,
+          "matched": 12,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBBRK",
+          "compared": 3,
+          "matched": 3,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "RETPLS",
+          "compared": 2,
+          "matched": 2,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "compared": 12,
+          "matched": 12,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        }
+      ],
+      "cases": [
+        {
+          "id": "renewal_eligibility/all_unset_null",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/all_false",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/opt_out_only",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 7,
+          "candidateLength": 7,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/marketing_suppressed_only",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 20,
+          "candidateLength": 20,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/sanctions_hold_only",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "RETPLS",
+          "outcome": "MATCH",
+          "legacyLength": 14,
+          "candidateLength": 14,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/vulnerability_review_only",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 20,
+          "candidateLength": 20,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/bereavement_hold_only",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 16,
+          "candidateLength": 16,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/gdpr_erasure_pending_only",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 20,
+          "candidateLength": 20,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/opt_out_off",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/all_on",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 102,
+          "candidateLength": 102,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/opt_out_and_gdpr",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 28,
+          "candidateLength": 28,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/sanctions_and_vulnerability",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 35,
+          "candidateLength": 35,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/marketing_and_bereavement",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "RETPLS",
+          "outcome": "MATCH",
+          "legacyLength": 37,
+          "candidateLength": 37,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/all_but_opt_out",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 94,
+          "candidateLength": 94,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/truthy_upper_y",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 7,
+          "candidateLength": 7,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/truthy_lower_y",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 20,
+          "candidateLength": 20,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/truthy_upper_true",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 14,
+          "candidateLength": 14,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/truthy_mixed_true",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 20,
+          "candidateLength": 20,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/truthy_one",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 16,
+          "candidateLength": 16,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/truthy_padded_y",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 20,
+          "candidateLength": 20,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/truthy_strings_all_on",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 102,
+          "candidateLength": 102,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/falsy_upper_n",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/falsy_zero",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/falsy_other_strings",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/falsy_blank",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/mixed_truthy_falsy",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 49,
+          "candidateLength": 49,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/polaris_half_hydrated",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/polaris_half_hydrated_opt_out",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 7,
+          "candidateLength": 7,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "renewal_eligibility/null_bean",
+          "feed": "RENEWAL_ELIGIBILITY",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 4,
+          "candidateLength": 4,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        }
+      ]
+    },
+    {
+      "schema": "albion.shadow.evidence/v1",
+      "source": "offline-replay",
+      "centre": "cm",
+      "periodStart": "2026-10-13T08:50:56Z",
+      "generatedAt": "2026-10-13T08:50:56Z",
+      "status": "GREEN",
+      "totals": {
+        "compared": 32,
+        "matched": 32,
+        "withinTolerance": 0,
+        "breaches": 0,
+        "candidateErrors": 0,
+        "cutoverCandidateEmitted": 0,
+        "cutoverReverted": 0
+      },
+      "feeds": [
+        {
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "compared": 24,
+          "matched": 24,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "PRINTV",
+          "brand": "ALBBRK",
+          "compared": 3,
+          "matched": 3,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "PRINTV",
+          "brand": "RETPLS",
+          "compared": 2,
+          "matched": 2,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "PRINTV",
+          "brand": "HERIT",
+          "compared": 2,
+          "matched": 2,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        },
+        {
+          "feed": "PRINTV",
+          "brand": "ALBHNW",
+          "compared": 1,
+          "matched": 1,
+          "withinTolerance": 0,
+          "breaches": 0,
+          "candidateErrors": 0,
+          "cutoverCandidateEmitted": 0,
+          "cutoverReverted": 0,
+          "status": "GREEN"
+        }
+      ],
+      "cases": [
+        {
+          "id": "printv_pr17/base_albdir",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/shopping_year4_opt_out_y",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/price_walk_year5",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/albbrk_year3_ncd_zero",
+          "feed": "PRINTV",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/retpls_year1_ncd_99_equal_price",
+          "feed": "PRINTV",
+          "brand": "RETPLS",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/herit_ncd_120_year_null",
+          "feed": "PRINTV",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/brand_null_default_ncd_null",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/brand_lowercase_default",
+          "feed": "PRINTV",
+          "brand": "albdir",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/brand_unmapped_default",
+          "feed": "PRINTV",
+          "brand": "ALBHNW",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/surname_over_12_truncated",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/surname_exactly_12",
+          "feed": "PRINTV",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/surname_pipe_replaced",
+          "feed": "PRINTV",
+          "brand": "RETPLS",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/max_width_amounts",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/negative_amounts_overpunch",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/negative_overpunch_digits",
+          "feed": "PRINTV",
+          "brand": "ALBBRK",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/rounding_half_up",
+          "feed": "PRINTV",
+          "brand": "HERIT",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/ncd_negative_reads_zero",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/opt_out_true",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/opt_out_lower_y",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/opt_out_upper_true_string",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/opt_out_one",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/opt_out_padded_y",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/opt_out_n",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/opt_out_zero",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/polaris_half_hydrated",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/negative_trailing_9_pr16_field",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 42,
+          "candidateLength": 42,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/risk_postcode_16_digits_shifts_layout",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/negative_trailing_9_pr17_field",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 42,
+          "candidateLength": 42,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/prior_premium_16_digits_shifts_layout",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 300,
+          "candidateLength": 300,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/risk_postcode_beyond_record_length",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 42,
+          "candidateLength": 42,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/prior_premium_beyond_pr17_length",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 42,
+          "candidateLength": 42,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        },
+        {
+          "id": "printv_pr17/null_bean",
+          "feed": "PRINTV",
+          "brand": "ALBDIR",
+          "outcome": "MATCH",
+          "legacyLength": 31,
+          "candidateLength": 31,
+          "firstDifferenceIndex": -1,
+          "candidateFailure": null
+        }
+      ]
     }
   ],
   "profiles": [
@@ -819,6 +1926,33 @@
       "status": "GREEN",
       "negativeControl": "RED",
       "cases": 12
+    },
+    {
+      "name": "PS215_PC",
+      "centre": "pc",
+      "feed": "PS215",
+      "fixture": "tools/replay/fixtures/renewal_ps215.csv",
+      "status": "GREEN",
+      "negativeControl": "RED",
+      "cases": 26
+    },
+    {
+      "name": "ELIGIBILITY_PC",
+      "centre": "pc",
+      "feed": "RENEWAL_ELIGIBILITY",
+      "fixture": "tools/replay/fixtures/renewal_eligibility.csv",
+      "status": "GREEN",
+      "negativeControl": "RED",
+      "cases": 29
+    },
+    {
+      "name": "PRINTV_PR17_CM",
+      "centre": "cm",
+      "feed": "PRINTV",
+      "fixture": "tools/replay/fixtures/printv_pr17.csv",
+      "status": "GREEN",
+      "negativeControl": "RED",
+      "cases": 32
     }
   ]
 }
