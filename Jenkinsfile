@@ -15,6 +15,13 @@ pipeline {
   stages {
     stage('Brand config drift') { steps { sh 'python3 tools/scripts/check_brand_config_drift.py' } }
     stage('Guidewire coherence') { steps { sh 'python3 tools/scripts/check_gw_coherence.py .' } }
+    stage('Offline replay + builder JUnit') {
+      // GOSU_LIB: agent directory holding the open-source Gosu and JUnit jars (tools/replay/README.md)
+      steps {
+        sh 'GOSU_LIB="${GOSU_LIB:-$HOME/gosu-lib}" tools/replay/run_replay.sh'
+        sh 'GOSU_LIB="${GOSU_LIB:-$HOME/gosu-lib}" tools/replay/junit/run_junit.sh'
+      }
+    }
 
     stage('Compile CC') { steps { sh 'sh ./gwb compile -Dcenter=cc' } }
     stage('Compile PC') { steps { sh 'sh ./gwb compile -Dcenter=pc' } }
