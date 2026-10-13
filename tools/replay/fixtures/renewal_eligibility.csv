@@ -1,0 +1,39 @@
+# Synthetic renewal eligibility replay fixture for PolicyCenter (profile ELIGIBILITY_PC). Every value is invented.
+# Rule: albion.policy.renewal.AlbionRenewalEligibilityRules. expect = block codes pipe-joined in the fixed order
+# OPT_OUT|MARKETING_SUPPRESSED|SANCTIONS_HOLD|VULNERABILITY_REVIEW|BEREAVEMENT_HOLD|GDPR_ERASURE_PENDING, or NONE.
+# A flag is set when it is Boolean true or a String equal (trimmed, any case) to Y, TRUE or 1; anything else,
+# including ~ (null), N, false and 0, is not set.
+# Flag columns are type bit: true/false become Boolean, any other value stays a String (POLARIS-hydrated flags).
+# Columns: case_id, expect, PolicyNumber_Ext, BrandCode_Ext, RenewalOptOut_Ext, MarketingSuppressed_Ext,
+# SanctionsHold_Ext, VulnerabilityNoted_Ext, BereavementHold_Ext, GDPRErasurePending_Ext.
+# null_bean_* rows are replayed with a null bean (all field columns ~): no codes and isEligible() is false.
+case_id,expect,PolicyNumber_Ext:text,BrandCode_Ext:text,RenewalOptOut_Ext:bit,MarketingSuppressed_Ext:bit,SanctionsHold_Ext:bit,VulnerabilityNoted_Ext:bit,BereavementHold_Ext:bit,GDPRErasurePending_Ext:bit
+all_unset_null,NONE,SYN-ELIG-0001,ALBDIR,~,~,~,~,~,~
+all_false,NONE,SYN-ELIG-0002,ALBDIR,false,false,false,false,false,false
+opt_out_only,OPT_OUT,SYN-ELIG-0003,ALBDIR,true,false,false,false,false,false
+marketing_suppressed_only,MARKETING_SUPPRESSED,SYN-ELIG-0004,ALBBRK,false,true,false,false,false,false
+sanctions_hold_only,SANCTIONS_HOLD,SYN-ELIG-0005,RETPLS,false,false,true,false,false,false
+vulnerability_review_only,VULNERABILITY_REVIEW,SYN-ELIG-0006,ALBBRK,false,false,false,true,false,false
+bereavement_hold_only,BEREAVEMENT_HOLD,SYN-ELIG-0007,HERIT,false,false,false,false,true,false
+gdpr_erasure_pending_only,GDPR_ERASURE_PENDING,SYN-ELIG-0008,~,false,false,false,false,false,true
+opt_out_off,NONE,SYN-ELIG-0009,ALBDIR,false,~,~,~,~,~
+all_on,OPT_OUT|MARKETING_SUPPRESSED|SANCTIONS_HOLD|VULNERABILITY_REVIEW|BEREAVEMENT_HOLD|GDPR_ERASURE_PENDING,SYN-ELIG-0010,ALBDIR,true,true,true,true,true,true
+opt_out_and_gdpr,OPT_OUT|GDPR_ERASURE_PENDING,SYN-ELIG-0011,ALBDIR,true,~,~,~,~,true
+sanctions_and_vulnerability,SANCTIONS_HOLD|VULNERABILITY_REVIEW,SYN-ELIG-0012,ALBBRK,~,~,true,true,~,~
+marketing_and_bereavement,MARKETING_SUPPRESSED|BEREAVEMENT_HOLD,SYN-ELIG-0013,RETPLS,~,true,~,~,true,~
+all_but_opt_out,MARKETING_SUPPRESSED|SANCTIONS_HOLD|VULNERABILITY_REVIEW|BEREAVEMENT_HOLD|GDPR_ERASURE_PENDING,SYN-ELIG-0014,ALBDIR,false,true,true,true,true,true
+truthy_upper_y,OPT_OUT,SYN-ELIG-0015,HERIT,Y,~,~,~,~,~
+truthy_lower_y,MARKETING_SUPPRESSED,SYN-ELIG-0016,HERIT,~,y,~,~,~,~
+truthy_upper_true,SANCTIONS_HOLD,SYN-ELIG-0017,HERIT,~,~,TRUE,~,~,~
+truthy_mixed_true,VULNERABILITY_REVIEW,SYN-ELIG-0018,HERIT,~,~,~,True,~,~
+truthy_one,BEREAVEMENT_HOLD,SYN-ELIG-0019,HERIT,~,~,~,~,1,~
+truthy_padded_y,GDPR_ERASURE_PENDING,SYN-ELIG-0020,HERIT,~,~,~,~,~, Y 
+truthy_strings_all_on,OPT_OUT|MARKETING_SUPPRESSED|SANCTIONS_HOLD|VULNERABILITY_REVIEW|BEREAVEMENT_HOLD|GDPR_ERASURE_PENDING,SYN-ELIG-0021,HERIT,Y,y,TRUE,true ,1, y
+falsy_upper_n,NONE,SYN-ELIG-0022,HERIT,N,n,N,N,N,N
+falsy_zero,NONE,SYN-ELIG-0023,HERIT,0,0,0,0,0,0
+falsy_other_strings,NONE,SYN-ELIG-0024,HERIT,YES,FALSE,T,2,~,X
+falsy_blank,NONE,SYN-ELIG-0025,HERIT,,,,,,
+mixed_truthy_falsy,OPT_OUT|VULNERABILITY_REVIEW|GDPR_ERASURE_PENDING,SYN-ELIG-0026,ALBDIR,Y,N,0,true,false,1
+polaris_half_hydrated,NONE,~,~,~,~,~,~,~,~
+polaris_half_hydrated_opt_out,OPT_OUT,~,~,y,~,~,~,~,~
+null_bean,NONE,~,~,~,~,~,~,~,~
