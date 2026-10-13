@@ -1,6 +1,6 @@
 {
   "schema": "albion.shadow.replay/v1",
-  "generatedAt": "2026-10-12T23:36:30Z",
+  "generatedAt": "2026-10-13T08:43:02Z",
   "status": "GREEN",
   "tolerance": "exact",
   "runtime": "open-source Gosu 1.17.5",
@@ -9,17 +9,20 @@
     {
       "path": "tools/replay/fixtures/ipt_cc.csv",
       "sha256": "2bf3e4599b65770dae7f7c6240c5d3b3af0765afc8394dd49f2713338f386529",
-      "cases": 17
+      "cases": 17,
+      "profile": "IPT_CC"
     },
     {
       "path": "tools/replay/fixtures/polaris_mf_pc.csv",
       "sha256": "8458fdf5f012d4d0c721051f2ff00564415a3ccb29ae811934395c89a490d045",
-      "cases": 16
+      "cases": 16,
+      "profile": "POLARIS_MF_PC"
     },
     {
       "path": "tools/replay/fixtures/polaris_mf_cm.csv",
       "sha256": "77d4253fb2680399754f5f0572a21d35436fe2640df82e08717af86f951243ec",
-      "cases": 12
+      "cases": 12,
+      "profile": "POLARIS_MF_CM"
     }
   ],
   "runs": [
@@ -27,8 +30,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "cc",
-      "periodStart": "2026-10-12T23:36:21Z",
-      "generatedAt": "2026-10-12T23:36:21Z",
+      "periodStart": "2026-10-13T08:42:51Z",
+      "generatedAt": "2026-10-13T08:42:51Z",
       "status": "GREEN",
       "totals": {
         "compared": 17,
@@ -302,8 +305,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "pc",
-      "periodStart": "2026-10-12T23:36:24Z",
-      "generatedAt": "2026-10-12T23:36:24Z",
+      "periodStart": "2026-10-13T08:42:55Z",
+      "generatedAt": "2026-10-13T08:42:55Z",
       "status": "GREEN",
       "totals": {
         "compared": 16,
@@ -567,8 +570,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "cm",
-      "periodStart": "2026-10-12T23:36:28Z",
-      "generatedAt": "2026-10-12T23:36:28Z",
+      "periodStart": "2026-10-13T08:43:00Z",
+      "generatedAt": "2026-10-13T08:43:00Z",
       "status": "GREEN",
       "totals": {
         "compared": 12,
@@ -787,6 +790,35 @@
           "candidateFailure": null
         }
       ]
+    }
+  ],
+  "profiles": [
+    {
+      "name": "IPT_CC",
+      "centre": "cc",
+      "feed": "IPT",
+      "fixture": "tools/replay/fixtures/ipt_cc.csv",
+      "status": "GREEN",
+      "negativeControl": "RED",
+      "cases": 17
+    },
+    {
+      "name": "POLARIS_MF_PC",
+      "centre": "pc",
+      "feed": "POLARIS_MF",
+      "fixture": "tools/replay/fixtures/polaris_mf_pc.csv",
+      "status": "GREEN",
+      "negativeControl": "RED",
+      "cases": 16
+    },
+    {
+      "name": "POLARIS_MF_CM",
+      "centre": "cm",
+      "feed": "POLARIS_MF",
+      "fixture": "tools/replay/fixtures/polaris_mf_cm.csv",
+      "status": "GREEN",
+      "negativeControl": "RED",
+      "cases": 12
     }
   ]
 }
