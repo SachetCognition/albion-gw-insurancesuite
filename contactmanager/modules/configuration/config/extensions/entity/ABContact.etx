@@ -58,4 +58,20 @@
     <columnParam name="size" value="10"/>
   </column>
   <column name="FloodReCeded_Ext" type="bit" desc="Primary property risk is ceded to Flood Re" nullok="true"/>
+  <!-- Renewal invite disclosure (ICOBS 6A/6B, PS21/5) carried on the POLARIS party record for the primary policy and emitted on the PRINTV PR17 record. Mastered in PolicyCenter/POLARIS. -->
+  <column name="PriorPremium_Ext" type="decimal" desc="Premium of the expiring policy year shown on the renewal invite (GBP)" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="RenewalPremium_Ext" type="decimal" desc="Renewal premium quoted on the renewal invite (GBP)" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="EquivalentNBPremium_Ext" type="decimal" desc="Equivalent new business price for the same risk and channel (PS21/5 comparison, GBP)" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
+  <column name="NCDYears_Ext" type="integer" desc="No-claims discount years on the primary policy at renewal" nullok="true"/>
+  <column name="PolicyYear_Ext" type="integer" desc="Policy year of the renewal being invited (1 = first year); 4 or more drives the shopping-around prompt" nullok="true"/>
+  <column name="RenewalOptOut_Ext" type="bit" desc="Customer has opted out of automatic renewal; printed on the renewal invite" nullok="true"/>
 </extension>
