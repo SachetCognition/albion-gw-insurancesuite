@@ -221,3 +221,10 @@ select, input[type="text"], textarea {
 .grid > .card + .card { margin-top: 0; }
 .matrix th { font-size: .66rem; letter-spacing: .03em; }
 .matrix td.mono { white-space: nowrap; }
+.card-head { flex-wrap: wrap; }
+.card-head .chip { white-space: normal; max-width: 100%; }
+.card, .grid > *, .page-head > div { min-width: 0; }
+@media (max-width: 600px) { .tiles .tile .value { font-size: 1.6rem; } .compare { grid-template-columns: 1fr; } .compare .op { text-align: center; } }
+.verdict > div, .callout > div, .cics > div { min-width: 0; }
+.verdict .big, .verdict .mono, .verdict .small { overflow-wrap: anywhere; }
+@media (max-width: 600px) { .verdict { padding: 14px; gap: 12px; } .verdict .big { font-size: 1.3rem; } .verdict .badge { width: 42px; height: 42px; font-size: 1.2rem; } }
