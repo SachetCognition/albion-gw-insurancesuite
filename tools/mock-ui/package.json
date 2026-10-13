@@ -1,0 +1,17 @@
+{
+  "name": "albion-renewal-mock-ui",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline mock UI for the renewal invite, opt-out, vulnerability, PS21/5 and eligibility journey (synthetic data only)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "4.21.2"
+  }
+}
