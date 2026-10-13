@@ -20,14 +20,22 @@ class AlbionParagonFeedManagerTest extends TestBase {
     assertEquals("", run(null, null))
   }
 
-  function testV1SignatureAcceptsAnyNonNullRecord() {
+  function testV1EnforcesThePS215Gate() {
+    // heritage renewal batch binding: was true for any non-null record; now the PS21/5 gate decides
     assertTrue(AlbionParagonFeedManager.evaluateAlbionParagonFeedManager_v1(AlbionPolicyTestBeans.bean(null)))
+    assertTrue(AlbionParagonFeedManager.evaluateAlbionParagonFeedManager_v1(AlbionPolicyTestBeans.bean({"TotalIncurred_Ext" -> 300.00bd, "EquivalentNBPremium_Ext" -> 300.00bd})))
+    assertFalse(AlbionParagonFeedManager.evaluateAlbionParagonFeedManager_v1(AlbionPolicyTestBeans.bean({"TotalIncurred_Ext" -> 610.00bd, "EquivalentNBPremium_Ext" -> 575.00bd})))
     assertFalse(AlbionParagonFeedManager.evaluateAlbionParagonFeedManager_v1(null))
   }
 
   function testNoPriceWalkBreachWithoutEquivalentNewBusinessPrice() {
-    // ENBP is not on the PolicyCenter data model (see AlbionPolicyPredicates), so no comparison is possible yet
+    // EquivalentNBPremium_Ext unpopulated (see AlbionPolicyPredicates), so no comparison is made
     assertEquals("", run(AlbionPolicyTestBeans.bean({"TotalIncurred_Ext" -> 999999.99bd}), null))
     assertEquals("", run(AlbionPolicyTestBeans.policyPeriod({"TotalIncurred_Ext" -> 999999.99bd}, AlbionPolicyTestBeans.daysAgo(400), "AGGR"), null))
+  }
+
+  function testPriceWalkBreachAboveEquivalentNewBusinessPrice() {
+    assertEquals("PRICE_WALK_BREACH", run(AlbionPolicyTestBeans.bean({"TotalIncurred_Ext" -> 610.00bd, "EquivalentNBPremium_Ext" -> 575.00bd}), null))
+    assertEquals("", run(AlbionPolicyTestBeans.bean({"TotalIncurred_Ext" -> 575.00bd, "EquivalentNBPremium_Ext" -> 575.00bd}), null))
   }
 }

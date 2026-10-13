@@ -36,4 +36,8 @@
     <columnParam name="scale" value="2"/>
   </column>
   <column name="InceptionDate_Ext" type="datetime" desc="Original inception date of the policy (first term), carried from POLARIS for migrated books; PeriodStart is the current term start" nullok="true"/>
+  <column name="EquivalentNBPremium_Ext" type="decimal" desc="PS21/5 equivalent new-business price (ENBP) for the renewal in policy currency (GBP); the renewal price must not exceed it" nullok="true">
+    <columnParam name="precision" value="18"/>
+    <columnParam name="scale" value="2"/>
+  </column>
 </extension>

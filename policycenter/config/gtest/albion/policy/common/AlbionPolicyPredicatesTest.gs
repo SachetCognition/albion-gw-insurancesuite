@@ -2,6 +2,7 @@ package albion.policy.common
 
 uses gw.testharness.TestBase
 uses java.util.Date
+uses org.easymock.EasyMock
 
 class AlbionPolicyPredicatesTest extends TestBase {
 
@@ -46,6 +47,16 @@ class AlbionPolicyPredicatesTest extends TestBase {
     var period = AlbionPolicyTestBeans.policyPeriod(null, new Date(), "AGGR")
     assertFalse(AlbionPolicyPredicates.hasPriorCueMatch(period))
     assertNull(AlbionPolicyPredicates.equivalentNewBusinessPrice(period))
+  }
+
+  function testEquivalentNewBusinessPriceReadsEquivalentNBPremium() {
+    var period = EasyMock.createNiceMock(PolicyPeriod)
+    EasyMock.expect(period.EquivalentNBPremium_Ext).andReturn(441.00bd).anyTimes()
+    EasyMock.replay({period})
+    assertEquals(441.00bd, AlbionPolicyPredicates.equivalentNewBusinessPrice(period))
+    assertEquals(575.00bd, AlbionPolicyPredicates.equivalentNewBusinessPrice(AlbionPolicyTestBeans.bean({"EquivalentNBPremium_Ext" -> 575.00bd})))
+    assertNull(AlbionPolicyPredicates.equivalentNewBusinessPrice(AlbionPolicyTestBeans.bean(null)))
+    assertNull(AlbionPolicyPredicates.equivalentNewBusinessPrice(null))
   }
 
   function testPostcodeArea() {
