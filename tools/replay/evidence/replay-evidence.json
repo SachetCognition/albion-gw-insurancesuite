@@ -1,6 +1,6 @@
 {
   "schema": "albion.shadow.replay/v1",
-  "generatedAt": "2026-10-13T08:50:58Z",
+  "generatedAt": "2026-10-13T09:10:24Z",
   "status": "GREEN",
   "tolerance": "exact",
   "runtime": "open-source Gosu 1.17.5",
@@ -48,8 +48,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "cc",
-      "periodStart": "2026-10-13T08:50:38Z",
-      "generatedAt": "2026-10-13T08:50:39Z",
+      "periodStart": "2026-10-13T09:10:06Z",
+      "generatedAt": "2026-10-13T09:10:06Z",
       "status": "GREEN",
       "totals": {
         "compared": 17,
@@ -323,8 +323,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "pc",
-      "periodStart": "2026-10-13T08:50:42Z",
-      "generatedAt": "2026-10-13T08:50:42Z",
+      "periodStart": "2026-10-13T09:10:09Z",
+      "generatedAt": "2026-10-13T09:10:09Z",
       "status": "GREEN",
       "totals": {
         "compared": 16,
@@ -588,8 +588,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "cm",
-      "periodStart": "2026-10-13T08:50:45Z",
-      "generatedAt": "2026-10-13T08:50:45Z",
+      "periodStart": "2026-10-13T09:10:12Z",
+      "generatedAt": "2026-10-13T09:10:12Z",
       "status": "GREEN",
       "totals": {
         "compared": 12,
@@ -813,8 +813,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "pc",
-      "periodStart": "2026-10-13T08:50:49Z",
-      "generatedAt": "2026-10-13T08:50:49Z",
+      "periodStart": "2026-10-13T09:10:15Z",
+      "generatedAt": "2026-10-13T09:10:16Z",
       "status": "GREEN",
       "totals": {
         "compared": 26,
@@ -1142,8 +1142,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "pc",
-      "periodStart": "2026-10-13T08:50:52Z",
-      "generatedAt": "2026-10-13T08:50:53Z",
+      "periodStart": "2026-10-13T09:10:19Z",
+      "generatedAt": "2026-10-13T09:10:19Z",
       "status": "GREEN",
       "totals": {
         "compared": 29,
@@ -1501,8 +1501,8 @@
       "schema": "albion.shadow.evidence/v1",
       "source": "offline-replay",
       "centre": "cm",
-      "periodStart": "2026-10-13T08:50:56Z",
-      "generatedAt": "2026-10-13T08:50:56Z",
+      "periodStart": "2026-10-13T09:10:22Z",
+      "generatedAt": "2026-10-13T09:10:22Z",
       "status": "GREEN",
       "totals": {
         "compared": 32,

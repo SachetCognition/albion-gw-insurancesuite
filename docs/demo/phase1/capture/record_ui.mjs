@@ -90,10 +90,18 @@ class Clip {
   async text(testid) { return (await this.raw(testid)).trim(); }
 
   async mark(testid) {
-    const loc = await this.need(testid);
-    await loc.scrollIntoViewIfNeeded();
-    await loc.evaluate((n) => { n.style.outline = '3px solid #f5b301'; n.style.outlineOffset = '3px'; });
-    return loc;
+    // screens re-render client-side after an action, so a located node can be replaced mid-call; re-locate and retry
+    for (let attempt = 1; ; attempt++) {
+      const loc = await this.need(testid);
+      try {
+        await loc.scrollIntoViewIfNeeded({ timeout: 3000 });
+        await loc.evaluate((n) => { n.style.outline = '3px solid #f5b301'; n.style.outlineOffset = '3px'; });
+        return loc;
+      } catch (e) {
+        if (attempt >= 5) throw e;
+        await this.page.waitForTimeout(400);
+      }
+    }
   }
 
   async close() {
@@ -204,6 +212,10 @@ const CLIPS = [
       if (values.length) await sel.selectOption(values[0]);
     }
     await Promise.all([c.page.waitForLoadState('load'), c.el('optout-submit').click()]);
+    await c.page.waitForFunction(() => {
+      const b = document.querySelector('[data-testid="optout-submit"]');
+      return !b || b.disabled;
+    }, null, { timeout: 10000 }).catch(() => {});
     if (!(await c.el('suppression-flag').isVisible().catch(() => false))) await c.go('/optout/SYN-REN-0004');
     await c.mark('suppression-flag');
     await c.say('Step 5', 'Opt-out captured: renewal suppressed', `Suppression flag: ${(await c.text('suppression-flag')).split('\n')[0]}`, 3000);
@@ -242,9 +254,13 @@ const CLIPS = [
     await c.say('Heritage', 'Heritage reference HR12345678A', 'Routed to the simulated CICS passthrough, which answers with a delay', 2200);
     const started = Date.now();
     await c.go('/invite/HR12345678A', HERITAGE_TIMEOUT_MS);
-    await c.need('invite-summary', HERITAGE_TIMEOUT_MS);
+    await c.need('cics-routing', HERITAGE_TIMEOUT_MS);
+    await c.page.locator('[data-testid="cics-routing"][data-routed="true"]').first()
+      .waitFor({ state: 'visible', timeout: HERITAGE_TIMEOUT_MS })
+      .catch(() => fail('heritage invite for HR12345678A was not routed via CICS'));
     const secs = ((Date.now() - started) / 1000).toFixed(1);
-    await c.mark('invite-summary');
+    await c.mark('cics-routing');
+    await c.mark('ws-response');
     await c.say('Heritage', `HR12345678A answered by the simulated CICS passthrough after ${secs} s`, 'Brand HERIT', 3600);
   }],
 ];
